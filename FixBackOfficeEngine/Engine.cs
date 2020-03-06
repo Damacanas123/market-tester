@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,11 +20,20 @@ namespace BackOfficeEngine
     //singleton
     public class Engine : IConnectorSubscriber
     {
+
+        #region internal fields 
+        internal static string resourcePath;
+        #endregion
         #region public
-        public static string resourcePath;
+
         public event InboundMessageEventHandler InboundMessageEvent;
         public event OnLogonEventHandler OnLogonEvent;
         public event OnLogoutEventHandler OnLogoutEvent;
+        public event OnCreateSessionEventHandler OnCreateSessionEvent;
+        #endregion
+
+        #region public collections
+        
         #endregion
 
         #region private
@@ -44,8 +54,19 @@ namespace BackOfficeEngine
             this.updateInterval = updateIntervalMilli;
             this.dequeueAmountPerUpdate = updateIntervalMilli / 5;
             Engine.resourcePath = resourcePath;
-            EngineBootstrapper.Bootstrap();
+            List<Order> orders;
+            orders = EngineBootstrapper.Bootstrap();
+            UpdateCollectionsFromDatabase(orders);
             new Thread(MessageDequeuer).Start();
+        }
+
+        private void UpdateCollectionsFromDatabase(List<Order> orders)
+        {
+            foreach(Order order in orders)
+            {
+                m_nonProtocolIDMap[order.NonProtocolID] = order;
+                m_clOrdIDMap[order.ClOrdID] = order;
+            }
         }
 
         public static Engine GetInstance()
@@ -135,6 +156,11 @@ namespace BackOfficeEngine
             m_messageQueue.Enqueue(msg);
             m_connectors[connectorIndex].SendMsgOrderEntry(msg);
         }
+
+        public void Disconnect(int connectorIndex)
+        {
+            m_connectors[connectorIndex].Disconnect();
+        }
         void IConnectorSubscriber.OnInboundMessage(IConnector connector, string sessionID, IMessage msg)
         {
             InboundMessageEvent?.Invoke(this, new InboundMessageEventArgs(msg));
@@ -152,6 +178,11 @@ namespace BackOfficeEngine
         void IConnectorSubscriber.OnLogout(IConnector connector, string sessionID)
         {
             OnLogoutEvent?.Invoke(this, new OnLogoutEventArgs(m_connectors.IndexOf(connector), sessionID));
+        }
+
+        void IConnectorSubscriber.OnCreateSession(IConnector connector, string sessionID)
+        {
+            OnCreateSessionEvent?.Invoke(this, new OnCreateSessionEventArgs(m_connectors.IndexOf(connector), sessionID));
         }
 
         private void MessageDequeuer()
@@ -196,5 +227,7 @@ namespace BackOfficeEngine
                 Thread.Sleep(updateInterval);
             }
         }
+
+        
     }
 }

@@ -94,7 +94,7 @@ namespace BackOfficeEngine.DB.SQLite
         {
             Order dummyOrder = new Order();
             List<Order> orders = new List<Order>();
-            SQLiteDataReader reader = ExecuteReader($"SELECT * FROM {dummyOrder.TableName} WHERE date = '{Util.GetTodayString()}'");
+            SQLiteDataReader reader = ExecuteReader($"SELECT * FROM {dummyOrder.TableName} WHERE {nameof(dummyOrder.Date)} = '{Util.GetTodayString()}'");
             if (reader != null)
             {
                 while (reader.Read())
@@ -104,6 +104,21 @@ namespace BackOfficeEngine.DB.SQLite
             }
             return orders;
         }
+
+        internal List<Position> GetPositions()
+        {
+            Position dummyPosition = new Position();
+            List<Position> positions = new List<Position>();
+            SQLiteDataReader reader = ExecuteReader($"SELECT * FROM {dummyPosition.TableName}");
+            if(reader != null)
+            {
+                while (reader.Read())
+                {
+                    positions.Add(new Position(reader));
+                }
+            }
+            return positions;
+        } 
 
         internal bool Truncate(IDataBaseWritable writable)
         {

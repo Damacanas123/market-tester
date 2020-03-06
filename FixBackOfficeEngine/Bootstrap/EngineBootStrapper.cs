@@ -12,11 +12,16 @@ namespace BackOfficeEngine.Bootstrap
 {
     internal class EngineBootstrapper
     {
-        internal static void Bootstrap()
+        internal static List<Order> Bootstrap()
         {
             CreateDirectories();
+            CreateDatabaseTables();
+            List<Order> orders = LoadOrders();
+            LoadPositions();
+            return orders;
+
         }
-        
+
         private static void CreateDirectories()
         {
             if (Engine.resourcePath[Engine.resourcePath.Length - 1] != '\\')
@@ -29,8 +34,7 @@ namespace BackOfficeEngine.Bootstrap
             CreateFile(CommonFolders.NonProtocolOrderIDPath);
             CreateFile(CommonFolders.ErrorLogPath);
             CreateFile(CommonFolders.DBErrorLogPath);
-            CreateDatabaseTables();
-
+            
         }
 
         private static void CreateDirectory(string path)
@@ -57,6 +61,27 @@ namespace BackOfficeEngine.Bootstrap
             {
                 sqliteHandler.CreateTable(new Order());
                 sqliteHandler.CreateTable(new Position());
+            }
+        }
+
+        private static List<Order> LoadOrders()
+        {
+            using(SQLiteHandler handler = new SQLiteHandler())
+            {
+                return handler.GetAllOrders();
+            }
+        }
+
+        private static void LoadPositions()
+        {
+            List<Position> positions = new List<Position>();
+            using(SQLiteHandler handler = new SQLiteHandler())
+            {
+                positions = handler.GetPositions();
+            }
+            foreach(Position position in positions)
+            {
+                position.account.LoadPosition(position);
             }
         }
     }

@@ -19,8 +19,8 @@ namespace BackOfficeEngine.Model
 {
     public class Order : BaseOrder,IDataBaseWritable
     {
-        
-        
+
+        public static ObservableCollection<Order> Orders { get; } = new ObservableCollection<Order>();
        
 
 
@@ -46,7 +46,6 @@ namespace BackOfficeEngine.Model
         public string Date
         {
             get { return date; }
-            private set { date = value; NotifyPropertyChanged(nameof(Date)); }
         }
         protected OrdStatus ordStatus = OrdStatus.InitialPending;
         public OrdStatus OrdStatus
@@ -85,6 +84,10 @@ namespace BackOfficeEngine.Model
             {nameof(date), new TableField(nameof(date),typeof(string),"",8) }
                 };
 
+        private void ConstructorCommonWork()
+        {
+            Orders.Add(this);
+        }
         internal Order(SQLiteDataReader reader)
         {
             nonProtocolID = reader[nameof(nonProtocolID)].ToString();
@@ -103,7 +106,35 @@ namespace BackOfficeEngine.Model
             avgPx = decimal.Parse(reader[nameof(avgPx)].ToString(),CultureInfo.InvariantCulture);
             ordStatus = new StringToEnumConverter<OrdStatus>().Convert(reader[nameof(ordStatus)].ToString());
             date = reader[nameof(date)].ToString();
+            ConstructorCommonWork();
+        }
 
+        internal Order(IMessage newOrderMessage, string nonProtocolID) : base(newOrderMessage, nonProtocolID)
+        {
+            ConstructorCommonWork();
+        }
+
+        /// <summary>
+        /// dummy constructor for database writes should not be considered for application logic
+        /// </summary>
+        internal Order() { }
+
+        protected Order(BaseOrder other) : base(other)
+        {
+            using (SQLiteHandler handler = new SQLiteHandler())
+            {
+                handler.Insert(this);
+            }
+            ConstructorCommonWork();
+        }
+        internal static new(IMessage, Order) CreateNewOrder(NewMessageParameters prms, string nonProtocolPseudoID)
+        {
+            IMessage newOrderMessage;
+            BaseOrder baseOrder;
+            (newOrderMessage, baseOrder) = BaseOrder.CreateNewOrder(prms, nonProtocolPseudoID);
+            Order order = new Order(baseOrder);
+            order.m_messages.Add(newOrderMessage);
+            return (newOrderMessage, order);
         }
         public Dictionary<string,object> Values
         {
@@ -146,28 +177,11 @@ namespace BackOfficeEngine.Model
             get { return "nonProtocolID"; }
         }
 
-        internal Order(IMessage newOrderMessage, string nonProtocolID) : base(newOrderMessage, nonProtocolID)
-        {
-        }
-
-        internal Order() { }
-
-        protected Order(BaseOrder other) : base(other)
-        {
-
-        }
+        
 
         
 
-        internal static new(IMessage, Order) CreateNewOrder(NewMessageParameters prms, string nonProtocolPseudoID)
-        {
-            IMessage newOrderMessage;
-            BaseOrder baseOrder;
-            (newOrderMessage, baseOrder) = BaseOrder.CreateNewOrder(prms, nonProtocolPseudoID);
-            Order order = new Order(baseOrder);
-            order.m_messages.Add(newOrderMessage);
-            return (newOrderMessage, order);
-        }
+        
 
         
 
@@ -243,6 +257,10 @@ namespace BackOfficeEngine.Model
                     }
                     account.AddTrade(new TradeParameters(side, lastShares, lastPx, symbol));
                     break;
+            }
+            using(SQLiteHandler handler = new SQLiteHandler())
+            {
+                handler.Update(this);
             }
         }
 

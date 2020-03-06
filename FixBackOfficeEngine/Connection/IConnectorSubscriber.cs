@@ -15,5 +15,7 @@ namespace BackOfficeEngine.Connection
         void OnLogon(IConnector connector, string sessionID);
 
         void OnLogout(IConnector connector, string sessionID);
+
+        void OnCreateSession(IConnector connector, string sessionID);
     }
 }

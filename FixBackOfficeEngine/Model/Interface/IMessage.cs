@@ -9,6 +9,8 @@ namespace BackOfficeEngine.Model
 {
     public interface IMessage
     {
+        DateTime SendTime { get; set; }
+        DateTime ReceiveTime { get; set; }
         ProtocolType protocolType { get; set; }
         #region getters
         MsgType GetMsgType();

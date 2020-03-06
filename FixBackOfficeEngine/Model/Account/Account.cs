@@ -65,10 +65,17 @@ namespace BackOfficeEngine.Model
             position.AddTrade(prms);
         }
 
+        internal void LoadPosition(Position position)
+        {
+            positionsDic[position.Symbol] = position;
+            Positions.Add(position);
+        }
+
         public override string ToString()
         {
             return this.name;
         }
+
 
         #region IComparable implementation
         public int CompareTo(object obj)

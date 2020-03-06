@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BackOfficeEngine.Model;
 using QuickFix;
+using QuickFix.Fields;
 
 namespace BackOfficeEngine.Connection
 {
@@ -17,6 +18,12 @@ namespace BackOfficeEngine.Connection
         private Session RDSession;
         private Session DC1Session;
         private Session DC2Session;
+        private Dictionary<string, Session> m_symbolMap = new Dictionary<string, Session>();
+        private const string SessionQualifierPrimary = "Primary";
+        private const string SessionQualifierSecondary = "Secondary";
+        private const string SessionQualifierRD = "RD";
+        private const string SessionQualifierDC1 = "DC1";
+        private const string SessionQualifierDC2 = "DC2";
 
         public List<IConnectorSubscriber> subscribers { get; }
 
@@ -76,15 +83,28 @@ namespace BackOfficeEngine.Connection
         void IApplication.FromApp(Message message, SessionID sessionID)
         {
             IMessage msg = new QuickFixMessage(message);
+            msg.ReceiveTime = DateTime.Now;
             foreach (IConnectorSubscriber subscriber in subscribers)
             {
-                subscriber.OnInboundMessage(this, sessionID.ToString(),msg);
+                subscriber.OnInboundMessage(this, sessionID.ToString(), msg);
+            }
+            if (sessionID.SessionQualifier == SessionQualifierRD)
+            {
+                if (message.Header.GetField(Tags.MsgType) == MsgType.SECURITYDEFINITION)
+                {
+                    m_symbolMap[message.GetField(Tags.Symbol)] = message.GetField(FixHelper.GeniumExtensionTags.PartitionId) == "1" ? primarySession : secondarySession;                    
+                }
             }
         }
 
+        
+
         void IApplication.OnCreate(SessionID sessionID)
         {
-
+            foreach(IConnectorSubscriber subscriber in subscribers)
+            {
+                subscriber.OnCreateSession(this, sessionID.ToString());
+            }
         }
 
         void IApplication.OnLogon(SessionID sessionID)
@@ -92,19 +112,19 @@ namespace BackOfficeEngine.Connection
             Session session = Session.LookupSession(sessionID);
             switch(sessionID.SessionQualifier)
             {
-                case "Primary":
+                case SessionQualifierPrimary:
                     primarySession = session;
                     break;
-                case "Secondary":
+                case SessionQualifierSecondary:
                     secondarySession = session;
                     break;
-                case "RD":
+                case SessionQualifierRD:
                     RDSession = session;
                     break;
-                case "DC1":
+                case SessionQualifierDC1:
                     DC1Session = session;
                     break;
-                case "DC2":
+                case SessionQualifierDC2:
                     DC2Session = session;
                     break;
             }
@@ -133,7 +153,10 @@ namespace BackOfficeEngine.Connection
 
         public void SendMsgOrderEntry(IMessage msg)
         {
-            primarySession.Send(new Message(msg.ToString()));
+            Session session = m_symbolMap[msg.GetSymbol()];
+            Message quickFixMsg = new Message(msg.ToString());
+            msg.SendTime = DateTime.Now;
+            session.Send(quickFixMsg);
         }
     }
 }

@@ -4,11 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Data.SQLite;
+using System.Globalization;
+
 using BackOfficeEngine.ParamPacker;
 using BackOfficeEngine.MessageEnums;
 using BackOfficeEngine.Helper;
 using BackOfficeEngine.GeneralBase;
 using BackOfficeEngine.DB.SQLite;
+
 
 namespace BackOfficeEngine.Model
 {
@@ -110,26 +114,35 @@ namespace BackOfficeEngine.Model
             }
         }
 
-        public string DatabaseIDColumnName
-        {
-            get { return "ID"; }
-        }
-
-        private object tradeLock = new object();
+        //private object tradeLock = new object();
 
         public event PropertyChangedEventHandler PropertyChanged;
         internal Position() { }
+
+        internal Position(SQLiteDataReader reader)
+        {
+            account = Account.GetInstance(reader[nameof(account)].ToString());
+            symbol = reader[nameof(symbol)].ToString();
+            averageCost = decimal.Parse(reader[nameof(averageCost)].ToString(),CultureInfo.InvariantCulture);
+            positionQty = decimal.Parse(reader[nameof(positionQty)].ToString(), CultureInfo.InvariantCulture);
+            netprofit = decimal.Parse(reader[nameof(netprofit)].ToString(), CultureInfo.InvariantCulture);
+            side = new StringToEnumConverter<Side>().Convert(reader[nameof(side)].ToString());            
+        }
 
         internal Position(string symbol,Account account)
         {
             this.symbol = symbol;
             this.account = account;
+            using(SQLiteHandler handler = new SQLiteHandler())
+            {
+                handler.Insert(this);
+            }
         }
 
         internal void AddTrade(TradeParameters prms)
         {
-            lock (tradeLock)
-            {
+            //lock (tradeLock)
+            //{
                 switch (prms.side)
                 {
                     case Side.Buy:
@@ -157,7 +170,11 @@ namespace BackOfficeEngine.Model
                     averageCost = ((averageCost * positionQty) + (prms.price * prms.lastShares)) / (positionQty + prms.lastShares);
                     positionQty += prms.lastShares;
                 }
-            }
+                using (SQLiteHandler handler = new SQLiteHandler())
+                {
+                    handler.Update(this);
+                }
+            //}
         }
         public override string ToString()
         {

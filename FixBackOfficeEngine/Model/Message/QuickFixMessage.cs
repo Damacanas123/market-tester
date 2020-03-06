@@ -15,6 +15,9 @@ namespace BackOfficeEngine.Model
     {
         private const string UTCTimestamp = "yyyyMMdd-HH:mm:ss.fff";
         public ProtocolType protocolType { get; set; }
+        public DateTime SendTime { get; set; }
+        public DateTime ReceiveTime { get; set; }
+
         private void PreConstructorCommonWork()
         {
             this.protocolType = ProtocolType.Fix;
@@ -337,6 +340,26 @@ namespace BackOfficeEngine.Model
         public bool IsSetLastQty()
         {
             return IsSetField(Tags.LastQty);
+        }
+
+        public DateTime GetSendTime()
+        {
+            throw new NotImplementedException();
+        }
+
+        public DateTime GetReceiveTime()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetSendTime(DateTime time)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetReceiveTime(DateTime time)
+        {
+            throw new NotImplementedException();
         }
     }
 }
