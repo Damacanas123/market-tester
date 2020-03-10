@@ -1,0 +1,90 @@
+﻿<UserControl x:Class="MarketTester.UI.Usercontrol.UserControlUpperBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MarketTester.UI.Usercontrol"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style x:Key="LabelTitle" TargetType="Label">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Rectangle x:Name="TitleBar" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
+                   Grid.Row="0" Grid.ColumnSpan="1" Opacity="1"  Fill="{StaticResource BackgroundSecondary}"/>
+        <Button Style="{StaticResource ButtonRound}" x:Name="buttonMinimize"
+            HorizontalAlignment="Right" Margin="0,5,75,0" VerticalAlignment="Center" Width="20" Height="20" Click="ButtonMinimize_Click">
+            <Path 
+                  
+                  Grid.Column="1"     
+                  Fill="Transparent"
+                Stroke="White"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Bottom"
+                  Data="M0,5 L5,5 z" Height="10" Stretch="Fill" Width="2"
+                />
+        </Button>
+        <Button Style="{StaticResource ButtonRound}" x:Name="buttonNormalToggle"
+             HorizontalAlignment="Right" Margin="0,5,50,0" VerticalAlignment="Center" Width="20" Height="20" Click="ButtonNormalToggle_Click"
+                VerticalContentAlignment="Top">
+            <Path 
+                  
+                  Grid.Column="1"     
+                  Fill="Transparent"
+                Stroke="White"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Data="M0,0 L0,8 L8,8 L8,0 z" Height="10.083" Stretch="Fill" Width="10.083"
+                />
+        </Button>
+        <Button Style="{StaticResource ButtonRound}" x:Name="buttonClose" 
+             HorizontalAlignment="Right" Margin="0,5,25,0" VerticalAlignment="Center" Width="20" Height="20" Click="ButtonClose_Click"
+                VerticalContentAlignment="Top"
+                Background="Red">
+            <Path  Fill="White" VerticalAlignment="Center" Height="10.062" Stretch="Fill" Width="10">
+                <Path.Data>
+                    <CombinedGeometry GeometryCombineMode="Union">
+                        <CombinedGeometry.Geometry1>
+                            <PathGeometry>
+                                <PathGeometry.Figures>
+                                    <PathFigure StartPoint="0,0">
+                                        <PathFigure.Segments>
+                                            <LineSegment Point="6,0" />
+                                            <LineSegment Point="0,6" />
+                                            <LineSegment Point="1,6" />
+                                            <LineSegment Point="7,0" />
+                                        </PathFigure.Segments>
+                                    </PathFigure>
+                                </PathGeometry.Figures>
+                            </PathGeometry>
+                        </CombinedGeometry.Geometry1>
+                        <CombinedGeometry.Geometry2>
+                            <PathGeometry>
+                                <PathGeometry.Figures>
+                                    <PathFigure StartPoint="0,0">
+                                        <PathFigure.Segments>
+                                            <LineSegment Point="0,0" />
+                                            <LineSegment Point="6,6" />
+                                            <LineSegment Point="7,6" />
+                                            <LineSegment Point="1,0" />
+
+                                        </PathFigure.Segments>
+                                    </PathFigure>
+                                </PathGeometry.Figures>
+                            </PathGeometry>
+                        </CombinedGeometry.Geometry2>
+                    </CombinedGeometry>
+
+                </Path.Data>
+            </Path>
+
+
+        </Button>
+        <Label x:Name="LabelTitle" Style="{StaticResource LabelTitle}" Content="Market Tester"
+               HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center"/>
+    </Grid>
+</UserControl>

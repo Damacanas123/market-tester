@@ -1,0 +1,27 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:MarketTester.Resource"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="StringAccount">Account</system:String>
+    <system:String x:Key="StringAccountAbbrvtd">Acc</system:String>
+    <system:String x:Key="StringPrice">Price</system:String>
+    <system:String x:Key="StringPriceAbbrvtd">Prc</system:String>
+    <system:String x:Key="StringSymbol">Symbol</system:String>
+    <system:String x:Key="StringSymbolAbbrvtd">Sym</system:String>
+    <system:String x:Key="StringQuantity">Quantity</system:String>
+    <system:String x:Key="StringQuantityAbbrvtd">Qty</system:String>
+    <system:String x:Key="StringLimit">Limit</system:String>
+    <system:String x:Key="StringLimitAbbrvtd">Lim</system:String>
+    <system:String x:Key="StringMarket">Market</system:String>
+    <system:String x:Key="StringMarketAbbrvtd">Mkt</system:String>
+    <system:String x:Key="StringMarketToLimit">Market To Limit</system:String>
+    <system:String x:Key="StringMarketToLimitAbbrvtd">MtL</system:String>
+    <system:String x:Key="StringSend">Send</system:String>
+    <system:String x:Key="StringChannel">Channel</system:String>
+    <system:String x:Key="StringChannelAbbrvtd">Chnl</system:String>
+    <system:String x:Key="StringConnectionConfigurations">Connection Configurations</system:String>
+    <system:String x:Key="StringConnect">Connect</system:String>
+    <system:String x:Key="StringChannels">Channels</system:String>
+    
+</ResourceDictionary>

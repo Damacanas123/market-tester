@@ -19,7 +19,7 @@ namespace MockRunner
         static void Main(string[] args)
         {
             engine = Engine.GetInstance(500, @"C:\MATRIKS_OMS\BackOfficeEngine");
-            connectorIndex = engine.NewConnection(@"C:\MATRIKS_OMS\TestClient\static\Gate2.txt", ProtocolType.Fix);
+            connectorIndex = engine.NewConnection(@"C:\MATRIKS_OMS\TestClient\static\Gate2.txt", ProtocolType.Fix50sp2);
             engine.InboundMessageEvent += OnInboundMessage;
             engine.OnLogonEvent += Engine_OnLogonEvent;
             Thread.Sleep(2000);
@@ -38,7 +38,7 @@ namespace MockRunner
             {
                 IMessage newMsg;
                 string nonProtocolOrdID;
-                (newMsg,nonProtocolOrdID) = engine.PrepareMessageNew(new NewMessageParameters(ProtocolType.Fix, account, symbol, qty, Side.Buy, TimeInForce.Day, OrdType.Limit, price));
+                (newMsg,nonProtocolOrdID) = engine.PrepareMessageNew(new NewMessageParameters(ProtocolType.Fix50sp2, account, symbol, qty, Side.Buy, TimeInForce.Day, OrdType.Limit, price));
                 SetMandatoryFields(newMsg);
                 engine.SendMessage(newMsg,connectorIndex);
                 Thread.Sleep(3000);
@@ -50,7 +50,7 @@ namespace MockRunner
                 //IMessage cancelMessage = engine.PrepareMessageCancel(new CancelMessageParameters(nonProtocolOrdID));
                 //SetMandatoryFields(cancelMessage);
                 //engine.SendMessage(cancelMessage, connectorIndex);
-                (newMsg, nonProtocolOrdID) = engine.PrepareMessageNew(new NewMessageParameters(ProtocolType.Fix, account, symbol, qty , Side.Sell, TimeInForce.Day, OrdType.Limit, price));
+                (newMsg, nonProtocolOrdID) = engine.PrepareMessageNew(new NewMessageParameters(ProtocolType.Fix50sp2, account, symbol, qty , Side.Sell, TimeInForce.Day, OrdType.Limit, price));
                 SetMandatoryFields(newMsg);
                 engine.SendMessage(newMsg,connectorIndex);
 

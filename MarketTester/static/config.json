@@ -1,0 +1,9 @@
+﻿{
+  "DataRefreshRate": 500,
+  "ConfigFiles": [
+    {
+      "FilePath": "C:\\MATRIKS_OMS\\MarketTester\\static\\multiplexer_config_barkin.txt",
+      "ProtocolType": "Fix50sp2"
+    }
+  ]
+}

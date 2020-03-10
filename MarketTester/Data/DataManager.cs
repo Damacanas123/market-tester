@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BackOfficeEngine
+namespace MarketTester.Data
 {
-    public enum ProtocolType
+    public class DataManager
     {
-        Fix50sp2, OUCH
+
     }
 }

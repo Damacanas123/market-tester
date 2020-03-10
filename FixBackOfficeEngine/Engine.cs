@@ -91,9 +91,8 @@ namespace BackOfficeEngine
         {
             switch(protocolType)
             {
-                case ProtocolType.Fix:
-                    IConnector connector = QuickFixConnector.GetInstance(configFilePath);
-                    connector.Subscribe(this);
+                case ProtocolType.Fix50sp2:
+                    IConnector connector = QuickFixConnector.GetInstance(configFilePath,this);
                     m_connectors.Add(connector);
                     return m_connectors.Count - 1;
                 default:

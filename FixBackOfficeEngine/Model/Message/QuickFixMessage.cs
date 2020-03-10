@@ -20,7 +20,7 @@ namespace BackOfficeEngine.Model
 
         private void PreConstructorCommonWork()
         {
-            this.protocolType = ProtocolType.Fix;
+            this.protocolType = ProtocolType.Fix50sp2;
         }
         internal QuickFixMessage() : base() 
         {

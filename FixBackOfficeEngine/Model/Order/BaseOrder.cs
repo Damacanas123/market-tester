@@ -83,7 +83,7 @@ namespace BackOfficeEngine.Model
             
             switch (prms.protocolType)
             {
-                case ProtocolType.Fix:
+                case ProtocolType.Fix50sp2:
                     newOrderMessage = QuickFixMessage.CreateRequestMessage(MsgType.New);
                     newOrderMessage.SetClOrdID(ClOrdIdGenerator.Instance.GetNextId());
                     newOrderMessage.SetAccount(prms.account);
@@ -146,7 +146,7 @@ namespace BackOfficeEngine.Model
             IMessage replaceRequest = null;
             switch (protocolType)
             {
-                case ProtocolType.Fix:
+                case ProtocolType.Fix50sp2:
                     replaceRequest = QuickFixMessage.CreateRequestMessage(MsgType.Replace);
                     replaceRequest.SetClOrdID(ClOrdIdGenerator.Instance.GetNextId());
                     replaceRequest.SetOrigClOrdID(clOrdID);
@@ -181,7 +181,7 @@ namespace BackOfficeEngine.Model
             IMessage cancelRequest = null;
             switch (protocolType)
             {
-                case ProtocolType.Fix:
+                case ProtocolType.Fix50sp2:
                     cancelRequest = QuickFixMessage.CreateRequestMessage(MsgType.Cancel);
                     cancelRequest.SetClOrdID(ClOrdIdGenerator.Instance.GetNextId());
                     cancelRequest.SetOrigClOrdID(clOrdID);

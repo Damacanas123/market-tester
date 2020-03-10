@@ -32,7 +32,7 @@ namespace BackOfficeEngine.Connection
             subscribers = new List<IConnectorSubscriber>();
         }
 
-        internal static IConnector GetInstance(string configFilePath)
+        internal static IConnector GetInstance(string configFilePath,IConnectorSubscriber subscriber)
         {
             if (m_instances.TryGetValue(configFilePath, out IConnector instance))
             {
@@ -40,13 +40,15 @@ namespace BackOfficeEngine.Connection
             }
             else
             {
-                IConnector new_instance = new QuickFixConnector();
-                new_instance.ConfigureConnection(configFilePath);
-                new_instance.Connect();
-                m_instances[configFilePath] = new_instance;
-                return new_instance;
+                
+                instance = new QuickFixConnector();
+                instance.subscribers.Add(subscriber);
+                instance.ConfigureConnection(configFilePath);
+                instance.Connect();
+                m_instances[configFilePath] = instance;
+                
             }
-
+            return instance;
         }
 
 

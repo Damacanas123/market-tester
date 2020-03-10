@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="MarketTester.UI.Usercontrol.UserControlOrderList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MarketTester.UI.Usercontrol"
+             xmlns:viewmodel="clr-namespace:MarketTester.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <viewmodel:ViewModelOrderList/>
+    </UserControl.DataContext>
+        <Grid>
+        
+        <DataGrid ItemsSource="{Binding Orders}" 
+                  Background="{StaticResource BackgroundPrimary}" 
+                  AlternatingRowBackground="{StaticResource BackgroundSecondary}"
+                  AlternationCount="2">
+            <DataGrid.Resources>
+                <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="Background" Value="{StaticResource BackgroundSecondary}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource DetailColor}"/>
+                    <Setter Property="BorderThickness" Value="1,1,0,1"/>
+                    <Setter Property="Padding" Value="3,0,3,0"/>
+                </Style>
+            </DataGrid.Resources>
+        </DataGrid>
+    </Grid>
+</UserControl>
