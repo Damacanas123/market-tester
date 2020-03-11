@@ -51,6 +51,7 @@ namespace MarketTester.ViewModel
         public BaseCommand CommandConnectChannel { get; set; }
         public void CommandConnectChannelExecute(object executor)
         {
+            SelectedChannel = (Channel)executor;
             Connection.Connector.GetInstance().StartConnection((Channel)executor);
         }
 

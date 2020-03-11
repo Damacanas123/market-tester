@@ -3,8 +3,15 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System;
+using System.Windows.Controls;
+
+using BackOfficeEngine.ParamPacker;
+using BackOfficeEngine.MessageEnums;
 
 using MarketTester.Model;
+
 
 namespace MarketTester.ViewModel
 {
@@ -32,13 +39,19 @@ namespace MarketTester.ViewModel
         private Brush sideColor;
         public Brush SideColor { get => sideColor; set { sideColor = value; NotifyPropertyChanged(nameof(SideColor)); } }
 
-        private bool isBuy;
-        public bool IsBuy { get => isBuy; set { isBuy = value;NotifyPropertyChanged(nameof(IsBuy)); } }
+        private Side side;
+        public Side Side { get => side; set { side = value;NotifyPropertyChanged(nameof(Side)); } }
+
+        private TimeInForce timeInForce;
+        public TimeInForce TimeInForce { get => timeInForce;set { timeInForce = value;NotifyPropertyChanged(nameof(TimeInForce)); } }
+
+        private OrdType ordType;
+        public OrdType OrdType { get => ordType; set { ordType = value;NotifyPropertyChanged(nameof(OrdType)); } }
 
         private Channel channel;
         public Channel Channel { get => channel; set { channel = value; NotifyPropertyChanged(nameof(Channel)); } }
 
-        private object channelsLock = new object();
+        
         public ObservableCollection<Channel> Channels { get; set; } = new ObservableCollection<Channel>();
 
         #endregion
@@ -52,15 +65,15 @@ namespace MarketTester.ViewModel
         public ICommand CommandSwitchSide { get; set; }
         private void CommandSwitchSideExecute(object param)
         {
-            if(IsBuy)
+            if(Side == Side.Buy)
             {
                 SideColor = (SolidColorBrush)Application.Current.Resources[Const.ResourceColorSell];
-                IsBuy = false;
+                Side = Side.Sell;
             }
             else
             {
                 SideColor = (SolidColorBrush)Application.Current.Resources[Const.ResourceColorBuy];
-                IsBuy = true;
+                Side = Side.Buy;
             }  
         }
         private bool CommandSwitchSideCanExecute()
@@ -73,7 +86,22 @@ namespace MarketTester.ViewModel
         {
             if(Channel != null)
             {
+                if (isReplacingWindow)
+                {
 
+                }
+                else
+                {
+                    NewMessageParameters prms = new NewMessageParameters(
+                        Channel.ProtocolType,
+                        AccountText,
+                        SymbolText,
+                        decimal.Parse(QuantityText, CultureInfo.InvariantCulture),
+                        Side,
+                        TimeInForce,
+                        OrdType);
+                    Connection.Connector.GetInstance().SendMessageNew(Channel, prms);
+                }
             }
         }
         private bool CommandSendOrderCanExecute()
@@ -87,10 +115,36 @@ namespace MarketTester.ViewModel
         {
             CommandSwitchSide = new BaseCommand(CommandSwitchSideExecute, CommandSwitchSideCanExecute);
             CommandSendOrder = new BaseCommand(CommandSendOrderExecute, CommandSendOrderCanExecute);
+            CommandRadioButtonOrdType = new BaseCommand(CommandRadioButtonOrdTypeExecute, CommandRadioButtonOrdTypeCanExecute);
+            TimeInForce = TimeInForce.Day;
             SideColor = (SolidColorBrush)Application.Current.Resources[Const.ResourceColorSell];
+            Side = Side.Sell;
             UpdateChannelsCollection();
             Connection.Connector.GetInstance().ActiveChannels.CollectionChanged += OnChannelsCollectionChanged;
             
+        }
+
+        public ICommand CommandRadioButtonOrdType { get; set; }
+        public void CommandRadioButtonOrdTypeExecute (object executor)
+        {
+            RadioButton sender = (RadioButton)executor;
+            if (sender.Name.Contains("Limit"))
+            {
+                OrdType = OrdType.Limit;
+            }
+            else if (sender.Name.Contains("MarketToLimit"))
+            {
+                OrdType = OrdType.MarketToLimit;
+            }
+            else
+            {
+                OrdType = OrdType.Market;
+            }
+        }
+
+        public bool CommandRadioButtonOrdTypeCanExecute()
+        {
+            return !isReplacingWindow;
         }
 
 
@@ -102,18 +156,19 @@ namespace MarketTester.ViewModel
         }
 
         private void UpdateChannelsCollection()
-        {
-            lock (channelsLock)
+        {           
+            App.Current.Dispatcher.Invoke((Action)delegate
             {
                 Channels.Clear();
                 foreach (Channel channel in Connection.Connector.GetInstance().ActiveChannels)
                 {
                     if (channel.IsConnected)
                     {
+                        if(!Channels.Contains(channel))
                         Channels.Add(channel);
                     }
                 }
-            }
+            });
         }
     }
 }

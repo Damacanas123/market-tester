@@ -5,29 +5,35 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MarketTester.UI.Usercontrol"
-    xmlns:props="clr-namespace:MarketTester.Properties"
+    xmlns:converters="clr-namespace:MarketTester.Converters"
     xmlns:viewmodel="clr-namespace:MarketTester.ViewModel"
       mc:Ignorable="d" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
     <UserControl.DataContext>
         <viewmodel:ViewModelOrderEntry/>
     </UserControl.DataContext>
     <UserControl.Resources>
+        <converters:DoubleConverter x:Key="DoubleConverter"/>
         <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="Label">
-            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
+            Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=30}"/>
         </Style>
         <Style TargetType="RadioButton">
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
+            Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=30}"/>
         </Style>
         <Style BasedOn="{StaticResource {x:Type ComboBox}}" TargetType="ComboBox">
-            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
+            Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=30}"/>
         </Style>
         <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="TextBox">
-            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
+            Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=30}"/>
         </Style>
-        <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
-            <Setter Property="Margin" Value="5"/>
+        <Style x:Key="ButtonInPlace" BasedOn="{StaticResource ButtonGeneral}" TargetType="Button">
+            <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
+            Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=60}"/>
         </Style>
 
     </UserControl.Resources>
@@ -58,7 +64,8 @@
 
         </ComboBox>
 
-        <Label Content="{DynamicResource StringAccountAbbrvtd}" Grid.Column="0" Grid.Row="0"/>
+        <Label Content="{DynamicResource StringAccountAbbrvtd}" Grid.Column="0" Grid.Row="0"
+               />
         <TextBox x:Name="textBoxPrice" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1"
                   TextBoxBase.TextChanged="TextBoxPriceTextChanged" 
                  PreviewMouseLeftButtonUp="TextBoxPriceOnClick"
@@ -74,42 +81,55 @@
                  Text="{Binding QuantityText}"
                  BorderBrush="{Binding SideColor}"/>
         <Label Content="{DynamicResource StringQuantityAbbrvtd}" Grid.Column="3" Grid.Row="1" />
-        <Button Style="{StaticResource ButtonGeneral}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Content="{StaticResource StringSend}"
+        <Button  Style="{StaticResource ButtonInPlace}"
+            Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Content="{StaticResource StringSend}"
                 Command="{Binding CommandSendOrder}"
-                BorderBrush="{Binding SideColor}"
-                Margin="5">
+                BorderBrush="{Binding SideColor}">
         </Button>
         <RadioButton Style="{StaticResource RadioButtonGeneral}" 
+                     x:Name="RadioButtonLimit"
+                     Command="{Binding CommandRadioButtonOrdType}"
+                     CommandParameter="{Binding .}"
                      Grid.Column="2" Grid.Row="2"
-                     Content="{DynamicResource StringLimitAbbrvtd}"  GroupName="order_type"
+                     Content="{DynamicResource StringLimitAbbrvtd}"  
+                     GroupName="OrdType"
                      BorderBrush="{Binding SideColor}"/>
         <RadioButton Style="{StaticResource RadioButtonGeneral}" 
+                     x:Name="RadioButtonMarket"
+                     Command="{Binding CommandRadioButtonOrdType}"
+                     CommandParameter="{Binding .}"
                      Grid.Column="3" Grid.Row="2"
                      Content="{DynamicResource StringMarketAbbrvtd}" 
-                     GroupName="order_type"
+                     GroupName="OrdType"
                      BorderBrush="{Binding SideColor}"/>
         <RadioButton Style="{StaticResource RadioButtonGeneral}" 
+                     x:Name="RadioButtonMarketToLimit"
+                     Command="{Binding CommandRadioButtonOrdType}"
+                     CommandParameter="{Binding .}"
                      Grid.Column="4" Grid.Row="2"
                      Content="{DynamicResource StringMarketToLimitAbbrvtd}" 
-                     GroupName="order_type"
+                     GroupName="OrdType"
                      BorderBrush="{Binding SideColor}">
 
         </RadioButton>
         <Button x:Name="buttonChangeSide" 
                 Grid.Column="5" Grid.Row="2"
-                RenderTransformOrigin="0.4,0.348"
                 Background="{Binding SideColor}"
                 BorderBrush="{Binding SideColor}"
                 Command="{Binding CommandSwitchSide}"
-                Width="15"
-                Height="15">
+                Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
+            Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=20}"
+                Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
+            Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=20}">
         </Button>
         <Label Content="{DynamicResource StringChannelAbbrvtd}" Grid.Column="0" Grid.Row="3" />
-        <ComboBox x:Name="comboConnection" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2"
+        <ComboBox x:Name="comboConnection" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="5"
+                  
             Background="{DynamicResource BackgroundSecondary}"
             IsEditable="True"
             ItemsSource="{Binding Channels}"
-            BorderBrush="{StaticResource DetailColor}"/>
+            BorderBrush="{StaticResource DetailColor}"
+                  SelectedItem="{Binding Channel}"/>
 
 
     </Grid>

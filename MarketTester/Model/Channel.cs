@@ -78,5 +78,10 @@ namespace MarketTester.Model
                 InactiveSessions.Remove(sessionID);
             }
         }
+
+        public override string ToString()
+        {
+            return this.Name;
+        }
     }
 }

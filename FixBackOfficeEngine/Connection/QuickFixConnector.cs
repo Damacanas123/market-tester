@@ -155,10 +155,10 @@ namespace BackOfficeEngine.Connection
 
         public void SendMsgOrderEntry(IMessage msg)
         {
-            Session session = m_symbolMap[msg.GetSymbol()];
+            //Session session = m_symbolMap[msg.GetSymbol()];
             Message quickFixMsg = new Message(msg.ToString());
             msg.SendTime = DateTime.Now;
-            session.Send(quickFixMsg);
+            primarySession.Send(quickFixMsg);
         }
     }
 }

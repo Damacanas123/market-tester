@@ -11,6 +11,7 @@ using MarketTester.Helper;
 
 using BackOfficeEngine;
 using BackOfficeEngine.Events;
+using BackOfficeEngine.ParamPacker;
 
 namespace MarketTester.Connection
 {
@@ -98,6 +99,21 @@ namespace MarketTester.Connection
         {
             engine.Disconnect(ch.ConnectorIndex);
         }
-            
+
+        public void SendMessageNew(Channel ch,NewMessageParameters prms)
+        {
+            engine.SendMessageNew(prms, ch.ConnectorIndex);
+        }
+
+        public void SendMessageReplace(Channel ch, ReplaceMessageParameters prms)
+        {
+            engine.SendMessageReplace(prms, ch.ConnectorIndex);
+        }
+
+        public void SendMeesageCancel(Channel ch, CancelMessageParameters prms)
+        {
+            engine.SendMessageCancel(prms, ch.ConnectorIndex);
+        }
+
     }
 }

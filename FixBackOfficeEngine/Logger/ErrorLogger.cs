@@ -10,14 +10,15 @@ namespace BackOfficeEngine.Logger
 {
     internal class ErrorLogger
     {
+        private const string LOG_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.ffffff";
         internal static void LogError(Exception ex)
         {
-            Util.AppendStringToFile(CommonFolders.ErrorLogPath, ex.ToString());
+            Util.AppendStringToFile(CommonFolders.ErrorLogPath, DateTime.Now.ToString(LOG_DATE_FORMAT) + "\n" +  ex.ToString());
         }
 
         internal static void DBError(Exception ex)
         {
-            Util.AppendStringToFile(CommonFolders.DBErrorLogPath, ex.ToString());
+            Util.AppendStringToFile(CommonFolders.DBErrorLogPath,DateTime.Now.ToString(LOG_DATE_FORMAT) + "\n" + ex.ToString());
         }
     }
 }

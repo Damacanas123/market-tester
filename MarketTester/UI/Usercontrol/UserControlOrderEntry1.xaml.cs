@@ -37,7 +37,9 @@ namespace MarketTester.UI.Usercontrol
             PopulateAccountComboBox();
             //PopulateSymbolsComboBox();
             controls = new List<Control>();
-            controls.Add(comboAccount);    
+            controls.Add(comboAccount);
+            
+
         }
 
         
@@ -88,4 +90,6 @@ namespace MarketTester.UI.Usercontrol
 
         
     }
+
+
 }
