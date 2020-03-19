@@ -51,7 +51,8 @@ namespace MarketTester.Model
         {
             lock (activeSessionsLock)
             {
-                ActiveSessions.Add(sessionID);
+                if (!ActiveSessions.Contains(sessionID))
+                    ActiveSessions.Add(sessionID);
             }
         }
 
@@ -59,7 +60,8 @@ namespace MarketTester.Model
         {
             lock (activeSessionsLock)
             {
-                ActiveSessions.Remove(sessionID);
+                if (ActiveSessions.Contains(sessionID))
+                    ActiveSessions.Remove(sessionID);
             }
         }
 
@@ -67,6 +69,7 @@ namespace MarketTester.Model
         {
             lock (activeSessionsLock)
             {
+                if(!InactiveSessions.Contains(sessionID))
                 InactiveSessions.Add(sessionID);
             }
         }
@@ -75,7 +78,8 @@ namespace MarketTester.Model
         {
             lock (activeSessionsLock)
             {
-                InactiveSessions.Remove(sessionID);
+                if (InactiveSessions.Contains(sessionID))
+                    InactiveSessions.Remove(sessionID);
             }
         }
 

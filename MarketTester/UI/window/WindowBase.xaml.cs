@@ -19,8 +19,10 @@ namespace MarketTester.UI.window
     /// </summary>
     public partial class WindowBase : Window
     {
-        public WindowBase()
+        public bool IsMainWindow { get; private set; }
+        public WindowBase(bool isMainWindow)
         {
+            IsMainWindow = isMainWindow;
             InitializeComponent();
         }
 

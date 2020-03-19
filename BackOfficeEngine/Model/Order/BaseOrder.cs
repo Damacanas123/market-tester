@@ -15,61 +15,61 @@ namespace BackOfficeEngine.Model
         public string NonProtocolID
         {
             get { return nonProtocolID; }
-            private set { nonProtocolID = value; NotifyPropertyChanged(nameof(NonProtocolID)); }
+            protected set { nonProtocolID = value; NotifyPropertyChanged(nameof(NonProtocolID)); }
         }
         protected decimal price;
         public decimal Price
         {
             get { return price; }
-            private set { price = value; NotifyPropertyChanged(nameof(Price)); }
+            protected set { price = value; NotifyPropertyChanged(nameof(Price)); }
         }
         protected decimal orderQty;
         public decimal OrderQty
         {
             get { return orderQty; }
-            private set { orderQty = value; NotifyPropertyChanged(nameof(OrderQty)); }
+            protected set { orderQty = value; NotifyPropertyChanged(nameof(OrderQty)); }
         }
         protected Account account;
         public Account Account
         {
             get { return account; }
-            private set { account = value; NotifyPropertyChanged(nameof(Account)); }
+            protected set { account = value; NotifyPropertyChanged(nameof(Account)); }
         }
         protected string symbol = "";
         public string Symbol
         {
             get { return symbol; }
-            private set { symbol = value;NotifyPropertyChanged(nameof(Symbol)); }
+            protected set { symbol = value;NotifyPropertyChanged(nameof(Symbol)); }
         }
         protected string clOrdID = "";
         public string ClOrdID
         {
             get { return clOrdID; }
-            private set { clOrdID = value;NotifyPropertyChanged(nameof(ClOrdID)); }
+            protected set { clOrdID = value;NotifyPropertyChanged(nameof(ClOrdID)); }
         }
         protected string origClOrdID = "";
         public string OrigClOrdID
         {
             get { return origClOrdID; }
-            private set { origClOrdID = value; NotifyPropertyChanged(nameof(OrigClOrdID)); }
+            protected set { origClOrdID = value; NotifyPropertyChanged(nameof(OrigClOrdID)); }
         }
         protected Side side;
         public Side Side
         {
             get { return side; }
-            private set { side = value; NotifyPropertyChanged(nameof(Side)); }
+            protected set { side = value; NotifyPropertyChanged(nameof(Side)); }
         }
         protected OrdType ordType;
         public OrdType OrdType
         {
             get { return ordType; }
-            private set { ordType = value; NotifyPropertyChanged(nameof(OrdType)); }
+            protected set { ordType = value; NotifyPropertyChanged(nameof(OrdType)); }
         }
         protected TimeInForce timeInForce;
         public TimeInForce TimeInForce
         {
             get { return timeInForce; }
-            private set { timeInForce = value; NotifyPropertyChanged(nameof(TimeInForce)); }
+            protected set { timeInForce = value; NotifyPropertyChanged(nameof(TimeInForce)); }
         }
         internal ProtocolType protocolType;
         

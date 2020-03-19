@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using MarketTester.UI.window;
+
 namespace MarketTester.UI.Usercontrol
 {
     /// <summary>
@@ -46,8 +48,13 @@ namespace MarketTester.UI.Usercontrol
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
-            Window w = Window.GetWindow(this);
+            WindowBase w = (WindowBase)Window.GetWindow(this);
             w.Close();
+            if (w.IsMainWindow)
+            {
+                Environment.Exit(0);
+            }
+
 
         }
     }

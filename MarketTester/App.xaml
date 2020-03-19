@@ -3,11 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:MarketTester"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             Startup="Application_Startup">
+             Startup="Application_Startup"
+             ShutdownMode="OnMainWindowClose">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resource/ResourceString_eng.xaml"/>
+                <ResourceDictionary Source="Resource/ResourceString_common.xaml"/>
                 <ResourceDictionary Source="Resource/ResourceStyle1.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

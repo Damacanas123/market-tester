@@ -34,22 +34,15 @@ namespace MarketTester.UI.Usercontrol
             background = (Brush)FindResource("BackgroundPrimary");
             activeYellow = (Brush)FindResource("ActiveYellow");
             InitializeComponent();
-            PopulateAccountComboBox();
             //PopulateSymbolsComboBox();
             controls = new List<Control>();
             controls.Add(comboAccount);
-            
 
         }
 
         
         
-        private void PopulateAccountComboBox()
-        {
-            comboAccount.Items.Add("Hesap 1");
-            comboAccount.Items.Add("Hesap 2");
-            comboAccount.SelectedIndex = 0;
-        }
+        
         //private void PopulateSymbolsComboBox()
         //{
         //    symbols = Symbols.LoadSymbols();

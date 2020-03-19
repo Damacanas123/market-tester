@@ -73,7 +73,7 @@ namespace BackOfficeEngine.Helper
                     UTF8Encoding fileContent = new UTF8Encoding(true);
                     while (fs.Read(byteArray, 0, byteArray.Length) > 0)
                     {
-                        seqNum = Int32.Parse(fileContent.GetString(byteArray), CultureInfo.InvariantCulture);
+                        seqNum = Int32.Parse(fileContent.GetString(byteArray), CultureInfo.CurrentCulture);
                     }
                 }
                 if (seqNum == -1)
@@ -233,9 +233,9 @@ namespace BackOfficeEngine.Helper
         public static string GetTodayString()
         {
             DateTime today = DateTime.Today;
-            string year = today.Year.ToString(CultureInfo.InvariantCulture);
-            string month = today.Month.ToString(CultureInfo.InvariantCulture);
-            string day = today.Day.ToString(CultureInfo.InvariantCulture);
+            string year = today.Year.ToString(CultureInfo.CurrentCulture);
+            string month = today.Month.ToString(CultureInfo.CurrentCulture);
+            string day = today.Day.ToString(CultureInfo.CurrentCulture);
             for (int i = 0; i < 4 - year.Length; i++)
             {
                 year = "0" + year;
@@ -339,7 +339,7 @@ namespace BackOfficeEngine.Helper
             List<int> tags = new List<int>();
             foreach (Match match in rgx.Matches(m.ToString()))
             {
-                tags.Add(Int32.Parse(match.Value, CultureInfo.InvariantCulture));
+                tags.Add(Int32.Parse(match.Value, CultureInfo.CurrentCulture));
             }
             return tags;
         }
@@ -490,7 +490,7 @@ namespace BackOfficeEngine.Helper
                 int index = keyValue.IndexOf('=');
                 if (index != -1)
                 {
-                    int key = Int32.Parse(keyValue.Substring(0, index), CultureInfo.InvariantCulture);
+                    int key = Int32.Parse(keyValue.Substring(0, index), CultureInfo.CurrentCulture);
                     string value = keyValue.Substring(index + 1, keyValue.Length - (index + 1));
                     pairs[key] = value;
                 }

@@ -185,4 +185,52 @@ namespace BackOfficeEngine.MessageEnums
         
     }
 
+    public static class FixOrdStatusConverter
+    {
+        public static OrdStatus Convert(char ordStatus)
+        {
+            switch (ordStatus)
+            {
+                case QuickFix.Fields.OrdStatus.NEW:
+                    return OrdStatus.New;
+                case QuickFix.Fields.OrdStatus.PENDING_NEW:
+                    return OrdStatus.PendingNew;
+                case QuickFix.Fields.OrdStatus.PENDING_REPLACE:
+                    return OrdStatus.PendingReplace;
+                case QuickFix.Fields.OrdStatus.PENDING_CANCEL:
+                    return OrdStatus.PendingCancel;
+                case QuickFix.Fields.OrdStatus.PARTIALLY_FILLED:
+                    return OrdStatus.PartialFilled;
+                case QuickFix.Fields.OrdStatus.FILLED:
+                    return OrdStatus.Filled;
+                case QuickFix.Fields.OrdStatus.REJECTED:
+                    return OrdStatus.Rejected;
+                default:
+                    return OrdStatus.UNKNOWN;
+            }
+        }
+        public static char Convert(OrdStatus ordStatus)
+        {
+            switch (ordStatus)
+            {
+                case OrdStatus.New:
+                    return QuickFix.Fields.OrdStatus.NEW;
+                case OrdStatus.PendingNew:
+                    return QuickFix.Fields.OrdStatus.PENDING_NEW;
+                case OrdStatus.PendingReplace:
+                    return QuickFix.Fields.OrdStatus.PENDING_REPLACE;
+                case OrdStatus.PendingCancel:
+                    return QuickFix.Fields.OrdStatus.PENDING_CANCEL;
+                case OrdStatus.PartialFilled:
+                    return QuickFix.Fields.OrdStatus.PARTIALLY_FILLED;
+                case OrdStatus.Filled:
+                    return QuickFix.Fields.OrdStatus.FILLED;
+                case OrdStatus.Rejected:
+                    return QuickFix.Fields.OrdStatus.REJECTED;
+                default:
+                    return 'U'; //U for unknown
+            }
+        }
+    }
+
 }

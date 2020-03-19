@@ -13,7 +13,7 @@ namespace BackOfficeEngine.Model
 {
     internal class QuickFixMessage : Message,IMessage
     {
-        private const string UTCTimestamp = "yyyyMMdd-HH:mm:ss.fff";
+        private const string UTCTimestampFormat = "yyyyMMdd-HH:mm:ss.fff";
         public ProtocolType protocolType { get; set; }
         public DateTime SendTime { get; set; }
         public DateTime ReceiveTime { get; set; }
@@ -129,7 +129,7 @@ namespace BackOfficeEngine.Model
 
         public DateTime GetExecutionTime() 
         {
-            return DateTime.ParseExact(GetField(Tags.TransactTime),UTCTimestamp,CultureInfo.InvariantCulture);
+            return DateTime.ParseExact(GetField(Tags.TransactTime),UTCTimestampFormat,CultureInfo.CurrentCulture);
         }
 
         public decimal GetLastPx()
@@ -299,12 +299,12 @@ namespace BackOfficeEngine.Model
 
         public DateTime GetSendingTime()
         {
-            return DateTime.ParseExact(GetField(Tags.SendingTime),UTCTimestamp,CultureInfo.InvariantCulture);
+            return DateTime.ParseExact(GetField(Tags.SendingTime),UTCTimestampFormat,CultureInfo.CurrentCulture);
         }
 
         public DateTime GetTransactTime()
         {
-            return DateTime.ParseExact(GetField(Tags.TransactTime), UTCTimestamp, CultureInfo.InvariantCulture);
+            return DateTime.ParseExact(GetField(Tags.TransactTime), UTCTimestampFormat, CultureInfo.CurrentCulture);
         }
 
         public void SetSendingTime(DateTime timestamp)
@@ -344,7 +344,7 @@ namespace BackOfficeEngine.Model
 
         public DateTime GetSendTime()
         {
-            throw new NotImplementedException();
+            return DateTime.ParseExact(GetField(Tags.SendingTime),UTCTimestampFormat,CultureInfo.CurrentCulture);
         }
 
         public DateTime GetReceiveTime()
@@ -354,12 +354,42 @@ namespace BackOfficeEngine.Model
 
         public void SetSendTime(DateTime time)
         {
-            throw new NotImplementedException();
+            SetField(new SendingTime(time));
         }
 
         public void SetReceiveTime(DateTime time)
         {
             throw new NotImplementedException();
+        }
+
+        public decimal GetAvgPx()
+        {
+            return decimal.Parse(GetField(Tags.AvgPx),CultureInfo.InvariantCulture);
+        }
+
+        public void SetAvgPx(decimal value)
+        {
+            SetField(new AvgPx(value));
+        }
+
+        public bool IsSetAvgPx()
+        {
+            return IsSetField(Tags.AvgPx);
+        }
+
+        public MessageEnums.OrdStatus GetOrdStatus()
+        {
+            return FixOrdStatusConverter.Convert(GetField(Tags.OrdStatus)[0]);
+        }
+
+        public void SetOrdStatus(MessageEnums.OrdStatus value)
+        {
+            SetField(new QuickFix.Fields.OrdStatus(FixOrdStatusConverter.Convert(value)));
+        }
+
+        public bool IsSetOrdStatus()
+        {
+            return IsSetField(Tags.OrdStatus);
         }
     }
 }

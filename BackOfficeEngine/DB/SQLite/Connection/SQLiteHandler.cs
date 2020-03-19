@@ -60,7 +60,7 @@ namespace BackOfficeEngine.DB.SQLite
             {
                 query += "'" + value.ToString() + "',";
             }
-            query = query.Substring(0, query.Length - 1);
+            query = query.Substring(0, query.Length - 1) + ")";
             return ExecuteNonQuery(query);
         }
         internal bool Update(IDataBaseWritable writable)

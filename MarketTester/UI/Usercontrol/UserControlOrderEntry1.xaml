@@ -13,6 +13,7 @@
     </UserControl.DataContext>
     <UserControl.Resources>
         <converters:DoubleConverter x:Key="DoubleConverter"/>
+        <converters:RadioButtonOrdTypeConverter x:Key="RadioButtonOrdTypeConverter"/>
         <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="Label">
             <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
             Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=30}"/>
@@ -87,25 +88,20 @@
                 BorderBrush="{Binding SideColor}">
         </Button>
         <RadioButton Style="{StaticResource RadioButtonGeneral}" 
-                     x:Name="RadioButtonLimit"
-                     Command="{Binding CommandRadioButtonOrdType}"
-                     CommandParameter="{Binding .}"
+                     IsChecked="{Binding OrdType,Converter={StaticResource RadioButtonOrdTypeConverter},ConverterParameter={StaticResource NameRadioButtonLimit}}"
                      Grid.Column="2" Grid.Row="2"
                      Content="{DynamicResource StringLimitAbbrvtd}"  
                      GroupName="OrdType"
                      BorderBrush="{Binding SideColor}"/>
         <RadioButton Style="{StaticResource RadioButtonGeneral}" 
-                     x:Name="RadioButtonMarket"
-                     Command="{Binding CommandRadioButtonOrdType}"
-                     CommandParameter="{Binding .}"
+                     IsChecked="{Binding OrdType,Converter={StaticResource RadioButtonOrdTypeConverter},ConverterParameter={StaticResource NameRadioButtonMarket}}"
                      Grid.Column="3" Grid.Row="2"
                      Content="{DynamicResource StringMarketAbbrvtd}" 
                      GroupName="OrdType"
-                     BorderBrush="{Binding SideColor}"/>
+                     BorderBrush="{Binding SideColor}"
+                     />
         <RadioButton Style="{StaticResource RadioButtonGeneral}" 
-                     x:Name="RadioButtonMarketToLimit"
-                     Command="{Binding CommandRadioButtonOrdType}"
-                     CommandParameter="{Binding .}"
+                     IsChecked="{Binding OrdType,Converter={StaticResource RadioButtonOrdTypeConverter},ConverterParameter={StaticResource NameRadioButtonMarketToLimit}}"
                      Grid.Column="4" Grid.Row="2"
                      Content="{DynamicResource StringMarketToLimitAbbrvtd}" 
                      GroupName="OrdType"

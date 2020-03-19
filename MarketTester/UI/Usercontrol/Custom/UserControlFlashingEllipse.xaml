@@ -32,6 +32,15 @@
                                 AutoReverse="true" RepeatBehavior="Forever"/>
                         </Storyboard>
                     </BeginStoryboard>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                Storyboard.TargetProperty="Opacity"
+                                From="1" To="0.7" Duration="{Binding Duration}" 
+                                AutoReverse="true" RepeatBehavior="Forever">
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
                 </EventTrigger>
             </Ellipse.Triggers>
         </Ellipse>

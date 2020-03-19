@@ -5,23 +5,48 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MarketTester.UI.Usercontrol"
              xmlns:viewmodel="clr-namespace:MarketTester.ViewModel"
+             xmlns:backofficeengine_model="clr-namespace:BackOfficeEngine.Model;assembly=BackOfficeEngine"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.DataContext>
         <viewmodel:ViewModelOrderList/>
     </UserControl.DataContext>
         <Grid>
-        
-        <DataGrid ItemsSource="{Binding Orders}" 
+
+        <DataGrid ItemsSource="{Binding Source={x:Static backofficeengine_model:Order.Orders}}" 
                   Background="{StaticResource BackgroundPrimary}" 
                   AlternatingRowBackground="{StaticResource BackgroundSecondary}"
-                  AlternationCount="2">
+                  RowBackground="{StaticResource BackgroundPrimary}"
+                  AlternationCount="2" AutoGenerateColumns="False"
+                  Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=Foreground}"
+                  AllowDrop="False"
+                  IsReadOnly="True"
+                  RowHeaderWidth="0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="{DynamicResource StringID}" Binding="{Binding NonProtocolID}"/>
+                <DataGridTextColumn Header="{DynamicResource StringSymbol}" Binding="{Binding Symbol}"/>
+                <DataGridTextColumn Header="{DynamicResource StringSide}" Binding="{Binding Side}"/>
+                <DataGridTextColumn Header="{DynamicResource StringQuantity}" Binding="{Binding OrderQty}"/>
+                <DataGridTextColumn Header="{DynamicResource StringPrice}" Binding="{Binding Price}"/>
+                <DataGridTextColumn Header="{DynamicResource StringCumulativeQty}" Binding="{Binding CumulativeQty}"/>
+                <DataGridTextColumn Header="{DynamicResource StringAvgPx}" Binding="{Binding AvgPx}"/>
+                <DataGridTextColumn Header="{DynamicResource StringLastQty}" Binding="{Binding LastQty}"/>
+                <DataGridTextColumn Header="{DynamicResource StringLastPx}" Binding="{Binding LastPx}"/>
+                <DataGridTextColumn Header="{DynamicResource StringOrdStatus}" Binding="{Binding OrdStatus}"/>
+                <DataGridTextColumn Header="{DynamicResource StringOrdType}" Binding="{Binding OrdType}"/>
+                <DataGridTextColumn Header="{DynamicResource StringTimeInForce}" Binding="{Binding TimeInForce}"/>
+                <DataGridTextColumn Header="{DynamicResource StringClOrdID}" Binding="{Binding ClOrdID}"/>
+                <DataGridTextColumn Header="{DynamicResource StringOrigClOrdID}" Binding="{Binding OrigClOrdID}"/>
+                <DataGridTextColumn Header="{DynamicResource StringDate}" Binding="{Binding Date}"/>
+                
+                
+            </DataGrid.Columns>
             <DataGrid.Resources>
                 <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
                     <Setter Property="Background" Value="{StaticResource BackgroundSecondary}" />
-                    <Setter Property="BorderBrush" Value="{StaticResource DetailColor}"/>
-                    <Setter Property="BorderThickness" Value="1,1,0,1"/>
-                    <Setter Property="Padding" Value="3,0,3,0"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource BackgroundTernary}"/>
+                    <Setter Property="BorderThickness" Value="1,3,1,3"/>
+                    <Setter Property="Padding" Value="3,2,3,2"/>
                 </Style>
             </DataGrid.Resources>
         </DataGrid>

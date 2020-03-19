@@ -123,9 +123,9 @@ namespace BackOfficeEngine.Model
         {
             account = Account.GetInstance(reader[nameof(account)].ToString());
             symbol = reader[nameof(symbol)].ToString();
-            averageCost = decimal.Parse(reader[nameof(averageCost)].ToString(),CultureInfo.InvariantCulture);
-            positionQty = decimal.Parse(reader[nameof(positionQty)].ToString(), CultureInfo.InvariantCulture);
-            netprofit = decimal.Parse(reader[nameof(netprofit)].ToString(), CultureInfo.InvariantCulture);
+            averageCost = decimal.Parse(reader[nameof(averageCost)].ToString(),CultureInfo.CurrentCulture);
+            positionQty = decimal.Parse(reader[nameof(positionQty)].ToString(), CultureInfo.CurrentCulture);
+            netprofit = decimal.Parse(reader[nameof(netprofit)].ToString(), CultureInfo.CurrentCulture);
             side = new StringToEnumConverter<Side>().Convert(reader[nameof(side)].ToString());            
         }
 

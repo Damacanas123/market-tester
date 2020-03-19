@@ -23,4 +23,13 @@
     <system:String x:Key="StringConnectionConfigurations">Bağlantı Konfigürasyonları</system:String>
     <system:String x:Key="StringConnect">Bağlan</system:String>
     <system:String x:Key="StringChannels">Kanallar</system:String>
+    <system:String x:Key="StringSide">Alış-Satış</system:String>
+    <system:String x:Key="StringOrdType">Emir Tipi</system:String>
+    <system:String x:Key="StringTimeInForce">Emir Geçerlilik Süresi</system:String>
+    <system:String x:Key="StringCumulativeQty">Biriken Miktar</system:String>
+    <system:String x:Key="StringLastPx">Son Fiyat</system:String>
+    <system:String x:Key="StringAvgPx">Ortalama Fiyat</system:String>
+    <system:String x:Key="StringDate">Tarih</system:String>
+    <system:String x:Key="StringOrdStatus">Emir Durumu</system:String>
+    <system:String x:Key="StringLastQty">Son Miktar</system:String>
 </ResourceDictionary>

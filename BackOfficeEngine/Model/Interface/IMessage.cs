@@ -29,6 +29,8 @@ namespace BackOfficeEngine.Model
         DateTime GetSendingTime();
         DateTime GetTransactTime();
         decimal GetLastQty();
+        decimal GetAvgPx();
+        OrdStatus GetOrdStatus();
         string GetGenericField(int field);
         #endregion
 
@@ -47,6 +49,8 @@ namespace BackOfficeEngine.Model
         void SetSendingTime(DateTime timestamp);
         void SetTransactTime(DateTime timestamp);
         void SetLastQty(decimal value);
+        void SetAvgPx(decimal value);
+        void SetOrdStatus(OrdStatus value);
         void SetGenericField(int field,string value);
         #endregion
 
@@ -65,6 +69,8 @@ namespace BackOfficeEngine.Model
         bool IsSetSendingTime();
         bool IsSetTransactTime();
         bool IsSetLastQty();
+        bool IsSetAvgPx();
+        bool IsSetOrdStatus();
         bool IsSetGenericField(int field);
         #endregion
 

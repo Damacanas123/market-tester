@@ -35,7 +35,7 @@ namespace BackOfficeEngine.Helper.IdGenerator
                     UTF8Encoding fileContent = new UTF8Encoding(true);
                     while (fs.Read(byteArray, 0, byteArray.Length) > 0)
                     {
-                        seqnum = Int32.Parse(fileContent.GetString(byteArray), CultureInfo.InvariantCulture);
+                        seqnum = Int32.Parse(fileContent.GetString(byteArray), CultureInfo.CurrentCulture);
                     }
                 }
                 clOrdID = Util.GetTodayString() + seqnum;

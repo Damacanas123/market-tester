@@ -66,7 +66,7 @@ namespace MarketTester.Helper
                         ConfigFiles.Add(new ConfigFile((string)configFile[FILE_PATH], ConvertProtocolType((string)configFile[PROTOCOL_TYPE])));
                     }
                 }
-                DataRefreshRate = int.Parse(jsonDeserialized[DATA_REFRESH_RATE].ToString(), CultureInfo.InvariantCulture);
+                DataRefreshRate = int.Parse(jsonDeserialized[DATA_REFRESH_RATE].ToString(), CultureInfo.CurrentCulture);
             }
             else
             {

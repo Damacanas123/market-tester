@@ -99,7 +99,8 @@ namespace MarketTester.ViewModel
                         decimal.Parse(QuantityText, CultureInfo.InvariantCulture),
                         Side,
                         TimeInForce,
-                        OrdType);
+                        OrdType,
+                        decimal.Parse(PriceText,CultureInfo.InvariantCulture));
                     Connection.Connector.GetInstance().SendMessageNew(Channel, prms);
                 }
             }
@@ -121,18 +122,27 @@ namespace MarketTester.ViewModel
             Side = Side.Sell;
             UpdateChannelsCollection();
             Connection.Connector.GetInstance().ActiveChannels.CollectionChanged += OnChannelsCollectionChanged;
-            
+            SetDefault();
+        }
+
+        private void SetDefault()
+        {
+            PriceText = "10";
+            AccountText = "DE-1";
+            SymbolText = "F_GARAN1220";
+            QuantityText = "10";
+            OrdType = OrdType.Limit;
         }
 
         public ICommand CommandRadioButtonOrdType { get; set; }
         public void CommandRadioButtonOrdTypeExecute (object executor)
         {
             RadioButton sender = (RadioButton)executor;
-            if (sender.Name.Contains("Limit"))
+            if (sender.Name == "RadioButtonLimit")
             {
                 OrdType = OrdType.Limit;
             }
-            else if (sender.Name.Contains("MarketToLimit"))
+            else if (sender.Name == "RadioButtonMarketToLimit")
             {
                 OrdType = OrdType.MarketToLimit;
             }
@@ -157,18 +167,22 @@ namespace MarketTester.ViewModel
 
         private void UpdateChannelsCollection()
         {           
-            App.Current.Dispatcher.Invoke((Action)delegate
+            if(Application.Current != null)
             {
-                Channels.Clear();
-                foreach (Channel channel in Connection.Connector.GetInstance().ActiveChannels)
+                Application.Current.Dispatcher.Invoke((Action)delegate
                 {
-                    if (channel.IsConnected)
+                    Channels.Clear();
+                    foreach (Channel channel in Connection.Connector.GetInstance().ActiveChannels)
                     {
-                        if(!Channels.Contains(channel))
-                        Channels.Add(channel);
+                        if (channel.IsConnected)
+                        {
+                            if (!Channels.Contains(channel))
+                                Channels.Add(channel);
+                        }
                     }
-                }
-            });
+                });
+            }
+            
         }
     }
 }

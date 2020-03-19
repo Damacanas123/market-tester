@@ -23,5 +23,14 @@
     <system:String x:Key="StringConnectionConfigurations">Connection Configurations</system:String>
     <system:String x:Key="StringConnect">Connect</system:String>
     <system:String x:Key="StringChannels">Channels</system:String>
+    <system:String x:Key="StringSide">Side</system:String>
+    <system:String x:Key="StringOrdType">OrdType</system:String>
+    <system:String x:Key="StringTimeInForce">TimeInForce</system:String>
+    <system:String x:Key="StringCumulativeQty">CumulativeQty</system:String>
+    <system:String x:Key="StringLastPx">LastPx</system:String>
+    <system:String x:Key="StringAvgPx">AvgPx</system:String>
+    <system:String x:Key="StringDate">Date</system:String>
+    <system:String x:Key="StringOrdStatus">OrdStatus</system:String>
+    <system:String x:Key="StringLastQty">LastQty</system:String>
     
 </ResourceDictionary>
