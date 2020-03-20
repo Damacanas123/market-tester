@@ -32,5 +32,8 @@
     <system:String x:Key="StringDate">Date</system:String>
     <system:String x:Key="StringOrdStatus">OrdStatus</system:String>
     <system:String x:Key="StringLastQty">LastQty</system:String>
-    
+
+
+    <system:String x:Key="StringOkay">Okay</system:String>
+    <system:String x:Key="StringCancel">Cancel</system:String>
 </ResourceDictionary>

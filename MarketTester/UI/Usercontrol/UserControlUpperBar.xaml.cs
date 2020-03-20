@@ -54,8 +54,14 @@ namespace MarketTester.UI.Usercontrol
             {
                 Environment.Exit(0);
             }
-
-
         }
+
+        public void SetMenu(UserControl menu)
+        {
+            Grid.SetColumn(menu, 1);
+            Grid.SetRow(menu, 0);
+            MainGrid.Children.Add(menu);
+        }
+
     }
 }

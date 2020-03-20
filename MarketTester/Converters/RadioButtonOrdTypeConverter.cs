@@ -17,8 +17,8 @@ namespace MarketTester.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             OrdType ordType = (OrdType)value;
-            string radioButonnName = parameter.ToString();
-            if(radioButonnName == App.Current.Resources[Const.ResourceNameRadioButtonLimit].ToString())
+            string radioButtonName = parameter.ToString();
+            if(radioButtonName == App.Current.Resources[Const.ResourceNameRadioButtonLimit].ToString())
             {
                 if (ordType == OrdType.Limit)
                 {
@@ -26,7 +26,7 @@ namespace MarketTester.Converters
                 }
                 else return false;
             }
-            else if (radioButonnName == App.Current.Resources[Const.ResourceNameRadioButtonMarket].ToString())
+            else if (radioButtonName == App.Current.Resources[Const.ResourceNameRadioButtonMarket].ToString())
             {
                 if (ordType == OrdType.Market)
                 {
@@ -47,7 +47,19 @@ namespace MarketTester.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            string radioButtonName = parameter.ToString();
+            if (radioButtonName == App.Current.Resources[Const.ResourceNameRadioButtonLimit].ToString())
+            {
+                return OrdType.Limit;
+            }
+            else if (radioButtonName == App.Current.Resources[Const.ResourceNameRadioButtonMarket].ToString())
+            {
+                return OrdType.Market;
+            }
+            else
+            {
+                return OrdType.MarketToLimit;
+            }
         }
     }
 }

@@ -87,7 +87,9 @@ namespace BackOfficeEngine
             return instance;
         }
 
-        public int NewConnection(string configFilePath, ProtocolType protocolType)
+        
+
+        public int NewConnection(string configFilePath,ProtocolType protocolType)
         {
             switch(protocolType)
             {
@@ -98,6 +100,15 @@ namespace BackOfficeEngine
                 default:
                     throw new NotImplementedException("Unimplemented protocol type : " + protocolType);
             }
+        }
+        public void ConfigureConnection(int connectorIndex,string configFilePath)
+        {
+            m_connectors[connectorIndex].ConfigureConnection(configFilePath);
+        }
+
+        public void Connect(int connectorIndex)
+        {
+            m_connectors[connectorIndex].Connect();
         }
 
         public (IMessage,string) PrepareMessageNew(NewMessageParameters prms)

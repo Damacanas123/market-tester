@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MarketTester.Data
+namespace MarketTester.Enumeration
 {
-    public class DataManager
+    public enum ELanguage
     {
-
+        Turkish,English
     }
 }

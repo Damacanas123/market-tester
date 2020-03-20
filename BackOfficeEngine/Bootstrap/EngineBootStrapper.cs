@@ -15,6 +15,8 @@ namespace BackOfficeEngine.Bootstrap
         internal static List<Order> Bootstrap()
         {
             CreateDirectories();
+            CreateFiles();
+            CreateFilesSeqNum();
             CreateDatabaseTables();
             List<Order> orders = LoadOrders();
             LoadPositions();
@@ -22,37 +24,49 @@ namespace BackOfficeEngine.Bootstrap
 
         }
 
+        
+
         private static void CreateDirectories()
         {
             if (Engine.resourcePath[Engine.resourcePath.Length - 1] != '\\')
             {
                 Engine.resourcePath += "\\";
             }
-            CreateDirectory(CommonFolders.SeqNumsDir);
-            CreateDirectory(CommonFolders.LogDir);
-            CreateFile(CommonFolders.ClOrdIdFilePath);
-            CreateFile(CommonFolders.NonProtocolOrderIDPath);
-            CreateFile(CommonFolders.ErrorLogPath);
-            CreateFile(CommonFolders.DBErrorLogPath);
+            foreach(string directory in CommonFolders.Dirs)
+            {
+                if (!Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+            }
             
         }
 
-        private static void CreateDirectory(string path)
+        private static void CreateFilesSeqNum()
         {
-            if (!Directory.Exists(path))
+            foreach(string path in CommonFolders.SeqNumFilePaths)
             {
-                Directory.CreateDirectory(path);
+                if (!File.Exists(path))
+                {
+                    FileStream f = File.Create(path);
+                    f.Write(new byte[] { (byte)'1' }, 0, 1);
+                    f.Dispose();
+                }
             }
+            
         }
 
-        private static void CreateFile(string path)
+        private static void CreateFiles()
         {
-            if (!File.Exists(path))
+            foreach(string path in CommonFolders.FilePaths)
             {
-                FileStream f = File.Create(path);
-                f.Write(new byte[] { (byte)'1' }, 0, 1);
-                f.Dispose();
+                if (!File.Exists(path))
+                {
+                    FileStream f = File.Create(path);
+                    f.Dispose();
+                }
             }
+            
         }
 
         private static void CreateDatabaseTables()

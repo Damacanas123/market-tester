@@ -54,5 +54,10 @@ namespace MarketTester.UI.window
             }
             this.DragMove();
         }
+
+        public void SetMenu(UserControl menu)
+        {
+            UpperBar.SetMenu(menu);
+        }
     }
 }

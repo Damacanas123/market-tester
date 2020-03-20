@@ -32,4 +32,8 @@
     <system:String x:Key="StringDate">Tarih</system:String>
     <system:String x:Key="StringOrdStatus">Emir Durumu</system:String>
     <system:String x:Key="StringLastQty">Son Miktar</system:String>
+
+
+    <system:String x:Key="StringOkay">Tamam</system:String>
+    <system:String x:Key="StringCancel">İptal</system:String>
 </ResourceDictionary>

@@ -7,7 +7,7 @@ using System.Windows.Controls;
 using System.Windows;
 
 using MarketTester.Extensions;
-using MarketTester.UI.Usercontrol;
+using MarketTester.UI;
 
 namespace MarketTester.UI.window
 {
@@ -20,6 +20,7 @@ namespace MarketTester.UI.window
             System.Windows.Forms.Screen screen = window.GetScreen();
             window.Width = screen.WorkingArea.Width * 0.8;
             window.Height = screen.WorkingArea.Height * 0.8;
+            window.SetMenu(new MarketTester.UI.Usercontrol.Menu.Upper.UserControlMainWindowUpperMenu());
             window.Show();
         }        
     }

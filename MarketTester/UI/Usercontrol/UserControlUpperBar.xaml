@@ -13,11 +13,23 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid>
+    <Grid x:Name="MainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
         <Rectangle x:Name="TitleBar" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
-                   Grid.Row="0" Grid.ColumnSpan="1" Opacity="1"  Fill="{StaticResource BackgroundSecondary}"/>
-        <Button Style="{StaticResource ButtonRound}" x:Name="buttonMinimize"
-            HorizontalAlignment="Right" Margin="0,5,75,0" VerticalAlignment="Center" Width="20" Height="20" Click="ButtonMinimize_Click">
+                   Grid.Row="0" Grid.ColumnSpan="6" Opacity="1"  Fill="{StaticResource BackgroundSecondary}"/>
+        <Button Style="{StaticResource ButtonRound}" x:Name="buttonMinimize" Margin="5"
+                Grid.Column="3"
+            HorizontalAlignment="Right"  VerticalAlignment="Center" Width="20" Height="20" Click="ButtonMinimize_Click">
             <Path 
                   
                   Grid.Column="1"     
@@ -28,8 +40,8 @@
                   Data="M0,5 L5,5 z" Height="10" Stretch="Fill" Width="2"
                 />
         </Button>
-        <Button Style="{StaticResource ButtonRound}" x:Name="buttonNormalToggle"
-             HorizontalAlignment="Right" Margin="0,5,50,0" VerticalAlignment="Center" Width="20" Height="20" Click="ButtonNormalToggle_Click"
+        <Button Style="{StaticResource ButtonRound}" x:Name="buttonNormalToggle" Margin="5"
+             HorizontalAlignment="Right" Grid.Column="4" VerticalAlignment="Center" Width="20" Height="20" Click="ButtonNormalToggle_Click"
                 VerticalContentAlignment="Top">
             <Path 
                   
@@ -41,8 +53,8 @@
                   Data="M0,0 L0,8 L8,8 L8,0 z" Height="10.083" Stretch="Fill" Width="10.083"
                 />
         </Button>
-        <Button Style="{StaticResource ButtonRound}" x:Name="buttonClose" 
-             HorizontalAlignment="Right" Margin="0,5,25,0" VerticalAlignment="Center" Width="20" Height="20" Click="ButtonClose_Click"
+        <Button Style="{StaticResource ButtonRound}" x:Name="buttonClose" Margin="5"
+             HorizontalAlignment="Right" Grid.Column="5" VerticalAlignment="Center" Width="20" Height="20" Click="ButtonClose_Click"
                 VerticalContentAlignment="Top"
                 Background="Red">
             <Path  Fill="White" VerticalAlignment="Center" Height="10.062" Stretch="Fill" Width="10">
@@ -85,6 +97,6 @@
 
         </Button>
         <Label x:Name="LabelTitle" Style="{StaticResource LabelTitle}" Content="Market Tester"
-               HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center"/>
+               HorizontalAlignment="Left"  VerticalAlignment="Center" Margin="5"/>
     </Grid>
 </UserControl>

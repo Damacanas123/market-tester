@@ -14,12 +14,13 @@ using BackOfficeEngine.Helper;
 using BackOfficeEngine.MessageEnums;
 using BackOfficeEngine.ParamPacker;
 using BackOfficeEngine.DB.SQLite;
+using BackOfficeEngine.AppConstants;
 
 namespace BackOfficeEngine.Model
 {
     public class Order : BaseOrder,IDataBaseWritable
     {
-
+        private static object OrdersLock = new object();
         public static ObservableCollection<Order> Orders { get; } = new ObservableCollection<Order>();
        
 
@@ -60,6 +61,8 @@ namespace BackOfficeEngine.Model
             private set { ordStatus = value; NotifyPropertyChanged(nameof(OrdStatus)); }
         }
         public ObservableCollection<IMessage> m_messages { get; set; } = new ObservableCollection<IMessage>();
+
+        private string MessagesFilePath { get { return CommonFolders.OrderMessagesBaseDir + NonProtocolID + ".fixmessages"; } }
         
 
         public string TableName 
@@ -67,6 +70,13 @@ namespace BackOfficeEngine.Model
             get
             {
                 return "Orders";
+            }
+        }
+        public string DatabaseID
+        {
+            get
+            {
+                return nonProtocolID;
             }
         }
 
@@ -115,14 +125,17 @@ namespace BackOfficeEngine.Model
                     {nameof(avgPx),avgPx },
                     {nameof(ordStatus),ordStatus },
                     {nameof(date),date }
-
                 };
             }
         }
 
         private void ConstructorCommonWork()
         {
-            Orders.Add(this);
+            lock (OrdersLock)
+            {
+                Orders.Add(this);
+            }
+            
         }
         internal Order(SQLiteDataReader reader)
         {
@@ -143,6 +156,7 @@ namespace BackOfficeEngine.Model
             avgPx = decimal.Parse(reader[nameof(avgPx)].ToString(),CultureInfo.CurrentCulture);
             ordStatus = new StringToEnumConverter<OrdStatus>().Convert(reader[nameof(ordStatus)].ToString());
             date = reader[nameof(date)].ToString();
+            LoadMessages();
             ConstructorCommonWork();
         }
 
@@ -170,27 +184,19 @@ namespace BackOfficeEngine.Model
             BaseOrder baseOrder;
             (newOrderMessage, baseOrder) = BaseOrder.CreateNewOrder(prms, nonProtocolPseudoID);
             Order order = new Order(baseOrder);
-            order.m_messages.Add(newOrderMessage);
+            order.AddMessage(newOrderMessage);
             return (newOrderMessage, order);
         }
         
 
-        public string DatabaseID
-        {
-            get
-            {
-                return nonProtocolID;
-            }
-        }
+        
 
-        public string DatabaseIDColumnName
-        {
-            get { return nameof(nonProtocolID); }
-        }        
+        
 
         internal void AddMessage(IMessage msg)
         {
             m_messages.Add(msg);
+            Util.AppendStringToFile(MessagesFilePath, msg.ToString());
             switch (msg.GetMsgType())
             {
                 case MsgType.PendingNew:
@@ -268,6 +274,65 @@ namespace BackOfficeEngine.Model
             return m_messages.First((o) => o.GetClOrdID() == rejectClOrdID);
         }
 
+
+        private void LoadMessages()
+        {
+            using(StreamReader sr = new StreamReader(MessagesFilePath))
+            {
+                string line;
+                while((line = sr.ReadLine()) != null)
+                {
+                    switch (protocolType)
+                    {
+                        case ProtocolType.Fix50sp2:
+                            m_messages.Add(new QuickFixMessage(line));
+                            break;
+                    }
+                }
+            }
+        }
+
+        public string GetExportRepr()
+        {
+            string repr = "";
+            repr += NonProtocolID + "|";
+            repr += Price.ToString(CultureInfo.InvariantCulture) + "|";
+            repr += OrderQty.ToString(CultureInfo.InvariantCulture) + "|";
+            repr += Account.ToString() + "|";
+            repr += Symbol + "|";
+            repr += ClOrdID + "|";
+            repr += OrigClOrdID + "|";
+            repr += Side + "|";
+            repr += OrdType + "|";
+            repr += TimeInForce + "|";
+            repr += protocolType + "|";
+            repr += CumulativeQty + "|";
+            repr += LastPx + "|";
+            repr += LastQty + "|";
+            repr += AvgPx + "|";
+            repr += OrdStatus + "|";
+            repr += date + "|";
+            repr += m_messages.Count + "|";
+            foreach(IMessage msg in m_messages)
+            {
+                repr += msg.ToString() + "|";
+            }
+            return repr;
+        }
+
+        public static void ExportOrders(string filePath)
+        {
+            using(StreamWriter sw = new StreamWriter(filePath))
+            {
+                lock (OrdersLock)
+                {
+                    foreach (Order order in Orders)
+                    {
+                        sw.WriteLine(order.GetExportRepr());
+                    }
+                }
+            }
+        }
         
 
     }

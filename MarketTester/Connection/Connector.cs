@@ -52,8 +52,9 @@ namespace MarketTester.Connection
         {
             new Thread(() =>
             {
-                int connectionIndex = engine.NewConnection(channel.ConfigFilePath, channel.ProtocolType);
-                channel.ConnectorIndex = connectionIndex;
+                channel.ConnectorIndex = engine.NewConnection(channel.ConfigFilePath, channel.ProtocolType);
+                engine.ConfigureConnection(channel.ConnectorIndex,channel.ConfigFilePath);
+                engine.Connect(channel.ConnectorIndex);
             }).Start();
         }
 

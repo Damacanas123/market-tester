@@ -23,12 +23,43 @@
     <SolidColorBrush x:Key="InactiveRed">#b53737</SolidColorBrush>
 
     
-    <!--Sroll Bar -->
-    
+    <!-- Context Menu -->
+    <Style TargetType="{x:Type ContextMenu}">
+        <Setter Property="SnapsToDevicePixels"
+          Value="True" />
+        <Setter Property="OverridesDefaultStyle"
+          Value="True" />
+        <Setter Property="Grid.IsSharedSizeScope"
+          Value="true" />
+        <Setter Property="HasDropShadow"
+          Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ContextMenu}">
+                    <Border x:Name="Border"
+                            Background="{StaticResource BackgroundPrimary}"
+                            BorderThickness="1"
+                            BorderBrush="{DynamicResource BackgroundTernary}">
 
-    <Style TargetType="ContextMenu">
-        <Setter Property="Background" Value="{DynamicResource BackgroundPrimary}"/>
+                        <StackPanel IsItemsHost="True"
+                      KeyboardNavigation.DirectionalNavigation="Cycle" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
+    
+    <!--Menu-->
+    <Style TargetType="Menu">
+        <Setter Property="Background" Value="{DynamicResource BackgroundSecondary}"/>
+    </Style>
+
+    <Style TargetType="MenuItem">
+        <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+    </Style>
+
+    <!--Sroll Bar -->
+   
 
     <Style x:Key="ScrollBarLineButton"
        TargetType="{x:Type RepeatButton}">

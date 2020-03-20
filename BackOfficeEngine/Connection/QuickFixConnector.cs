@@ -43,8 +43,6 @@ namespace BackOfficeEngine.Connection
                 
                 instance = new QuickFixConnector();
                 instance.subscribers.Add(subscriber);
-                instance.ConfigureConnection(configFilePath);
-                instance.Connect();
                 m_instances[configFilePath] = instance;
                 
             }

@@ -11,10 +11,10 @@
     <Border BorderThickness="5,0,5,5" BorderBrush="{StaticResource BackgroundSecondary}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <usercontrol:UserControlUpperBar Grid.Row="0" Grid.ColumnSpan="1" x:Name="TitleBar" VerticalAlignment="Top" 
+            <usercontrol:UserControlUpperBar x:Name="UpperBar" Grid.Row="0" Grid.ColumnSpan="1"  VerticalAlignment="Top" 
                      HorizontalAlignment="Stretch" 
                      Height="30" Margin="0,0,0,0" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown"/>
             <Grid x:Name="MainGrid" Grid.Row="1"/>

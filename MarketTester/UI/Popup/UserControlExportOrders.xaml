@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="MarketTester.UI.Popup.UserControlExportOrders"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MarketTester.UI.Popup"
+             xmlns:viewmodel="clr-namespace:MarketTester.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <viewmodel:ViewModelExportOrders/>
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="3*"/>
+        </Grid.RowDefinitions>
+        <TextBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
+                 Text="{Binding OutFilePath}"/>
+        <Button Style="{DynamicResource ButtonGeneral}" Grid.Column="0" Grid.Row="1" Content="{DynamicResource StringOkay}" Command="{Binding CommandOkayClick}"/>
+        <Button Style="{DynamicResource ButtonGeneral}" Grid.Column="1" Grid.Row="1" Content="{DynamicResource StringCancel}" Click="Button_Click"/>
+
+
+    </Grid>
+</UserControl>
