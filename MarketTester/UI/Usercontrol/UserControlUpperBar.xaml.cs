@@ -58,10 +58,14 @@ namespace MarketTester.UI.Usercontrol
 
         public void SetMenu(UserControl menu)
         {
-            Grid.SetColumn(menu, 1);
-            Grid.SetRow(menu, 0);
-            MainGrid.Children.Add(menu);
+            menu.VerticalAlignment = VerticalAlignment.Center;
+            menu.HorizontalAlignment = HorizontalAlignment.Left;
+            MenuContainer.Children.Add(menu);
         }
 
+        public void SetName(string name)
+        {
+            LabelTitle.Text = name;
+        }
     }
 }

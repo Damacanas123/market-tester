@@ -32,7 +32,7 @@
             <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
             Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=30}"/>
         </Style>
-        <Style x:Key="ButtonInPlace" BasedOn="{StaticResource ButtonGeneral}" TargetType="Button">
+        <Style x:Key="ButtonInPlace" BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
             <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
             Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=60}"/>
         </Style>
@@ -108,11 +108,11 @@
                      BorderBrush="{Binding SideColor}">
 
         </RadioButton>
-        <Button x:Name="buttonChangeSide" 
+        <Button x:Name="buttonChangeSide" Style="{StaticResource ButtonSwitchSide}"
                 Grid.Column="5" Grid.Row="2"
                 Background="{Binding SideColor}"
-                BorderBrush="{Binding SideColor}"
                 Command="{Binding CommandSwitchSide}"
+                BorderThickness="3"
                 Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
             Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=20}"
                 Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 

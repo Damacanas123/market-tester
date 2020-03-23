@@ -56,6 +56,23 @@
 
     <Style TargetType="MenuItem">
         <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+        <Setter Property="Background" Value="{DynamicResource BackgroundSecondary}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BackgroundTernary}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="HeaderTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter Property="Background" Value="#0a99f3" />
+                <Setter Property="Foreground" Value="White"/>
+            </Trigger>
+        </Style.Triggers>
+        
     </Style>
 
     <!--Sroll Bar -->
@@ -257,8 +274,22 @@
 
     <!-- ListView -->
     <Style TargetType="{x:Type ListView}">
-        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>        
     </Style>
+
+    <!--<Style TargetType="ListViewItem">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}"
+                            Margin="{TemplateBinding Margin}">
+                        <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Margin="{TemplateBinding Padding}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>-->
 
     <!-- TextBox Style-->
     <Style TargetType="TextBox">
@@ -269,7 +300,7 @@
     </Style>
 
     <!-- Button Style-->
-    <Style x:Key="ButtonGeneral" TargetType="Button">
+    <Style TargetType="Button">
         <Setter Property="Background" Value="{StaticResource BackgroundSecondary}"/>
         <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="FontSize" Value="12"/>
@@ -346,7 +377,7 @@
             </EventTrigger>
         </Style.Triggers>-->
     </Style>
-
+    
     <Style x:Key="ButtonRound" TargetType="Button">
         <Setter Property="Background" Value="DodgerBlue" />
         <Setter Property="Foreground" Value="White" />
@@ -358,6 +389,41 @@
 
                         </ContentPresenter>
                     </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ButtonSwitchSide" TargetType="Button">
+        <Setter Property="Background" Value="{Binding SideColor}"/>
+        <Setter Property="Command" Value="{Binding CommandSwitchSide}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}"
+                            Margin="{TemplateBinding Margin}">
+                        <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Margin="{TemplateBinding Padding}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                    </Border>
+                    <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"  Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard x:Name="StoryboardToActive">
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetProperty="BorderBrush.(SolidColorBrush.Color)" To="{StaticResource ActiveYellowColor}"
+                                        FillBehavior="HoldEnd" 
+                                    Duration="0:0:0.200"/>
+
+                                        <DoubleAnimation Storyboard.TargetProperty="BorderBrush.Opacity" To="0.7" Duration="0:0:0.200"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <RemoveStoryboard BeginStoryboardName="StoryboardToActive"/>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </ControlTemplate.Triggers>             
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -551,5 +617,11 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+    
+    
+    <!-- Label Style -->
+    <Style TargetType="Label">
+        <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
     </Style>
 </ResourceDictionary>

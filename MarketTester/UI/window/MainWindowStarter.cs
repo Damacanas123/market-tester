@@ -13,7 +13,7 @@ namespace MarketTester.UI.window
 {
     public class MainWindowStarter
     {
-        WindowBase window = new WindowBase(true);
+        WindowBase window = new WindowBase(true,Application.Current.Resources["StringAppName"].ToString());
         public MainWindowStarter()
         {
             window.MainGrid.Children.Add(new Usercontrol.MultiContainersUC.UserControlMainContainer());

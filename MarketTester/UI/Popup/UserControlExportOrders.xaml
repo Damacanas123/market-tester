@@ -5,11 +5,23 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MarketTester.UI.Popup"
              xmlns:viewmodel="clr-namespace:MarketTester.ViewModel"
+             xmlns:converter="clr-namespace:MarketTester.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.DataContext>
         <viewmodel:ViewModelExportOrders/>
     </UserControl.DataContext>
+    <UserControl.Resources>
+        <converter:DoubleConverter x:Key="DoubleConverter"/>
+        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
+            Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=20}"/>
+        </Style>
+        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
+            Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=25}"/>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -20,9 +32,10 @@
             <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
         <TextBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
-                 Text="{Binding OutFilePath}"/>
-        <Button Style="{DynamicResource ButtonGeneral}" Grid.Column="0" Grid.Row="1" Content="{DynamicResource StringOkay}" Command="{Binding CommandOkayClick}"/>
-        <Button Style="{DynamicResource ButtonGeneral}" Grid.Column="1" Grid.Row="1" Content="{DynamicResource StringCancel}" Click="Button_Click"/>
+                 Text="{Binding OutFilePath}"
+                  VerticalContentAlignment="Center"/>
+        <Button Grid.Column="0" Grid.Row="1" Content="{DynamicResource StringOkay}" Command="{Binding CommandOkayClick}"/>
+        <Button Grid.Column="1" Grid.Row="1" Content="{DynamicResource StringCancel}" Click="Button_Click"/>
 
 
     </Grid>

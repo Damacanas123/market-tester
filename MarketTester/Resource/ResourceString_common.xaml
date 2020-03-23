@@ -3,6 +3,8 @@
                     xmlns:local="clr-namespace:MarketTester.Resource"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
+    <system:String x:Key="StringAppName">Market Tester</system:String>
+
     <system:String x:Key="StringID">ID</system:String>
     <system:String x:Key="StringClOrdID">ClOrdID</system:String>
     <system:String x:Key="StringOrigClOrdID">OrigClOrdID</system:String>

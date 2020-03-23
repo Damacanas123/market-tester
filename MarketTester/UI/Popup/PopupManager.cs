@@ -17,7 +17,7 @@ namespace MarketTester.UI.Popup
         }
         public static void OpenGeneralPopup(UserControl userControl,double width,double height)
         {
-            WindowBase popupWindow = new WindowBase(false);
+            WindowBase popupWindow = new WindowBase(false,"Export Orders");
             popupWindow.MainGrid.Children.Add(userControl);
             popupWindow.Width = width;
             popupWindow.Height = height;
