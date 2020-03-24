@@ -14,7 +14,7 @@ namespace MarketTester.ViewModel
 {
     public class ViewModelChannels : BaseNotifier
     {
-        public ObservableCollection<Channel> Channels { get; set; }
+        
 
         private Channel selectedChannel;
         public Channel SelectedChannel
@@ -33,8 +33,7 @@ namespace MarketTester.ViewModel
         public ViewModelChannels()
         {
             CommandSelectChannel = new BaseCommand(CommandSelectChannelExecute, CommandSelectChannelCanExecute);
-            CommandConnectChannel = new BaseCommand(CommandConnectChannelExecute, CommandConnectChannelCanExecute);
-            Channels = Connection.Connector.GetInstance().Channels;
+            CommandConnectChannel = new BaseCommand(CommandConnectChannelExecute, CommandConnectChannelCanExecute);            
             
         }
         public ICommand CommandSelectChannel { get; set; }
@@ -49,10 +48,24 @@ namespace MarketTester.ViewModel
 
 
         public BaseCommand CommandConnectChannel { get; set; }
-        public void CommandConnectChannelExecute(object executor)
+        public void CommandConnectChannelExecute(object param)
         {
-            SelectedChannel = (Channel)executor;
-            Connection.Connector.GetInstance().StartConnection((Channel)executor);
+            Connection.Connector connector = Connection.Connector.GetInstance();
+            SelectedChannel = (Channel)param;
+            if (!SelectedChannel.IsConfigured)
+            {
+                connector.ConfigureAndConnect(SelectedChannel);
+                return;
+            }
+                
+            if (SelectedChannel.IsConnected)
+            {
+                connector.Disconnect(SelectedChannel);
+            }
+            else
+            {
+                connector.Connect(SelectedChannel);
+            }
         }
 
         public bool CommandConnectChannelCanExecute()

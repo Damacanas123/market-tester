@@ -24,5 +24,13 @@ namespace MarketTester.UI.Usercontrol.MultiContainersUC
         {
             InitializeComponent();
         }
+
+        private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (!(e.OriginalSource is UserControlOrderList))
+            {
+                UserControlsOrders.DataGridOrders.UnselectAll();
+            }
+        }
     }
 }

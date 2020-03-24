@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MarketTester.UI.Usercontrol.Menu.Upper"
              xmlns:viewmodel="clr-namespace:MarketTester.ViewModel"
+             xmlns:enum="clr-namespace:MarketTester.Enumeration"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              >
@@ -12,8 +13,16 @@
         <viewmodel:ViewModelMainWindowUpperBar/>
     </UserControl.DataContext>
     <Menu>
-        <MenuItem Header="Order">
-            <MenuItem Header="Export Orders" Command="{Binding ExportOrdersCommand}"/>
+
+        <MenuItem Header="{DynamicResource StringOrder}">
+            <MenuItem Header="{DynamicResource StringExportOrders}" Command="{Binding CommandExportOrders}"/>
+            <MenuItem Header="{DynamicResource StringImportOrders}" Command="{Binding CommandImportOrders}"/>
+            <Separator></Separator>
+            <MenuItem Header="{DynamicResource StringClearOrders}" Command="{Binding CommandClearOrders}"/>
+        </MenuItem>
+        <MenuItem Header="{DynamicResource StringLanguage}">
+            <MenuItem Header="{DynamicResource StringEnglish}" Command="{Binding CommandChangeLanguage}" CommandParameter="{x:Static enum:ELanguage.English}"/>
+            <MenuItem Header="{DynamicResource StringTurkish}" Command="{Binding CommandChangeLanguage}" CommandParameter="{x:Static enum:ELanguage.Turkish}"/>
         </MenuItem>
     </Menu>
 </UserControl>

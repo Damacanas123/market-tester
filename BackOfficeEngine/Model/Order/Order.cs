@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using System.Data.SQLite;
 using FixHelper;
 
 using BackOfficeEngine.Helper;
+using BackOfficeEngine.Helper.IdGenerator;
 using BackOfficeEngine.MessageEnums;
 using BackOfficeEngine.ParamPacker;
 using BackOfficeEngine.DB.SQLite;
@@ -20,45 +22,121 @@ namespace BackOfficeEngine.Model
 {
     public class Order : BaseOrder,IDataBaseWritable
     {
-        private static object OrdersLock = new object();
+
+        internal static ConcurrentDictionary<string, Order> ClOrdIDMap = new ConcurrentDictionary<string, Order>();
+        internal static ConcurrentDictionary<string, Order> NonProtocolIDMap = new ConcurrentDictionary<string, Order>();
+        private static readonly object OrdersLock = new object();
         public static ObservableCollection<Order> Orders { get; } = new ObservableCollection<Order>();
-       
+
+        #region static methods 
+        public static void ClearOrders()
+        {
+            lock (OrdersLock)
+            {
+                foreach (Order order in Orders)
+                {
+                    Util.DeleteFile(order.MessagesFilePath);
+                }
+                Util.ClearFileLocks();
+                using(SQLiteHandler handler = new SQLiteHandler())
+                {
+                    handler.Truncate(new Order());
+                }
+                Orders.Clear();
+            }
+        }
+
+        public static void ExportOrders(string filePath)
+        {
+            lock (OrdersLock)
+            {
+                using (StreamWriter sw = new StreamWriter(filePath))
+                {                
+                    foreach (Order order in Orders)
+                    {
+                        sw.WriteLine(order.GetExportRepr());
+                    }
+                }
+            }
+        }
+
+        public static void ImportOrders(string filePath)
+        {
+            lock (OrdersLock)
+            {
+                using (StreamReader reader = new StreamReader(filePath))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        Order order = new Order(line);
+                        ClOrdIDMap[order.ClOrdID] = order;
+                        NonProtocolIDMap[order.NonProtocolID] = order;
+                        Orders.Add(order);
+                    }
+                }
+            }
+        }
+
+        #endregion
 
 
-        protected decimal cumulativeQty = 0;
+
+        private decimal cumulativeQty = 0;
         public decimal CumulativeQty
         {
             get { return cumulativeQty; }
             private set { cumulativeQty = value; NotifyPropertyChanged(nameof(CumulativeQty)); }
         }
-        protected decimal lastQty = 0;
+        private decimal lastQty = 0;
         public decimal LastQty
         {
             get { return lastQty; }
             private set { lastQty = value; NotifyPropertyChanged(nameof(LastQty)); }
         }
-        protected decimal lastPx = 0;
+        private decimal lastPx = 0;
         public decimal LastPx
         {
             get { return lastPx; }
             private set { lastPx = value; NotifyPropertyChanged(nameof(LastPx)); }
         }
-        protected decimal avgPx = 0;
+        private decimal avgPx = 0;
         public decimal AvgPx
         {
             get { return avgPx; }
             private set { avgPx = value; NotifyPropertyChanged(nameof(AvgPx)); }
         }
-        protected string date = Util.GetNowString();
+        private string date = Util.GetNowString();
         public string Date
         {
             get { return date; }
+            private set
+            {
+                if(date != value)
+                {
+                    date = value;
+                    NotifyPropertyChanged(nameof(Date));
+                }
+            }
         }
-        protected OrdStatus ordStatus = OrdStatus.InitialPending;
+        private OrdStatus ordStatus = OrdStatus.InitialPending;
         public OrdStatus OrdStatus
         {
             get { return ordStatus; }
             private set { ordStatus = value; NotifyPropertyChanged(nameof(OrdStatus)); }
+        }
+        private bool isImported = false;
+        public bool IsImported
+        {
+            get { return isImported; }
+            private set
+            {
+                if ( value != isImported)
+                {
+                    isImported = value;
+                    NotifyPropertyChanged(nameof(IsImported));
+                }
+            }
         }
         public ObservableCollection<IMessage> m_messages { get; set; } = new ObservableCollection<IMessage>();
 
@@ -76,29 +154,30 @@ namespace BackOfficeEngine.Model
         {
             get
             {
-                return nonProtocolID;
+                return NonProtocolID;
             }
         }
 
         public Dictionary<string,TableField> Fields { get; } = new Dictionary<string,TableField> {
             {nameof(DatabaseID), new TableField(nameof(DatabaseID),typeof(string),"PRIMARY KEY",18) },
-            {nameof(nonProtocolID), new TableField(nameof(nonProtocolID),typeof(string),"",18) },
-            {nameof(price), new TableField(nameof(price),typeof(string),"",30) },
-            {nameof(orderQty), new TableField(nameof(orderQty),typeof(string),"",30) },
-            {nameof(account), new TableField(nameof(account),typeof(string),"",30) },
-            {nameof(symbol), new TableField(nameof(symbol),typeof(string),"",25) },
-            {nameof(clOrdID), new TableField(nameof(clOrdID),typeof(string),"",30)},
-            {nameof(origClOrdID), new TableField(nameof(origClOrdID),typeof(string),"",30) },
-            {nameof(side), new TableField(nameof(side),typeof(string),"",10) },
-            {nameof(ordType), new TableField(nameof(ordType),typeof(string),"",10) },
-            {nameof(timeInForce), new TableField(nameof(timeInForce),typeof(string),"",10) },
+            {nameof(NonProtocolID), new TableField(nameof(NonProtocolID),typeof(string),"",18) },
+            {nameof(Price), new TableField(nameof(Price),typeof(string),"",30) },
+            {nameof(OrderQty), new TableField(nameof(OrderQty),typeof(string),"",30) },
+            {nameof(Account), new TableField(nameof(Account),typeof(string),"",30) },
+            {nameof(Symbol), new TableField(nameof(Symbol),typeof(string),"",25) },
+            {nameof(ClOrdID), new TableField(nameof(ClOrdID),typeof(string),"",30)},
+            {nameof(OrigClOrdID), new TableField(nameof(OrigClOrdID),typeof(string),"",30) },
+            {nameof(Side), new TableField(nameof(Side),typeof(string),"",10) },
+            {nameof(OrdType), new TableField(nameof(OrdType),typeof(string),"",10) },
+            {nameof(TimeInForce), new TableField(nameof(TimeInForce),typeof(string),"",10) },
             {nameof(protocolType), new TableField(nameof(protocolType),typeof(string),"",30) },
-            {nameof(cumulativeQty), new TableField(nameof(cumulativeQty),typeof(string),"",30) },
-            {nameof(lastPx), new TableField(nameof(lastPx),typeof(string),"",30) },
-            {nameof(lastQty), new TableField(nameof(lastQty),typeof(string),"",30) },
-            {nameof(avgPx), new TableField(nameof(avgPx),typeof(string),"",30) },
-            {nameof(ordStatus), new TableField(nameof(ordStatus),typeof(string),"",30) },
-            {nameof(date), new TableField(nameof(date),typeof(string),"",8) }
+            {nameof(CumulativeQty), new TableField(nameof(CumulativeQty),typeof(string),"",30) },
+            {nameof(LastPx), new TableField(nameof(LastPx),typeof(string),"",30) },
+            {nameof(LastQty), new TableField(nameof(LastQty),typeof(string),"",30) },
+            {nameof(AvgPx), new TableField(nameof(AvgPx),typeof(string),"",30) },
+            {nameof(OrdStatus), new TableField(nameof(OrdStatus),typeof(string),"",30) },
+            {nameof(Date), new TableField(nameof(Date),typeof(string),"",8) },
+            {nameof(IsImported), new TableField(nameof(IsImported),typeof(bool),"",0) }
                 };
 
         public Dictionary<string, object> Values
@@ -108,23 +187,24 @@ namespace BackOfficeEngine.Model
                 return new Dictionary<string, object>
                 {
                     {nameof(DatabaseID), DatabaseID },
-                    {nameof(nonProtocolID),nonProtocolID },
-                    {nameof(price),price },
-                    {nameof(orderQty),orderQty },
-                    {nameof(account),account },
-                    {nameof(symbol),symbol },
-                    {nameof(clOrdID),clOrdID },
-                    {nameof(origClOrdID),origClOrdID },
-                    {nameof(side),side },
-                    {nameof(ordType),ordType },
-                    {nameof(timeInForce),timeInForce },
+                    {nameof(NonProtocolID),NonProtocolID },
+                    {nameof(Price),Price },
+                    {nameof(OrderQty),OrderQty },
+                    {nameof(Account),Account },
+                    {nameof(Symbol),Symbol },
+                    {nameof(ClOrdID),ClOrdID },
+                    {nameof(OrigClOrdID),OrigClOrdID },
+                    {nameof(Side),Side },
+                    {nameof(OrdType),OrdType },
+                    {nameof(TimeInForce),TimeInForce },
                     {nameof(protocolType),protocolType },
-                    {nameof(cumulativeQty),cumulativeQty },
-                    {nameof(lastPx),lastPx },
-                    {nameof(lastQty),lastQty },
-                    {nameof(avgPx),avgPx },
-                    {nameof(ordStatus),ordStatus },
-                    {nameof(date),date }
+                    {nameof(CumulativeQty),CumulativeQty },
+                    {nameof(LastPx),LastPx },
+                    {nameof(LastQty),LastQty },
+                    {nameof(AvgPx),AvgPx },
+                    {nameof(OrdStatus),OrdStatus },
+                    {nameof(Date),Date },
+                    {nameof(IsImported),IsImported }
                 };
             }
         }
@@ -139,23 +219,25 @@ namespace BackOfficeEngine.Model
         }
         internal Order(SQLiteDataReader reader)
         {
-            nonProtocolID = reader[nameof(nonProtocolID)].ToString();
-            price = decimal.Parse(reader[nameof(price)].ToString(),CultureInfo.CurrentCulture);
-            orderQty = decimal.Parse(reader[nameof(orderQty)].ToString(),CultureInfo.CurrentCulture);
-            account = Account.GetInstance(reader[nameof(account)].ToString());
-            symbol = reader[nameof(symbol)].ToString();
-            clOrdID = reader[nameof(clOrdID)].ToString();
-            origClOrdID = reader[nameof(origClOrdID)].ToString();
-            side = new StringToEnumConverter<Side>().Convert(reader[nameof(side)].ToString());
-            ordType = new StringToEnumConverter<OrdType>().Convert(reader[nameof(ordType)].ToString());
-            timeInForce = new StringToEnumConverter<TimeInForce>().Convert(reader[nameof(timeInForce)].ToString());
+            NonProtocolID = reader[nameof(NonProtocolID)].ToString();
+            Price = decimal.Parse(reader[nameof(Price)].ToString(),CultureInfo.CurrentCulture);
+            OrderQty = decimal.Parse(reader[nameof(OrderQty)].ToString(),CultureInfo.CurrentCulture);
+            Account = Account.GetInstance(reader[nameof(Account)].ToString());
+            Symbol = reader[nameof(Symbol)].ToString();
+            ClOrdID = reader[nameof(ClOrdID)].ToString();
+            OrigClOrdID = reader[nameof(OrigClOrdID)].ToString();
+            Side = new StringToEnumConverter<Side>().Convert(reader[nameof(Side)].ToString());
+            OrdType = new StringToEnumConverter<OrdType>().Convert(reader[nameof(OrdType)].ToString());
+            TimeInForce = new StringToEnumConverter<TimeInForce>().Convert(reader[nameof(TimeInForce)].ToString());
             protocolType = new StringToEnumConverter<ProtocolType>().Convert(reader[nameof(protocolType)].ToString());
-            cumulativeQty = decimal.Parse(reader[nameof(cumulativeQty)].ToString(),CultureInfo.CurrentCulture);
-            lastPx = decimal.Parse(reader[nameof(lastPx)].ToString(),CultureInfo.CurrentCulture);
-            lastQty = decimal.Parse(reader[nameof(lastQty)].ToString(), CultureInfo.CurrentCulture);
-            avgPx = decimal.Parse(reader[nameof(avgPx)].ToString(),CultureInfo.CurrentCulture);
-            ordStatus = new StringToEnumConverter<OrdStatus>().Convert(reader[nameof(ordStatus)].ToString());
-            date = reader[nameof(date)].ToString();
+            CumulativeQty = decimal.Parse(reader[nameof(CumulativeQty)].ToString(),CultureInfo.CurrentCulture);
+            LastPx = decimal.Parse(reader[nameof(LastPx)].ToString(),CultureInfo.CurrentCulture);
+            LastQty = decimal.Parse(reader[nameof(LastQty)].ToString(), CultureInfo.CurrentCulture);
+            AvgPx = decimal.Parse(reader[nameof(AvgPx)].ToString(),CultureInfo.CurrentCulture);
+            OrdStatus = new StringToEnumConverter<OrdStatus>().Convert(reader[nameof(OrdStatus)].ToString());
+            Date = reader[nameof(Date)].ToString();
+            Console.WriteLine(reader[nameof(IsImported)].ToString());
+            IsImported = reader[nameof(IsImported)].ToString() == "0" ? false : true;
             LoadMessages();
             ConstructorCommonWork();
         }
@@ -164,6 +246,8 @@ namespace BackOfficeEngine.Model
         {
             ConstructorCommonWork();
         }
+
+        
 
         /// <summary>
         /// dummy constructor for database writes should not be considered for application logic
@@ -259,7 +343,7 @@ namespace BackOfficeEngine.Model
                         CumulativeQty = decimal.Parse(msg.GetGenericField(QuickFix.Fields.Tags.CumQty),CultureInfo.InvariantCulture);
                     if (msg.IsSetAvgPx())
                         AvgPx = msg.GetAvgPx();
-                    Account.AddTrade(new TradeParameters(side, lastShares, lastPx, symbol));
+                    Account.AddTrade(new TradeParameters(Side, lastShares, lastPx, Symbol));
                     break;
             }
             using(SQLiteHandler handler = new SQLiteHandler())
@@ -282,11 +366,14 @@ namespace BackOfficeEngine.Model
                 string line;
                 while((line = sr.ReadLine()) != null)
                 {
-                    switch (protocolType)
+                    if (!string.IsNullOrEmpty(line))
                     {
-                        case ProtocolType.Fix50sp2:
-                            m_messages.Add(new QuickFixMessage(line));
-                            break;
+                        switch (protocolType)
+                        {
+                            case ProtocolType.Fix50sp2:
+                                m_messages.Add(new QuickFixMessage(line));
+                                break;
+                        }
                     }
                 }
             }
@@ -306,34 +393,71 @@ namespace BackOfficeEngine.Model
             repr += OrdType + "|";
             repr += TimeInForce + "|";
             repr += protocolType + "|";
-            repr += CumulativeQty + "|";
-            repr += LastPx + "|";
-            repr += LastQty + "|";
-            repr += AvgPx + "|";
+            repr += CumulativeQty.ToString(CultureInfo.InvariantCulture) + "|";
+            repr += LastPx.ToString(CultureInfo.InvariantCulture) + "|";
+            repr += LastQty.ToString(CultureInfo.InvariantCulture) + "|";
+            repr += AvgPx.ToString(CultureInfo.InvariantCulture) + "|";
             repr += OrdStatus + "|";
             repr += date + "|";
-            repr += m_messages.Count + "|";
+            repr += m_messages.Count.ToString(CultureInfo.InvariantCulture) + "|";
             foreach(IMessage msg in m_messages)
             {
                 repr += msg.ToString() + "|";
             }
             return repr;
         }
-
-        public static void ExportOrders(string filePath)
+        internal Order(string exportRepr)
         {
-            using(StreamWriter sw = new StreamWriter(filePath))
+            string [] arguements = exportRepr.Split('|');
+            this.NonProtocolID = NonProtocolIDGenerator.Instance.GetNextId();
+            this.Price = decimal.Parse(arguements[1],CultureInfo.InvariantCulture);
+            this.OrderQty = decimal.Parse(arguements[2], CultureInfo.InvariantCulture);
+            this.Account = Account.GetInstance(arguements[3]);
+            this.Symbol = arguements[4];
+            this.ClOrdID = arguements[5];
+            this.OrigClOrdID = arguements[6];
+            if (Side.TryParse(arguements[7], out Side side))
+                this.Side = side;
+            if (OrdType.TryParse(arguements[8], out OrdType ordType))
+                this.OrdType = ordType;
+            if (TimeInForce.TryParse(arguements[9], out TimeInForce timeInForce))
+                this.TimeInForce = timeInForce;
+            if (ProtocolType.TryParse(arguements[10], out ProtocolType protocolType))
+                this.protocolType = protocolType;
+            this.CumulativeQty = decimal.Parse(arguements[11], CultureInfo.InvariantCulture);
+            this.LastPx = decimal.Parse(arguements[12], CultureInfo.InvariantCulture);
+            this.LastQty = decimal.Parse(arguements[13], CultureInfo.InvariantCulture);
+            this.AvgPx = decimal.Parse(arguements[14], CultureInfo.InvariantCulture);
+            if (OrdStatus.TryParse(arguements[15], out OrdStatus ordStatus))
+                this.OrdStatus = ordStatus;
+            Date = arguements[16];
+            IsImported = true;
+            int messageCount = int.Parse(arguements[17], CultureInfo.InvariantCulture);
+            string messages = "";
+            for (int i = 0; i < messageCount;i++)
             {
-                lock (OrdersLock)
+                switch (protocolType)
                 {
-                    foreach (Order order in Orders)
-                    {
-                        sw.WriteLine(order.GetExportRepr());
-                    }
-                }
+                    case ProtocolType.Fix50sp2:
+                        IMessage msg = new QuickFixMessage(arguements[18 + i]);
+                        m_messages.Add(msg);
+                        if (msg.GetMsgType() == MsgType.Trade)
+                        {
+                            Account.AddTrade(new TradeParameters(Side, msg.GetLastQty(), msg.GetLastPx(), Symbol));
+                        }
+                        messages += arguements[18 + i] + "\n";
+                        break;
+                }                
+            }
+            Util.AppendStringToFile(MessagesFilePath, messages);
+            using(SQLiteHandler handler = new SQLiteHandler())
+            {
+                handler.Insert(this);
             }
         }
-        
+
+
+
 
     }
 

@@ -23,6 +23,27 @@ namespace MarketTester.UI.Usercontrol
         public UserControlOrderList()
         {
             InitializeComponent();
+            DataGridOrders.Loaded += SetMinWidths; // I named my datagrid Griddy
+        }
+
+       
+
+        private void DataGrid_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.OriginalSource is ScrollViewer)
+            {
+                ((DataGrid)sender).UnselectAll();
+            }            
+        }
+
+
+        public void SetMinWidths(object source, EventArgs e)
+        {
+            foreach (var column in DataGridOrders.Columns)
+            {
+                column.MinWidth = column.ActualWidth;
+                column.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+            }
         }
     }
 }

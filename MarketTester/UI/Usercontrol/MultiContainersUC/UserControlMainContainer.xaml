@@ -6,8 +6,8 @@
              xmlns:local="clr-namespace:MarketTester.UI.Usercontrol.MultiContainersUC"
              xmlns:usercontrol="clr-namespace:MarketTester.UI.Usercontrol"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+             d:DesignHeight="450" d:DesignWidth="800" >
+    <Grid MouseDown="UserControl_MouseDown">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
@@ -45,6 +45,7 @@
                                                   Grid.RowSpan="8"
                                                   Grid.Column="0"
                                                   Grid.ColumnSpan="12"
+                                          x:Name="UserControlsOrders"
                                                   />
         <usercontrol:UserControlOrderEntry1 Grid.Row="0"
                                                   Grid.RowSpan="4"

@@ -116,7 +116,7 @@ namespace BackOfficeEngine.Model
 
         //private object tradeLock = new object();
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        
         internal Position() { }
 
         internal Position(SQLiteDataReader reader)

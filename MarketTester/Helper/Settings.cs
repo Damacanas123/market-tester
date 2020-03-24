@@ -15,7 +15,7 @@ namespace MarketTester.Helper
 
         private Settings()
         {
-
+            Language = ELanguage.English;
         }
 
         public static Settings GetInstance()
@@ -23,6 +23,7 @@ namespace MarketTester.Helper
             if(instance == null)
             {
                 instance = new Settings();
+                
             }
             return instance;
         }

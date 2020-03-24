@@ -16,6 +16,7 @@ namespace MarketTester.Model
         public ProtocolType ProtocolType { get; set; }
         public string Name { get; private set; }
         public int ConnectorIndex { get; set; }
+        public bool IsConfigured { get; set; }
         private bool isConnected;
         public bool IsConnected 
         { 

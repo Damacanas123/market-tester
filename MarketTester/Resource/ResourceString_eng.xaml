@@ -21,7 +21,7 @@
     <system:String x:Key="StringChannel">Channel</system:String>
     <system:String x:Key="StringChannelAbbrvtd">Chnl</system:String>
     <system:String x:Key="StringConnectionConfigurations">Connection Configurations</system:String>
-    <system:String x:Key="StringConnect">Connect</system:String>
+    <system:String x:Key="StringConnect">Connect\Disconnect</system:String>
     <system:String x:Key="StringChannels">Channels</system:String>
     <system:String x:Key="StringSide">Side</system:String>
     <system:String x:Key="StringOrdType">OrdType</system:String>
@@ -32,7 +32,14 @@
     <system:String x:Key="StringDate">Date</system:String>
     <system:String x:Key="StringOrdStatus">OrdStatus</system:String>
     <system:String x:Key="StringLastQty">LastQty</system:String>
-
+    <system:String x:Key="StringImported">Imported</system:String>
+    <system:String x:Key="StringActiveSessions">Active Sessions</system:String>
+    <system:String x:Key="StringInactiveSessions">Inactive Sessions</system:String>
+    <system:String x:Key="StringOrder">Order</system:String>
+    <system:String x:Key="StringExportOrders">Export</system:String>
+    <system:String x:Key="StringImportOrders">Import</system:String>
+    <system:String x:Key="StringClearOrders">Clear</system:String>
+    <system:String x:Key="StringLanguage">Language</system:String>
 
     <system:String x:Key="StringOkay">Okay</system:String>
     <system:String x:Key="StringCancel">Cancel</system:String>

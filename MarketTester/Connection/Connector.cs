@@ -18,7 +18,7 @@ namespace MarketTester.Connection
     public class Connector
     {
         
-        public ObservableCollection<Channel> Channels = new ObservableCollection<Channel>();
+        public static ObservableCollection<Channel> Channels = new ObservableCollection<Channel>();
 
         private object channelLock = new object();
         public ObservableCollection<Channel> ActiveChannels = new ObservableCollection<Channel>();
@@ -48,12 +48,22 @@ namespace MarketTester.Connection
             return instance;
         }
 
-        public void StartConnection(Channel channel)
+        public void Connect(Channel channel)
         {
             new Thread(() =>
+            {                
+                engine.Connect(channel.ConnectorIndex);
+            }).Start();
+        }
+
+        
+        public void ConfigureAndConnect(Channel channel)
+        {
+            new Task(() =>
             {
                 channel.ConnectorIndex = engine.NewConnection(channel.ConfigFilePath, channel.ProtocolType);
-                engine.ConfigureConnection(channel.ConnectorIndex,channel.ConfigFilePath);
+                engine.ConfigureConnection(channel.ConnectorIndex, channel.ConfigFilePath);
+                channel.IsConfigured = true;
                 engine.Connect(channel.ConnectorIndex);
             }).Start();
         }
@@ -98,7 +108,10 @@ namespace MarketTester.Connection
 
         public void Disconnect(Channel ch)
         {
-            engine.Disconnect(ch.ConnectorIndex);
+            new Thread(() =>
+            {
+                engine.Disconnect(ch.ConnectorIndex);
+            }).Start();
         }
 
         public void SendMessageNew(Channel ch,NewMessageParameters prms)

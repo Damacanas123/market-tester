@@ -21,7 +21,7 @@
     <system:String x:Key="StringChannel">Kanal</system:String>
     <system:String x:Key="StringChannelAbbrvtd">Knl</system:String>
     <system:String x:Key="StringConnectionConfigurations">Bağlantı Konfigürasyonları</system:String>
-    <system:String x:Key="StringConnect">Bağlan</system:String>
+    <system:String x:Key="StringConnect">Bağlan\Kes</system:String>
     <system:String x:Key="StringChannels">Kanallar</system:String>
     <system:String x:Key="StringSide">Alış-Satış</system:String>
     <system:String x:Key="StringOrdType">Emir Tipi</system:String>
@@ -32,7 +32,14 @@
     <system:String x:Key="StringDate">Tarih</system:String>
     <system:String x:Key="StringOrdStatus">Emir Durumu</system:String>
     <system:String x:Key="StringLastQty">Son Miktar</system:String>
-
+    <system:String x:Key="StringImported">Dışarıdan Alınmış</system:String>
+    <system:String x:Key="StringActiveSessions">Aktif Bağlantılar</system:String>
+    <system:String x:Key="StringInactiveSessions">Inaktif Bağlantılar</system:String>
+    <system:String x:Key="StringOrder">Emir</system:String>
+    <system:String x:Key="StringExportOrders">Dışa Akter</system:String>
+    <system:String x:Key="StringImportOrders">İçe Aktar</system:String>
+    <system:String x:Key="StringClearOrders">Temizle</system:String>
+    <system:String x:Key="StringLanguage">Dil</system:String>
 
     <system:String x:Key="StringOkay">Tamam</system:String>
     <system:String x:Key="StringCancel">İptal</system:String>

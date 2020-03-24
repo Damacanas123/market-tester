@@ -16,6 +16,8 @@ namespace BackOfficeEngine.Helper
 {
     internal class Util
     {
+        public const string APP_VERSION = "1.0.0.1";
+
         public const string PRIMARY_STRING = "Primary";
         public const string SECONDARY_STRING = "Secondary";
         public const string DC1_STRING = "DC1";
@@ -33,10 +35,7 @@ namespace BackOfficeEngine.Helper
 
         public static void LogError(Exception ex)
         {
-            string clickOnceVersion = "";
-            if (ApplicationDeployment.IsNetworkDeployed)
-                clickOnceVersion = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
-            AppendStringToFile(EXCEPTIONLOG_FILE_PATH, $"Appl version({clickOnceVersion}) {DateTime.Now} {ex.ToString()}\n");
+            AppendStringToFile(EXCEPTIONLOG_FILE_PATH, $"Appl version({APP_VERSION}) {DateTime.Now} {ex.ToString()}\n");
         }
         public static int ReadSeqNum(string filePath)
         {
@@ -263,19 +262,24 @@ namespace BackOfficeEngine.Helper
             }
         }
 
-        private static Dictionary<string, object> locks = new Dictionary<string, object>();
+        private static object fileLocksLock {get;set;} = new object();
+        private static Dictionary<string, object> fileLocks { get; set; } = new Dictionary<string, object>();
         private static object GetReferenceToLock(string filePath)
         {
-            if(locks.TryGetValue(filePath,out object Lock))
+            lock (fileLocksLock)
             {
+                if (fileLocks.TryGetValue(filePath, out object Lock))
+                {
+                    return Lock;
+                }
+                else
+                {
+                    Lock = new object();
+                    fileLocks[filePath] = Lock;
+                }
                 return Lock;
             }
-            else
-            {
-                Lock = new object();
-                locks[filePath] = Lock;
-            }
-            return Lock;
+            
         }
         public static void AppendStringToFile(string filePath, string content)
         {
@@ -288,6 +292,26 @@ namespace BackOfficeEngine.Helper
             }
             
         }
+
+        public static void DeleteFile(string filePath)
+        {
+            lock (GetReferenceToLock(filePath))
+            {
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+            }
+        }
+
+        public static void ClearFileLocks()
+        {
+            lock (fileLocksLock)
+            {
+                fileLocks.Clear();
+            }
+        }
+
 
         public static string GetNowString()
         {
@@ -468,17 +492,7 @@ namespace BackOfficeEngine.Helper
             return m.IsSetField(tag) ? m.GetField(tag) : "";
         }
 
-        public static void DeleteFile(string filePath, object fileLock)
-        {
-            lock (fileLock)
-            {
-                File.Delete(filePath);
-            }
-        }
-        public static void DeleteFile(string filePath)
-        {
-            File.Delete(filePath);
-        }
+        
 
         public static Dictionary<int, string> GetTagValuePairs(Message m)
         {

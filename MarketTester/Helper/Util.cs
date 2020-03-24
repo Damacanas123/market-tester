@@ -18,6 +18,8 @@ namespace MarketTester.Helper
         public const string FIX50SP2 = "Fix50sp2";
         public const string OUCH = "OUCH";
 
+        public const string APP_VERSION = "1.0.0.1";
+
         public const string PRIMARY_STRING = "Primary";
         public const string SECONDARY_STRING = "Secondary";
         public const string DC1_STRING = "DC1";
@@ -34,7 +36,12 @@ namespace MarketTester.Helper
         public static string USERNAME = System.Security.Principal.WindowsIdentity.GetCurrent().Name.Replace(Util.FILE_PATH_DELIMITER, "");
         public static string SCHEDULESAVE_DIR_PATH = APPLICATION_STATIC_DIR + "schedule_save" + FILE_PATH_DELIMITER;
 
-        
+
+        public static void LogError(Exception ex)
+        {
+            AppendStringToFile(EXCEPTIONLOG_FILE_PATH, $"Appl version({APP_VERSION}) {DateTime.Now} {ex.ToString()}\n");
+        }
+
         public static int ReadSeqNum(string filePath)
         {
             try

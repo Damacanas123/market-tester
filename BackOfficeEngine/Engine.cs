@@ -30,19 +30,16 @@ namespace BackOfficeEngine
         public event OnLogonEventHandler OnLogonEvent;
         public event OnLogoutEventHandler OnLogoutEvent;
         public event OnCreateSessionEventHandler OnCreateSessionEvent;
+        public event UnknownClOrdIDReceivedEventHandler UnknownClOrdIDReceivedEvent;
         #endregion
 
-        #region public collections
         
-        #endregion
 
         #region private
         private static Engine instance;
         private int updateInterval;
         private int dequeueAmountPerUpdate;
-        private ConcurrentDictionary<string, Order> m_nonProtocolIDMap = new ConcurrentDictionary<string, Order>();
         private ConcurrentDictionary<string, PseudoOrder> m_nonProtocolPseudoIDMap = new ConcurrentDictionary<string, PseudoOrder>();
-        private ConcurrentDictionary<string, Order> m_clOrdIDMap = new ConcurrentDictionary<string, Order>();
         private ConcurrentDictionary<string, string> m_clOrdID_To_nonProtocolPseudoIdMap = new ConcurrentDictionary<string, string>();
         private List<IConnector> m_connectors = new List<IConnector>();
         private ConcurrentQueue<IMessage> m_messageQueue = new ConcurrentQueue<IMessage>();
@@ -64,8 +61,8 @@ namespace BackOfficeEngine
         {
             foreach(Order order in orders)
             {
-                m_nonProtocolIDMap[order.NonProtocolID] = order;
-                m_clOrdIDMap[order.ClOrdID] = order;
+                Order.NonProtocolIDMap[order.NonProtocolID] = order;
+                Order.ClOrdIDMap[order.ClOrdID] = order;
             }
         }
 
@@ -139,15 +136,15 @@ namespace BackOfficeEngine
             Order order;
             string nonProtocolID = NonProtocolIDGenerator.Instance.GetNextId();
             (newOrderMessage,order) = Order.CreateNewOrder(prms, nonProtocolID);
-            m_nonProtocolIDMap[nonProtocolID] = order;
-            m_clOrdIDMap[newOrderMessage.GetClOrdID()] = order;
+            Order.NonProtocolIDMap[nonProtocolID] = order;
+            Order.ClOrdIDMap[newOrderMessage.GetClOrdID()] = order;
             m_connectors[connectorIndex].SendMsgOrderEntry(newOrderMessage);
             return (newOrderMessage, nonProtocolID);               
         }
 
         public IMessage SendMessageReplace(ReplaceMessageParameters prms,int connectorIndex)
         {
-            IMessage replaceMessage = m_nonProtocolIDMap[prms.nonProtocolID].PrepareReplaceMessage(prms);
+            IMessage replaceMessage = Order.NonProtocolIDMap[prms.nonProtocolID].PrepareReplaceMessage(prms);
             m_connectors[connectorIndex].SendMsgOrderEntry(replaceMessage);
             m_messageQueue.Enqueue(replaceMessage);
             return replaceMessage;
@@ -155,7 +152,7 @@ namespace BackOfficeEngine
 
         public IMessage SendMessageCancel(CancelMessageParameters prms,int connectorIndex)
         {
-            IMessage cancelMessage = m_nonProtocolIDMap[prms.nonProtocolID].PrepareCancelMessage(prms);
+            IMessage cancelMessage = Order.NonProtocolIDMap[prms.nonProtocolID].PrepareCancelMessage(prms);
             m_connectors[connectorIndex].SendMsgOrderEntry(cancelMessage);
             m_messageQueue.Enqueue(cancelMessage);
             return cancelMessage;
@@ -208,17 +205,17 @@ namespace BackOfficeEngine
                         Order order;
                         void ReplaceOrCancel()
                         {
-                            order = m_clOrdIDMap[msg.GetOrigClOrdID()];
+                            order = Order.ClOrdIDMap[msg.GetOrigClOrdID()];
                             order.AddMessage(msg);
-                            m_clOrdIDMap[msg.GetClOrdID()] = order;
+                            Order.ClOrdIDMap[msg.GetClOrdID()] = order;
                         }
                         switch (msg.GetMsgType())
                         {
                             case MsgType.New:
                                 string nonProtocolID = m_clOrdID_To_nonProtocolPseudoIdMap[msg.GetClOrdID()];
                                 order = new Order(msg, nonProtocolID);
-                                m_nonProtocolIDMap[nonProtocolID] = order;
-                                m_clOrdIDMap[msg.GetClOrdID()] = order;
+                                Order.NonProtocolIDMap[nonProtocolID] = order;
+                                Order.ClOrdIDMap[msg.GetClOrdID()] = order;
                                 break;
                             case MsgType.Replace:
                                 ReplaceOrCancel();
@@ -227,7 +224,12 @@ namespace BackOfficeEngine
                                 ReplaceOrCancel();
                                 break;
                             default:
-                                order = m_clOrdIDMap[msg.GetClOrdID()];
+                                if (!Order.ClOrdIDMap.ContainsKey(msg.GetClOrdID()))
+                                {
+                                    UnknownClOrdIDReceivedEvent?.Invoke(this, new UnknownClOrdIDReceivedEventArgs(msg));
+                                    break;
+                                }
+                                order = Order.ClOrdIDMap[msg.GetClOrdID()];
                                 order.AddMessage(msg);
                                 break;
                         }

@@ -83,7 +83,7 @@
                  BorderBrush="{Binding SideColor}"/>
         <Label Content="{DynamicResource StringQuantityAbbrvtd}" Grid.Column="3" Grid.Row="1" />
         <Button  Style="{StaticResource ButtonInPlace}"
-            Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Content="{StaticResource StringSend}"
+            Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Content="{DynamicResource StringSend}"
                 Command="{Binding CommandSendOrder}"
                 BorderBrush="{Binding SideColor}">
         </Button>

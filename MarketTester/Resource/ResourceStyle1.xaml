@@ -14,7 +14,7 @@
     <SolidColorBrush x:Key="BackgroundTernary">#FF97A0A5</SolidColorBrush>
     <SolidColorBrush x:Key="DetailColor">#888888</SolidColorBrush>
     <!--<SolidColorBrush x:Key="TextColor">#d6f4e8</SolidColorBrush>-->
-    <SolidColorBrush x:Key="TextColor">#D3DCD8</SolidColorBrush>
+    <SolidColorBrush x:Key="TextColor">#ebebeb</SolidColorBrush>
     <SolidColorBrush x:Key="ForegroundPrimary">#1D645A</SolidColorBrush>
     <SolidColorBrush x:Key="TextColorDark">#010101</SolidColorBrush>
     <SolidColorBrush x:Key="ActiveYellow">#ffcf44</SolidColorBrush>
@@ -50,15 +50,39 @@
     </Style>
     
     <!--Menu-->
-    <Style TargetType="Menu">
-        <Setter Property="Background" Value="{DynamicResource BackgroundSecondary}"/>
-    </Style>
+    <!--<Style TargetType="Menu">
+        <Setter Property="SnapsToDevicePixels"
+          Value="True" />
+        <Setter Property="Grid.IsSharedSizeScope"
+          Value="True" />
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Menu}">
+                    <Border x:Name="Border"
+                            Background="{StaticResource BackgroundPrimary}"
+                            BorderThickness="1"
+                            BorderBrush="{DynamicResource BackgroundTernary}">
+
+                        <StackPanel IsItemsHost="True"
+                      KeyboardNavigation.DirectionalNavigation="Cycle" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>-->
 
     <Style TargetType="MenuItem">
         <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
         <Setter Property="Background" Value="{DynamicResource BackgroundSecondary}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource BackgroundTernary}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="2"/>
         <Setter Property="HeaderTemplate">
             <Setter.Value>
                 <DataTemplate>
@@ -67,12 +91,10 @@
             </Setter.Value>
         </Setter>
         <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="true">
-                <Setter Property="Background" Value="#0a99f3" />
-                <Setter Property="Foreground" Value="White"/>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="LightSlateGray"/>
             </Trigger>
         </Style.Triggers>
-        
     </Style>
 
     <!--Sroll Bar -->
@@ -567,10 +589,10 @@
                         </Popup>
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="HasItems" Value="false">
+                        <Trigger Property="HasItems" Value="False">
                             <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95"/>
                         </Trigger>
-                        <Trigger Property="IsEnabled" Value="false">
+                        <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Foreground" Value="{Binding DetailColor}"/>
                         </Trigger>
                         <Trigger Property="IsGrouping" Value="true">
@@ -595,9 +617,9 @@
 
     <!-- SimpleStyles: ComboBoxItem -->
     <Style x:Key="{x:Type ComboBoxItem}" TargetType="{x:Type ComboBoxItem}">
-        <Setter Property="SnapsToDevicePixels" Value="true"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ComboBoxItem}">
@@ -607,10 +629,10 @@
                         <ContentPresenter />
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsHighlighted" Value="true">
-                            <Setter TargetName="Border" Property="Background" Value="#FF4F4F4F"/>
+                        <Trigger Property="IsHighlighted" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource BackgroundPrimary}"/>
                         </Trigger>
-                        <Trigger Property="IsEnabled" Value="false">
+                        <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Foreground" Value="{Binding DetailColor}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>

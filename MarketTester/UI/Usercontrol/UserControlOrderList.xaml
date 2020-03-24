@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:MarketTester.UI.Usercontrol"
              xmlns:viewmodel="clr-namespace:MarketTester.ViewModel"
              xmlns:backofficeengine_model="clr-namespace:BackOfficeEngine.Model;assembly=BackOfficeEngine"
+             xmlns:converter="clr-namespace:MarketTester.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.DataContext>
@@ -14,6 +15,7 @@
         <Grid>
 
         <DataGrid ItemsSource="{Binding Source={x:Static backofficeengine_model:Order.Orders}}" 
+                  x:Name="DataGridOrders"
                   Background="{StaticResource BackgroundPrimary}" 
                   AlternatingRowBackground="{StaticResource BackgroundSecondary}"
                   RowBackground="{StaticResource BackgroundPrimary}"
@@ -23,25 +25,91 @@
                   IsReadOnly="True"
                   RowHeaderWidth="0">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="{DynamicResource StringID}" Binding="{Binding NonProtocolID}"/>
-                <DataGridTextColumn Header="{DynamicResource StringSymbol}" Binding="{Binding Symbol}"/>
-                <DataGridTextColumn Header="{DynamicResource StringSide}" Binding="{Binding Side}"/>
-                <DataGridTextColumn Header="{DynamicResource StringQuantity}" Binding="{Binding OrderQty}"/>
-                <DataGridTextColumn Header="{DynamicResource StringPrice}" Binding="{Binding Price}"/>
-                <DataGridTextColumn Header="{DynamicResource StringCumulativeQty}" Binding="{Binding CumulativeQty}"/>
-                <DataGridTextColumn Header="{DynamicResource StringAvgPx}" Binding="{Binding AvgPx}"/>
-                <DataGridTextColumn Header="{DynamicResource StringLastQty}" Binding="{Binding LastQty}"/>
-                <DataGridTextColumn Header="{DynamicResource StringLastPx}" Binding="{Binding LastPx}"/>
-                <DataGridTextColumn Header="{DynamicResource StringOrdStatus}" Binding="{Binding OrdStatus}"/>
-                <DataGridTextColumn Header="{DynamicResource StringOrdType}" Binding="{Binding OrdType}"/>
-                <DataGridTextColumn Header="{DynamicResource StringTimeInForce}" Binding="{Binding TimeInForce}"/>
-                <DataGridTextColumn Header="{DynamicResource StringClOrdID}" Binding="{Binding ClOrdID}"/>
-                <DataGridTextColumn Header="{DynamicResource StringOrigClOrdID}" Binding="{Binding OrigClOrdID}"/>
-                <DataGridTextColumn Header="{DynamicResource StringDate}" Binding="{Binding Date}"/>
+                <DataGridTextColumn Binding="{Binding NonProtocolID}">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource StringID}"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>                
+                <DataGridTextColumn Binding="{Binding Symbol}">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource StringSymbol}"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Side}">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource StringSide}"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding OrderQty}">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource StringQuantity}"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Price}">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource StringPrice}"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding CumulativeQty}">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource StringCumulativeQty}"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding AvgPx}">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource StringAvgPx}"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding LastQty}">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource StringLastQty}"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding LastPx}">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource StringLastPx}"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding OrdStatus}">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource StringOrdStatus}"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding OrdType}">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource StringOrdType}"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding TimeInForce}">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource StringTimeInForce}"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding ClOrdID}">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource StringClOrdID}"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>                
+                <DataGridTextColumn Binding="{Binding OrigClOrdID}">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource StringOrigClOrdID}"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Date}">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource StringDate}"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding IsImported}">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource StringImported}"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
                 
                 
             </DataGrid.Columns>
             <DataGrid.Resources>
+                <converter:DoubleConverter x:Key="DoubleConverter"/>
                 <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
                     <Setter Property="Background" Value="{StaticResource BackgroundSecondary}" />
                     <Setter Property="BorderBrush" Value="{StaticResource BackgroundTernary}"/>

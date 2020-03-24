@@ -38,16 +38,16 @@ namespace BackOfficeEngine.Model
         internal override IMessage PrepareReplaceMessage(ReplaceMessageParameters prms)
         {
             IMessage msg = base.PrepareReplaceMessage(prms);
-            origClOrdID = msg.GetOrigClOrdID();
-            clOrdID = msg.GetClOrdID();
+            OrigClOrdID = msg.GetOrigClOrdID();
+            ClOrdID = msg.GetClOrdID();
             return msg;
         }
 
         internal override IMessage PrepareCancelMessage(CancelMessageParameters prms)
         {
             IMessage msg = base.PrepareCancelMessage(prms);
-            origClOrdID = msg.GetOrigClOrdID();
-            clOrdID = msg.GetClOrdID();
+            OrigClOrdID = msg.GetOrigClOrdID();
+            ClOrdID = msg.GetClOrdID();
             return msg;
         }
     }

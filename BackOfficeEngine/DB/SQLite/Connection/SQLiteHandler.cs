@@ -58,7 +58,17 @@ namespace BackOfficeEngine.DB.SQLite
             query = query.Substring(0, query.Length - 1) + ") VALUES (";
             foreach(object value in values)
             {
-                query += "'" + value.ToString() + "',";
+                string repr;
+                if(value is bool)
+                {
+
+                    repr = (bool)value ? "1" : "0";
+                }
+                else
+                {
+                    repr = value.ToString();
+                }
+                query += "'" + repr + "',";
             }
             query = query.Substring(0, query.Length - 1) + ")";
             return ExecuteNonQuery(query);
@@ -130,6 +140,10 @@ namespace BackOfficeEngine.DB.SQLite
             if(type == typeof(string))
             {
                 return "VARCHAR";
+            }
+            else if( type == typeof(bool))
+            {
+                return "SMALLINT";
             }
             throw new NotImplementedException("Unimplemented data type");
         }

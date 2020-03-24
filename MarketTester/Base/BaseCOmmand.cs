@@ -12,7 +12,11 @@ namespace MarketTester.Base
         private readonly Action<object> _action;
         private readonly CanExecuteFunc _canExeuteFunc;
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
 
         public delegate bool CanExecuteFunc();
 
@@ -29,7 +33,7 @@ namespace MarketTester.Base
 
         public bool CanExecute(object parameter)
         {
-            return _canExeuteFunc();
+            return _canExeuteFunc();            
         }
     }
 }

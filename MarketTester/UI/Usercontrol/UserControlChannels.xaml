@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:MarketTester.UI.Usercontrol"
              xmlns:helper="clr-namespace:MarketTester.Helper"
              xmlns:viewmodel="clr-namespace:MarketTester.ViewModel"
-             xmlns:customcontrol="clr-namespace:MarketTester.UI.Usercontrol.Custom"
+             xmlns:connection="clr-namespace:MarketTester.Connection"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.DataContext>
@@ -27,7 +27,7 @@
             <ListView Height="Auto"
                       HorizontalContentAlignment="Stretch"
                   Background="{StaticResource BackgroundPrimary}"
-                  ItemsSource="{Binding Channels}">
+                  ItemsSource="{Binding Source={x:Static connection:Connector.Channels}}">
                 
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
@@ -84,7 +84,7 @@
                     </Grid.ColumnDefinitions>
                    
 
-                    <TextBlock Grid.Column="1" Margin ="5,2,2,2" Text="Active Sessions"></TextBlock>
+                    <TextBlock Grid.Column="1" Margin ="5,2,2,2" Text="{DynamicResource StringActiveSessions}"></TextBlock>
 
                 </Grid>
                 <ListView Height="Auto" Background="{StaticResource BackgroundPrimary}"
@@ -99,7 +99,7 @@
                         <ColumnDefinition Width="7*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="1" Margin ="5,2,2,2" Text="Inactive Sessions"></TextBlock>
+                    <TextBlock Grid.Column="1" Margin ="5,2,2,2" Text="{DynamicResource StringInactiveSessions}"></TextBlock>
                     
                 </Grid>
                 <ListView Height="Auto" Background="{StaticResource BackgroundPrimary}"

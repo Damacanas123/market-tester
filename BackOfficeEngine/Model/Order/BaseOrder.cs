@@ -11,61 +11,61 @@ namespace BackOfficeEngine.Model
 {
     public class BaseOrder : BaseNotifier
     {
-        protected string nonProtocolID = "";
+        private string nonProtocolID = "";
         public string NonProtocolID
         {
             get { return nonProtocolID; }
             protected set { nonProtocolID = value; NotifyPropertyChanged(nameof(NonProtocolID)); }
         }
-        protected decimal price;
+        private decimal price;
         public decimal Price
         {
             get { return price; }
             protected set { price = value; NotifyPropertyChanged(nameof(Price)); }
         }
-        protected decimal orderQty;
+        private decimal orderQty;
         public decimal OrderQty
         {
             get { return orderQty; }
             protected set { orderQty = value; NotifyPropertyChanged(nameof(OrderQty)); }
         }
-        protected Account account;
+        private Account account;
         public Account Account
         {
             get { return account; }
             protected set { account = value; NotifyPropertyChanged(nameof(Account)); }
         }
-        protected string symbol = "";
+        private string symbol = "";
         public string Symbol
         {
             get { return symbol; }
             protected set { symbol = value;NotifyPropertyChanged(nameof(Symbol)); }
         }
-        protected string clOrdID = "";
+        private string clOrdID = "";
         public string ClOrdID
         {
             get { return clOrdID; }
             protected set { clOrdID = value;NotifyPropertyChanged(nameof(ClOrdID)); }
         }
-        protected string origClOrdID = "";
+        private string origClOrdID = "";
         public string OrigClOrdID
         {
             get { return origClOrdID; }
             protected set { origClOrdID = value; NotifyPropertyChanged(nameof(OrigClOrdID)); }
         }
-        protected Side side;
+        private Side side;
         public Side Side
         {
             get { return side; }
             protected set { side = value; NotifyPropertyChanged(nameof(Side)); }
         }
-        protected OrdType ordType;
+        private OrdType ordType;
         public OrdType OrdType
         {
             get { return ordType; }
             protected set { ordType = value; NotifyPropertyChanged(nameof(OrdType)); }
         }
-        protected TimeInForce timeInForce;
+        private TimeInForce timeInForce;
         public TimeInForce TimeInForce
         {
             get { return timeInForce; }

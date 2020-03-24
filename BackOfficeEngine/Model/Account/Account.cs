@@ -29,10 +29,7 @@ namespace BackOfficeEngine.Model
             return account;
         }
 
-        public static Account GetAccount(string accountName)
-        {
-            return instances[accountName];
-        }
+        
 
         
         public static ObservableCollection<Account> Accounts { get; } = new ObservableCollection<Account>();
