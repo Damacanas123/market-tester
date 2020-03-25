@@ -12,7 +12,7 @@
     <UserControl.DataContext>
         <viewmodel:ViewModelOrderList/>
     </UserControl.DataContext>
-        <Grid>
+        <Grid Margin="5">
 
         <DataGrid ItemsSource="{Binding Source={x:Static backofficeengine_model:Order.Orders}}" 
                   x:Name="DataGridOrders"
@@ -23,7 +23,12 @@
                   Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=Foreground}"
                   AllowDrop="False"
                   IsReadOnly="True"
-                  RowHeaderWidth="0">
+                  RowHeaderWidth="0"
+                    IsSynchronizedWithCurrentItem="True"
+                  SelectedItem="{Binding SelectedOrder}">
+            <DataGrid.InputBindings>
+                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding CommandOrderReplace}"/>
+            </DataGrid.InputBindings>
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding NonProtocolID}">
                     <DataGridTextColumn.Header>

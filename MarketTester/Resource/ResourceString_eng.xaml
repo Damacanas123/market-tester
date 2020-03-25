@@ -40,7 +40,7 @@
     <system:String x:Key="StringImport">Import</system:String>
     <system:String x:Key="StringClear">Clear</system:String>
     <system:String x:Key="StringLanguage">Language</system:String>
-
+    <system:String x:Key="StringSettings">Settings</system:String>
     <system:String x:Key="StringOkay">Okay</system:String>
     <system:String x:Key="StringCancel">Cancel</system:String>
 

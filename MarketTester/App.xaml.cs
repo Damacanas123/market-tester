@@ -18,11 +18,13 @@ namespace MarketTester
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            
             FrameworkElement.StyleProperty.OverrideMetadata(typeof(Window), new FrameworkPropertyMetadata
             {
                 DefaultValue = FindResource(typeof(Window))
             });
-            Util.CopyDirectoryAndSubDirectoriesToApplicationCommonPath(Util.STATIC_DIR_PATH);
+            
+            Util.Bootstrap();
             new MainWindowStarter();
         }
     }

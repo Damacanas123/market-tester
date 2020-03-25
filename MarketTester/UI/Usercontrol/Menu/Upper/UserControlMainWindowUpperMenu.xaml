@@ -20,9 +20,12 @@
             <Separator></Separator>
             <MenuItem Header="{DynamicResource StringClear}" Command="{Binding CommandClearOrders}"/>
         </MenuItem>
-        <MenuItem Header="{DynamicResource StringLanguage}">
-            <MenuItem Header="{DynamicResource StringEnglish}" Command="{Binding CommandChangeLanguage}" CommandParameter="{x:Static enum:ELanguage.English}"/>
-            <MenuItem Header="{DynamicResource StringTurkish}" Command="{Binding CommandChangeLanguage}" CommandParameter="{x:Static enum:ELanguage.Turkish}"/>
+        <MenuItem Header="{DynamicResource StringSettings}">
+            <MenuItem Header="{DynamicResource StringLanguage}">
+                <MenuItem Header="{DynamicResource StringEnglish}" Command="{Binding CommandChangeLanguage}" CommandParameter="{x:Static enum:ELanguage.English}"/>
+                <MenuItem Header="{DynamicResource StringTurkish}" Command="{Binding CommandChangeLanguage}" CommandParameter="{x:Static enum:ELanguage.Turkish}"/>
+            </MenuItem>
         </MenuItem>
+        
     </Menu>
 </UserControl>

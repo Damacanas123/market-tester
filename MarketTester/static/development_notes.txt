@@ -1,5 +1,12 @@
-﻿25.03.2020
+﻿BackLog
+-->Add TimeInForce ComboBox to OrderEntry
+-->Add Cancel column to Orders DataGrid
+-->Add cancel all button to Orders DataGrid UserControl.
+
+25.03.2020
 First Commit
 -->Added username password to json config. These username passwords are going to be used in market connection authentications.
 Added json config checks for password and username.
 -->Added InfoManager to manage Info TextBoxes accross the application. Any class can publish info messages depending on their priority and TextBoxes that match that priority will publish those info messages.
+Second Commit
+-->Add double click command to Orders DataGrid for replace.

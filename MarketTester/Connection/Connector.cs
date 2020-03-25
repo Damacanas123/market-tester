@@ -35,7 +35,12 @@ namespace MarketTester.Connection
             engine.OnCreateSessionEvent += OnCreateSession;
             foreach(ConfigFile configFile  in JsonConfig.GetInstance().ConfigFiles)
             {
-                Channels.Add(new Channel(configFile.FilePath,configFile.ProtocolType));
+                Channel channel = new Channel(configFile.FilePath, configFile.ProtocolType);
+                Channels.Add(channel);
+                if(configFile.CredentialParams != null)
+                {
+                    channel.credentialParams = configFile.CredentialParams;
+                }
             }
         }
 
@@ -62,7 +67,14 @@ namespace MarketTester.Connection
             new Task(() =>
             {
                 channel.ConnectorIndex = engine.NewConnection(channel.ConfigFilePath, channel.ProtocolType);
-                engine.ConfigureConnection(channel.ConnectorIndex, channel.ConfigFilePath);
+                if(channel.credentialParams == null)
+                {
+                    engine.ConfigureConnection(channel.ConnectorIndex, channel.ConfigFilePath);
+                }
+                else
+                {
+                    engine.ConfigureConnection(channel.ConnectorIndex, channel.ConfigFilePath,channel.credentialParams);
+                }                
                 channel.IsConfigured = true;
                 engine.Connect(channel.ConnectorIndex);
             }).Start();

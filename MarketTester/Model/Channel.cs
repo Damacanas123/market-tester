@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using BackOfficeEngine;
+using BackOfficeEngine.ParamPacker;
 
 using MarketTester.Base;
 using MarketTester.Helper;
@@ -12,6 +13,7 @@ namespace MarketTester.Model
 {
     public class Channel :BaseNotifier
     {
+        public BISTCredentialParams credentialParams { get; set; }
         public string ConfigFilePath { get; set; }
         public ProtocolType ProtocolType { get; set; }
         public string Name { get; private set; }

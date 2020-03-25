@@ -171,6 +171,7 @@ namespace BackOfficeEngine.Model
                     replaceRequest.SetTransactTime(DateTime.Now);
                     replaceRequest.SetTransactTime(DateTime.Now);
                     replaceRequest.SetAccount(account.name);
+                    replaceRequest.SetSymbol(Symbol);
                     break;
             }
             return replaceRequest;

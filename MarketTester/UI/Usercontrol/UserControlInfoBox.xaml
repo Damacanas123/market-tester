@@ -11,12 +11,12 @@
     <UserControl.DataContext>
         <viewmodel:ViewModelInfoBox InfoPriority="{x:Static enum:EInfo.Primary}"/>
     </UserControl.DataContext>
-    <Grid>
+    <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Button Command="{Binding CommandClearInfoText}" Content="{DynamicResource StringClear}" Width="50" HorizontalAlignment="Left" Margin="5,2,5,2"/>
+        <Button Command="{Binding CommandClearInfoText}" Content="{DynamicResource StringClear}" Width="50" HorizontalAlignment="Left" Margin="0,2,5,2"/>
         <TextBox Text="{Binding InfoText}" Grid.Row="1" TextWrapping="Wrap"/>
     </Grid>
 </UserControl>

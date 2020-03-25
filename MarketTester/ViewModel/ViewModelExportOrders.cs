@@ -7,6 +7,7 @@ using System.Threading;
 
 using BackOfficeEngine.Model;
 using MarketTester.Base;
+using MarketTester.Helper;
 
 namespace MarketTester.ViewModel
 {
@@ -49,6 +50,7 @@ namespace MarketTester.ViewModel
         public ViewModelExportOrders()
         {
             CommandOkayClick = new BaseCommand(CommandOkayClickExecute, CommandOkayClickCanExecute);
+            OutFilePath = Util.APPLICATION_EXPORT_DIR + "export.orders";
         }
     }
 }

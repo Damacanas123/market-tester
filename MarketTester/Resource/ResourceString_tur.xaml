@@ -36,11 +36,11 @@
     <system:String x:Key="StringActiveSessions">Aktif Bağlantılar</system:String>
     <system:String x:Key="StringInactiveSessions">Inaktif Bağlantılar</system:String>
     <system:String x:Key="StringOrder">Emir</system:String>
-    <system:String x:Key="StringExportOrders">Dışa Akter</system:String>
-    <system:String x:Key="StringImportOrders">İçe Aktar</system:String>
-    <system:String x:Key="StringClearOrders">Temizle</system:String>
+    <system:String x:Key="StringExport">Dışa Akter</system:String>
+    <system:String x:Key="StringImport">İçe Aktar</system:String>
+    <system:String x:Key="StringClear">Temizle</system:String>
     <system:String x:Key="StringLanguage">Dil</system:String>
-
+    <system:String x:Key="StringSettings">Ayarlar</system:String>
     <system:String x:Key="StringOkay">Tamam</system:String>
     <system:String x:Key="StringCancel">İptal</system:String>
 

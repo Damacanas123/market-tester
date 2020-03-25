@@ -9,6 +9,7 @@ using System.Windows.Controls;
 
 using BackOfficeEngine.ParamPacker;
 using BackOfficeEngine.MessageEnums;
+using BackOfficeEngine.Model;
 
 using MarketTester.Model;
 
@@ -30,9 +31,6 @@ namespace MarketTester.ViewModel
         private string quantityText;
         public string QuantityText { get => quantityText; set { quantityText = value; NotifyPropertyChanged(nameof(QuantityText)); } }
 
-        private string sideText;
-        public string SideText { get => sideText; set { sideText = value; NotifyPropertyChanged(nameof(SideText)); } }
-
         private string stepPriceText;
         public string StepPriceText { get => stepPriceText; set { stepPriceText = value; NotifyPropertyChanged(nameof(StepPriceText)); } }
 
@@ -40,7 +38,23 @@ namespace MarketTester.ViewModel
         public Brush SideColor { get => sideColor; set { sideColor = value; NotifyPropertyChanged(nameof(SideColor)); } }
 
         private Side side;
-        public Side Side { get => side; set { side = value;NotifyPropertyChanged(nameof(Side)); } }
+        public Side Side { 
+            get => side; 
+            set 
+            { 
+                side = value;
+                NotifyPropertyChanged(nameof(Side));
+                switch (side)
+                {
+                    case Side.Buy:
+                        SideColor = (SolidColorBrush)Application.Current.Resources[Const.ResourceColorBuy];
+                        break;
+                    case Side.Sell:
+                        SideColor = (SolidColorBrush)Application.Current.Resources[Const.ResourceColorSell];
+                        break;
+                }                    
+            } 
+        }
 
         private TimeInForce timeInForce;
         public TimeInForce TimeInForce { get => timeInForce;set { timeInForce = value;NotifyPropertyChanged(nameof(TimeInForce)); } }
@@ -51,13 +65,34 @@ namespace MarketTester.ViewModel
         private Channel channel;
         public Channel Channel { get => channel; set { channel = value; NotifyPropertyChanged(nameof(Channel)); } }
 
+        private Order order;
+        public Order Order
+        {
+            get
+            {
+                return order;
+            }
+            set
+            {
+                IsReplacingWindow = true;
+                order = value;
+                AccountText = order.Account.ToString();
+                PriceText = order.Price.ToString(CultureInfo.InvariantCulture);
+                SymbolText = order.Symbol;
+                QuantityText = order.OrderQty.ToString(CultureInfo.InvariantCulture);
+                Side = order.Side;
+                TimeInForce = order.TimeInForce;
+                OrdType = order.OrdType;
+            }
+        }
+
         
         public ObservableCollection<Channel> Channels { get; set; } = new ObservableCollection<Channel>();
 
         #endregion
 
         #region private fields
-        private bool isReplacingWindow;
+        public bool IsReplacingWindow { get; set; }
         #endregion
 
         #region Commands
@@ -67,18 +102,16 @@ namespace MarketTester.ViewModel
         {
             if(Side == Side.Buy)
             {
-                SideColor = (SolidColorBrush)Application.Current.Resources[Const.ResourceColorSell];
                 Side = Side.Sell;
             }
             else
             {
-                SideColor = (SolidColorBrush)Application.Current.Resources[Const.ResourceColorBuy];
                 Side = Side.Buy;
             }  
         }
         private bool CommandSwitchSideCanExecute()
         {
-            return !isReplacingWindow;
+            return !IsReplacingWindow;
         }
 
         public ICommand CommandSendOrder { get; set; }
@@ -86,9 +119,13 @@ namespace MarketTester.ViewModel
         {
             if(Channel != null)
             {
-                if (isReplacingWindow)
+                if (IsReplacingWindow)
                 {
-
+                    ReplaceMessageParameters prms = new ReplaceMessageParameters(
+                        order.NonProtocolID,
+                        decimal.Parse(QuantityText, CultureInfo.InvariantCulture),
+                        decimal.Parse(PriceText, CultureInfo.InvariantCulture));
+                    Connection.Connector.GetInstance().SendMessageReplace(Channel, prms);
                 }
                 else
                 {
@@ -154,7 +191,7 @@ namespace MarketTester.ViewModel
 
         public bool CommandRadioButtonOrdTypeCanExecute()
         {
-            return !isReplacingWindow;
+            return !IsReplacingWindow;
         }
 
 

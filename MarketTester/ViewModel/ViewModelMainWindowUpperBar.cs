@@ -57,6 +57,7 @@ namespace MarketTester.ViewModel
         public void CommandImportOrdersExecute(object param)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = Util.APPLICATION_EXPORT_DIR;
             openFileDialog.ShowDialog();
             if (openFileDialog.FileName != null)
             {

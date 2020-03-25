@@ -32,11 +32,19 @@ namespace MarketTester.Helper
         public static string APPLICATION_SEQ_NUM_DIR = APPLICATION_COMMON_DIR + "sequence_nums\\";
         public static string STATIC_DIR_PATH = "static" + FILE_PATH_DELIMITER;
         public static string APPLICATION_STATIC_DIR = APPLICATION_COMMON_DIR + STATIC_DIR_PATH;
+        public static string APPLICATION_EXPORT_DIR = APPLICATION_STATIC_DIR + "exports" + FILE_PATH_DELIMITER;
         public static string EXCEPTIONLOG_FILE_PATH = APPLICATION_STATIC_DIR + "exception.log";
         public static string USERNAME = System.Security.Principal.WindowsIdentity.GetCurrent().Name.Replace(Util.FILE_PATH_DELIMITER, "");
         public static string SCHEDULESAVE_DIR_PATH = APPLICATION_STATIC_DIR + "schedule_save" + FILE_PATH_DELIMITER;
 
 
+
+        public static void Bootstrap()
+        {
+            Directory.CreateDirectory(APPLICATION_EXPORT_DIR);
+            Directory.CreateDirectory(APPLICATION_STATIC_DIR);
+            CopyDirectoryAndSubDirectoriesToApplicationCommonPath(STATIC_DIR_PATH);
+        }
         public static void LogError(Exception ex)
         {
             AppendStringToFile(EXCEPTIONLOG_FILE_PATH, $"Appl version({APP_VERSION}) {DateTime.Now} {ex.ToString()}\n");

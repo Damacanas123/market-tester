@@ -57,7 +57,7 @@ namespace BackOfficeEngine.ParamPacker
             this.price = decimal.MaxValue;
         }
     }
-    public struct ReplaceMessageParameters
+    public class ReplaceMessageParameters
     {
         public string nonProtocolID;
         public decimal orderQty;
@@ -81,7 +81,7 @@ namespace BackOfficeEngine.ParamPacker
             this.price = price;
         }
     }
-    public struct CancelMessageParameters
+    public class CancelMessageParameters
     {
         public string nonProtocolID;
         public CancelMessageParameters(string nonProtocolID)

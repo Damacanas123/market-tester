@@ -158,7 +158,7 @@ namespace BackOfficeEngine.Connection
             if(message.Header.GetField(Tags.MsgType) == MsgType.LOGON && CredentialParams != null)
             {
                 message.SetField(new Username(CredentialParams.Username));
-                message.SetField(new Username(CredentialParams.Password));
+                message.SetField(new Password(CredentialParams.Password));
             }
         }
 

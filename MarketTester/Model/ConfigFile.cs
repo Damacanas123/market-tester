@@ -24,6 +24,7 @@ namespace MarketTester.Model
         {
             FilePath = filePath;
             ProtocolType = protocolType;
+            CredentialParams = credentialParams;
         }
     }
 }
