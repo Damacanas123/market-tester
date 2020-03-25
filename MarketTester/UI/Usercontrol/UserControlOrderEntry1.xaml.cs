@@ -19,8 +19,6 @@ namespace MarketTester.UI.Usercontrol
 {
     public partial class UserControlOrderEntry1 : UserControl
     {
-        private static Brush background;
-        private static Brush activeYellow;
        
 
         private bool active = false;
@@ -28,15 +26,10 @@ namespace MarketTester.UI.Usercontrol
 
         //private Symbol currentSymbol;
         //private List<Symbol> symbols;
-        List<Control> controls;
         public UserControlOrderEntry1()
         {
-            background = (Brush)FindResource("BackgroundPrimary");
-            activeYellow = (Brush)FindResource("ActiveYellow");
             InitializeComponent();
             //PopulateSymbolsComboBox();
-            controls = new List<Control>();
-            controls.Add(comboAccount);
 
         }
 
@@ -54,34 +47,7 @@ namespace MarketTester.UI.Usercontrol
         //    currentSymbol = symbols[0];
         //}
 
-        private void TextBoxPriceTextChanged(object sender, RoutedEventArgs e)
-        {
-            string text = textBoxPrice.Text;
-            if (text != "")
-            {
-                text = Util.RemoveNonNumericKeepDot(text);
-                textBoxPrice.Text = text;
-                textBoxPrice.Select(text.Length, 0);
-            }
-
-
-        }
-        private void TextBoxPriceOnClick(object s, RoutedEventArgs e)
-        {
-            textBoxPrice.Select(0, textBoxPrice.Text.Length);
-        }
-
-        private void ComboSymbolSelectionChanged(object sender, RoutedEventArgs e)
-        {
-            if(comboSymbol.SelectedIndex != -1)
-            {
-                //currentSymbol = symbols[comboSymbol.SelectedIndex];
-                //textBoxPrice.Text = currentSymbol.GetLowerLimit().ToString();
-                //labelPriceStep.Text = currentSymbol.GetPriceStep().ToString();
-            }
-        }
-
-        
+               
     }
 
 

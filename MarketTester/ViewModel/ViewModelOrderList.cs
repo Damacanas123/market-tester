@@ -32,8 +32,10 @@ namespace MarketTester.ViewModel
         public ViewModelOrderList()
         {
             CommandOrderReplace = new BaseCommand(CommandOrderReplaceExecute, CommandOrderReplaceCanExecute);
+            CommandCancelOrder = new BaseCommand(CommandCancelOrderExecute, CommandCancelOrderCanExecute);
         }
 
+        #region commands
         public BaseCommand CommandOrderReplace { get; set; }
 
         public void CommandOrderReplaceExecute(object param)
@@ -54,7 +56,19 @@ namespace MarketTester.ViewModel
         {
             return true;
         }
-        
-        
+
+        public BaseCommand CommandCancelOrder { get; set; }
+
+        public void CommandCancelOrderExecute(object param)
+        {
+
+        }
+
+        public bool CommandCancelOrderCanExecute()
+        {
+            return true;
+        }
+        #endregion
+
     }
 }

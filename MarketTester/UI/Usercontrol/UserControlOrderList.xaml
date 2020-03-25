@@ -7,11 +7,15 @@
              xmlns:viewmodel="clr-namespace:MarketTester.ViewModel"
              xmlns:backofficeengine_model="clr-namespace:BackOfficeEngine.Model;assembly=BackOfficeEngine"
              xmlns:converter="clr-namespace:MarketTester.Converters"
+             xmlns:helper="clr-namespace:MarketTester.Helper"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.DataContext>
         <viewmodel:ViewModelOrderList/>
     </UserControl.DataContext>
+    <UserControl.Resources>
+        <helper:DataContextProxy x:Key="ViewModelContext" DataSource="{Binding .}"/>
+    </UserControl.Resources>
         <Grid Margin="5">
 
         <DataGrid ItemsSource="{Binding Source={x:Static backofficeengine_model:Order.Orders}}" 
@@ -25,11 +29,27 @@
                   IsReadOnly="True"
                   RowHeaderWidth="0"
                     IsSynchronizedWithCurrentItem="True"
-                  SelectedItem="{Binding SelectedOrder}">
+                  SelectedItem="{Binding SelectedOrder}"
+                  RowHeight="29">
             <DataGrid.InputBindings>
                 <MouseBinding Gesture="LeftDoubleClick" Command="{Binding CommandOrderReplace}"/>
             </DataGrid.InputBindings>
             <DataGrid.Columns>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="{DynamicResource StringCancel}"/>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Background="Transparent" BorderBrush="Transparent">
+                                <Button.InputBindings>
+                                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding DataSource.CommandCancelOrder,Source={StaticResource ViewModelContext}}"/>
+                                </Button.InputBindings>
+                                <Image Source="/Resource/Image/cross.png" Width="25"/>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Binding="{Binding NonProtocolID}">
                     <DataGridTextColumn.Header>
                         <TextBlock Text="{DynamicResource StringID}"/>

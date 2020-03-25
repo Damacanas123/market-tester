@@ -12,7 +12,7 @@ using BackOfficeEngine.MessageEnums;
 using BackOfficeEngine.Model;
 
 using MarketTester.Model;
-
+using MarketTester.Helper;
 
 namespace MarketTester.ViewModel
 {
@@ -23,7 +23,16 @@ namespace MarketTester.ViewModel
         public string AccountText { get => accountText; set { accountText = value;NotifyPropertyChanged(nameof(AccountText)); } }
 
         private string priceText;
-        public string PriceText { get => priceText; set { priceText = value; NotifyPropertyChanged(nameof(PriceText)); } }
+        public string PriceText 
+        { 
+            get => priceText; 
+            set 
+            { 
+                priceText = value;
+                priceText = Util.RemoveNonNumericKeepDot(priceText);
+                NotifyPropertyChanged(nameof(PriceText)); 
+            } 
+        }
 
         private string symbolText;
         public string SymbolText { get => symbolText; set { symbolText = value; NotifyPropertyChanged(nameof(SymbolText)); } }
@@ -221,5 +230,8 @@ namespace MarketTester.ViewModel
             }
             
         }
+
+
+        
     }
 }

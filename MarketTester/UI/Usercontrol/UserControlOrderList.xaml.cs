@@ -44,6 +44,7 @@ namespace MarketTester.UI.Usercontrol
                 column.MinWidth = column.ActualWidth;
                 column.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
             }
+            DataGridOrders.Columns[0].Width = 25;
         }
     }
 }
