@@ -9,8 +9,10 @@ using System.Globalization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using BackOfficeEngine;
+using BackOfficeEngine.ParamPacker;
 
 using MarketTester.Model;
+using MarketTester.ViewModel.Manager;
 
 namespace MarketTester.Helper
 {
@@ -23,6 +25,8 @@ namespace MarketTester.Helper
         private const string DATA_REFRESH_RATE = "DataRefreshRate";
         private const string FILE_PATH = "FilePath";
         private const string PROTOCOL_TYPE = "ProtocolType";
+        private const string USERNAME = "Username";
+        private const string PASSWORD = "Password";
 
         private static JsonConfig instance = null;
 
@@ -63,7 +67,28 @@ namespace MarketTester.Helper
                 {
                     foreach (JObject configFile in (JArray)configFiles)
                     {
-                        ConfigFiles.Add(new ConfigFile((string)configFile[FILE_PATH], ConvertProtocolType((string)configFile[PROTOCOL_TYPE])));
+                        BISTCredentialParams credentialParams = null;
+                        if (configFile.ContainsKey(USERNAME))
+                        {
+                            if (!configFile.ContainsKey(PASSWORD))
+                            {
+                                InfoManager.PublishInfo(Enumeration.EInfo.Primary, App.Current.Resources["StringConfigPasswordNotSetWarning"].ToString() + " " + configFile[FILE_PATH]);
+                            }
+                            else
+                            {
+                                credentialParams = new BISTCredentialParams((string)configFile[USERNAME], (string)configFile[PASSWORD]);
+                            }
+                        }
+                        if(credentialParams != null)
+                        {
+                            ConfigFiles.Add(new ConfigFile((string)configFile[FILE_PATH], ConvertProtocolType((string)configFile[PROTOCOL_TYPE]),
+                            credentialParams));
+                        }
+                        else
+                        {
+                            ConfigFiles.Add(new ConfigFile((string)configFile[FILE_PATH], ConvertProtocolType((string)configFile[PROTOCOL_TYPE])));
+                        }
+                        
                     }
                 }
                 DataRefreshRate = int.Parse(jsonDeserialized[DATA_REFRESH_RATE].ToString(), CultureInfo.CurrentCulture);

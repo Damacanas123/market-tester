@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BackOfficeEngine.Model;
+using BackOfficeEngine.ParamPacker;
 using QuickFix;
 using QuickFix.Fields;
 
@@ -24,6 +25,7 @@ namespace BackOfficeEngine.Connection
         private const string SessionQualifierRD = "RD";
         private const string SessionQualifierDC1 = "DC1";
         private const string SessionQualifierDC2 = "DC2";
+        private BISTCredentialParams CredentialParams { get; set; }
 
         public List<IConnectorSubscriber> subscribers { get; }
 
@@ -55,6 +57,15 @@ namespace BackOfficeEngine.Connection
 
         void IConnector.ConfigureConnection(string configFilePath)
         {
+            QuickFix.SessionSettings settings = new QuickFix.SessionSettings(configFilePath);
+            QuickFix.FileStoreFactory storeFactory = new QuickFix.FileStoreFactory(settings);
+            QuickFix.FileLogFactory logFactory = new QuickFix.FileLogFactory(settings);
+            m_initiator = new QuickFix.Transport.SocketInitiator(this, storeFactory, settings, logFactory);
+        }
+
+        void IConnector.ConfigureConnection(string configFilePath,BISTCredentialParams credentialParams)
+        {
+            CredentialParams = credentialParams;
             QuickFix.SessionSettings settings = new QuickFix.SessionSettings(configFilePath);
             QuickFix.FileStoreFactory storeFactory = new QuickFix.FileStoreFactory(settings);
             QuickFix.FileLogFactory logFactory = new QuickFix.FileLogFactory(settings);
@@ -144,6 +155,11 @@ namespace BackOfficeEngine.Connection
 
         void IApplication.ToAdmin(Message message, SessionID sessionID)
         {
+            if(message.Header.GetField(Tags.MsgType) == MsgType.LOGON && CredentialParams != null)
+            {
+                message.SetField(new Username(CredentialParams.Username));
+                message.SetField(new Username(CredentialParams.Password));
+            }
         }
 
         void IApplication.ToApp(Message message, SessionID sessionId)

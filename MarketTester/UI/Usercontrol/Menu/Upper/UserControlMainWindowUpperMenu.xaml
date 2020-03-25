@@ -15,10 +15,10 @@
     <Menu>
 
         <MenuItem Header="{DynamicResource StringOrder}">
-            <MenuItem Header="{DynamicResource StringExportOrders}" Command="{Binding CommandExportOrders}"/>
-            <MenuItem Header="{DynamicResource StringImportOrders}" Command="{Binding CommandImportOrders}"/>
+            <MenuItem Header="{DynamicResource StringExport}" Command="{Binding CommandExportOrders}"/>
+            <MenuItem Header="{DynamicResource StringImport}" Command="{Binding CommandImportOrders}"/>
             <Separator></Separator>
-            <MenuItem Header="{DynamicResource StringClearOrders}" Command="{Binding CommandClearOrders}"/>
+            <MenuItem Header="{DynamicResource StringClear}" Command="{Binding CommandClearOrders}"/>
         </MenuItem>
         <MenuItem Header="{DynamicResource StringLanguage}">
             <MenuItem Header="{DynamicResource StringEnglish}" Command="{Binding CommandChangeLanguage}" CommandParameter="{x:Static enum:ELanguage.English}"/>

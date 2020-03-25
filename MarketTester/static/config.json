@@ -3,7 +3,9 @@
   "ConfigFiles": [
     {
       "FilePath": "C:\\MATRIKS_OMS\\MarketTester\\static\\multiplexer_config_barkin.txt",
-      "ProtocolType": "Fix50sp2"
+      "ProtocolType": "Fix50sp2",
+      "Username": "Barkin",
+      "Password": "Heyoo"
     }
   ]
 }

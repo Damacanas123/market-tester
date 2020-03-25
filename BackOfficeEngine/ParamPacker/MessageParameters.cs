@@ -7,7 +7,7 @@ using BackOfficeEngine.MessageEnums;
 
 namespace BackOfficeEngine.ParamPacker
 {
-    public struct NewMessageParameters
+    public class NewMessageParameters
     {
         public ProtocolType protocolType;
         public string account;

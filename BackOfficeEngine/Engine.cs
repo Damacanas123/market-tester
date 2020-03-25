@@ -103,6 +103,11 @@ namespace BackOfficeEngine
             m_connectors[connectorIndex].ConfigureConnection(configFilePath);
         }
 
+        public void ConfigureConnection(int connectorIndex, string configFilePath,BISTCredentialParams credentialParams)
+        {
+            m_connectors[connectorIndex].ConfigureConnection(configFilePath,credentialParams);
+        }
+
         public void Connect(int connectorIndex)
         {
             m_connectors[connectorIndex].Connect();

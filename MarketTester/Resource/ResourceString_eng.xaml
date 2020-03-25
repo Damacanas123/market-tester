@@ -36,11 +36,14 @@
     <system:String x:Key="StringActiveSessions">Active Sessions</system:String>
     <system:String x:Key="StringInactiveSessions">Inactive Sessions</system:String>
     <system:String x:Key="StringOrder">Order</system:String>
-    <system:String x:Key="StringExportOrders">Export</system:String>
-    <system:String x:Key="StringImportOrders">Import</system:String>
-    <system:String x:Key="StringClearOrders">Clear</system:String>
+    <system:String x:Key="StringExport">Export</system:String>
+    <system:String x:Key="StringImport">Import</system:String>
+    <system:String x:Key="StringClear">Clear</system:String>
     <system:String x:Key="StringLanguage">Language</system:String>
 
     <system:String x:Key="StringOkay">Okay</system:String>
     <system:String x:Key="StringCancel">Cancel</system:String>
+
+
+    <system:String x:Key="StringConfigPasswordNotSetWarning">Password has not been set in json config file for configuration </system:String>
 </ResourceDictionary>
