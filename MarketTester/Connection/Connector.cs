@@ -131,14 +131,14 @@ namespace MarketTester.Connection
             engine.SendMessageNew(prms, ch.ConnectorIndex);
         }
 
-        public void SendMessageReplace(Channel ch, ReplaceMessageParameters prms)
+        public void SendMessageReplace(int connectorIndex, ReplaceMessageParameters prms)
         {
-            engine.SendMessageReplace(prms, ch.ConnectorIndex);
+            engine.SendMessageReplace(prms, connectorIndex);
         }
 
-        public void SendMeesageCancel(Channel ch, CancelMessageParameters prms)
+        public void SendMessageCancel(int connectorIndex, CancelMessageParameters prms)
         {
-            engine.SendMessageCancel(prms, ch.ConnectorIndex);
+            engine.SendMessageCancel(prms, connectorIndex);
         }
 
     }

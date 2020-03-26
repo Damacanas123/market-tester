@@ -15,6 +15,8 @@ using System.Windows.Shapes;
 using System.Windows.Media.Effects;
 using MarketTester.Helper;
 
+using BackOfficeEngine.MessageEnums;
+
 namespace MarketTester.UI.Usercontrol
 {
     public partial class UserControlOrderEntry1 : UserControl
@@ -30,7 +32,17 @@ namespace MarketTester.UI.Usercontrol
         {
             InitializeComponent();
             //PopulateSymbolsComboBox();
+            List<TimeInForce> itemsTimeInForce = CastIEnumerableToList(Enum.GetValues(typeof(TimeInForce)).Cast<TimeInForce>());
+            itemsTimeInForce.RemoveAt(0);
+            List<OrdType> itemsOrdType = CastIEnumerableToList(Enum.GetValues(typeof(OrdType)).Cast<OrdType>());
+            itemsOrdType.RemoveAt(0);
+            ComboBoxTimeInForce.ItemsSource = itemsTimeInForce;
+            ComboBoxOrdType.ItemsSource = itemsOrdType;
+        }
 
+        private List<T> CastIEnumerableToList<T>(IEnumerable<T> e)
+        {
+            return new List<T>(e);
         }
 
         

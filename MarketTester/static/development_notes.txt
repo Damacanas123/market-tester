@@ -1,5 +1,5 @@
 ﻿BackLog
--->Add TimeInForce ComboBox to OrderEntry
+
 -->Add cancel all button to Orders DataGrid UserControl.
 
 25.03.2020
@@ -11,3 +11,7 @@ Second Commit
 -->Add double click command to Orders DataGrid for replace.
 Third Commit
 -->Add Cancel column to Orders DataGrid
+
+26.03.2020
+First Commit
+-->Add TimeInForce ComboBox to OrderEntry 

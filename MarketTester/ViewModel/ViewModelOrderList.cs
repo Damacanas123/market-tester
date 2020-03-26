@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 
 using BackOfficeEngine.Model;
+using BackOfficeEngine.ParamPacker;
 
 using MarketTester.Base;
 using MarketTester.Connection;
@@ -40,16 +41,18 @@ namespace MarketTester.ViewModel
 
         public void CommandOrderReplaceExecute(object param)
         {
-            WindowBase window = new WindowBase(false,"Order : " + SelectedOrder.NonProtocolID);
-            UserControlOrderEntry1 uc = new UserControlOrderEntry1();
-            window.MainGrid.Children.Add(uc);
-            window.Width = 400;
-            window.Height = 250;
-            ViewModelOrderEntry vmOrderEntry = (ViewModelOrderEntry)uc.DataContext;
-            vmOrderEntry.Side = SelectedOrder.Side;
-            vmOrderEntry.Order = SelectedOrder;
-            window.Show();
-
+            if(SelectedOrder != null)
+            {
+                WindowBase window = new WindowBase(false, "Order : " + SelectedOrder.NonProtocolID);
+                UserControlOrderEntry1 uc = new UserControlOrderEntry1();
+                window.MainGrid.Children.Add(uc);
+                window.Width = 400;
+                window.Height = 250;
+                ViewModelOrderEntry vmOrderEntry = (ViewModelOrderEntry)uc.DataContext;
+                vmOrderEntry.Side = SelectedOrder.Side;
+                vmOrderEntry.Order = SelectedOrder;
+                window.Show();
+            }
         }
 
         public bool CommandOrderReplaceCanExecute()
@@ -61,7 +64,8 @@ namespace MarketTester.ViewModel
 
         public void CommandCancelOrderExecute(object param)
         {
-
+            CancelMessageParameters prms = new CancelMessageParameters(SelectedOrder.NonProtocolID);
+            Connector.GetInstance().SendMessageCancel(SelectedOrder.ConnectorIndex, prms);
         }
 
         public bool CommandCancelOrderCanExecute()

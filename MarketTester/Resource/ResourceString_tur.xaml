@@ -16,7 +16,7 @@
     <system:String x:Key="StringMarket">Piyasa</system:String>
     <system:String x:Key="StringMarketAbbrvtd">Pys</system:String>
     <system:String x:Key="StringMarketToLimit">Piyasadan Limite</system:String>
-    <system:String x:Key="StringMarketToLimitAbbrvtd">Pyl</system:String>
+    <system:String x:Key="StringMarketToLimitAbbrvtd">Pyl</system:String>    
     <system:String x:Key="StringSend">Gönder</system:String>
     <system:String x:Key="StringChannel">Kanal</system:String>
     <system:String x:Key="StringChannelAbbrvtd">Knl</system:String>
@@ -25,7 +25,9 @@
     <system:String x:Key="StringChannels">Kanallar</system:String>
     <system:String x:Key="StringSide">Alış-Satış</system:String>
     <system:String x:Key="StringOrdType">Emir Tipi</system:String>
+    <system:String x:Key="StringOrdTypeAbbrvtd">Tip</system:String>
     <system:String x:Key="StringTimeInForce">Emir Geçerlilik Süresi</system:String>
+    <system:String x:Key="StringTimeInForceAbbrvtd">Zmn</system:String>
     <system:String x:Key="StringCumulativeQty">Biriken Miktar</system:String>
     <system:String x:Key="StringLastPx">Son Fiyat</system:String>
     <system:String x:Key="StringAvgPx">Ortalama Fiyat</system:String>

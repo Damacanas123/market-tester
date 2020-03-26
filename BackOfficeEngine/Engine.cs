@@ -42,7 +42,7 @@ namespace BackOfficeEngine
         private ConcurrentDictionary<string, PseudoOrder> m_nonProtocolPseudoIDMap = new ConcurrentDictionary<string, PseudoOrder>();
         private ConcurrentDictionary<string, string> m_clOrdID_To_nonProtocolPseudoIdMap = new ConcurrentDictionary<string, string>();
         private List<IConnector> m_connectors = new List<IConnector>();
-        private ConcurrentQueue<IMessage> m_messageQueue = new ConcurrentQueue<IMessage>();
+        private ConcurrentQueue<(IMessage,int)> m_messageQueue = new ConcurrentQueue<(IMessage, int)>();
         #endregion
 
 
@@ -141,6 +141,7 @@ namespace BackOfficeEngine
             Order order;
             string nonProtocolID = NonProtocolIDGenerator.Instance.GetNextId();
             (newOrderMessage,order) = Order.CreateNewOrder(prms, nonProtocolID);
+            order.ConnectorIndex = connectorIndex;
             Order.NonProtocolIDMap[nonProtocolID] = order;
             Order.ClOrdIDMap[newOrderMessage.GetClOrdID()] = order;
             m_connectors[connectorIndex].SendMsgOrderEntry(newOrderMessage);
@@ -151,7 +152,7 @@ namespace BackOfficeEngine
         {
             IMessage replaceMessage = Order.NonProtocolIDMap[prms.nonProtocolID].PrepareReplaceMessage(prms);
             m_connectors[connectorIndex].SendMsgOrderEntry(replaceMessage);
-            m_messageQueue.Enqueue(replaceMessage);
+            m_messageQueue.Enqueue((replaceMessage,connectorIndex));
             return replaceMessage;
         }
 
@@ -159,13 +160,13 @@ namespace BackOfficeEngine
         {
             IMessage cancelMessage = Order.NonProtocolIDMap[prms.nonProtocolID].PrepareCancelMessage(prms);
             m_connectors[connectorIndex].SendMsgOrderEntry(cancelMessage);
-            m_messageQueue.Enqueue(cancelMessage);
+            m_messageQueue.Enqueue((cancelMessage,connectorIndex));
             return cancelMessage;
         }
 
         public void SendMessage(IMessage msg,int connectorIndex)
         {
-            m_messageQueue.Enqueue(msg);
+            m_messageQueue.Enqueue((msg,connectorIndex));
             m_connectors[connectorIndex].SendMsgOrderEntry(msg);
         }
 
@@ -178,7 +179,8 @@ namespace BackOfficeEngine
             InboundMessageEvent?.Invoke(this, new InboundMessageEventArgs(msg));
             if (msg.IsSetClOrdID())
             {
-                m_messageQueue.Enqueue(msg);
+                int connectorIndex = m_connectors.IndexOf(connector);
+                m_messageQueue.Enqueue((msg,connectorIndex));
             }
         }
 
@@ -205,8 +207,12 @@ namespace BackOfficeEngine
                 while(dequeuedMsgCount < dequeueAmountPerUpdate && m_messageQueue.Count != 0)
                 {
                     Console.WriteLine(m_messageQueue.Count);
-                    if (m_messageQueue.TryDequeue(out IMessage msg))
+                    IMessage msg;
+                    int connectorIndex;
+                    if (m_messageQueue.TryDequeue(out var tuple))
                     {
+                        msg = tuple.Item1;
+                        connectorIndex = tuple.Item2;
                         Order order;
                         void ReplaceOrCancel()
                         {
@@ -219,6 +225,7 @@ namespace BackOfficeEngine
                             case MsgType.New:
                                 string nonProtocolID = m_clOrdID_To_nonProtocolPseudoIdMap[msg.GetClOrdID()];
                                 order = new Order(msg, nonProtocolID);
+                                order.ConnectorIndex = connectorIndex;
                                 Order.NonProtocolIDMap[nonProtocolID] = order;
                                 Order.ClOrdIDMap[msg.GetClOrdID()] = order;
                                 break;

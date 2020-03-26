@@ -138,6 +138,18 @@ namespace BackOfficeEngine.Model
                 }
             }
         }
+        private int connectorIndex;
+        public int ConnectorIndex
+        {
+            get
+            {
+                return connectorIndex;
+            }
+            internal set
+            {
+                connectorIndex = value;
+            }
+        }
         public ObservableCollection<IMessage> m_messages { get; set; } = new ObservableCollection<IMessage>();
 
         private string MessagesFilePath { get { return CommonFolders.OrderMessagesBaseDir + NonProtocolID + ".fixmessages"; } }

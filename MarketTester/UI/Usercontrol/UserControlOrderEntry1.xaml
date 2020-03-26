@@ -25,6 +25,7 @@
             Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=30}"/>
         </Style>
         <Style BasedOn="{StaticResource {x:Type ComboBox}}" TargetType="ComboBox">
+            <Setter Property="BorderBrush" Value="{Binding SideColor}"/>
             <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
             Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=30}"/>
         </Style>
@@ -80,33 +81,21 @@
                  BorderBrush="{Binding SideColor}"/>
         <Label Content="{DynamicResource StringQuantityAbbrvtd}" Grid.Column="3" Grid.Row="1" />
         <Button  Style="{StaticResource ButtonInPlace}"
-            Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Content="{DynamicResource StringSend}"
+            Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="3" Content="{DynamicResource StringSend}"
                 Command="{Binding CommandSendOrder}"
                 BorderBrush="{Binding SideColor}">
         </Button>
-        <RadioButton Style="{StaticResource RadioButtonGeneral}" 
-                     IsChecked="{Binding OrdType,Converter={StaticResource RadioButtonOrdTypeConverter},ConverterParameter={StaticResource NameRadioButtonLimit}}"
-                     Grid.Column="2" Grid.Row="2"
-                     Content="{DynamicResource StringLimitAbbrvtd}"  
-                     GroupName="OrdType"
-                     BorderBrush="{Binding SideColor}"/>
-        <RadioButton Style="{StaticResource RadioButtonGeneral}" 
-                     IsChecked="{Binding OrdType,Converter={StaticResource RadioButtonOrdTypeConverter},ConverterParameter={StaticResource NameRadioButtonMarket}}"
-                     Grid.Column="3" Grid.Row="2"
-                     Content="{DynamicResource StringMarketAbbrvtd}" 
-                     GroupName="OrdType"
-                     BorderBrush="{Binding SideColor}"
-                     />
-        <RadioButton Style="{StaticResource RadioButtonGeneral}" 
-                     IsChecked="{Binding OrdType,Converter={StaticResource RadioButtonOrdTypeConverter},ConverterParameter={StaticResource NameRadioButtonMarketToLimit}}"
-                     Grid.Column="4" Grid.Row="2"
-                     Content="{DynamicResource StringMarketToLimitAbbrvtd}" 
-                     GroupName="OrdType"
-                     BorderBrush="{Binding SideColor}">
+        <Label Content="{DynamicResource StringOrdTypeAbbrvtd}" Grid.Column="0" Grid.Row="2" />
+        <!-- Binding in code behind -->
+        <ComboBox x:Name="ComboBoxOrdType" Grid.Column="1" Grid.Row="2" 
+                  Grid.ColumnSpan="2"
+                  Background="{DynamicResource BackgroundSecondary}"
+                    IsEditable="False"
+                  SelectedItem="{Binding OrdType}"/>
 
-        </RadioButton>
+        
         <Button x:Name="buttonChangeSide" Style="{StaticResource ButtonSwitchSide}"
-                Grid.Column="5" Grid.Row="2"
+                Grid.Column="5" Grid.Row="3"
                 Background="{Binding SideColor}"
                 Command="{Binding CommandSwitchSide}"
                 BorderThickness="3"
@@ -116,14 +105,19 @@
             Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=20}">
         </Button>
         <Label Content="{DynamicResource StringChannelAbbrvtd}" Grid.Column="0" Grid.Row="3" />
-        <ComboBox x:Name="comboConnection" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="5"
-                  
+        <ComboBox x:Name="comboConnection" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2"
             Background="{DynamicResource BackgroundSecondary}"
-            IsEditable="True"
+            IsEditable="False"
             ItemsSource="{Binding Channels}"
-            BorderBrush="{StaticResource DetailColor}"
-                  SelectedItem="{Binding Channel}"/>
-
+            SelectedItem="{Binding Channel}"/>
+        <Label Content="{DynamicResource StringTimeInForceAbbrvtd}" Grid.Column="3" Grid.Row="2"
+               Grid.ColumnSpan="1"/>
+    <!-- Binding in code behind -->
+        <ComboBox x:Name="ComboBoxTimeInForce" Grid.Column="4" Grid.Row="2" 
+                  Grid.ColumnSpan="2"
+                  Background="{DynamicResource BackgroundSecondary}"
+            IsEditable="False"
+                  SelectedItem="{Binding TimeInForce}"/>
 
     </Grid>
 </UserControl>
