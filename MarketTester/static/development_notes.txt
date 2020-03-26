@@ -1,10 +1,11 @@
 ﻿BackLog
+-->Style disabled comboboxes textboxes
 -->Scheduler UX design
 -->Scheduler Integration (logic classes)
--->Order replace popup fix unchangeable UI elements like OrdType
+
 -->Free format message creation
 -->OUCH integration
-
+-->FixLogAnalyzer Integration
 
 25.03.2020
 First Commit
@@ -25,3 +26,5 @@ Second Commit
 	-export import integration
 	-cancel for only New or PartialFilled orders
 -->Fixed a bug in double click order list
+Third Commit
+	-->Order replace popup fix unchangeable UI elements like OrdType

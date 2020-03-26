@@ -47,5 +47,6 @@
     <system:String x:Key="StringCancel">İptal</system:String>
     <system:String x:Key="StringCancelAllOrders">Bütün Emirleri İptal et</system:String>
 
+    <system:String x:Key="StringChannelNotConnectedWarning">Bu emrin kanalı için aktif bir bağlantı bulunamadı.</system:String>
     <system:String x:Key="StringConfigPasswordNotSetWarning">Konfigurasyonda "Password" belirtilmedi</system:String>
 </ResourceDictionary>

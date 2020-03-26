@@ -15,27 +15,28 @@
         <converters:DoubleConverter x:Key="DoubleConverter"/>
         <converters:RadioButtonOrdTypeConverter x:Key="RadioButtonOrdTypeConverter"/>
         <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="Label">
-            <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
-            Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=30}"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
         <Style TargetType="RadioButton">
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
-            Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=30}"/>
+            Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=50}"/>
         </Style>
         <Style BasedOn="{StaticResource {x:Type ComboBox}}" TargetType="ComboBox">
             <Setter Property="BorderBrush" Value="{Binding SideColor}"/>
             <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
-            Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=30}"/>
+            Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=50}"/>
         </Style>
         <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="TextBox">
             <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
-            Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=30}"/>
+            Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=50}"/>
         </Style>
         <Style x:Key="ButtonInPlace" BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
             <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
-            Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=60}"/>
+            Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=100}"/>
         </Style>
 
     </UserControl.Resources>
@@ -49,9 +50,10 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
@@ -62,7 +64,8 @@
                   Background="{StaticResource BackgroundSecondary}"
                   IsEditable="True"
                   BorderBrush="{Binding SideColor}"
-                  Text="{Binding AccountText}">
+                  Text="{Binding AccountText}"
+                  IsEnabled="{Binding IsNewOrderWindow}">
 
         </ComboBox>
 
@@ -74,7 +77,8 @@
         <Label Content="{DynamicResource StringPriceAbbrvtd}" Grid.Column="0"  Grid.Row="1"  />
         <ComboBox x:Name="comboSymbol" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="0" IsEditable="True"
                   Text="{Binding SymbolText}"
-                  BorderBrush="{Binding SideColor}"/>
+                  BorderBrush="{Binding SideColor}"
+                  IsEnabled="{Binding IsNewOrderWindow}"/>
         <Label Content="{DynamicResource StringSymbolAbbrvtd}" Grid.Column="3" Grid.Row="0" />
         <TextBox Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="1"
                  Text="{Binding QuantityText}"
@@ -91,7 +95,8 @@
                   Grid.ColumnSpan="2"
                   Background="{DynamicResource BackgroundSecondary}"
                     IsEditable="False"
-                  SelectedItem="{Binding OrdType}"/>
+                  SelectedItem="{Binding OrdType}"
+                  IsEnabled="{Binding IsNewOrderWindow}"/>
 
         
         <Button x:Name="buttonChangeSide" Style="{StaticResource ButtonSwitchSide}"
@@ -109,15 +114,18 @@
             Background="{DynamicResource BackgroundSecondary}"
             IsEditable="False"
             ItemsSource="{Binding Channels}"
-            SelectedItem="{Binding Channel}"/>
+            SelectedItem="{Binding Channel}"
+            IsEnabled="{Binding IsNewOrderWindow}"/>
         <Label Content="{DynamicResource StringTimeInForceAbbrvtd}" Grid.Column="3" Grid.Row="2"
                Grid.ColumnSpan="1"/>
     <!-- Binding in code behind -->
         <ComboBox x:Name="ComboBoxTimeInForce" Grid.Column="4" Grid.Row="2" 
                   Grid.ColumnSpan="2"
                   Background="{DynamicResource BackgroundSecondary}"
-            IsEditable="False"
+                    IsEditable="False"
+                  IsEnabled="{Binding IsNewOrderWindow}"
                   SelectedItem="{Binding TimeInForce}"/>
-
+        <TextBlock Grid.Row="4" Text="{Binding StatusText}" TextWrapping="Wrap"
+                   Grid.ColumnSpan="6"/>
     </Grid>
 </UserControl>

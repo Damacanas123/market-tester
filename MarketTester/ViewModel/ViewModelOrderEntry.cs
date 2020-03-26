@@ -1,5 +1,6 @@
 ﻿using MarketTester.Base;
 using System.Windows;
+using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Collections.ObjectModel;
@@ -13,6 +14,7 @@ using BackOfficeEngine.Model;
 
 using MarketTester.Model;
 using MarketTester.Helper;
+using MarketTester.Connection;
 
 namespace MarketTester.ViewModel
 {
@@ -83,7 +85,7 @@ namespace MarketTester.ViewModel
             }
             set
             {
-                IsReplacingWindow = true;
+                IsNewOrderWindow = false;
                 order = value;
                 AccountText = order.Account.ToString();
                 PriceText = order.Price.ToString(CultureInfo.InvariantCulture);
@@ -92,8 +94,16 @@ namespace MarketTester.ViewModel
                 Side = order.Side;
                 TimeInForce = order.TimeInForce;
                 OrdType = order.OrdType;
+                Channel = Connector.GetInstance().ActiveChannels.FirstOrDefault((o) => o.ConnectorName == order.ConnectorName);
+                if(Channel == null)
+                {
+                    StatusText = App.Current.Resources["StringChannelNotConnectedWarning"] + " (" + order.ConnectorName + ")";
+                }
             }
         }
+
+        private string statusText;
+        public string StatusText { get { return statusText; } set { statusText = value; NotifyPropertyChanged(nameof(StatusText)); } }
 
         
         public ObservableCollection<Channel> Channels { get; set; } = new ObservableCollection<Channel>();
@@ -101,7 +111,8 @@ namespace MarketTester.ViewModel
         #endregion
 
         #region private fields
-        public bool IsReplacingWindow { get; set; }
+        private bool isNewOrderWindow = true;
+        public bool IsNewOrderWindow { get { return isNewOrderWindow; } set { isNewOrderWindow = value;NotifyPropertyChanged(nameof(IsNewOrderWindow)); } } 
         #endregion
 
         #region Commands
@@ -120,7 +131,7 @@ namespace MarketTester.ViewModel
         }
         private bool CommandSwitchSideCanExecute()
         {
-            return !IsReplacingWindow;
+            return IsNewOrderWindow;
         }
 
         public ICommand CommandSendOrder { get; set; }
@@ -128,26 +139,27 @@ namespace MarketTester.ViewModel
         {
             if(Channel != null)
             {
-                if (IsReplacingWindow)
+                if (IsNewOrderWindow)
                 {
-                    ReplaceMessageParameters prms = new ReplaceMessageParameters(
-                        order.NonProtocolID,
-                        decimal.Parse(QuantityText, CultureInfo.InvariantCulture),
-                        decimal.Parse(PriceText, CultureInfo.InvariantCulture));
-                    Connection.Connector.GetInstance().SendMessageReplace(order.ConnectorName, prms);
+                    NewMessageParameters prms = new NewMessageParameters(
+                       Channel.ProtocolType,
+                       AccountText,
+                       SymbolText,
+                       decimal.Parse(QuantityText, CultureInfo.InvariantCulture),
+                       Side,
+                       TimeInForce,
+                       OrdType,
+                       decimal.Parse(PriceText, CultureInfo.InvariantCulture));
+                    Connection.Connector.GetInstance().SendMessageNew(Channel, prms);
+                    
                 }
                 else
                 {
-                    NewMessageParameters prms = new NewMessageParameters(
-                        Channel.ProtocolType,
-                        AccountText,
-                        SymbolText,
-                        decimal.Parse(QuantityText, CultureInfo.InvariantCulture),
-                        Side,
-                        TimeInForce,
-                        OrdType,
-                        decimal.Parse(PriceText,CultureInfo.InvariantCulture));
-                    Connection.Connector.GetInstance().SendMessageNew(Channel, prms);
+                    ReplaceMessageParameters prms = new ReplaceMessageParameters(
+                         order.NonProtocolID,
+                         decimal.Parse(QuantityText, CultureInfo.InvariantCulture),
+                         decimal.Parse(PriceText, CultureInfo.InvariantCulture));
+                    Connection.Connector.GetInstance().SendMessageReplace(order.ConnectorName, prms);
                 }
             }
         }
@@ -200,7 +212,7 @@ namespace MarketTester.ViewModel
 
         public bool CommandRadioButtonOrdTypeCanExecute()
         {
-            return !IsReplacingWindow;
+            return IsNewOrderWindow;
         }
 
 
@@ -208,12 +220,15 @@ namespace MarketTester.ViewModel
 
         private void OnChannelsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            UpdateChannelsCollection();
+            if (IsNewOrderWindow)
+            {
+                UpdateChannelsCollection();
+            }
         }
 
         private void UpdateChannelsCollection()
-        {           
-            if(Application.Current != null)
+        {            
+            if (Application.Current != null)
             {
                 Application.Current.Dispatcher.Invoke((Action)delegate
                 {
@@ -227,8 +242,7 @@ namespace MarketTester.ViewModel
                         }
                     }
                 });
-            }
-            
+            }   
         }
 
 
