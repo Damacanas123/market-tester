@@ -45,6 +45,7 @@
     <system:String x:Key="StringSettings">Settings</system:String>
     <system:String x:Key="StringOkay">Okay</system:String>
     <system:String x:Key="StringCancel">Cancel</system:String>
+    <system:String x:Key="StringCancelAllOrders">Cancel All Orders</system:String>
 
 
     <system:String x:Key="StringConfigPasswordNotSetWarning">Password has not been set in json config file for configuration </system:String>

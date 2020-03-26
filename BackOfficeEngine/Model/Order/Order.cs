@@ -78,6 +78,8 @@ namespace BackOfficeEngine.Model
             }
         }
 
+        
+
         #endregion
 
 
@@ -138,18 +140,8 @@ namespace BackOfficeEngine.Model
                 }
             }
         }
-        private int connectorIndex;
-        public int ConnectorIndex
-        {
-            get
-            {
-                return connectorIndex;
-            }
-            internal set
-            {
-                connectorIndex = value;
-            }
-        }
+        
+        public string ConnectorName { get; set; }
         public ObservableCollection<IMessage> m_messages { get; set; } = new ObservableCollection<IMessage>();
 
         private string MessagesFilePath { get { return CommonFolders.OrderMessagesBaseDir + NonProtocolID + ".fixmessages"; } }
@@ -170,7 +162,7 @@ namespace BackOfficeEngine.Model
             }
         }
 
-        public Dictionary<string,TableField> Fields { get; } = new Dictionary<string,TableField> {
+        private static Dictionary<string, TableField> fields = new Dictionary<string, TableField> {
             {nameof(DatabaseID), new TableField(nameof(DatabaseID),typeof(string),"PRIMARY KEY",18) },
             {nameof(NonProtocolID), new TableField(nameof(NonProtocolID),typeof(string),"",18) },
             {nameof(Price), new TableField(nameof(Price),typeof(string),"",30) },
@@ -189,8 +181,17 @@ namespace BackOfficeEngine.Model
             {nameof(AvgPx), new TableField(nameof(AvgPx),typeof(string),"",30) },
             {nameof(OrdStatus), new TableField(nameof(OrdStatus),typeof(string),"",30) },
             {nameof(Date), new TableField(nameof(Date),typeof(string),"",8) },
-            {nameof(IsImported), new TableField(nameof(IsImported),typeof(bool),"",0) }
+            {nameof(IsImported), new TableField(nameof(IsImported),typeof(bool),"",0) },
+            {nameof(ConnectorName), new TableField(nameof(ConnectorName),typeof(string),"",60) }
                 };
+
+        public Dictionary<string,TableField> Fields
+        {
+            get
+            {
+                return fields;
+            }
+        }  
 
         public Dictionary<string, object> Values
         {
@@ -216,7 +217,8 @@ namespace BackOfficeEngine.Model
                     {nameof(AvgPx),AvgPx },
                     {nameof(OrdStatus),OrdStatus },
                     {nameof(Date),Date },
-                    {nameof(IsImported),IsImported }
+                    {nameof(IsImported),IsImported },
+                    {nameof(ConnectorName),ConnectorName }
                 };
             }
         }
@@ -248,8 +250,8 @@ namespace BackOfficeEngine.Model
             AvgPx = decimal.Parse(reader[nameof(AvgPx)].ToString(),CultureInfo.CurrentCulture);
             OrdStatus = new StringToEnumConverter<OrdStatus>().Convert(reader[nameof(OrdStatus)].ToString());
             Date = reader[nameof(Date)].ToString();
-            Console.WriteLine(reader[nameof(IsImported)].ToString());
             IsImported = reader[nameof(IsImported)].ToString() == "0" ? false : true;
+            ConnectorName = reader[nameof(ConnectorName)].ToString();
             LoadMessages();
             ConstructorCommonWork();
         }
@@ -266,20 +268,21 @@ namespace BackOfficeEngine.Model
         /// </summary>
         internal Order() { }
 
-        protected Order(BaseOrder other) : base(other)
+        protected Order(BaseOrder other,string connectorName) : base(other)
         {
+            ConnectorName = connectorName;
             using (SQLiteHandler handler = new SQLiteHandler())
             {
                 handler.Insert(this);
             }
             ConstructorCommonWork();
         }
-        internal static new(IMessage, Order) CreateNewOrder(NewMessageParameters prms, string nonProtocolPseudoID)
+        internal static new(IMessage, Order) CreateNewOrder(NewMessageParameters prms, string nonProtocolPseudoID,string connectorName)
         {
             IMessage newOrderMessage;
             BaseOrder baseOrder;
             (newOrderMessage, baseOrder) = BaseOrder.CreateNewOrder(prms, nonProtocolPseudoID);
-            Order order = new Order(baseOrder);
+            Order order = new Order(baseOrder,connectorName);
             order.AddMessage(newOrderMessage);
             return (newOrderMessage, order);
         }
@@ -411,6 +414,7 @@ namespace BackOfficeEngine.Model
             repr += AvgPx.ToString(CultureInfo.InvariantCulture) + "|";
             repr += OrdStatus + "|";
             repr += date + "|";
+            repr += ConnectorName + "|";
             repr += m_messages.Count.ToString(CultureInfo.InvariantCulture) + "|";
             foreach(IMessage msg in m_messages)
             {
@@ -443,21 +447,22 @@ namespace BackOfficeEngine.Model
             if (OrdStatus.TryParse(arguements[15], out OrdStatus ordStatus))
                 this.OrdStatus = ordStatus;
             Date = arguements[16];
+            ConnectorName = arguements[17];
             IsImported = true;
-            int messageCount = int.Parse(arguements[17], CultureInfo.InvariantCulture);
+            int messageCount = int.Parse(arguements[18], CultureInfo.InvariantCulture);
             string messages = "";
             for (int i = 0; i < messageCount;i++)
             {
                 switch (protocolType)
                 {
                     case ProtocolType.Fix50sp2:
-                        IMessage msg = new QuickFixMessage(arguements[18 + i]);
+                        IMessage msg = new QuickFixMessage(arguements[19 + i]);
                         m_messages.Add(msg);
                         if (msg.GetMsgType() == MsgType.Trade)
                         {
                             Account.AddTrade(new TradeParameters(Side, msg.GetLastQty(), msg.GetLastPx(), Symbol));
                         }
-                        messages += arguements[18 + i] + "\n";
+                        messages += arguements[19 + i] + "\n";
                         break;
                 }                
             }

@@ -14,6 +14,7 @@ using BackOfficeEngine.MessageEnums;
 using BackOfficeEngine.Helper.IdGenerator;
 using BackOfficeEngine.Events;
 using BackOfficeEngine.Bootstrap;
+using BackOfficeEngine.Helper;
 
 namespace BackOfficeEngine
 {
@@ -41,8 +42,9 @@ namespace BackOfficeEngine
         private int dequeueAmountPerUpdate;
         private ConcurrentDictionary<string, PseudoOrder> m_nonProtocolPseudoIDMap = new ConcurrentDictionary<string, PseudoOrder>();
         private ConcurrentDictionary<string, string> m_clOrdID_To_nonProtocolPseudoIdMap = new ConcurrentDictionary<string, string>();
-        private List<IConnector> m_connectors = new List<IConnector>();
-        private ConcurrentQueue<(IMessage,int)> m_messageQueue = new ConcurrentQueue<(IMessage, int)>();
+        private Dictionary<string,IConnector> m_connectors { get; set; } = new Dictionary<string,IConnector>();
+        //tuple : (msg,connectorName)
+        private ConcurrentQueue<(IMessage,string)> m_messageQueue = new ConcurrentQueue<(IMessage, string)>();
         #endregion
 
 
@@ -84,33 +86,52 @@ namespace BackOfficeEngine
             return instance;
         }
 
-        
-
-        public int NewConnection(string configFilePath,ProtocolType protocolType)
+        public void CancelAllOrders()
         {
+            foreach(Order order in Order.Orders)
+            {
+                if (order.OrdStatus == OrdStatus.New ||
+                    order.OrdStatus == OrdStatus.PartialFilled)
+                {
+                    if (m_connectors.ContainsKey(order.ConnectorName))
+                    {
+
+                        IMessage msg = order.PrepareCancelMessage();
+                        SendMessage(msg, order.ConnectorName);
+                    }
+                }                
+            }
+        }
+
+        public string NewConnection(string configFilePath,ProtocolType protocolType)
+        {
+            if (m_connectors.ContainsKey(Util.GetFileNameWithoutExtensionFromFullPath(configFilePath)))
+            {
+                throw new Exception("A connection is already configured with the same name. Note that name is the file name without its extension");
+            }
             switch(protocolType)
             {
                 case ProtocolType.Fix50sp2:
                     IConnector connector = QuickFixConnector.GetInstance(configFilePath,this);
-                    m_connectors.Add(connector);
-                    return m_connectors.Count - 1;
+                    m_connectors[connector.Name] = connector;
+                    return connector.Name;
                 default:
                     throw new NotImplementedException("Unimplemented protocol type : " + protocolType);
             }
         }
-        public void ConfigureConnection(int connectorIndex,string configFilePath)
+        public void ConfigureConnection(string connectorName,string configFilePath)
         {
-            m_connectors[connectorIndex].ConfigureConnection(configFilePath);
+            m_connectors[connectorName].ConfigureConnection(configFilePath);
         }
 
-        public void ConfigureConnection(int connectorIndex, string configFilePath,BISTCredentialParams credentialParams)
+        public void ConfigureConnection(string connectorName, string configFilePath,BISTCredentialParams credentialParams)
         {
-            m_connectors[connectorIndex].ConfigureConnection(configFilePath,credentialParams);
+            m_connectors[connectorName].ConfigureConnection(configFilePath,credentialParams);
         }
 
-        public void Connect(int connectorIndex)
+        public void Connect(string connectorName)
         {
-            m_connectors[connectorIndex].Connect();
+            m_connectors[connectorName].Connect();
         }
 
         public (IMessage,string) PrepareMessageNew(NewMessageParameters prms)
@@ -132,71 +153,69 @@ namespace BackOfficeEngine
 
         public IMessage PrepareMessageCancel(CancelMessageParameters prms)
         {
-            return m_nonProtocolPseudoIDMap[prms.nonProtocolID].PrepareCancelMessage(prms);
+            return m_nonProtocolPseudoIDMap[prms.nonProtocolID].PrepareCancelMessage();
         }
 
-        public (IMessage,string) SendMessageNew(NewMessageParameters prms,int connectorIndex)
+        public (IMessage,string) SendMessageNew(NewMessageParameters prms,string connectorName)
         {
             IMessage newOrderMessage;
             Order order;
             string nonProtocolID = NonProtocolIDGenerator.Instance.GetNextId();
-            (newOrderMessage,order) = Order.CreateNewOrder(prms, nonProtocolID);
-            order.ConnectorIndex = connectorIndex;
+            (newOrderMessage,order) = Order.CreateNewOrder(prms, nonProtocolID,connectorName);
             Order.NonProtocolIDMap[nonProtocolID] = order;
             Order.ClOrdIDMap[newOrderMessage.GetClOrdID()] = order;
-            m_connectors[connectorIndex].SendMsgOrderEntry(newOrderMessage);
+            m_connectors[connectorName].SendMsgOrderEntry(newOrderMessage);
             return (newOrderMessage, nonProtocolID);               
         }
 
-        public IMessage SendMessageReplace(ReplaceMessageParameters prms,int connectorIndex)
+        public IMessage SendMessageReplace(ReplaceMessageParameters prms,string connectorName)
         {
             IMessage replaceMessage = Order.NonProtocolIDMap[prms.nonProtocolID].PrepareReplaceMessage(prms);
-            m_connectors[connectorIndex].SendMsgOrderEntry(replaceMessage);
-            m_messageQueue.Enqueue((replaceMessage,connectorIndex));
+            m_connectors[connectorName].SendMsgOrderEntry(replaceMessage);
+            m_messageQueue.Enqueue((replaceMessage,connectorName));
             return replaceMessage;
         }
 
-        public IMessage SendMessageCancel(CancelMessageParameters prms,int connectorIndex)
+        public IMessage SendMessageCancel(CancelMessageParameters prms,string connectorName)
         {
-            IMessage cancelMessage = Order.NonProtocolIDMap[prms.nonProtocolID].PrepareCancelMessage(prms);
-            m_connectors[connectorIndex].SendMsgOrderEntry(cancelMessage);
-            m_messageQueue.Enqueue((cancelMessage,connectorIndex));
+            IMessage cancelMessage = Order.NonProtocolIDMap[prms.nonProtocolID].PrepareCancelMessage();
+            m_connectors[connectorName].SendMsgOrderEntry(cancelMessage);
+            m_messageQueue.Enqueue((cancelMessage,connectorName));
             return cancelMessage;
         }
 
-        public void SendMessage(IMessage msg,int connectorIndex)
+        public void SendMessage(IMessage msg,string connectorName)
         {
-            m_messageQueue.Enqueue((msg,connectorIndex));
-            m_connectors[connectorIndex].SendMsgOrderEntry(msg);
+            m_messageQueue.Enqueue((msg,connectorName));
+            m_connectors[connectorName].SendMsgOrderEntry(msg);
         }
 
-        public void Disconnect(int connectorIndex)
+        public void Disconnect(string connectorName)
         {
-            m_connectors[connectorIndex].Disconnect();
+            m_connectors[connectorName].Disconnect();
         }
         void IConnectorSubscriber.OnInboundMessage(IConnector connector, string sessionID, IMessage msg)
         {
             InboundMessageEvent?.Invoke(this, new InboundMessageEventArgs(msg));
             if (msg.IsSetClOrdID())
             {
-                int connectorIndex = m_connectors.IndexOf(connector);
-                m_messageQueue.Enqueue((msg,connectorIndex));
+                m_messageQueue.Enqueue((msg,connector.Name));
             }
         }
 
         void IConnectorSubscriber.OnLogon(IConnector connector, string sessionID)
         {
-            OnLogonEvent?.Invoke(this, new OnLogonEventArgs(m_connectors.IndexOf(connector), sessionID));
+            OnLogonEvent?.Invoke(this, new OnLogonEventArgs(connector.Name, sessionID));
         }
 
         void IConnectorSubscriber.OnLogout(IConnector connector, string sessionID)
         {
-            OnLogoutEvent?.Invoke(this, new OnLogoutEventArgs(m_connectors.IndexOf(connector), sessionID));
+            OnLogoutEvent?.Invoke(this, new OnLogoutEventArgs(connector.Name, sessionID));
         }
 
         void IConnectorSubscriber.OnCreateSession(IConnector connector, string sessionID)
         {
-            OnCreateSessionEvent?.Invoke(this, new OnCreateSessionEventArgs(m_connectors.IndexOf(connector), sessionID));
+            OnCreateSessionEvent?.Invoke(this, new OnCreateSessionEventArgs(connector.Name, sessionID));
         }
 
         private void MessageDequeuer()
@@ -208,11 +227,11 @@ namespace BackOfficeEngine
                 {
                     Console.WriteLine(m_messageQueue.Count);
                     IMessage msg;
-                    int connectorIndex;
+                    string connectorName;
                     if (m_messageQueue.TryDequeue(out var tuple))
                     {
                         msg = tuple.Item1;
-                        connectorIndex = tuple.Item2;
+                        connectorName = tuple.Item2;
                         Order order;
                         void ReplaceOrCancel()
                         {
@@ -225,7 +244,7 @@ namespace BackOfficeEngine
                             case MsgType.New:
                                 string nonProtocolID = m_clOrdID_To_nonProtocolPseudoIdMap[msg.GetClOrdID()];
                                 order = new Order(msg, nonProtocolID);
-                                order.ConnectorIndex = connectorIndex;
+                                order.ConnectorName = connectorName;
                                 Order.NonProtocolIDMap[nonProtocolID] = order;
                                 Order.ClOrdIDMap[msg.GetClOrdID()] = order;
                                 break;

@@ -9,6 +9,7 @@ namespace BackOfficeEngine.Connection
 {
     internal interface IConnector
     {
+        string Name { get; set; }
         List<IConnectorSubscriber> subscribers { get; }
         void Subscribe(IConnectorSubscriber subscriber);
         void ConfigureConnection(string configFilePath);

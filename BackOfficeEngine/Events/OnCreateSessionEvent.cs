@@ -8,11 +8,11 @@ namespace BackOfficeEngine.Events
 {
     public class OnCreateSessionEventArgs : EventArgs
     {
-        public int ConnectorIndex { get; set; }
+        public string ConnectorName { get; set; }
         public string SessionID { get; set; }
-        public OnCreateSessionEventArgs(int connectorIndex, string sessionID)
+        public OnCreateSessionEventArgs(string connectorName, string sessionID)
         {
-            ConnectorIndex = connectorIndex;
+            ConnectorName = connectorName;
             SessionID = sessionID;
         }
     }

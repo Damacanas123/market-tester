@@ -8,11 +8,11 @@ namespace BackOfficeEngine.Events
 {
     public class OnLogoutEventArgs
     {
-        public int ConnectorIndex { get; set; }
+        public string ConnectorName { get; set; }
         public string SessionID { get; set; }
-        public OnLogoutEventArgs(int connectorIndex, string sessionID)
+        public OnLogoutEventArgs(string connectorName, string sessionID)
         {
-            ConnectorIndex = connectorIndex;
+            ConnectorName = connectorName;
             SessionID = sessionID;
         }
     }

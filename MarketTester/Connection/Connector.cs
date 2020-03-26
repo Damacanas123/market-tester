@@ -57,7 +57,7 @@ namespace MarketTester.Connection
         {
             new Thread(() =>
             {                
-                engine.Connect(channel.ConnectorIndex);
+                engine.Connect(channel.ConnectorName);
             }).Start();
         }
 
@@ -66,23 +66,23 @@ namespace MarketTester.Connection
         {
             new Task(() =>
             {
-                channel.ConnectorIndex = engine.NewConnection(channel.ConfigFilePath, channel.ProtocolType);
+                channel.ConnectorName = engine.NewConnection(channel.ConfigFilePath, channel.ProtocolType);
                 if(channel.credentialParams == null)
                 {
-                    engine.ConfigureConnection(channel.ConnectorIndex, channel.ConfigFilePath);
+                    engine.ConfigureConnection(channel.ConnectorName, channel.ConfigFilePath);
                 }
                 else
                 {
-                    engine.ConfigureConnection(channel.ConnectorIndex, channel.ConfigFilePath,channel.credentialParams);
+                    engine.ConfigureConnection(channel.ConnectorName, channel.ConfigFilePath,channel.credentialParams);
                 }                
                 channel.IsConfigured = true;
-                engine.Connect(channel.ConnectorIndex);
+                engine.Connect(channel.ConnectorName);
             }).Start();
         }
 
         public void OnLogon(object sender,OnLogonEventArgs args)
         {
-            Channel ch = Channels.First((o) => o.ConnectorIndex == args.ConnectorIndex);
+            Channel ch = Channels.First((o) => o.ConnectorName == args.ConnectorName);
             if (!ch.IsConnected)
             {
                 ch.IsConnected = true;
@@ -98,7 +98,7 @@ namespace MarketTester.Connection
 
         public void OnLogout(object sender, OnLogoutEventArgs args)
         {
-            Channel ch = Channels.First((o) => o.ConnectorIndex == args.ConnectorIndex);
+            Channel ch = Channels.First((o) => o.ConnectorName == args.ConnectorName);
             ch.RemoveActive(args.SessionID);
             ch.AddInactive(args.SessionID);
             if(ch.ActiveSessions.Count == 0)
@@ -114,7 +114,7 @@ namespace MarketTester.Connection
 
         public void OnCreateSession(object sender,OnCreateSessionEventArgs args)
         {
-            Channel ch = Channels.First((o) => o.ConnectorIndex == args.ConnectorIndex);
+            Channel ch = Channels.First((o) => o.ConnectorName == args.ConnectorName);
             ch.AddInactive(args.SessionID);
         }
 
@@ -122,23 +122,23 @@ namespace MarketTester.Connection
         {
             new Thread(() =>
             {
-                engine.Disconnect(ch.ConnectorIndex);
+                engine.Disconnect(ch.ConnectorName);
             }).Start();
         }
 
         public void SendMessageNew(Channel ch,NewMessageParameters prms)
         {
-            engine.SendMessageNew(prms, ch.ConnectorIndex);
+            engine.SendMessageNew(prms, ch.ConnectorName);
         }
 
-        public void SendMessageReplace(int connectorIndex, ReplaceMessageParameters prms)
+        public void SendMessageReplace(string connectorName, ReplaceMessageParameters prms)
         {
-            engine.SendMessageReplace(prms, connectorIndex);
+            engine.SendMessageReplace(prms, connectorName);
         }
 
-        public void SendMessageCancel(int connectorIndex, CancelMessageParameters prms)
+        public void SendMessageCancel(string connectorName, CancelMessageParameters prms)
         {
-            engine.SendMessageCancel(prms, connectorIndex);
+            engine.SendMessageCancel(prms, connectorName);
         }
 
     }

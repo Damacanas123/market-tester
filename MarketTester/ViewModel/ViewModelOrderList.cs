@@ -65,7 +65,7 @@ namespace MarketTester.ViewModel
         public void CommandCancelOrderExecute(object param)
         {
             CancelMessageParameters prms = new CancelMessageParameters(SelectedOrder.NonProtocolID);
-            Connector.GetInstance().SendMessageCancel(SelectedOrder.ConnectorIndex, prms);
+            Connector.GetInstance().SendMessageCancel(SelectedOrder.ConnectorName, prms);
         }
 
         public bool CommandCancelOrderCanExecute()

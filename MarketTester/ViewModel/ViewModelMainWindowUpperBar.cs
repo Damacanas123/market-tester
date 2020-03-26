@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
+using BackOfficeEngine;
 using BackOfficeEngine.Model;
 
 using MarketTester.Base;
@@ -21,7 +23,7 @@ namespace MarketTester.ViewModel
             CommandClearOrders = new BaseCommand(CommandClearOrdersExecute, CommandClearOrdersCanExecute);
             CommandImportOrders = new BaseCommand(CommandImportOrdersExecute, CommandImportOrdersCanExecute);
             CommandChangeLanguage = new BaseCommand(CommandChangeLanguageExecute, CommandChangeLanguageCanExecute);
-            
+            CommandCancelAllOrders = new BaseCommand(CommandCancelAllOrdersExecute, CommandCancelAllOrdersCanExecute);
         }
         #region commands
         #region CommanExportOrders
@@ -88,6 +90,20 @@ namespace MarketTester.ViewModel
         }
 
         public bool CommandChangeLanguageCanExecute()
+        {
+            return true;
+        }
+        #endregion
+
+        #region CommandCancelAllOrders
+        public BaseCommand CommandCancelAllOrders { get; set; }
+
+        public void CommandCancelAllOrdersExecute(object param)
+        {
+            Engine.GetInstance().CancelAllOrders();
+        }
+
+        public bool CommandCancelAllOrdersCanExecute()
         {
             return true;
         }

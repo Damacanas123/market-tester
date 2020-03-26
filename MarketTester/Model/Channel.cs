@@ -17,7 +17,7 @@ namespace MarketTester.Model
         public string ConfigFilePath { get; set; }
         public ProtocolType ProtocolType { get; set; }
         public string Name { get; private set; }
-        public int ConnectorIndex { get; set; }
+        public string ConnectorName { get; set; } = "";
         public bool IsConfigured { get; set; }
         private bool isConnected;
         public bool IsConnected 
@@ -44,7 +44,6 @@ namespace MarketTester.Model
             Name = Util.GetFileNameWithoutExtensionFromFullPath(configFilePath);
             ConfigFilePath = configFilePath;
             ProtocolType = protocolType;
-            ConnectorIndex = -1;
 
             BindingOperations.EnableCollectionSynchronization(ActiveSessions, activeSessionsLock);
             BindingOperations.EnableCollectionSynchronization(InactiveSessions, inactiveSessionsLock);

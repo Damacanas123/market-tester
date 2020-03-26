@@ -134,7 +134,7 @@ namespace MarketTester.ViewModel
                         order.NonProtocolID,
                         decimal.Parse(QuantityText, CultureInfo.InvariantCulture),
                         decimal.Parse(PriceText, CultureInfo.InvariantCulture));
-                    Connection.Connector.GetInstance().SendMessageReplace(order.ConnectorIndex, prms);
+                    Connection.Connector.GetInstance().SendMessageReplace(order.ConnectorName, prms);
                 }
                 else
                 {

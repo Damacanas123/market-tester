@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BackOfficeEngine.Model;
 using BackOfficeEngine.ParamPacker;
+using BackOfficeEngine.Helper;
 using QuickFix;
 using QuickFix.Fields;
 
@@ -28,6 +29,7 @@ namespace BackOfficeEngine.Connection
         private BISTCredentialParams CredentialParams { get; set; }
 
         public List<IConnectorSubscriber> subscribers { get; }
+        public string Name { get; set; }
 
         private QuickFixConnector() 
         {
@@ -46,7 +48,7 @@ namespace BackOfficeEngine.Connection
                 instance = new QuickFixConnector();
                 instance.subscribers.Add(subscriber);
                 m_instances[configFilePath] = instance;
-                
+                instance.Name = Util.GetFileNameWithoutExtensionFromFullPath(configFilePath);
             }
             return instance;
         }

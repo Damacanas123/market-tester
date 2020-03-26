@@ -43,9 +43,9 @@ namespace BackOfficeEngine.Model
             return msg;
         }
 
-        internal override IMessage PrepareCancelMessage(CancelMessageParameters prms)
+        internal override IMessage PrepareCancelMessage()
         {
-            IMessage msg = base.PrepareCancelMessage(prms);
+            IMessage msg = base.PrepareCancelMessage();
             OrigClOrdID = msg.GetOrigClOrdID();
             ClOrdID = msg.GetClOrdID();
             return msg;

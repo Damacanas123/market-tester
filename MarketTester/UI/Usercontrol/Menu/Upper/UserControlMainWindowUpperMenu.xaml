@@ -19,6 +19,8 @@
             <MenuItem Header="{DynamicResource StringImport}" Command="{Binding CommandImportOrders}"/>
             <Separator></Separator>
             <MenuItem Header="{DynamicResource StringClear}" Command="{Binding CommandClearOrders}"/>
+            <Separator></Separator>
+            <MenuItem Header="{DynamicResource StringCancelAllOrders}" Command="{Binding CommandCancelAllOrders}"/>
         </MenuItem>
         <MenuItem Header="{DynamicResource StringSettings}">
             <MenuItem Header="{DynamicResource StringLanguage}">

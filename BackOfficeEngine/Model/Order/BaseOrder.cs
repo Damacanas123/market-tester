@@ -177,7 +177,7 @@ namespace BackOfficeEngine.Model
             return replaceRequest;
         }
 
-        internal virtual IMessage PrepareCancelMessage(CancelMessageParameters prms)
+        internal virtual IMessage PrepareCancelMessage()
         {
             IMessage cancelRequest = null;
             switch (protocolType)
