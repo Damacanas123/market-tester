@@ -16,11 +16,12 @@
     <UserControl.Resources>
         <helper:DataContextProxy x:Key="ViewModelContext" DataSource="{Binding .}"/>
     </UserControl.Resources>
-        <Grid Margin="5">
+        <Grid>
 
         <DataGrid ItemsSource="{Binding Source={x:Static backofficeengine_model:Order.Orders}}" 
                   x:Name="DataGridOrders"
                   Background="{StaticResource BackgroundPrimary}" 
+                  BorderThickness="0"
                   AlternatingRowBackground="{StaticResource BackgroundSecondary}"
                   RowBackground="{StaticResource BackgroundPrimary}"
                   AlternationCount="2" AutoGenerateColumns="False"

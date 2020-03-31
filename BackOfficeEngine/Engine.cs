@@ -156,32 +156,40 @@ namespace BackOfficeEngine
             return m_nonProtocolPseudoIDMap[prms.nonProtocolID].PrepareCancelMessage();
         }
 
-        public (IMessage,string) SendMessageNew(NewMessageParameters prms,string connectorName)
+        public void SendMessageNew(NewMessageParameters prms,string connectorName)
         {
-            IMessage newOrderMessage;
-            Order order;
-            string nonProtocolID = NonProtocolIDGenerator.Instance.GetNextId();
-            (newOrderMessage,order) = Order.CreateNewOrder(prms, nonProtocolID,connectorName);
-            Order.NonProtocolIDMap[nonProtocolID] = order;
-            Order.ClOrdIDMap[newOrderMessage.GetClOrdID()] = order;
-            m_connectors[connectorName].SendMsgOrderEntry(newOrderMessage);
-            return (newOrderMessage, nonProtocolID);               
+            if (m_connectors.ContainsKey(connectorName))
+            {
+                IMessage newOrderMessage;
+                Order order;
+                string nonProtocolID = NonProtocolIDGenerator.Instance.GetNextId();
+                (newOrderMessage, order) = Order.CreateNewOrder(prms, nonProtocolID, connectorName);
+                Order.NonProtocolIDMap[nonProtocolID] = order;
+                Order.ClOrdIDMap[newOrderMessage.GetClOrdID()] = order;
+                m_connectors[connectorName].SendMsgOrderEntry(newOrderMessage);
+            }
         }
 
-        public IMessage SendMessageReplace(ReplaceMessageParameters prms,string connectorName)
+        public void SendMessageReplace(ReplaceMessageParameters prms,string connectorName)
         {
-            IMessage replaceMessage = Order.NonProtocolIDMap[prms.nonProtocolID].PrepareReplaceMessage(prms);
-            m_connectors[connectorName].SendMsgOrderEntry(replaceMessage);
-            m_messageQueue.Enqueue((replaceMessage,connectorName));
-            return replaceMessage;
+            if (m_connectors.ContainsKey(connectorName))
+            {
+                IMessage replaceMessage = Order.NonProtocolIDMap[prms.nonProtocolID].PrepareReplaceMessage(prms);
+                m_connectors[connectorName].SendMsgOrderEntry(replaceMessage);
+                m_messageQueue.Enqueue((replaceMessage, connectorName));
+            }
         }
 
-        public IMessage SendMessageCancel(CancelMessageParameters prms,string connectorName)
+        public void SendMessageCancel(CancelMessageParameters prms,string connectorName)
         {
-            IMessage cancelMessage = Order.NonProtocolIDMap[prms.nonProtocolID].PrepareCancelMessage();
-            m_connectors[connectorName].SendMsgOrderEntry(cancelMessage);
-            m_messageQueue.Enqueue((cancelMessage,connectorName));
-            return cancelMessage;
+            if (m_connectors.ContainsKey(connectorName))
+            {
+                IMessage cancelMessage = Order.NonProtocolIDMap[prms.nonProtocolID].PrepareCancelMessage();
+                m_connectors[connectorName].SendMsgOrderEntry(cancelMessage);
+                m_messageQueue.Enqueue((cancelMessage, connectorName));
+                
+            }
+            
         }
 
         public void SendMessage(IMessage msg,string connectorName)

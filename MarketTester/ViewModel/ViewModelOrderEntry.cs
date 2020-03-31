@@ -137,7 +137,7 @@ namespace MarketTester.ViewModel
         public ICommand CommandSendOrder { get; set; }
         private void CommandSendOrderExecute(object param)
         {
-            if(Channel != null)
+            if(Channel != null && Channel.IsConfigured)
             {
                 if (IsNewOrderWindow)
                 {

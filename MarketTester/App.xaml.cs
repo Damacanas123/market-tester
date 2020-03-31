@@ -25,7 +25,7 @@ namespace MarketTester
             });
             
             Util.Bootstrap();
-            new MainWindowStarter();
+            MainWindowStarter.Start();
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 
 using MarketTester.Enumeration;
+using MarketTester.Events;
 
 namespace MarketTester.Helper
 {
@@ -28,6 +29,7 @@ namespace MarketTester.Helper
             return instance;
         }
 
+        public event LanguageChangedEventHandler LanguageChangedEventHandler;
         #region settings properties
         private ELanguage language;
         public ELanguage Language
@@ -53,6 +55,7 @@ namespace MarketTester.Helper
                             break;
                     }
                     Application.Current.Resources.MergedDictionaries.Insert(0, (new ResourceDictionary { Source = new Uri(uri, UriKind.Relative) }));
+                    LanguageChangedEventHandler?.Invoke();
                 }
             }
         }

@@ -1,30 +1,39 @@
 ﻿BackLog
--->Style disabled comboboxes textboxes
+
 -->Scheduler UX design
 -->Scheduler Integration (logic classes)
 
 -->Free format message creation
 -->OUCH integration
--->FixLogAnalyzer Integration
+
+
+In Progress
+-->Style disabled comboboxes textboxes	
+
 
 25.03.2020
 First Commit
--->Added username password to json config. These username passwords are going to be used in market connection authentications.
+	-->Added username password to json config. These username passwords are going to be used in market connection authentications.
 Added json config checks for password and username.
--->Added InfoManager to manage Info TextBoxes accross the application. Any class can publish info messages depending on their priority and TextBoxes that match that priority will publish those info messages.
+	-->Added InfoManager to manage Info TextBoxes accross the application. Any class can publish info messages depending on their priority and TextBoxes that match that priority will publish those info messages.
 Second Commit
--->Add double click command to Orders DataGrid for replace.
+	-->Add double click command to Orders DataGrid for replace.
 Third Commit
--->Add Cancel column to Orders DataGrid
+	-->Add Cancel column to Orders DataGrid
 
 26.03.2020
 First Commit
--->Add TimeInForce ComboBox to OrderEntry 
+	-->Add TimeInForce ComboBox to OrderEntry 
 Second Commit
--->Add cancel all button to UpperMenu for Orders DataGrid.
-	-Database integration
-	-export import integration
-	-cancel for only New or PartialFilled orders
--->Fixed a bug in double click order list
+	-->Add cancel all button to UpperMenu for Orders DataGrid.
+		-Database integration
+		-export import integration
+		-cancel for only New or PartialFilled orders
+	-->Fixed a bug in double click order list
 Third Commit
 	-->Order replace popup fix unchangeable UI elements like OrdType
+
+31.03.2020
+First Commit
+	-->FixLogAnalyzer Integration
+	-->FixLogAnalyzer page design

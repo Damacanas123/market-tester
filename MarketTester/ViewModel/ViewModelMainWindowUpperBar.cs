@@ -10,6 +10,8 @@ using BackOfficeEngine.Model;
 
 using MarketTester.Base;
 using MarketTester.UI.Popup;
+using MarketTester.UI.Usercontrol;
+using MarketTester.UI.window;
 using MarketTester.Helper;
 using MarketTester.Enumeration;
 
@@ -24,13 +26,14 @@ namespace MarketTester.ViewModel
             CommandImportOrders = new BaseCommand(CommandImportOrdersExecute, CommandImportOrdersCanExecute);
             CommandChangeLanguage = new BaseCommand(CommandChangeLanguageExecute, CommandChangeLanguageCanExecute);
             CommandCancelAllOrders = new BaseCommand(CommandCancelAllOrdersExecute, CommandCancelAllOrdersCanExecute);
+            CommandLogAnalyzers = new BaseCommand(CommandLogAnalyzersExecute, CommandLogAnalyzersCanExecute);
         }
         #region commands
         #region CommanExportOrders
         public BaseCommand CommandExportOrders { get; set; }
         public void CommandExportOrdersExecute(object parameter)
         {
-            PopupManager.OpenGeneralPopup(new UserControlExportOrders(),300,150);
+            PopupManager.OpenGeneralPopup(new UserControlExportOrders(),"StringExportOrders",300,150);
         }
 
         public bool CommandExportOrdersCanExecute()
@@ -104,6 +107,18 @@ namespace MarketTester.ViewModel
         }
 
         public bool CommandCancelAllOrdersCanExecute()
+        {
+            return true;
+        }
+        #endregion
+
+        #region CommandLogAnalyzers
+        public BaseCommand CommandLogAnalyzers { get; set; }
+        public void CommandLogAnalyzersExecute(object param)
+        {
+            MainWindowStarter.AddTab(new UserControlLogAnalyzer(), "StringLogAnalyzers", true);
+        }
+        public bool CommandLogAnalyzersCanExecute()
         {
             return true;
         }

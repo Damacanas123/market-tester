@@ -11,13 +11,13 @@ namespace MarketTester.UI.Popup
 {
     public static class PopupManager
     {
-        public static void OpenGeneralPopup(UserControl userControl)
+        public static void OpenGeneralPopup(UserControl userControl,string nameResourceKey)
         {
-            OpenGeneralPopup(userControl, 400, 200);
+            OpenGeneralPopup(userControl,nameResourceKey, 400, 200);
         }
-        public static void OpenGeneralPopup(UserControl userControl,double width,double height)
+        public static void OpenGeneralPopup(UserControl userControl,string nameResourceKey,double width,double height)
         {
-            WindowBase popupWindow = new WindowBase(false,"Export Orders");
+            WindowBase popupWindow = new WindowBase(false,nameResourceKey);
             popupWindow.MainGrid.Children.Add(userControl);
             popupWindow.Width = width;
             popupWindow.Height = height;

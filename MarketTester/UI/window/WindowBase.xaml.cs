@@ -20,11 +20,11 @@ namespace MarketTester.UI.window
     public partial class WindowBase : Window
     {
         public bool IsMainWindow { get; private set; }
-        public WindowBase(bool isMainWindow,string name)
+        public WindowBase(bool isMainWindow,string nameResourceKey)
         {
             IsMainWindow = isMainWindow;
             InitializeComponent();
-            UpperBar.SetName(name);
+            UpperBar.SetName(nameResourceKey);
         }
 
         private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

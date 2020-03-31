@@ -32,7 +32,8 @@ namespace MarketTester.Helper
         public static string APPLICATION_SEQ_NUM_DIR = APPLICATION_COMMON_DIR + "sequence_nums\\";
         public static string STATIC_DIR_PATH = "static" + FILE_PATH_DELIMITER;
         public static string APPLICATION_STATIC_DIR = APPLICATION_COMMON_DIR + STATIC_DIR_PATH;
-        public static string APPLICATION_EXPORT_DIR = APPLICATION_STATIC_DIR + "exports" + FILE_PATH_DELIMITER;
+        public static string APPLICATION_EXPORT_DIR = APPLICATION_COMMON_DIR + "exports" + FILE_PATH_DELIMITER;
+        public static string APPLICATION_RESULTS_DIR = APPLICATION_COMMON_DIR + "results" + FILE_PATH_DELIMITER;
         public static string EXCEPTIONLOG_FILE_PATH = APPLICATION_STATIC_DIR + "exception.log";
         public static string USERNAME = System.Security.Principal.WindowsIdentity.GetCurrent().Name.Replace(Util.FILE_PATH_DELIMITER, "");
         public static string SCHEDULESAVE_DIR_PATH = APPLICATION_STATIC_DIR + "schedule_save" + FILE_PATH_DELIMITER;
@@ -41,6 +42,7 @@ namespace MarketTester.Helper
 
         public static void Bootstrap()
         {
+            Directory.CreateDirectory(APPLICATION_RESULTS_DIR);
             Directory.CreateDirectory(APPLICATION_EXPORT_DIR);
             Directory.CreateDirectory(APPLICATION_STATIC_DIR);
             CopyDirectoryAndSubDirectoriesToApplicationCommonPath(STATIC_DIR_PATH);
@@ -230,17 +232,50 @@ namespace MarketTester.Helper
             return year + month + day;
         }
 
-
-        public static void AppendStringToFile(string filePath, string content, object fileLock)
+        public static string ReadFile(string filePath)
         {
-            lock (fileLock)
+            lock (GetReferenceToLock(filePath))
             {
-                using (StreamWriter sw = File.AppendText(filePath))
+                if (File.Exists(filePath))
                 {
-                    sw.WriteLine(content);
+                    return File.ReadAllText(filePath);
+                }
+                else
+                {
+                    string directories = filePath.Substring(0,filePath.LastIndexOf(FILE_PATH_DELIMITER));
+                    Directory.CreateDirectory(directories);
+                    File.Create(filePath);
+                    return "";
                 }
             }
         }
+
+        public static string[] ReadLines(string filePath)
+        {
+            string content = ReadFile(filePath);
+            content.Replace("\r", string.Empty);
+            if (!string.IsNullOrEmpty(content))
+            {
+                return content.Split(new char[] { '\n' });
+            }
+            else
+            {
+                return new string[] { };
+            }
+        }
+
+        public static void OverwriteToFile(string filePath,string s)
+        {
+            lock (GetReferenceToLock(filePath))
+            {
+                using (StreamWriter sw = new StreamWriter(filePath))
+                {
+                    sw.Write(s);
+                }
+            }
+        }
+
+        
 
         private static Dictionary<string, object> locks = new Dictionary<string, object>();
         private static object GetReferenceToLock(string filePath)

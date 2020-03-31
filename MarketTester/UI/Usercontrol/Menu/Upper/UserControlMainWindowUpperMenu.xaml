@@ -28,6 +28,9 @@
                 <MenuItem Header="{DynamicResource StringTurkish}" Command="{Binding CommandChangeLanguage}" CommandParameter="{x:Static enum:ELanguage.Turkish}"/>
             </MenuItem>
         </MenuItem>
+        <MenuItem Header="{DynamicResource StringTools}">
+            <MenuItem Header="{DynamicResource StringLogAnalyzers}" Command="{Binding CommandLogAnalyzers}"/>
+        </MenuItem>
         
     </Menu>
 </UserControl>

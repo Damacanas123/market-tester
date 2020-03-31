@@ -26,7 +26,6 @@
             <TextBlock Text="{DynamicResource StringChannels}"/>
             <ListView Height="Auto"
                       HorizontalContentAlignment="Stretch"
-                  Background="{StaticResource BackgroundPrimary}"
                   ItemsSource="{Binding Source={x:Static connection:Connector.Channels}}">
                 
                 <ListView.ItemContainerStyle>

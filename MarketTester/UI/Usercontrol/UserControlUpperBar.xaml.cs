@@ -63,9 +63,17 @@ namespace MarketTester.UI.Usercontrol
             MenuContainer.Children.Add(menu);
         }
 
-        public void SetName(string name)
+        public void SetName(string nameResourceKey)
         {
-            LabelTitle.Text = name;
+            if (App.Current.Resources.Contains(nameResourceKey))
+            {
+                LabelTitle.SetResourceReference(Label.ContentProperty, nameResourceKey);
+            }
+            else
+            {
+                LabelTitle.Text = nameResourceKey;
+            }
+            
         }
     }
 }

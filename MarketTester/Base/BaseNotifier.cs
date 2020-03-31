@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Windows;
 
 namespace MarketTester.Base
 {
-    public class BaseNotifier : INotifyPropertyChanged
+    public class BaseNotifier : DependencyObject,INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

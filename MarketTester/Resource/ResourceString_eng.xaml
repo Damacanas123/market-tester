@@ -46,8 +46,28 @@
     <system:String x:Key="StringOkay">Okay</system:String>
     <system:String x:Key="StringCancel">Cancel</system:String>
     <system:String x:Key="StringCancelAllOrders">Cancel All Orders</system:String>
+    <system:String x:Key="StringLineFormat">Line Format</system:String>
+    <system:String x:Key="StringAnalyzers">Analyzers</system:String>
+    <system:String x:Key="StringPickFile">Pick File</system:String>
+    <system:String x:Key="StringSave">Save</system:String>
+    <system:String x:Key="StringInputFile1">Input file 1 : </system:String>
+    <system:String x:Key="StringInputFile2">Input file 2 :</system:String>
+    <system:String x:Key="StringTools">Tools</system:String>
+    <system:String x:Key="StringLogAnalyzers">Log Analyzers</system:String>
+    <system:String x:Key="StringName">Name</system:String>
+    <system:String x:Key="StringDelete">Delete</system:String>
+    <system:String x:Key="StringPick">Pick</system:String>
+    <system:String x:Key="StringStartAnalysis">Start Analysis</system:String>
+    <system:String x:Key="StringLineFormats">Line Formats</system:String>
+    <system:String x:Key="StringOutFilePath">Output File Path</system:String>
+    <system:String x:Key="StringExportOrders">Export Orders</system:String>
+    <system:String x:Key="StringErrorPopupName">Error Occured</system:String>
+    <system:String x:Key="StringInvalidLineFormat">Invalid line format</system:String>
+    <system:String x:Key="StringDestinationFilePath">Destination File Path</system:String>
 
-
+    <system:String x:Key="StringPleaseFillNameAndFormat">Please enter a name and a format.</system:String>
+    <system:String x:Key="StringStartingAnalysis">Starting analysis.</system:String>
+    <system:String x:Key="StringFinishedAnalysis">Finished analysis.</system:String>
     <system:String x:Key="StringChannelNotConnectedWarning">Channel of this order does not have an active connection.</system:String>
     <system:String x:Key="StringConfigPasswordNotSetWarning">Password has not been set in json config file for configuration </system:String>
 </ResourceDictionary>

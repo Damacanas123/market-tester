@@ -1,6 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:MarketTester.Resource"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <system:String x:Key="StringAccount">Hesap</system:String>
@@ -38,7 +37,7 @@
     <system:String x:Key="StringActiveSessions">Aktif Bağlantılar</system:String>
     <system:String x:Key="StringInactiveSessions">Inaktif Bağlantılar</system:String>
     <system:String x:Key="StringOrder">Emir</system:String>
-    <system:String x:Key="StringExport">Dışa Akter</system:String>
+    <system:String x:Key="StringExport">Dışa Aktar</system:String>
     <system:String x:Key="StringImport">İçe Aktar</system:String>
     <system:String x:Key="StringClear">Temizle</system:String>
     <system:String x:Key="StringLanguage">Dil</system:String>
@@ -46,7 +45,28 @@
     <system:String x:Key="StringOkay">Tamam</system:String>
     <system:String x:Key="StringCancel">İptal</system:String>
     <system:String x:Key="StringCancelAllOrders">Bütün Emirleri İptal et</system:String>
+    <system:String x:Key="StringLineFormat">Satır Formatı</system:String>
+    <system:String x:Key="StringAnalyzers">Analiz Araçları</system:String>
+    <system:String x:Key="StringPickFile">Dosya Seç</system:String>
+    <system:String x:Key="StringSave">Kaydet</system:String>
+    <system:String x:Key="StringInputFile1">Girdi dosya 1 :</system:String>
+    <system:String x:Key="StringInputFile2">Girdi dosya 2 :</system:String>
+    <system:String x:Key="StringTools">Araçlar</system:String>
+    <system:String x:Key="StringLogAnalyzers">Log Analiz</system:String>
+    <system:String x:Key="StringName">İsim</system:String>
+    <system:String x:Key="StringDelete">Sil</system:String>
+    <system:String x:Key="StringPick">Pick</system:String>
+    <system:String x:Key="StringStartAnalysis">Analize başla</system:String>
+    <system:String x:Key="StringLineFormats">Satır Formatları</system:String>
+    <system:String x:Key="StringOutFilePath">Çıktı Dosya Yolu</system:String>
+    <system:String x:Key="StringExportOrders">Emirleri Dışa aktar</system:String>
+    <system:String x:Key="StringErrorPopupName">Hata Oluştu</system:String>
+    <system:String x:Key="StringInvalidLineFormat">Geçersiz satır formatı</system:String>
+    <system:String x:Key="StringDestinationFilePath">Hedef dosya yolu</system:String>
 
+    <system:String x:Key="StringPleaseFillNameAndFormat">Lütfen isim ve format girin.</system:String>
+    <system:String x:Key="StringStartingAnalysis">Analize başlanıyor.</system:String>
+    <system:String x:Key="StringFinishedAnalysis">Analiz bitti.</system:String>
     <system:String x:Key="StringChannelNotConnectedWarning">Bu emrin kanalı için aktif bir bağlantı bulunamadı.</system:String>
     <system:String x:Key="StringConfigPasswordNotSetWarning">Konfigurasyonda "Password" belirtilmedi</system:String>
 </ResourceDictionary>
