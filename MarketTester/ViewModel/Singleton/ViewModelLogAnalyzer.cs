@@ -202,8 +202,7 @@ namespace MarketTester.ViewModel
             if(InfoTextResourceKey != null)
             {
                 InfoText = App.Current.Resources[InfoTextResourceKey].ToString();
-            }
-            
+            }            
         }
         #endregion
 

@@ -1,6 +1,6 @@
 ﻿BackLog
 
--->Scheduler UX design
+
 -->Scheduler Integration (logic classes)
 
 -->Free format message creation
@@ -8,7 +8,7 @@
 
 
 In Progress
--->Style disabled comboboxes textboxes	
+-->Scheduler UX design
 
 
 25.03.2020
@@ -37,3 +37,7 @@ Third Commit
 First Commit
 	-->FixLogAnalyzer Integration
 	-->FixLogAnalyzer page design
+	-->TabControl integration,ViewModel of LogAnalyzer is singleton because TabControl recalls constructors of its contents.
+Second Commit
+	-->Style disabled comboboxes textboxes	
+	-->DataGrid Cancel column width

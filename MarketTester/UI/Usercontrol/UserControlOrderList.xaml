@@ -36,13 +36,13 @@
                 <MouseBinding Gesture="LeftDoubleClick" Command="{Binding CommandOrderReplace}"/>
             </DataGrid.InputBindings>
             <DataGrid.Columns>
-                <DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="50">
                     <DataGridTemplateColumn.Header>
                         <TextBlock Text="{DynamicResource StringCancel}"/>
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Background="Transparent" BorderBrush="Transparent">
+                            <Button Background="Transparent" BorderBrush="Transparent" Width="30">
                                 <Button.InputBindings>
                                     <MouseBinding Gesture="LeftDoubleClick" Command="{Binding DataSource.CommandCancelOrder,Source={StaticResource ViewModelContext}}"/>
                                 </Button.InputBindings>
