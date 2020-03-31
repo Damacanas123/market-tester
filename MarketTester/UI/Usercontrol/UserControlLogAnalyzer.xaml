@@ -66,10 +66,10 @@
         <TextBlock Text="{Binding InputFilePath2}" Grid.Row="10" Grid.ColumnSpan="5" Grid.Column="1" Grid.RowSpan="2" TextWrapping="WrapWithOverflow"
                    Visibility="{Binding SecondFilePathVisibility}"/>
 
-        <Button Grid.Column="5" Grid.Row="1" Grid.RowSpan="1" Grid.ColumnSpan="2" Command="{Binding CommandSaveFormats}"
+        <Button Grid.Column="5" Grid.Row="2" Grid.RowSpan="1" Grid.ColumnSpan="2" Command="{Binding CommandSaveFormats}"
                 HorizontalAlignment="Left"
                 Content="{DynamicResource StringSave}"/>
-        <Path  Stroke="{DynamicResource BackgroundSecondary}" Fill="{DynamicResource BackgroundTernary}" Grid.Column="6"  Grid.Row="1"  Width="30"
+        <Path  Stroke="{DynamicResource BackgroundSecondary}" Fill="{DynamicResource BackgroundTernary}" Grid.Column="6"  Grid.Row="2"  Width="30"
                               Stretch="Fill" Margin="10,5,15,5">
             <Path.Data>
                 <GeometryGroup>

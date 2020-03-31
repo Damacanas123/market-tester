@@ -1,14 +1,11 @@
 ﻿BackLog
-
-
--->Scheduler Integration (logic classes)
-
--->Free format message creation
--->OUCH integration
+	-->Scheduler Integration (logic classes)
+	-->OUCH integration
 
 
 In Progress
--->Scheduler UX design
+	-->Scheduler UX design
+	-->Free format message creation
 
 
 25.03.2020
@@ -41,3 +38,6 @@ First Commit
 Second Commit
 	-->Style disabled comboboxes textboxes	
 	-->DataGrid Cancel column width
+Third Commit
+	-->Error pop up added
+	-->Popup name localization

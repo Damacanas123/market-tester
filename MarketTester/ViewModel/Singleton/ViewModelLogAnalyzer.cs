@@ -14,6 +14,7 @@ using System.Windows.Documents.DocumentStructures;
 using MarketTester.Helper;
 using System.Threading;
 using System.Runtime.CompilerServices;
+using System.IO;
 
 namespace MarketTester.ViewModel
 {
@@ -301,6 +302,7 @@ namespace MarketTester.ViewModel
             SelectedAnalyzer.SetLogParser(format);
             new Thread(() =>
             {
+                string errorMsgResourceKey = "";
                 try
                 {
                     SelectedAnalyzer.Start();
@@ -309,12 +311,23 @@ namespace MarketTester.ViewModel
                         SetInfoText("StringFinishedAnalysis");
                     });
                 }
+                catch(IOException ex)
+                {
+                    errorMsgResourceKey = "StringFileIsBeingUsed";
+                }
                 catch(Exception ex)
                 {
                     Util.LogError(ex);
+                    errorMsgResourceKey = "StringFailedAnalysis";
+                }
+                finally
+                {
                     Dispatcher.Invoke(() =>
                     {
-                        PopupManager.OpenGeneralPopup(new UserControlErrorPopup(), UserControlErrorPopup.nameResourceKey);
+                        UserControlErrorPopup popup = new UserControlErrorPopup();
+                        popup.SetErrorText(errorMsgResourceKey);
+                        PopupManager.OpenGeneralPopup(popup, UserControlErrorPopup.nameResourceKey);
+                        SetInfoText("StringFailedAnalysis");
                     });
                 }
                 

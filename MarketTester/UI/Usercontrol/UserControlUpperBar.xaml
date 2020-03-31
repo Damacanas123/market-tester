@@ -95,7 +95,7 @@
 
         </Button>
 
-        <TextBlock x:Name="LabelTitle" Text="Market Tester"
+        <TextBlock x:Name="TextBlockTitle" Text="Market Tester"
                HorizontalAlignment="Left"  VerticalAlignment="Center" Margin="0,0,0,-1" FontSize="20" Padding="5"
                Background="{DynamicResource BackgroundPrimary}"/>
     </Grid>

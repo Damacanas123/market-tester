@@ -18,6 +18,7 @@ namespace MarketTester.UI.Popup
         public static void OpenGeneralPopup(UserControl userControl,string nameResourceKey,double width,double height)
         {
             WindowBase popupWindow = new WindowBase(false,nameResourceKey);
+            popupWindow.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             popupWindow.MainGrid.Children.Add(userControl);
             popupWindow.Width = width;
             popupWindow.Height = height;

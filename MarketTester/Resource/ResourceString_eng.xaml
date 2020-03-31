@@ -65,6 +65,9 @@
     <system:String x:Key="StringInvalidLineFormat">Invalid line format</system:String>
     <system:String x:Key="StringDestinationFilePath">Destination File Path</system:String>
 
+
+    <system:String x:Key="StringFailedAnalysis">Analysis failed for an unknown reason.</system:String>
+    <system:String x:Key="StringFileIsBeingUsed">File is being used by another process.</system:String>
     <system:String x:Key="StringPleaseFillNameAndFormat">Please enter a name and a format.</system:String>
     <system:String x:Key="StringStartingAnalysis">Starting analysis.</system:String>
     <system:String x:Key="StringFinishedAnalysis">Finished analysis.</system:String>

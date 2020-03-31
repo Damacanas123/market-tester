@@ -67,11 +67,11 @@ namespace MarketTester.UI.Usercontrol
         {
             if (App.Current.Resources.Contains(nameResourceKey))
             {
-                LabelTitle.SetResourceReference(Label.ContentProperty, nameResourceKey);
+                TextBlockTitle.SetResourceReference(TextBlock.TextProperty, nameResourceKey);
             }
             else
             {
-                LabelTitle.Text = nameResourceKey;
+                TextBlockTitle.Text = nameResourceKey;
             }
             
         }

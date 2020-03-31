@@ -64,6 +64,9 @@
     <system:String x:Key="StringInvalidLineFormat">Geçersiz satır formatı</system:String>
     <system:String x:Key="StringDestinationFilePath">Hedef dosya yolu</system:String>
 
+
+    <system:String x:Key="StringFailedAnalysis">Analiz bilinmeyen bir sebepten yapılamadı.</system:String>
+    <system:String x:Key="StringFileIsBeingUsed">Dosya başka bir işlem tarafından kullanılıyor.</system:String>
     <system:String x:Key="StringPleaseFillNameAndFormat">Lütfen isim ve format girin.</system:String>
     <system:String x:Key="StringStartingAnalysis">Analize başlanıyor.</system:String>
     <system:String x:Key="StringFinishedAnalysis">Analiz bitti.</system:String>

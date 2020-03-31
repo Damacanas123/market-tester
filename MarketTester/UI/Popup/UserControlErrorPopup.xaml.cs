@@ -25,5 +25,13 @@ namespace MarketTester.UI.Popup
         {
             InitializeComponent();
         }
+
+        public void SetErrorText(string resourceKey)
+        {
+            if (App.Current.Resources.Contains(resourceKey))
+                TextBlockErrorText.SetResourceReference(TextBlock.TextProperty, resourceKey);
+            else
+                TextBlockErrorText.Text = resourceKey;
+        }
     }
 }
