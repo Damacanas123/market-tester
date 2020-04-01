@@ -50,8 +50,8 @@
                                                   Grid.ColumnSpan="12"
                                           x:Name="UserControlsOrders"
                                                   />
-        <usercontrol:UserControlOrderEntry1 Grid.Row="0"
-                                                  Grid.RowSpan="4"
+        <usercontrol:UserControlOrderEntry1 Grid.Row="1"
+                                                  Grid.RowSpan="3"
                                                   Grid.Column="0"
                                                   Grid.ColumnSpan="4"
                                                   />

@@ -36,5 +36,13 @@ namespace Test
                 Console.WriteLine(pos);
             }
         }
+
+        [TestMethod]
+        public void TestFixStringBuilder()
+        {
+            (string, string)[] heyo = new (string, string)[] { ("35","D"),("55","GARAN") };
+            string msg = BackOfficeEngine.Helper.Fix.GetFixString(BackOfficeEngine.ProtocolType.Fix42, heyo);
+            Console.WriteLine(msg);
+        }
     }
 }

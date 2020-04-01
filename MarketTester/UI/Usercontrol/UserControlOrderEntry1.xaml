@@ -22,39 +22,41 @@
         <Style TargetType="RadioButton">
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
-            Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=50}"/>
+            <Setter Property="Margin" Value="5,0,5,0"/>
         </Style>
         <Style BasedOn="{StaticResource {x:Type ComboBox}}" TargetType="ComboBox">
             <Setter Property="BorderBrush" Value="{Binding SideColor}"/>
-            <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
-            Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=50}"/>
+            <Setter Property="Width" Value="110"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="5,0,5,0"/>
         </Style>
         <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="TextBox">
-            <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
-            Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=50}"/>
+            <Setter Property="Width" Value="110"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="5,0,5,0"/>
         </Style>
         <Style x:Key="ButtonInPlace" BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
-            <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
-            Path=ActualWidth,Converter={StaticResource DoubleConverter},ConverterParameter=100}"/>
+            <Setter Property="Width" Value="110"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="5,0,5,0"/>
         </Style>
 
     </UserControl.Resources>
     <Grid  x:Name="mainGrid" Background="{StaticResource BackgroundPrimary}" Margin="5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="2*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
 
         <ComboBox x:Name="comboAccount"
@@ -125,7 +127,7 @@
                     IsEditable="False"
                   IsEnabled="{Binding IsNewOrderWindow}"
                   SelectedItem="{Binding TimeInForce}"/>
-        <TextBlock Grid.Row="4" Text="{Binding StatusText}" TextWrapping="Wrap"
+        <TextBlock Grid.Row="4" Text="{Binding InfoText}" TextWrapping="Wrap"
                    Grid.ColumnSpan="6"/>
     </Grid>
 </UserControl>

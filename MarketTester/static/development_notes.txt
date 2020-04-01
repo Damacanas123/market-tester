@@ -1,7 +1,7 @@
 ﻿BackLog
 	-->Scheduler Integration (logic classes)
 	-->OUCH integration
-
+	-->Account and Positions pages.
 
 In Progress
 	-->Scheduler UX design

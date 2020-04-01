@@ -31,6 +31,7 @@ namespace MarketTester.Model
         public static void LoadLineFormats()
         {
             string[] formats = Util.ReadLines(SaveFilePath);
+            Formats.Clear();
             for(int i = 0; i < formats.Length - 1; i++)
             {
                 string format = formats[i];

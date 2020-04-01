@@ -322,13 +322,17 @@ namespace MarketTester.ViewModel
                 }
                 finally
                 {
-                    Dispatcher.Invoke(() =>
+                    if(errorMsgResourceKey != "")
                     {
-                        UserControlErrorPopup popup = new UserControlErrorPopup();
-                        popup.SetErrorText(errorMsgResourceKey);
-                        PopupManager.OpenGeneralPopup(popup, UserControlErrorPopup.nameResourceKey);
-                        SetInfoText("StringFailedAnalysis");
-                    });
+                        Dispatcher.Invoke(() =>
+                        {
+                            UserControlErrorPopup popup = new UserControlErrorPopup();
+                            popup.SetErrorText(errorMsgResourceKey);
+                            PopupManager.OpenGeneralPopup(popup, UserControlErrorPopup.nameResourceKey);
+                            SetInfoText("StringFailedAnalysis");
+                        });
+                    }
+                    
                 }
                 
                 

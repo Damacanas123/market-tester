@@ -11,7 +11,7 @@ using BackOfficeEngine.MessageEnums;
 
 namespace BackOfficeEngine.Model
 {
-    internal class QuickFixMessage : Message,IMessage
+    public class QuickFixMessage : Message,IMessage
     {
         private const string UTCTimestampFormat = "yyyyMMdd-HH:mm:ss.fff";
         public ProtocolType protocolType { get; set; }
@@ -22,7 +22,7 @@ namespace BackOfficeEngine.Model
         {
             this.protocolType = ProtocolType.Fix50sp2;
         }
-        internal QuickFixMessage() : base() 
+        public QuickFixMessage() : base() 
         {
             PreConstructorCommonWork();
         }

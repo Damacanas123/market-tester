@@ -63,6 +63,10 @@
     <system:String x:Key="StringErrorPopupName">Hata Oluştu</system:String>
     <system:String x:Key="StringInvalidLineFormat">Geçersiz satır formatı</system:String>
     <system:String x:Key="StringDestinationFilePath">Hedef dosya yolu</system:String>
+    <system:String x:Key="StringGTag">Etiket</system:String>
+    <system:String x:Key="StringValue">Değer</system:String>
+    <system:String x:Key="StringAdd">Ekle</system:String>
+    <system:String x:Key="StringSelect">Seç</system:String>
 
 
     <system:String x:Key="StringFailedAnalysis">Analiz bilinmeyen bir sebepten yapılamadı.</system:String>

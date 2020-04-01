@@ -64,7 +64,10 @@
     <system:String x:Key="StringErrorPopupName">Error Occured</system:String>
     <system:String x:Key="StringInvalidLineFormat">Invalid line format</system:String>
     <system:String x:Key="StringDestinationFilePath">Destination File Path</system:String>
-
+    <system:String x:Key="StringTag">Tag</system:String>
+    <system:String x:Key="StringValue">Value</system:String>
+    <system:String x:Key="StringAdd">Add</system:String>
+    <system:String x:Key="StringSelect">Select</system:String>
 
     <system:String x:Key="StringFailedAnalysis">Analysis failed for an unknown reason.</system:String>
     <system:String x:Key="StringFileIsBeingUsed">File is being used by another process.</system:String>

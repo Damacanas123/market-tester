@@ -20,18 +20,11 @@
 
         <DataGrid ItemsSource="{Binding Source={x:Static backofficeengine_model:Order.Orders}}" 
                   x:Name="DataGridOrders"
-                  Background="{StaticResource BackgroundPrimary}" 
                   BorderThickness="0"
-                  AlternatingRowBackground="{StaticResource BackgroundSecondary}"
-                  RowBackground="{StaticResource BackgroundPrimary}"
-                  AlternationCount="2" AutoGenerateColumns="False"
-                  Foreground="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=Foreground}"
-                  AllowDrop="False"
                   IsReadOnly="True"
-                  RowHeaderWidth="0"
-                    IsSynchronizedWithCurrentItem="True"
                   SelectedItem="{Binding SelectedOrder}"
-                  RowHeight="29">
+                  AutoGenerateColumns="False"
+                  RowHeight="30">
             <DataGrid.InputBindings>
                 <MouseBinding Gesture="LeftDoubleClick" Command="{Binding CommandOrderReplace}"/>
             </DataGrid.InputBindings>
@@ -136,12 +129,7 @@
             </DataGrid.Columns>
             <DataGrid.Resources>
                 <converter:DoubleConverter x:Key="DoubleConverter"/>
-                <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
-                    <Setter Property="Background" Value="{StaticResource BackgroundSecondary}" />
-                    <Setter Property="BorderBrush" Value="{StaticResource BackgroundTernary}"/>
-                    <Setter Property="BorderThickness" Value="1,3,1,3"/>
-                    <Setter Property="Padding" Value="3,2,3,2"/>
-                </Style>
+                
             </DataGrid.Resources>
         </DataGrid>
     </Grid>

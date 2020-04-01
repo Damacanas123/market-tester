@@ -97,13 +97,40 @@ namespace MarketTester.ViewModel
                 Channel = Connector.GetInstance().ActiveChannels.FirstOrDefault((o) => o.ConnectorName == order.ConnectorName);
                 if(Channel == null)
                 {
-                    StatusText = App.Current.Resources["StringChannelNotConnectedWarning"] + " (" + order.ConnectorName + ")";
+                    InfoTextResourceKey = "StringChannelNotConnectedWarning";
                 }
             }
         }
 
-        private string statusText;
-        public string StatusText { get { return statusText; } set { statusText = value; NotifyPropertyChanged(nameof(StatusText)); } }
+        private string infoTextResourceKey;
+        private string InfoTextResourceKey
+        {
+            get
+            {
+                return infoTextResourceKey;
+            }
+            set
+            {
+                infoTextResourceKey = value;
+                if (App.Current.Resources.Contains(value))
+                {
+                    InfoText = App.Current.Resources[value] + " (" + order.ConnectorName + ")";
+                }
+                
+            }
+        }
+
+        private void OnLanguageChanged()
+        {
+            if(InfoTextResourceKey != null)
+            {
+                InfoText = App.Current.Resources[InfoTextResourceKey].ToString() + " (" + order.ConnectorName + ")";
+            }
+            
+        }
+
+        private string infoText;
+        public string InfoText { get { return infoText; } set { infoText = value; NotifyPropertyChanged(nameof(InfoText)); } }
 
         
         public ObservableCollection<Channel> Channels { get; set; } = new ObservableCollection<Channel>();
@@ -181,6 +208,7 @@ namespace MarketTester.ViewModel
             UpdateChannelsCollection();
             Connection.Connector.GetInstance().ActiveChannels.CollectionChanged += OnChannelsCollectionChanged;
             SetDefault();
+            Settings.GetInstance().LanguageChangedEventHandler += OnLanguageChanged;
         }
 
         private void SetDefault()
