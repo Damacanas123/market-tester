@@ -69,6 +69,14 @@
     <system:String x:Key="StringAdd">Add</system:String>
     <system:String x:Key="StringSelect">Select</system:String>
     <system:String x:Key="StringProtocolType">Protocol Type</system:String>
+    <system:String x:Key="StringSchedule">Schedule</system:String>
+    <system:String x:Key="StringRemoveFromSchedule">Remove item</system:String>
+    <system:String x:Key="StringClearSchedule">Clear schedule</system:String>
+    <system:String x:Key="StringStartSchedule">Start schedule</system:String>
+    <system:String x:Key="StringScheduler">Scheduler</system:String>
+    <system:String x:Key="StringDelayMilliSecond">Delay (Millisecond)</system:String>
+    <system:String x:Key="StringTagEmpty">Tag can't be empty.</system:String>
+    <system:String x:Key="StringValueEmpty">Value can't be empty.</system:String>
 
     <system:String x:Key="StringFailedAnalysis">Analysis failed for an unknown reason.</system:String>
     <system:String x:Key="StringFileIsBeingUsed">File is being used by another process.</system:String>

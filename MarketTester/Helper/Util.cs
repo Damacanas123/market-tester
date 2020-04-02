@@ -496,6 +496,10 @@ namespace MarketTester.Helper
 
         public static Dictionary<int, string> GetTagValuePairs(Message m)
         {
+            return GetTagValuePairs(m.ToString());
+        }
+        public static Dictionary<int, string> GetTagValuePairs(string m)
+        {
             Dictionary<int, string> pairs = new Dictionary<int, string>();
             string mString = m.ToString();
             string[] keyValues = mString.Split((char)1);

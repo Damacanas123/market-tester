@@ -68,7 +68,14 @@
     <system:String x:Key="StringAdd">Ekle</system:String>
     <system:String x:Key="StringSelect">Seç</system:String>
     <system:String x:Key="StringProtocolType">Protocol Type</system:String>
-
+    <system:String x:Key="StringSchedule">Emir planı</system:String>
+    <system:String x:Key="StringRemoveFromSchedule">Plandan sil</system:String>
+    <system:String x:Key="StringClearSchedule">Planı temizle</system:String>
+    <system:String x:Key="StringStartSchedule">Planı başlat</system:String>
+    <system:String x:Key="StringScheduler">Planlayıcı</system:String>
+    <system:String x:Key="StringDelayMilliSecond">Gecikme (Milisaniye)</system:String>
+    <system:String x:Key="StringTagEmpty">Etiket boş olamaz.</system:String>
+    <system:String x:Key="StringValueEmpty">Değer boş olamaz.</system:String>
 
     <system:String x:Key="StringFailedAnalysis">Analiz bilinmeyen bir sebepten yapılamadı.</system:String>
     <system:String x:Key="StringFileIsBeingUsed">Dosya başka bir işlem tarafından kullanılıyor.</system:String>

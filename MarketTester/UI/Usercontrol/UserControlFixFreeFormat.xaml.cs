@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MarketTester.Helper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,16 @@ namespace MarketTester.UI.Usercontrol
         public UserControlFixFreeFormat()
         {
             InitializeComponent();
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Util.RemoveNonNumeric(((TextBox)sender).Text);
+        }
+
+        private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
+        {
+            Util.RemoveNonNumeric(((TextBox)sender).Text);
         }
     }
 }

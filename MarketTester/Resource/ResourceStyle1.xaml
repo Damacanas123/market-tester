@@ -558,10 +558,10 @@
                             HorizontalAlignment="Left" 
                             VerticalAlignment="Center" 
                             Margin="3,3,23,3"
-                            Focusable="False" 
+                            Focusable="True" 
                             Foreground="{StaticResource TextColor}"
                             Background="{TemplateBinding Background}"
-                            Visibility="Visible"
+                            Visibility="Hidden"
                             IsReadOnly="{TemplateBinding IsReadOnly}"/>
                         <Popup 
                             Name="Popup"
