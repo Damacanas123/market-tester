@@ -9,7 +9,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="5*"/>
+            <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*"/>
@@ -23,11 +23,15 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="2*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="2*"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Column="0" Grid.Row="0" Text="{DynamicResource StringTag}" VerticalAlignment="Center" Margin="10,0,0,0"/>
-            <TextBlock Grid.Column="1" Grid.Row="0" Text="{DynamicResource StringValue}" VerticalAlignment="Center" Margin="10,0,0,0"/>
-            <TextBox Grid.Column="0" Grid.Row="1" Text="{Binding TextTag}" VerticalAlignment="Center" Margin="10"/>
-            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding TextValue}" VerticalAlignment="Center" Margin="10"/>
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="{DynamicResource StringProtocolType}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+            <ComboBox Grid.Column="0" Grid.Row="1" ItemsSource="{Binding AvailableProtocols}" Margin="10" Height="30"/>
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="{DynamicResource StringTag}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+            <TextBlock Grid.Column="1" Grid.Row="2" Text="{DynamicResource StringValue}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+            <TextBox Grid.Column="0" Grid.Row="3" Text="{Binding TextTag}" VerticalAlignment="Center" Margin="10"/>
+            <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding TextValue}" VerticalAlignment="Center" Margin="10"/>
         </Grid>
         <Button Grid.Column="1" Grid.Row="0" Width="60" Height="30" Command="{Binding CommandAddTagValuePair}" Content="{DynamicResource StringAdd}" Margin="0"/>
         <DataGrid ItemsSource="{Binding TagValuePairs}" BorderBrush="{DynamicResource BackgroundTernary}" Grid.Column="0" Grid.Row="1" Background="Transparent"

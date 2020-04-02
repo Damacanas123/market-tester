@@ -10,7 +10,7 @@ namespace BackOfficeEngine.Helper
     public class Fix
     {
         public const char FixDelimiter = (char)1;
-        public static string GetFixString(ProtocolType protocolType,(string,string) [] tagValuePairs)
+        public static string GetFixString(ProtocolType protocolType,List<(string,string)> tagValuePairs)
         {
             string msg = "8=";
             switch (protocolType)

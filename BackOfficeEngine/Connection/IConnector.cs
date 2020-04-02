@@ -17,7 +17,8 @@ namespace BackOfficeEngine.Connection
         void Connect();
         void Disconnect();
         void SendMsgOrderEntry(IMessage msg);
-        
-        
+        void SendMsgOrderEntry(string msg);
+
+
     }
 }

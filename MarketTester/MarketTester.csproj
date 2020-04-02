@@ -1,0 +1,304 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B5CBF187-5D4E-4CC3-8E47-FEFE27D18C27}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>MarketTester</RootNamespace>
+    <AssemblyName>MarketTester</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net462\ControlzEx.dll</HintPath>
+    </Reference>
+    <Reference Include="FixHelper">
+      <HintPath>..\..\..\..\..\..\MATRIKS_OMS\.NET dependencies\FixHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="FixLogAnalyzer">
+      <HintPath>..\..\..\..\..\..\MATRIKS_OMS\.NET dependencies\FixLogAnalyzer.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net47\MahApps.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="QuickFix">
+      <HintPath>..\..\RDSymbolSessionController\RDSymbolSessionController\external lib\QuickFix.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net462\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Base\BaseCommand.cs" />
+    <Compile Include="Base\BaseNotifier.cs" />
+    <Compile Include="Connection\Connector.cs" />
+    <Compile Include="Const\Const.cs" />
+    <Compile Include="Converters\DoubleConverter.cs" />
+    <Compile Include="Converters\RadioButtonOrdTypeConverter.cs" />
+    <Compile Include="Converters\SideConverter.cs" />
+    <Compile Include="Enumeration\EInfo.cs" />
+    <Compile Include="Enumeration\ELanguage.cs" />
+    <Compile Include="Events\LanguageChangedEvent.cs" />
+    <Compile Include="Helper\JsonConfig.cs" />
+    <Compile Include="Helper\DataContextProxy.cs" />
+    <Compile Include="Extensions\WindowExtensions.cs" />
+    <Compile Include="Helper\Settings.cs" />
+    <Compile Include="Helper\UIUtil.cs" />
+    <Compile Include="Model\Channel.cs" />
+    <Compile Include="Model\ConfigFile.cs" />
+    <Compile Include="Model\FixFreeFormat\TagValuePair.cs" />
+    <Compile Include="Model\LogAnalyzer\LineFormat.cs" />
+    <Compile Include="UI\Popup\PopupManager.cs" />
+    <Compile Include="UI\Popup\UserControlErrorPopup.xaml.cs">
+      <DependentUpon>UserControlErrorPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Popup\UserControlExportOrders.xaml.cs">
+      <DependentUpon>UserControlExportOrders.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Usercontrol\Custom\UserControlCloseButton.xaml.cs">
+      <DependentUpon>UserControlCloseButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Usercontrol\Custom\UserControlFlashingEllipse.xaml.cs">
+      <DependentUpon>UserControlFlashingEllipse.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Usercontrol\Custom\UserControlTabHeader.xaml.cs">
+      <DependentUpon>UserControlTabHeader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Usercontrol\Menu\Upper\UserControlMainWindowUpperMenu.xaml.cs">
+      <DependentUpon>UserControlMainWindowUpperMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Usercontrol\MultiContainersUC\UserControlMainContainer.xaml.cs">
+      <DependentUpon>UserControlMainContainer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Usercontrol\UserControlChannels.xaml.cs">
+      <DependentUpon>UserControlChannels.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Usercontrol\UserControlFixFreeFormat.xaml.cs">
+      <DependentUpon>UserControlFixFreeFormat.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Usercontrol\UserControlLogAnalyzer.xaml.cs">
+      <DependentUpon>UserControlLogAnalyzer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Usercontrol\UserControlInfoBox.xaml.cs">
+      <DependentUpon>UserControlInfoBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Usercontrol\UserControlOrderList.xaml.cs">
+      <DependentUpon>UserControlOrderList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Usercontrol\UserControlUpperBar.xaml.cs">
+      <DependentUpon>UserControlUpperBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\window\MainWindowStarter.cs" />
+    <Compile Include="UI\window\WindowBase.xaml.cs">
+      <DependentUpon>WindowBase.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\Manager\InfoManager.cs" />
+    <Compile Include="ViewModel\ViewModelChannels.cs" />
+    <Compile Include="ViewModel\ViewModelExportOrders.cs" />
+    <Compile Include="ViewModel\ViewModelFixFreeFormat.cs" />
+    <Compile Include="ViewModel\ViewModelInfoBox.cs" />
+    <Compile Include="ViewModel\Singleton\ViewModelLogAnalyzer.cs" />
+    <Compile Include="ViewModel\ViewModelMainWindowUpperBar.cs" />
+    <Compile Include="ViewModel\ViewModelOrderEntry.cs" />
+    <Compile Include="ViewModel\ViewModelOrderList.cs" />
+    <Page Include="Resource\ResourceString_common.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resource\ResourceString_eng.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resource\ResourceString_tur.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resource\ResourceStyle1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Popup\UserControlErrorPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Popup\UserControlExportOrders.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Usercontrol\Custom\UserControlCloseButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Usercontrol\Custom\UserControlFlashingEllipse.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Usercontrol\Custom\UserControlTabHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Usercontrol\Menu\Upper\UserControlMainWindowUpperMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Usercontrol\MultiContainersUC\UserControlMainContainer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Usercontrol\UserControlChannels.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Usercontrol\UserControlFixFreeFormat.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Usercontrol\UserControlLogAnalyzer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Usercontrol\UserControlInfoBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Usercontrol\UserControlOrderEntry1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\Usercontrol\UserControlOrderList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Usercontrol\UserControlUpperBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helper\Util.cs" />
+    <Compile Include="UI\Usercontrol\UserControlOrderEntry1.xaml.cs">
+      <DependentUpon>UserControlOrderEntry1.xaml</DependentUpon>
+    </Compile>
+    <Page Include="UI\window\WindowBase.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Resource Include="Resource\Image\error_image.png" />
+    <Content Include="static\lineformats.save">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="static\development_notes.txt" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Resource Include="Resource\Image\cross.png" />
+    <Content Include="static\config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BackOfficeEngine\BackOfficeEngine.csproj">
+      <Project>{549e570d-dca5-4529-b011-ad981a07a6a2}</Project>
+      <Name>BackOfficeEngine</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

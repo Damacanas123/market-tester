@@ -156,6 +156,8 @@ namespace BackOfficeEngine
             return m_nonProtocolPseudoIDMap[prms.nonProtocolID].PrepareCancelMessage();
         }
 
+
+
         public void SendMessageNew(NewMessageParameters prms,string connectorName)
         {
             if (m_connectors.ContainsKey(connectorName))

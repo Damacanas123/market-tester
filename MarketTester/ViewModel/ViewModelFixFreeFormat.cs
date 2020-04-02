@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using MarketTester.Base;
 using MarketTester.Model.FixFreeFormat;
 
-using BackOfficeEngine.Model;
+using BackOfficeEngine.Helper;
 using QuickFix.Fields;
 using System.Globalization;
 
@@ -40,6 +40,8 @@ namespace MarketTester.ViewModel
             }
         }
 
+        
+
         private string textTag;
         public string TextTag
         {
@@ -61,17 +63,20 @@ namespace MarketTester.ViewModel
             }
         }
         public int SelectedTagValuePairIndex { get; set; }
-        public QuickFixMessage Message
+        public string Message
         {
             get
             {
-                QuickFixMessage msg = new QuickFixMessage();
-                //msg.SetField(new StringField(8,))
+                List<(string, string)> tagValuesArr = new List<(string, string)>();
+                
                 foreach(TagValuePair pair in TagValuePairs)
                 {
-                    msg.SetField(new StringField(int.Parse(pair.Tag, CultureInfo.InvariantCulture), pair.Value));
+                    if (pair.IsSelected)
+                    {
+                        tagValuesArr.Add((pair.Tag, pair.Value));
+                    }                    
                 }
-                return msg;
+                return Fix.GetFixString(ProtocolType,tagValuesArr);
             }
         }
 

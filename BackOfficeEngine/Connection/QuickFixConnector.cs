@@ -173,7 +173,13 @@ namespace BackOfficeEngine.Connection
         {
             //Session session = m_symbolMap[msg.GetSymbol()];
             Message quickFixMsg = new Message(msg.ToString());
-            msg.SendTime = DateTime.Now;
+            primarySession.Send(quickFixMsg);
+        }
+
+        public void SendMsgOrderEntry(string msg)
+        {
+            //Session session = m_symbolMap[msg.GetSymbol()];
+            Message quickFixMsg = new Message(msg);
             primarySession.Send(quickFixMsg);
         }
     }
