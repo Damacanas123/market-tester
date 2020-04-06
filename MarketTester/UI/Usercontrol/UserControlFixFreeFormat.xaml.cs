@@ -26,14 +26,10 @@ namespace MarketTester.UI.Usercontrol
             InitializeComponent();
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Util.RemoveNonNumeric(((TextBox)sender).Text);
-        }
-
-        private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
-        {
-            Util.RemoveNonNumeric(((TextBox)sender).Text);
+            DataGridTagValues.UnselectAll();
+            DataGridScheduleItems.UnselectAll();
         }
     }
 }

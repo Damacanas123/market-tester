@@ -2,10 +2,10 @@
 	-->Scheduler Integration (logic classes)
 	-->OUCH integration
 	-->Account and Positions pages.
+	-->Add log view page for Free format scheduler
 
 In Progress
 	-->Scheduler UX design
-	-->Free format message creation
 
 
 25.03.2020
@@ -41,3 +41,9 @@ Second Commit
 Third Commit
 	-->Error pop up added
 	-->Popup name localization
+
+06.04.2020
+First Commit
+	-->Free format message creation
+Second Commit
+	-->Free format scheduler page completed

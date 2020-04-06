@@ -106,5 +106,6 @@ namespace MarketTester
         public const string StringConfigPasswordNotSetWarning = "StringConfigPasswordNotSetWarning";
         public const string StringPleaseSelectAChannel = "StringPleaseSelectAChannel";
         public const string StringChannelNotConnected = "StringChannelNotConnected";
+        public const string StringCannotParseDelayFromFile = "StringCannotParseDelayFromFile";
     }
 }

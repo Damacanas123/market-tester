@@ -43,6 +43,8 @@
         <Setter Property="AllowDrop" Value="False"/>
         <Setter Property="RowHeaderWidth" Value="0"/>
         <Setter Property="IsSynchronizedWithCurrentItem" Value="True"/>
+        <Setter Property="CanUserAddRows" Value="False"/>
+        <Setter Property="CanUserDeleteRows" Value="False"/>
     </Style>
 
     <Style TargetType="{x:Type DataGridCell}">

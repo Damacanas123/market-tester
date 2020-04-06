@@ -22,6 +22,18 @@ namespace MarketTester.Model.FixFreeFormat
 			}
 		}
 
+		private string channel;
+
+		public string Channel
+		{
+			get { return channel; }
+			set
+			{
+				channel = value;
+				NotifyPropertyChanged(nameof(Channel));
+			}
+		}
+
 		private string message;
 
 		public string Message
@@ -33,18 +45,8 @@ namespace MarketTester.Model.FixFreeFormat
 				NotifyPropertyChanged(nameof(Message));
 			}
 		}
-		private Channel channel;
-
-		public Channel Channel
-		{
-			get { return channel; }
-			set
-			{
-				channel = value;
-				NotifyPropertyChanged(nameof(Channel));
-			}
-		}
-		public FreeFormatScheduleItem(int delay,string message,Channel channel)
+		
+		public FreeFormatScheduleItem(int delay,string message,string channel)
 		{
 			Delay = delay;
 			Message = message;

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using MarketTester.Base;
 using MarketTester.Model.FixFreeFormat;
+using MarketTester.UI.Usercontrol;
 
 using BackOfficeEngine.Helper;
 using QuickFix.Fields;
@@ -15,6 +16,10 @@ using System.Globalization;
 using BackOfficeEngine;
 using MarketTester.Model;
 using MarketTester.Helper;
+using System.Threading;
+using Microsoft.Win32;
+using MarketTester.UI.Popup;
+using System.IO;
 
 namespace MarketTester.ViewModel
 {
@@ -28,15 +33,27 @@ namespace MarketTester.ViewModel
         {
             ProtocolType = ProtocolType.Fix50sp2;
             Settings.GetInstance().LanguageChangedEventHandler += OnLanguageChanged;
+
             CommandAddMessageToSchedule = new BaseCommand(CommandAddMessageToScheduleExecute, CommandAddMessageToScheduleCanExecute);
             CommandAddTagValuePair = new BaseCommand(CommandAddTagValuePairExecute, CommandAddTagValuePairCanExecute);
             CommandClearTagValuePairs = new BaseCommand(CommandClearTagValuePairsExecute, CommandClearTagValuePairsCanExecute);
             CommandDeleteTagValuePair = new BaseCommand(CommandDeleteTagValuePairExecute, CommandDeleteTagValuePairCanExecute);
             CommandSelectMessageFromSchedule = new BaseCommand(CommandSelectMessageFromScheduleExecute, CommandSelectMessageFromScheduleCanExecute);
             CommandSendMessage = new BaseCommand(CommandSendMessageExecute, CommandSendMessageCanExecute);
+            CommandAddSchedule = new BaseCommand(CommandAddScheduleExecute, CommandAddScheduleCanExecute);
+            CommandSaveFile = new BaseCommand(CommandSaveFileExecute, CommandSaveFileCanExecute);
+            CommandLoadFile = new BaseCommand(CommandLoadFileExecute, CommandLoadFileCanExecute);
+            CommandStartSchedule = new BaseCommand(CommandStartScheduleExecute, CommandStartScheduleCanExecute);
+            CommandClearSchedule = new BaseCommand(CommandClearScheduleExecute, CommandClearScheduleCanExecute);
+            CommandRemoveItemFromSchedule = new BaseCommand(CommandRemoveItemFromScheduleExecute, CommandRemoveItemFromScheduleCanExecute);
+            CommandMoveMessageDown = new BaseCommand(CommandMoveMessageDownExecute, CommandMoveMessageDownCanExecute);
+            CommandMoveMessageUp = new BaseCommand(CommandMoveMessageUpExecute, CommandMoveMessageUpCanExecute);
+
             Connection.Connector.ActiveChannels.CollectionChanged += OnActiveChannelsCollectionChanged;
-            SelectedSchedule = new FreeFormatSchedule() { Name = "Scheduler1" };
+            SelectedSchedule = new FreeFormatSchedule() { Name = "Schedule1" };
             Schedules.Add(SelectedSchedule);
+
+            TagValuePairs.Add(new TagValuePair("35", "D"));
         }
         public ObservableCollection<FreeFormatSchedule> Schedules { get; set; } = new ObservableCollection<FreeFormatSchedule>();
         public ObservableCollection<TagValuePair> TagValuePairs { get; set; } = new ObservableCollection<TagValuePair>();
@@ -97,6 +114,19 @@ namespace MarketTester.ViewModel
             }
         }
 
+        private int selectedScheduleItemIndex;
+
+        public int SelectedScheduleItemIndex
+        {
+            get { return selectedScheduleItemIndex; }
+            set
+            {
+                selectedScheduleItemIndex = value;
+                NotifyPropertyChanged(nameof(SelectedScheduleItemIndex));
+            }
+        }
+
+
         private FreeFormatSchedule selectedSchedule;
 
         public FreeFormatSchedule SelectedSchedule
@@ -153,7 +183,7 @@ namespace MarketTester.ViewModel
             get { return textTag; }
             set
             {
-                textTag = value;
+                textTag = Util.RemoveNonNumeric(value);                
                 NotifyPropertyChanged(nameof(TextTag));
             }
         }
@@ -174,7 +204,7 @@ namespace MarketTester.ViewModel
             get { return textDelay; }
             set
             {
-                textDelay = value;
+                textDelay = Util.RemoveNonNumeric(value);
                 NotifyPropertyChanged(nameof(TextDelay));
             }
         }
@@ -208,13 +238,16 @@ namespace MarketTester.ViewModel
             {
                 App.Current.Dispatcher.Invoke((Action)delegate
                 {
-                    Channels.Clear();
-                    foreach (Channel channel in Connection.Connector.ActiveChannels)
+                    lock (Channels)
                     {
-                        if (channel.IsConnected)
+                        Channels.Clear();
+                        foreach (Channel channel in Connection.Connector.ActiveChannels)
                         {
-                            if (!Channels.Contains(channel))
-                                Channels.Add(channel);
+                            if (channel.IsConnected)
+                            {
+                                if (!Channels.Contains(channel))
+                                    Channels.Add(channel);
+                            }
                         }
                     }
                 });
@@ -312,7 +345,7 @@ namespace MarketTester.ViewModel
                 {
                     delay = int.Parse(TextDelay, CultureInfo.InvariantCulture);
                 }                
-                FreeFormatScheduleItem item = new FreeFormatScheduleItem(delay, Message, SelectedChannel);
+                FreeFormatScheduleItem item = new FreeFormatScheduleItem(delay, Message, SelectedChannel.Name);
                 SelectedSchedule.Items.Add(item);
             }
             else
@@ -354,9 +387,180 @@ namespace MarketTester.ViewModel
         public BaseCommand CommandAddSchedule { get; set; }
         public void CommandAddScheduleExecute(object param)
         {
-
+            Schedules.Add(new FreeFormatSchedule() { Name = "Schedule" + (Schedules.Count + 1).ToString(CultureInfo.InvariantCulture) });
         }
         public bool CommandAddScheduleCanExecute()
+        {
+            return true;
+        }
+        #endregion
+
+
+        private const string SaveDelimiter = "dsdfprtotoelxlvmbd\n";
+        private const string FreeFormatSaveFileExtension = "ffsf";
+        #region CommandSaveFile
+        public BaseCommand CommandSaveFile { get; set; }
+        public void CommandSaveFileExecute(object param)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = FreeFormatSaveFileExtension + " file|*." + FreeFormatSaveFileExtension;
+            dialog.InitialDirectory = Util.APPLICATION_FREEFORMATSCHEDULE_DIR;
+            dialog.ShowDialog();
+            if (!string.IsNullOrWhiteSpace(dialog.FileName))
+            {
+                new Thread(() =>
+                {
+                    lock (Schedules)
+                    {
+                        foreach (FreeFormatSchedule schedule in Schedules)
+                        {
+                            if (File.Exists(dialog.FileName))
+                            {
+                                File.Delete(dialog.FileName);
+                            }
+                            Util.AppendStringToFile(dialog.FileName, SaveDelimiter + schedule.SaveString);
+                        }
+                    }
+                }).Start();
+            }
+        }
+        public bool CommandSaveFileCanExecute()
+        {
+            return true;
+        }
+        #endregion
+
+
+        #region CommandLoadFile
+        public BaseCommand CommandLoadFile { get; set; }
+        public void CommandLoadFileExecute(object param)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            try
+            {   
+                dialog.InitialDirectory = Util.APPLICATION_FREEFORMATSCHEDULE_DIR;
+                dialog.Filter = FreeFormatSaveFileExtension + " file|*." + FreeFormatSaveFileExtension;
+                dialog.ShowDialog();
+                List<FreeFormatSchedule> tempList = new List<FreeFormatSchedule>(10);
+                if (!string.IsNullOrWhiteSpace(dialog.FileName))
+                {
+                    new Thread(() =>
+                    {
+                        string content = Util.ReadFile(dialog.FileName);
+                        string[] splits = content.Split(new string[] { SaveDelimiter }, StringSplitOptions.RemoveEmptyEntries);
+                        foreach (string saveString in splits)
+                        {
+                            FreeFormatSchedule schedule = FreeFormatSchedule.Load(saveString);
+                            tempList.Add(schedule);
+                        }
+                        App.Current.Dispatcher.Invoke(() =>
+                        {
+                            Schedules.Clear();
+                            foreach(FreeFormatSchedule schedule in tempList)
+                            {
+                                Schedules.Add(schedule);
+                            }
+                        });
+                    }).Start();
+                }
+                
+            }
+            catch (FormatException ex)
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    UserControlErrorPopup popup = new UserControlErrorPopup(ResourceKeys.StringCannotParseDelayFromFile);
+                    popup.SetExtraText("\n" + dialog.FileName);
+                    PopupManager.OpenErrorPopup(popup);
+                });
+            }
+            catch(Exception ex)
+            {
+                UserControlErrorPopup popup = new UserControlErrorPopup();
+                popup.SetExtraText(dialog.FileName);
+                PopupManager.OpenErrorPopup(popup);
+            }
+        }
+        public bool CommandLoadFileCanExecute()
+        {
+            return true;
+        }
+        #endregion
+
+
+        #region CommandStartSchedule
+        public BaseCommand CommandStartSchedule { get; set; }
+        public void CommandStartScheduleExecute(object param)
+        {
+            foreach(FreeFormatScheduleItem item in SelectedSchedule.Items)
+            {
+                Thread.Sleep(item.Delay);
+                Connection.Connector.GetInstance().SendMessage(item.Channel, item.Message, !OverrideSessionTags);
+            }
+        }
+        public bool CommandStartScheduleCanExecute()
+        {
+            return true;
+        }
+        #endregion
+
+
+        #region CommandClearSchedule
+        public BaseCommand CommandClearSchedule { get; set; }
+        public void CommandClearScheduleExecute(object param)
+        {
+            SelectedSchedule.Items.Clear();
+        }
+        public bool CommandClearScheduleCanExecute()
+        {
+            return true;
+        }
+        #endregion
+
+
+        #region CommandRemoveItemFromSchedule
+        public BaseCommand CommandRemoveItemFromSchedule { get; set; }
+        public void CommandRemoveItemFromScheduleExecute(object param)
+        {
+            SelectedSchedule.Items.Remove(SelectedScheduleItem);
+        }
+        public bool CommandRemoveItemFromScheduleCanExecute()
+        {
+            return true;
+        }
+        #endregion
+
+
+        #region CommandMoveMessageUp
+        public BaseCommand CommandMoveMessageUp { get; set; }
+        public void CommandMoveMessageUpExecute(object param)
+        {
+            if(SelectedScheduleItemIndex > 0)
+            {
+                FreeFormatScheduleItem temp = SelectedSchedule.Items[SelectedScheduleItemIndex];
+                SelectedSchedule.Items[SelectedScheduleItemIndex] = SelectedSchedule.Items[SelectedScheduleItemIndex - 1];
+                SelectedSchedule.Items[SelectedScheduleItemIndex - 1] = temp;
+            }
+        }
+        public bool CommandMoveMessageUpCanExecute()
+        {
+            return true;
+        }
+        #endregion
+
+
+        #region CommandMoveMessageDown
+        public BaseCommand CommandMoveMessageDown { get; set; }
+        public void CommandMoveMessageDownExecute(object param)
+        {
+            if (SelectedScheduleItemIndex < SelectedSchedule.Items.Count - 1)
+            {
+                FreeFormatScheduleItem temp = SelectedSchedule.Items[SelectedScheduleItemIndex];
+                SelectedSchedule.Items[SelectedScheduleItemIndex] = SelectedSchedule.Items[SelectedScheduleItemIndex + 1];
+                SelectedSchedule.Items[SelectedScheduleItemIndex + 1] = temp;
+            }
+        }
+        public bool CommandMoveMessageDownCanExecute()
         {
             return true;
         }

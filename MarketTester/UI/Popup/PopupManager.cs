@@ -24,5 +24,10 @@ namespace MarketTester.UI.Popup
             popupWindow.Height = height;
             popupWindow.ShowDialog();
         }
+
+        public static void OpenErrorPopup(UserControlErrorPopup popup)
+        {
+            OpenGeneralPopup(popup, ResourceKeys.StringErrorPopupName);
+        }
     }
 }

@@ -328,7 +328,7 @@ namespace MarketTester.ViewModel
                         {
                             UserControlErrorPopup popup = new UserControlErrorPopup();
                             popup.SetErrorText(errorMsgResourceKey);
-                            PopupManager.OpenGeneralPopup(popup, UserControlErrorPopup.nameResourceKey);
+                            PopupManager.OpenErrorPopup(popup);
                             SetInfoText("StringFailedAnalysis");
                         });
                     }

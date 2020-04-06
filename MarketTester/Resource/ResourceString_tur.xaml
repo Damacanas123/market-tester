@@ -93,4 +93,5 @@
     <system:String x:Key="StringFinishedAnalysis">Analiz bitti.</system:String>
     <system:String x:Key="StringChannelNotConnectedWarning">Bu emrin kanalı için aktif bir bağlantı bulunamadı.</system:String>
     <system:String x:Key="StringConfigPasswordNotSetWarning">Konfigurasyonda "Password" belirtilmedi</system:String>
+    <system:String x:Key="StringCannotParseDelayFromFile">Gecikme dosyadan ayrıştırılamadı.</system:String>
 </ResourceDictionary>

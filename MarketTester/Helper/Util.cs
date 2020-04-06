@@ -10,6 +10,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using FixHelper;
 using System.Data;
+using System.Windows.Navigation;
 
 namespace MarketTester.Helper
 {
@@ -34,6 +35,9 @@ namespace MarketTester.Helper
         public static string APPLICATION_STATIC_DIR = APPLICATION_COMMON_DIR + STATIC_DIR_PATH;
         public static string APPLICATION_EXPORT_DIR = APPLICATION_COMMON_DIR + "exports" + FILE_PATH_DELIMITER;
         public static string APPLICATION_RESULTS_DIR = APPLICATION_COMMON_DIR + "results" + FILE_PATH_DELIMITER;
+        public static string APPLICATION_SCHEDULESAVE_DIR = APPLICATION_COMMON_DIR + "schedule" + FILE_PATH_DELIMITER;
+        public static string APPLICATION_FREEFORMATSCHEDULE_DIR = APPLICATION_SCHEDULESAVE_DIR + "freeformat" + FILE_PATH_DELIMITER;
+        public static string APPLICATION_NONFREEFORMATSCHEDULE_DIR = APPLICATION_SCHEDULESAVE_DIR + "nonfreeformat" + FILE_PATH_DELIMITER;
         public static string EXCEPTIONLOG_FILE_PATH = APPLICATION_STATIC_DIR + "exception.log";
         public static string USERNAME = System.Security.Principal.WindowsIdentity.GetCurrent().Name.Replace(Util.FILE_PATH_DELIMITER, "");
         public static string SCHEDULESAVE_DIR_PATH = APPLICATION_STATIC_DIR + "schedule_save" + FILE_PATH_DELIMITER;
@@ -45,6 +49,8 @@ namespace MarketTester.Helper
             Directory.CreateDirectory(APPLICATION_RESULTS_DIR);
             Directory.CreateDirectory(APPLICATION_EXPORT_DIR);
             Directory.CreateDirectory(APPLICATION_STATIC_DIR);
+            Directory.CreateDirectory(APPLICATION_FREEFORMATSCHEDULE_DIR);
+            Directory.CreateDirectory(APPLICATION_NONFREEFORMATSCHEDULE_DIR);
             CopyDirectoryAndSubDirectoriesToApplicationCommonPath(STATIC_DIR_PATH);
             Connection.Connector.GetInstance();
         }
@@ -239,7 +245,9 @@ namespace MarketTester.Helper
             {
                 if (File.Exists(filePath))
                 {
-                    return File.ReadAllText(filePath);
+                    string content = File.ReadAllText(filePath);
+                    content = content.Replace("\r", "");
+                    return content;
                 }
                 else
                 {
@@ -254,7 +262,6 @@ namespace MarketTester.Helper
         public static string[] ReadLines(string filePath)
         {
             string content = ReadFile(filePath);
-            content.Replace("\r", string.Empty);
             if (!string.IsNullOrEmpty(content))
             {
                 return content.Split(new char[] { '\n' });

@@ -19,11 +19,16 @@ namespace MarketTester.UI.Popup
     /// Interaction logic for UserControlErrorPopup.xaml
     /// </summary>
     public partial class UserControlErrorPopup : UserControl
-    {
-        public const string nameResourceKey = "StringErrorPopupName";
+    {   
         public UserControlErrorPopup()
         {
             InitializeComponent();
+        }
+
+        public UserControlErrorPopup(string resourceKey)
+        {
+            InitializeComponent();
+            SetErrorText(resourceKey);
         }
 
         public void SetErrorText(string resourceKey)
@@ -32,6 +37,11 @@ namespace MarketTester.UI.Popup
                 TextBlockErrorText.SetResourceReference(TextBlock.TextProperty, resourceKey);
             else
                 TextBlockErrorText.Text = resourceKey;
+        }
+
+        public void SetExtraText(string s)
+        {
+            TextBlockErrorText.Text += s;
         }
     }
 }

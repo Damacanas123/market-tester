@@ -260,13 +260,16 @@ namespace MarketTester.ViewModel
             {
                 Application.Current.Dispatcher.Invoke((Action)delegate
                 {
-                    Channels.Clear();
-                    foreach (Channel channel in Connection.Connector.ActiveChannels)
+                    lock (Channels)
                     {
-                        if (channel.IsConnected)
+                        Channels.Clear();
+                        foreach (Channel channel in Connection.Connector.ActiveChannels)
                         {
-                            if (!Channels.Contains(channel))
-                                Channels.Add(channel);
+                            if (channel.IsConnected)
+                            {
+                                if (!Channels.Contains(channel))
+                                    Channels.Add(channel);
+                            }
                         }
                     }
                 });
