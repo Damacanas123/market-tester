@@ -27,6 +27,7 @@ namespace MarketTester.ViewModel
             CommandChangeLanguage = new BaseCommand(CommandChangeLanguageExecute, CommandChangeLanguageCanExecute);
             CommandCancelAllOrders = new BaseCommand(CommandCancelAllOrdersExecute, CommandCancelAllOrdersCanExecute);
             CommandLogAnalyzers = new BaseCommand(CommandLogAnalyzersExecute, CommandLogAnalyzersCanExecute);
+            CommandFixFreeFormat = new BaseCommand(CommandFixFreeFormatExecute, CommandFixFreeFormatCanExecute);
         }
         #region commands
         #region CommanExportOrders
@@ -119,6 +120,19 @@ namespace MarketTester.ViewModel
             MainWindowStarter.AddTab(new UserControlLogAnalyzer(), "StringLogAnalyzers", true);
         }
         public bool CommandLogAnalyzersCanExecute()
+        {
+            return true;
+        }
+        #endregion
+
+
+        #region CommandFixFreeFormat
+        public BaseCommand CommandFixFreeFormat { get; set; }
+        public void CommandFixFreeFormatExecute(object param)
+        {
+            MainWindowStarter.AddTab(new UserControlFixFreeFormat(), ResourceKeys.StringFixFreeFormat, false);
+        }
+        public bool CommandFixFreeFormatCanExecute()
         {
             return true;
         }

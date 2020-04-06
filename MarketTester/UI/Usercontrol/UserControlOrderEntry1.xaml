@@ -117,7 +117,7 @@
             IsEditable="False"
             ItemsSource="{Binding Channels}"
             SelectedItem="{Binding Channel}"
-            IsEnabled="{Binding IsNewOrderWindow}" />
+            IsEnabled="{Binding IsNewOrderWindow}"/>
         <Label Content="{DynamicResource StringTimeInForceAbbrvtd}" Grid.Column="3" Grid.Row="2"
                Grid.ColumnSpan="1"/>
     <!-- Binding in code behind -->

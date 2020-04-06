@@ -94,7 +94,7 @@ namespace MarketTester.ViewModel
                 Side = order.Side;
                 TimeInForce = order.TimeInForce;
                 OrdType = order.OrdType;
-                Channel = Connector.GetInstance().ActiveChannels.FirstOrDefault((o) => o.ConnectorName == order.ConnectorName);
+                Channel = Connector.ActiveChannels.FirstOrDefault((o) => o.ConnectorName == order.ConnectorName);
                 if(Channel == null)
                 {
                     InfoTextResourceKey = "StringChannelNotConnectedWarning";
@@ -206,7 +206,7 @@ namespace MarketTester.ViewModel
             SideColor = (SolidColorBrush)Application.Current.Resources[Const.ResourceColorSell];
             Side = Side.Sell;
             UpdateChannelsCollection();
-            Connection.Connector.GetInstance().ActiveChannels.CollectionChanged += OnChannelsCollectionChanged;
+            Connection.Connector.ActiveChannels.CollectionChanged += OnActiveChannelsCollectionChanged;
             SetDefault();
             Settings.GetInstance().LanguageChangedEventHandler += OnLanguageChanged;
         }
@@ -246,7 +246,7 @@ namespace MarketTester.ViewModel
 
         #endregion
 
-        private void OnChannelsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void OnActiveChannelsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (IsNewOrderWindow)
             {
@@ -261,7 +261,7 @@ namespace MarketTester.ViewModel
                 Application.Current.Dispatcher.Invoke((Action)delegate
                 {
                     Channels.Clear();
-                    foreach (Channel channel in Connection.Connector.GetInstance().ActiveChannels)
+                    foreach (Channel channel in Connection.Connector.ActiveChannels)
                     {
                         if (channel.IsConnected)
                         {

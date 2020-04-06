@@ -200,6 +200,10 @@ namespace BackOfficeEngine
             m_connectors[connectorName].SendMsgOrderEntry(msg);
         }
 
+        public void SendMessage(string fixMsg,string connectorName,bool overrideSessionTags)
+        {
+            m_connectors[connectorName].SendMsgOrderEntry(fixMsg, overrideSessionTags);
+        }
         public void Disconnect(string connectorName)
         {
             m_connectors[connectorName].Disconnect();

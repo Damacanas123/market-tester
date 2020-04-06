@@ -21,6 +21,16 @@
     <Color x:Key="ActiveYellowColor">#ffcf44</Color>
     <SolidColorBrush x:Key="ActiveGreen">#149414</SolidColorBrush>
     <SolidColorBrush x:Key="InactiveRed">#b53737</SolidColorBrush>
+    
+    
+    <!-- CheckBox -->
+    <Style TargetType="CheckBox">
+        <Setter Property="Background" Value="{DynamicResource BackgroundSecondary}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BackgroundTernary}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+    </Style>
+    
+    
 
 
     <!-- DataGrid -->
@@ -546,7 +556,7 @@
                             IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
                             ClickMode="Press">
                         </ToggleButton>
-                        <ContentPresenter Name="ContentSite" IsHitTestVisible="False"  Content="{TemplateBinding SelectionBoxItem}"
+                        <ContentPresenter Name="ContentSite" IsHitTestVisible="True"  Content="{TemplateBinding SelectedItem}"
                             ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                             ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
                             Margin="3,3,23,3"
@@ -602,7 +612,7 @@
                             <Setter TargetName="DropDownBorder" Property="CornerRadius" Value="0"/>
                             <Setter TargetName="DropDownBorder" Property="Margin" Value="0,2,0,0"/>
                         </Trigger>
-                        <Trigger Property="IsEditable"  Value="true">
+                        <Trigger Property="IsEditable"  Value="True">
                             <Setter Property="IsTabStop" Value="false"/>
                             <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible"/>
                             <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden"/>

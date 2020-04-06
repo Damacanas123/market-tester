@@ -117,8 +117,11 @@
     <Compile Include="Helper\UIUtil.cs" />
     <Compile Include="Model\Channel.cs" />
     <Compile Include="Model\ConfigFile.cs" />
+    <Compile Include="Model\FixFreeFormat\FreeFormatSchedule.cs" />
+    <Compile Include="Model\FixFreeFormat\FreeFormatScheduleItem.cs" />
     <Compile Include="Model\FixFreeFormat\TagValuePair.cs" />
     <Compile Include="Model\LogAnalyzer\LineFormat.cs" />
+    <Compile Include="Resource\ResourceKeys.cs" />
     <Compile Include="UI\Popup\PopupManager.cs" />
     <Compile Include="UI\Popup\UserControlErrorPopup.xaml.cs">
       <DependentUpon>UserControlErrorPopup.xaml</DependentUpon>
@@ -272,6 +275,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Resource Include="Resource\Image\error_image.png" />
+    <Resource Include="Resource\Image\down_arrow.png" />
+    <Resource Include="Resource\Image\up_arrow.png" />
     <Content Include="static\lineformats.save">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

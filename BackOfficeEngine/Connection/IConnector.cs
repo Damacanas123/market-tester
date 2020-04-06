@@ -17,7 +17,7 @@ namespace BackOfficeEngine.Connection
         void Connect();
         void Disconnect();
         void SendMsgOrderEntry(IMessage msg);
-        void SendMsgOrderEntry(string msg);
+        void SendMsgOrderEntry(string msg,bool overrideSessionTags);
 
 
     }

@@ -77,6 +77,14 @@
     <system:String x:Key="StringDelayMilliSecond">Delay (Millisecond)</system:String>
     <system:String x:Key="StringTagEmpty">Tag can't be empty.</system:String>
     <system:String x:Key="StringValueEmpty">Value can't be empty.</system:String>
+    <system:String x:Key="StringCantEditTag">You cant edit this tag.</system:String>
+    <system:String x:Key="StringFixFreeFormat">Free format scheduler</system:String>
+    <system:String x:Key="StringFile">File</system:String>
+    <system:String x:Key="StringLoad">Load</system:String>
+    <system:String x:Key="StringSchedules">Schedules</system:String>
+    <system:String x:Key="StringPleaseSelectAChannel">Please Select a channel.</system:String>
+    <system:String x:Key="StringChannelNotConnected">Channel does not have an active connection.</system:String>
+    <system:String x:Key="StringOverrideSessionTags">Override session</system:String>
 
     <system:String x:Key="StringFailedAnalysis">Analysis failed for an unknown reason.</system:String>
     <system:String x:Key="StringFileIsBeingUsed">File is being used by another process.</system:String>
@@ -85,4 +93,6 @@
     <system:String x:Key="StringFinishedAnalysis">Finished analysis.</system:String>
     <system:String x:Key="StringChannelNotConnectedWarning">Channel of this order does not have an active connection.</system:String>
     <system:String x:Key="StringConfigPasswordNotSetWarning">Password has not been set in json config file for configuration </system:String>
+    
+    
 </ResourceDictionary>

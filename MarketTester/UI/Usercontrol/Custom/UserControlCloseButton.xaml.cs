@@ -24,5 +24,11 @@ namespace MarketTester.UI.Usercontrol.Custom
         {
             InitializeComponent();
         }
+        public TabControl tabControl;
+        public TabItem item;
+        private void ButtonClose_Click(object sender, RoutedEventArgs e)
+        {
+            tabControl.Items.Remove(item);
+        }
     }
 }

@@ -10,7 +10,7 @@
         <Button Style="{StaticResource ButtonRound}" x:Name="ButtonClose" Margin="5"
              HorizontalAlignment="Center" Grid.Column="5" VerticalAlignment="Center" Width="20" Height="20"
                 VerticalContentAlignment="Top"
-                Background="Red">
+                Background="Red" Click="ButtonClose_Click">
             <Path  Fill="White" VerticalAlignment="Center" Height="10" Stretch="Fill" Width="10">
                 <Path.Data>
                     <CombinedGeometry GeometryCombineMode="Union">

@@ -46,6 +46,7 @@ namespace MarketTester.Helper
             Directory.CreateDirectory(APPLICATION_EXPORT_DIR);
             Directory.CreateDirectory(APPLICATION_STATIC_DIR);
             CopyDirectoryAndSubDirectoriesToApplicationCommonPath(STATIC_DIR_PATH);
+            Connection.Connector.GetInstance();
         }
         public static void LogError(Exception ex)
         {

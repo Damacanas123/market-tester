@@ -306,7 +306,7 @@ namespace MarketTester.ViewModel
                 try
                 {
                     SelectedAnalyzer.Start();
-                    Dispatcher.Invoke(() =>
+                    App.Current.Dispatcher.Invoke(() =>
                     {
                         SetInfoText("StringFinishedAnalysis");
                     });
@@ -324,7 +324,7 @@ namespace MarketTester.ViewModel
                 {
                     if(errorMsgResourceKey != "")
                     {
-                        Dispatcher.Invoke(() =>
+                        App.Current.Dispatcher.Invoke(() =>
                         {
                             UserControlErrorPopup popup = new UserControlErrorPopup();
                             popup.SetErrorText(errorMsgResourceKey);

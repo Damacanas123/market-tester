@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace MarketTester.Base
 {
-    public class BaseNotifier : DependencyObject,INotifyPropertyChanged
+    public class BaseNotifier : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -16,5 +16,7 @@ namespace MarketTester.Base
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
         }
+        // override object.Equals
+        
     }
 }

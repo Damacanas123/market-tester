@@ -38,6 +38,7 @@ namespace MarketTester.UI.Usercontrol
             itemsOrdType.RemoveAt(0);
             ComboBoxTimeInForce.ItemsSource = itemsTimeInForce;
             ComboBoxOrdType.ItemsSource = itemsOrdType;
+            comboConnection.Text = "heyoo";
         }
 
         private List<T> CastIEnumerableToList<T>(IEnumerable<T> e)

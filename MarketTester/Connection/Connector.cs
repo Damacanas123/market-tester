@@ -21,8 +21,8 @@ namespace MarketTester.Connection
         public static ObservableCollection<Channel> Channels = new ObservableCollection<Channel>();
 
         private object channelLock = new object();
-        public ObservableCollection<Channel> ActiveChannels = new ObservableCollection<Channel>();
-        public ObservableCollection<Channel> InactiveChannels = new ObservableCollection<Channel>();
+        public static ObservableCollection<Channel> ActiveChannels = new ObservableCollection<Channel>();
+        public static ObservableCollection<Channel> InactiveChannels = new ObservableCollection<Channel>();
 
         private static Connector instance;
 
@@ -83,11 +83,13 @@ namespace MarketTester.Connection
         public void OnLogon(object sender,OnLogonEventArgs args)
         {
             Channel ch = Channels.First((o) => o.ConnectorName == args.ConnectorName);
-            if (!ch.IsConnected)
+
+            lock (channelLock)
             {
-                ch.IsConnected = true;
-                lock (channelLock)
+                
+                if (!ch.IsConnected)
                 {
+                    ch.IsConnected = true;
                     ActiveChannels.Add(ch);
                     InactiveChannels.Remove(ch);
                 }
@@ -141,5 +143,9 @@ namespace MarketTester.Connection
             engine.SendMessageCancel(prms, connectorName);
         }
 
+        public void SendMessage(string connectorName,string fixMsg,bool overrideSessionTags)
+        {
+            engine.SendMessage(fixMsg, connectorName, overrideSessionTags);
+        }
     }
 }

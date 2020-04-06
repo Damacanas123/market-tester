@@ -64,6 +64,7 @@
     <system:String x:Key="StringInvalidLineFormat">Geçersiz satır formatı</system:String>
     <system:String x:Key="StringDestinationFilePath">Hedef dosya yolu</system:String>
     <system:String x:Key="StringGTag">Etiket</system:String>
+    <system:String x:Key="StringTag">Etiket</system:String>
     <system:String x:Key="StringValue">Değer</system:String>
     <system:String x:Key="StringAdd">Ekle</system:String>
     <system:String x:Key="StringSelect">Seç</system:String>
@@ -76,6 +77,14 @@
     <system:String x:Key="StringDelayMilliSecond">Gecikme (Milisaniye)</system:String>
     <system:String x:Key="StringTagEmpty">Etiket boş olamaz.</system:String>
     <system:String x:Key="StringValueEmpty">Değer boş olamaz.</system:String>
+    <system:String x:Key="StringCantEditTag">Bu etiketi düzenleyemezsiniz.</system:String>
+    <system:String x:Key="StringFixFreeFormat">Serbest format planlayıcı</system:String>
+    <system:String x:Key="StringFile">Dosya</system:String>
+    <system:String x:Key="StringLoad">Yükle</system:String>
+    <system:String x:Key="StringSchedules">Planlar</system:String>
+    <system:String x:Key="StringPleaseSelectAChannel">Lütfen bir kanal seçin.</system:String>
+    <system:String x:Key="StringChannelNotConnected">Kanalın aktif bir bağlantısı yok.</system:String>
+    <system:String x:Key="StringOverrideSessionTags">Bağlantı bilgisini ez.</system:String>
 
     <system:String x:Key="StringFailedAnalysis">Analiz bilinmeyen bir sebepten yapılamadı.</system:String>
     <system:String x:Key="StringFileIsBeingUsed">Dosya başka bir işlem tarafından kullanılıyor.</system:String>

@@ -31,9 +31,9 @@ namespace MarketTester.UI.window
             window.Show();
         }        
 
-        public static void AddTab(UserControl content,string nameResourceKey,bool checkAlreadyOpened)
+        public static void AddTab(UserControl content,string nameResourceKey,bool openCheckAlreadyOpened)
         {
-            if (checkAlreadyOpened)
+            if (openCheckAlreadyOpened)
             {
                 foreach(TabItem createdItem in tabControl.Items)
                 {
@@ -50,16 +50,14 @@ namespace MarketTester.UI.window
 
             UserControlTabHeader tabHeader = new UserControlTabHeader();
             tabHeader.TextBlockHeader.SetResourceReference(TextBlock.TextProperty, nameResourceKey);
-            tabHeader.ButtonCloseTab.ButtonClose.Click += CloseSelectedTab;
+            tabHeader.ButtonCloseTab.tabControl = tabControl;
+            tabHeader.ButtonCloseTab.item = item;
             item.Header = tabHeader;
             item.Name = nameResourceKey;
             tabControl.Items.Add(item);
             tabControl.SelectedIndex = tabControl.Items.Count - 1;
         }
 
-        private static void CloseSelectedTab(object o,RoutedEventArgs args)
-        {
-            tabControl.Items.RemoveAt(tabControl.SelectedIndex);
-        }
+        
     }
 }
