@@ -85,6 +85,10 @@
     <system:String x:Key="StringPleaseSelectAChannel">Please Select a channel.</system:String>
     <system:String x:Key="StringChannelNotConnected">Channel does not have an active connection.</system:String>
     <system:String x:Key="StringOverrideSessionTags">Override session</system:String>
+    <system:String x:Key="StringMsgType">Message Type</system:String>
+    <system:String x:Key="StringExpireDate">Expire Date</system:String>
+    <system:String x:Key="StringAllocID">Alloc ID</system:String>
+    <system:String x:Key="StringDeleteSchedule">Delete Schedule</system:String>
 
     <system:String x:Key="StringFailedAnalysis">Analysis failed for an unknown reason.</system:String>
     <system:String x:Key="StringFileIsBeingUsed">File is being used by another process.</system:String>

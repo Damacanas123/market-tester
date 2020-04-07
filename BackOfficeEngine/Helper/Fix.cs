@@ -9,6 +9,10 @@ namespace BackOfficeEngine.Helper
 {
     public class Fix
     {
+        public static HashSet<string> CantBeEditedTags { get; set; } = new HashSet<string>()
+        {
+            "8","9","10"
+        };
         public const char FixDelimiter = (char)1;
         public static string GetFixString(ProtocolType protocolType,List<(string,string)> tagValuePairs)
         {

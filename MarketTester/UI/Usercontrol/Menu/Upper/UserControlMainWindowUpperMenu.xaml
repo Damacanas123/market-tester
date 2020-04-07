@@ -31,6 +31,7 @@
         <MenuItem Header="{DynamicResource StringTools}">
             <MenuItem Header="{DynamicResource StringLogAnalyzers}" Command="{Binding CommandLogAnalyzers}"/>
             <MenuItem Header="{DynamicResource StringFixFreeFormat}" Command="{Binding CommandFixFreeFormat}"/>
+            <MenuItem Header="{DynamicResource StringSchedule}" Command="{Binding CommandScheduler}"/>
         </MenuItem>
         
     </Menu>

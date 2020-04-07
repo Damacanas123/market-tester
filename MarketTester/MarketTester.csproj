@@ -121,6 +121,9 @@
     <Compile Include="Model\FixFreeFormat\FreeFormatScheduleItem.cs" />
     <Compile Include="Model\FixFreeFormat\TagValuePair.cs" />
     <Compile Include="Model\LogAnalyzer\LineFormat.cs" />
+    <Compile Include="Model\Scheduler\Matcher.cs" />
+    <Compile Include="Model\Scheduler\Scheduler.cs" />
+    <Compile Include="Model\Scheduler\SchedulerRawItem.cs" />
     <Compile Include="Resource\ResourceKeys.cs" />
     <Compile Include="UI\Popup\PopupManager.cs" />
     <Compile Include="UI\Popup\UserControlErrorPopup.xaml.cs">
@@ -159,6 +162,9 @@
     <Compile Include="UI\Usercontrol\UserControlOrderList.xaml.cs">
       <DependentUpon>UserControlOrderList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Usercontrol\UserControlScheduler.xaml.cs">
+      <DependentUpon>UserControlScheduler.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Usercontrol\UserControlUpperBar.xaml.cs">
       <DependentUpon>UserControlUpperBar.xaml</DependentUpon>
     </Compile>
@@ -175,6 +181,7 @@
     <Compile Include="ViewModel\ViewModelMainWindowUpperBar.cs" />
     <Compile Include="ViewModel\ViewModelOrderEntry.cs" />
     <Compile Include="ViewModel\ViewModelOrderList.cs" />
+    <Compile Include="ViewModel\ViewModelScheduler.cs" />
     <Page Include="Resource\ResourceString_common.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -243,6 +250,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UI\Usercontrol\UserControlScheduler.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\Usercontrol\UserControlUpperBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -304,6 +315,8 @@
       <Name>BackOfficeEngine</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Enumeration\Fix\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

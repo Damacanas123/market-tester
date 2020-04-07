@@ -1,11 +1,10 @@
 ﻿BackLog
-	-->Scheduler Integration (logic classes)
+	-->OrderMessageHistoryPage
 	-->OUCH integration
 	-->Account and Positions pages.
 	-->Add log view page for Free format scheduler
 
 In Progress
-	-->Scheduler UX design
 
 
 25.03.2020
@@ -47,3 +46,9 @@ First Commit
 	-->Free format message creation
 Second Commit
 	-->Free format scheduler page completed
+
+07.04.2020
+First Commit
+	-->Scheduler UX design
+	-->Logic implementation,Prepare schedule is done on the UI thread it should have a fix.
+	-->Scheduler Integration (logic classes)

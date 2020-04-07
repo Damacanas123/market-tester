@@ -12,55 +12,43 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows.Media.Effects;
-using MarketTester.Helper;
+
 
 using BackOfficeEngine.MessageEnums;
-
 namespace MarketTester.UI.Usercontrol
 {
-    public partial class UserControlOrderEntry1 : UserControl
+    /// <summary>
+    /// Interaction logic for UserControlScheduler.xaml
+    /// </summary>
+    public partial class UserControlScheduler : UserControl
     {
-       
-
-        private bool active = false;
-        //private Side side = Side.BUY;
-
-        //private Symbol currentSymbol;
-        //private List<Symbol> symbols;
-        public UserControlOrderEntry1()
+        public UserControlScheduler()
         {
             InitializeComponent();
-            //PopulateSymbolsComboBox();
+            SetComboItemSource();
+        }
+
+        private void SetComboItemSource()
+        {
             List<TimeInForce> itemsTimeInForce = CastIEnumerableToList(Enum.GetValues(typeof(TimeInForce)).Cast<TimeInForce>());
             itemsTimeInForce.RemoveAt(0);
             List<OrdType> itemsOrdType = CastIEnumerableToList(Enum.GetValues(typeof(OrdType)).Cast<OrdType>());
             itemsOrdType.RemoveAt(0);
-            ComboBoxTimeInForce.ItemsSource = itemsTimeInForce;
+            List<Side> itemsSide = CastIEnumerableToList(Enum.GetValues(typeof(Side)).Cast<Side>());
+            itemsSide.RemoveAt(0);
+            List<MsgType> itemsMsgTypes = new List<MsgType>()
+            {
+                MsgType.New,MsgType.Replace,MsgType.Cancel
+            };
+            COmboBoxTimeInForce.ItemsSource = itemsTimeInForce;
             ComboBoxOrdType.ItemsSource = itemsOrdType;
+            ComboBoxSide.ItemsSource = itemsSide;
+            ComboBoxMsgType.ItemsSource = itemsMsgTypes;
         }
 
         private List<T> CastIEnumerableToList<T>(IEnumerable<T> e)
         {
             return new List<T>(e);
         }
-
-        
-        
-        
-        //private void PopulateSymbolsComboBox()
-        //{
-        //    symbols = Symbols.LoadSymbols();
-        //    foreach (Symbol symbol in symbols)
-        //    {
-        //        comboSymbol.Items.Add(symbol);
-        //    }
-        //    comboSymbol.SelectedIndex = 0;
-        //    currentSymbol = symbols[0];
-        //}
-
-               
     }
-
-
 }

@@ -1,0 +1,237 @@
+﻿<UserControl x:Class="MarketTester.UI.Usercontrol.UserControlScheduler"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MarketTester.UI.Usercontrol"
+             xmlns:viewmodel="clr-namespace:MarketTester.ViewModel"
+             xmlns:connection="clr-namespace:MarketTester.Connection"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1700">
+    <UserControl.DataContext>
+        <viewmodel:ViewModelScheduler/>
+    </UserControl.DataContext>
+    
+    <Grid Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Menu Background="Transparent">
+            <MenuItem Header="{DynamicResource StringFile}">
+                <MenuItem Header="{DynamicResource StringSave}" Command="{Binding CommandSaveFile}"/>
+                <MenuItem Header="{DynamicResource StringLoad}" Command="{Binding CommandLoadFile}"/>
+
+            </MenuItem>
+
+        </Menu>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.ColumnSpan="4" Grid.RowSpan="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
+                <TextBlock VerticalAlignment="Center" Text="{DynamicResource StringMsgType}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
+                <ComboBox Grid.ColumnSpan="2" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding MsgTypes}" x:Name="ComboBoxMsgType" SelectedItem="{Binding SelectedMsgType}"/>
+                <TextBlock VerticalAlignment="Center" Text="{DynamicResource StringSymbol}" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"/>
+                <ComboBox Grid.ColumnSpan="2" Grid.Row="3" Grid.Column="0" 
+                          ItemsSource="{Binding Symbols}"
+                          Text="{Binding TextSymbol}"
+                      IsEditable="True"/>
+                <TextBlock VerticalAlignment="Center" Text="{DynamicResource StringPrice}" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"/>
+                <TextBox Grid.ColumnSpan="2" Grid.Row="5" Grid.Column="0" Text="{Binding TextPrice}" />
+                <TextBlock VerticalAlignment="Center" Text="{DynamicResource StringTimeInForce}" Grid.Column="4" Grid.Row="0" Grid.ColumnSpan="2"/>
+                <ComboBox Grid.ColumnSpan="2" Grid.Row="1" Grid.Column="4" ItemsSource="{Binding TimeInForces}" 
+                      x:Name="COmboBoxTimeInForce"
+                      SelectedItem="{Binding SelectedTimeInForce}"/>
+                <TextBlock VerticalAlignment="Center" Text="{DynamicResource StringAccount}" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2"/>
+                <TextBox Grid.ColumnSpan="2" Grid.Row="3" Grid.Column="2" Text="{Binding TextAccount}" />
+                <TextBlock VerticalAlignment="Center" Text="{DynamicResource StringSide}" Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="2"/>
+                <ComboBox Grid.ColumnSpan="2" Grid.Row="5" Grid.Column="2" ItemsSource="{Binding Sides}"
+                      x:Name="ComboBoxSide"
+                      SelectedItem="{Binding SelectedSide}"/>
+                <TextBlock VerticalAlignment="Center" Text="{DynamicResource StringQuantity}" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="2"/>
+                <TextBox Grid.ColumnSpan="2" Grid.Row="1" Grid.Column="2" Text="{Binding TextQuantity}" />
+                <TextBlock VerticalAlignment="Center" Text="{DynamicResource StringOrdType}" Grid.Column="4" Grid.Row="2" Grid.ColumnSpan="2"/>
+                <ComboBox Grid.ColumnSpan="2" Grid.Row="3" Grid.Column="4" ItemsSource="{Binding OrdTypes}" 
+                      x:Name="ComboBoxOrdType"
+                      SelectedItem="{Binding SelectedOrdType}"/>
+                <TextBlock VerticalAlignment="Center" Text="{DynamicResource StringChannels}" Grid.Column="4" Grid.Row="4" Grid.ColumnSpan="2"/>
+                <ComboBox Grid.ColumnSpan="2" 
+                          Grid.Row="5" Grid.Column="4" 
+                          ItemsSource="{Binding Source={x:Static connection:Connector.ActiveChannels}}" 
+                          SelectedItem="{Binding SelectedChannel}"
+                          />
+                <TextBlock VerticalAlignment="Center" Text="{DynamicResource StringExpireDate}" Grid.Column="6" Grid.Row="0" Grid.ColumnSpan="2"/>
+                <DatePicker Grid.ColumnSpan="2" Grid.Row="1" Grid.Column="6" 
+                            Text="{Binding TextExpireDate}"
+                        VerticalContentAlignment="Center"/>
+                <TextBlock VerticalAlignment="Center" Text="{DynamicResource StringDelayMilliSecond}" Grid.Column="6" Grid.Row="2" Grid.ColumnSpan="2"/>
+                <TextBox Grid.ColumnSpan="2" Grid.Row="3" Grid.Column="6" Text="{Binding TextDelay}" />
+                <TextBlock VerticalAlignment="Center" Text="{DynamicResource StringAllocID}" Grid.Column="6" Grid.Row="4" Grid.ColumnSpan="2"/>
+                <TextBox Grid.ColumnSpan="2" Grid.Row="5" Grid.Column="6" Text="{Binding TextAllocID}" />
+            </Grid>
+            <TextBlock Grid.Row="0" Grid.Column="6" Text="{DynamicResource StringSchedule}"/>
+            <TextBlock Grid.Row="0" Grid.Column="6" Margin="60,0,0,0" Text=" : "/>
+            <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Grid.Column="6" Margin="70,0,0,0" Text="{Binding SelectedSchedule.Name}"/>
+            <DataGrid x:Name="DataGridSchedule" 
+                  ItemsSource="{Binding SelectedSchedule.scheduleRaw}" 
+                  SelectedItem="{Binding SelectedScheduleItem}"
+                  SelectedIndex="{Binding SelectedScheduleItemIndex}"
+                  Grid.Column="6" 
+                  Grid.ColumnSpan="6" 
+                  Grid.Row="0" 
+                  Grid.RowSpan="12"
+                  Margin="0,40,0,0"
+                      IsEnabled="{Binding ScheduleNotRunning}"/>
+
+
+
+            <Separator Grid.ColumnSpan="6" Grid.Column="0" Grid.Row="6" VerticalAlignment="Top" Margin="0,-1,0,0"/>
+            <TextBlock FontSize="24" VerticalAlignment="Center" Margin="13,0,0,0" Text="{DynamicResource StringScheduler}" Grid.Row="6" Grid.Column="0"/>
+            <Button Grid.Column="5" Grid.Row="5" Content="{DynamicResource StringRemoveFromSchedule}" Command="{Binding CommandRemoveItemFromSchedule}"/>
+            <Button Grid.Column="0" Grid.Row="9" 
+                    Content="{DynamicResource StringClearSchedule}" 
+                    Command="{Binding CommandClearSchedule}"
+                    IsEnabled="{Binding ScheduleNotRunning}"/>
+            <Button Grid.Column="0" Grid.Row="8" 
+                    Content="{DynamicResource StringStartSchedule}" 
+                    Command="{Binding CommandStartSchedule}"
+                    IsEnabled="{Binding ScheduleNotRunning}"/>
+            <Button Grid.Column="0" Grid.Row="10" 
+                    Content="{DynamicResource StringDeleteSchedule}"
+                    Command="{Binding CommandDeleteSchedule}"
+                    IsEnabled="{Binding ScheduleNotRunning}"/>
+            <Button Grid.Column="5" Grid.Row="1" Width="30" Height="30" Command="{Binding CommandMoveMessageUp}">
+                <Image Source="/Resource/Image/up_arrow.png" Stretch="Fill"/>
+            </Button>
+            <Button Grid.Column="5" Grid.Row="2" Width="30" Height="30" Command="{Binding CommandMoveMessageDown}">
+                <Image Source="/Resource/Image/down_arrow.png" Stretch="Fill"/>
+            </Button>
+            <Button Grid.Row="3" Grid.Column="5"
+            Width="30" Height="30" Command="{Binding CommandAddMessageToSchedule}" >
+                <Image Source="/Resource/Image/up_arrow.png">
+                    <Image.RenderTransform>
+                        <RotateTransform Angle="90" CenterX="13" CenterY="13"/>
+                    </Image.RenderTransform>
+                </Image>
+            </Button>
+            <Button Grid.Row="4" Grid.Column="5"
+            Width="30" Height="30"
+                Command="{Binding CommandSelectMessageFromSchedule}" >
+                <Image Source="/Resource/Image/up_arrow.png">
+                    <Image.RenderTransform>
+                        <RotateTransform Angle="270" CenterX="13" CenterY="13"/>
+                    </Image.RenderTransform>
+                </Image>
+            </Button>
+            <TextBlock Grid.Row="7" Grid.Column="1" Text="{DynamicResource StringSchedules}" Margin="0,5,0,0"/>
+            <DataGrid x:Name="DataGridSchedules" Margin="10,30,10,10" 
+                  ItemsSource="{Binding Schedules}" 
+                  SelectedItem="{Binding SelectedSchedule}"
+                    AutoGenerateColumns="False"
+                    Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="2" Grid.RowSpan="4">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Name}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringName}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+
+            </DataGrid>
+            <Button Grid.Column="0" Grid.Row="11" Padding="7" Width="30" Height="30" Command="{Binding CommandAddSchedule}">
+                <Path Fill="{DynamicResource ActiveYellow}" Stretch="Fill"
+                    Data="M 0,0 L 5,0 5,5 7,5 7,0 12,0 12,-2 7,-2 7,-7 5,-7 5,-2 0,-2">
+
+                </Path>
+            </Button>
+            <TextBlock Grid.Column="3" Grid.Row="6" Text="{DynamicResource StringTag}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+            <TextBlock Grid.Column="4" Grid.Row="6" Text="{DynamicResource StringValue}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+            <TextBox Grid.Column="3" Grid.Row="7" Text="{Binding TextTag,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="10"/>
+            <TextBox Grid.Column="4" Grid.Row="7" Text="{Binding TextValue}" VerticalAlignment="Center" Margin="10"/>
+            <Button Grid.Column="5" Grid.Row="6" Width="60" Height="30" Command="{Binding CommandAddTagValuePair}" Content="{DynamicResource StringAdd}" Margin="0"/>
+            <Button Grid.Column="5" Grid.Row="7" Width="60" Height="30" Content="{DynamicResource StringDelete}" Command="{Binding CommandDeleteTagValuePair}"/>
+            <Button Grid.Column="5" Grid.Row="8" Width="60" Content="{DynamicResource StringClear}" Command="{Binding CommandClearTagValuePairs}"/>
+            <DataGrid x:Name="DataGridTagValues" ItemsSource="{Binding TagValuePairs}" BorderBrush="{DynamicResource BackgroundTernary}" 
+                  Grid.Column="3" Grid.Row="8"
+                  Grid.ColumnSpan="2" Grid.RowSpan="3"
+                  Background="Transparent"
+                  AutoGenerateColumns="False"
+                      Margin="10">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.Header>
+                            <TextBlock Text="{DynamicResource StringSelect}"/>
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsSelected}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Binding="{Binding Tag}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringTag}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Value}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringValue}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+
+            </DataGrid>
+            <Button Grid.Column="4" Grid.Row="5" Content="{DynamicResource StringSend}" 
+                Command="{Binding CommandSendMessage}"/>
+            <TextBlock Text="{Binding InfoText}" Grid.Row="11" Grid.Column="1"
+                       Grid.ColumnSpan="5"
+                       VerticalAlignment="Center"/>
+            <CheckBox IsChecked="{Binding OverrideSessionTags}" Content="{DynamicResource StringOverrideSessionTags}" 
+                      Grid.Column="5" Grid.Row="9" VerticalAlignment="Center"/>
+        </Grid>
+    </Grid>
+</UserControl>

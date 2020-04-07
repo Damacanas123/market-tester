@@ -107,5 +107,10 @@ namespace MarketTester
         public const string StringPleaseSelectAChannel = "StringPleaseSelectAChannel";
         public const string StringChannelNotConnected = "StringChannelNotConnected";
         public const string StringCannotParseDelayFromFile = "StringCannotParseDelayFromFile";
+        public const string StringMsgType = "StringMsgType";
+        public const string StringExpireDate = "StringExpireDate";
+        public const string StringAllocID = "StringAllocID";
+        public const string StringDeleteSchedule = "StringDeleteSchedule";
+        
     }
 }

@@ -25,10 +25,7 @@ namespace MarketTester.ViewModel
 {
     public class ViewModelFixFreeFormat :BaseNotifier
     {
-        private HashSet<string> CantBeEditedTags { get; set; } = new HashSet<string>()
-        {
-            "8","9","10"
-        };
+        
         public ViewModelFixFreeFormat()
         {
             ProtocolType = ProtocolType.Fix50sp2;
@@ -79,7 +76,6 @@ namespace MarketTester.ViewModel
             { 
                 protocolType = value;
                 NotifyPropertyChanged(nameof(ProtocolType));
-                Dummy.Add(5);
             }
         }
 
@@ -88,7 +84,7 @@ namespace MarketTester.ViewModel
             ProtocolType.Fix50sp2,ProtocolType.Fix44,ProtocolType.Fix42,ProtocolType.Fix40,ProtocolType.Fix41,ProtocolType.Fix43,ProtocolType.Fix50
         };
 
-        public ObservableCollection<int> Dummy { get; set; } = new ObservableCollection<int>();
+        
 
         private Channel selectedChannel;
 
@@ -270,7 +266,7 @@ namespace MarketTester.ViewModel
                 InfoTextResourceKey = ResourceKeys.StringValueEmpty;
                 return;
             }
-            if (CantBeEditedTags.Contains(TextTag))
+            if (Fix.CantBeEditedTags.Contains(TextTag))
             {
                 InfoTextResourceKey = ResourceKeys.StringCantEditTag;
                 return;
@@ -366,12 +362,11 @@ namespace MarketTester.ViewModel
         {
             if(SelectedScheduleItem != null)
             {
-
                 TagValuePairs.Clear();
                 Dictionary<int,string> tagValuePairs = Util.GetTagValuePairs(SelectedScheduleItem.Message);
                 foreach(KeyValuePair<int,string> pair in tagValuePairs)
                 {
-                    if(!CantBeEditedTags.Contains(pair.Key.ToString()))
+                    if(!Fix.CantBeEditedTags.Contains(pair.Key.ToString()))
                         TagValuePairs.Add(new TagValuePair(pair.Key.ToString(), pair.Value));
                 }
             }

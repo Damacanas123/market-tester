@@ -85,6 +85,10 @@
     <system:String x:Key="StringPleaseSelectAChannel">Lütfen bir kanal seçin.</system:String>
     <system:String x:Key="StringChannelNotConnected">Kanalın aktif bir bağlantısı yok.</system:String>
     <system:String x:Key="StringOverrideSessionTags">Bağlantı bilgisini ez.</system:String>
+    <system:String x:Key="StringMsgType">Mesaj Tipi</system:String>
+    <system:String x:Key="StringExpireDate">Emir sonlanma tarihi</system:String>
+    <system:String x:Key="StringAllocID">AllocID</system:String>
+    <system:String x:Key="StringDeleteSchedule">Planı sil</system:String>
 
     <system:String x:Key="StringFailedAnalysis">Analiz bilinmeyen bir sebepten yapılamadı.</system:String>
     <system:String x:Key="StringFileIsBeingUsed">Dosya başka bir işlem tarafından kullanılıyor.</system:String>

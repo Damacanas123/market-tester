@@ -143,6 +143,10 @@ namespace BackOfficeEngine
             (newOrderMessage, order) = PseudoOrder.CreateNewOrder(prms, nonProtocolId);
             m_nonProtocolPseudoIDMap[nonProtocolId] = order;
             m_clOrdID_To_nonProtocolPseudoIdMap[newOrderMessage.GetClOrdID()] = nonProtocolId;
+
+            Order orderReal = new Order(newOrderMessage, nonProtocolId);
+            Order.NonProtocolIDMap[nonProtocolId] = orderReal;
+            Order.ClOrdIDMap[newOrderMessage.GetClOrdID()] = orderReal;
             return (newOrderMessage,nonProtocolId);
         }
 
@@ -256,11 +260,8 @@ namespace BackOfficeEngine
                         switch (msg.GetMsgType())
                         {
                             case MsgType.New:
-                                string nonProtocolID = m_clOrdID_To_nonProtocolPseudoIdMap[msg.GetClOrdID()];
-                                order = new Order(msg, nonProtocolID);
+                                order = Order.ClOrdIDMap[msg.GetClOrdID()];
                                 order.ConnectorName = connectorName;
-                                Order.NonProtocolIDMap[nonProtocolID] = order;
-                                Order.ClOrdIDMap[msg.GetClOrdID()] = order;
                                 break;
                             case MsgType.Replace:
                                 ReplaceOrCancel();

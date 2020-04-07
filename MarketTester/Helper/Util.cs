@@ -42,7 +42,9 @@ namespace MarketTester.Helper
         public static string USERNAME = System.Security.Principal.WindowsIdentity.GetCurrent().Name.Replace(Util.FILE_PATH_DELIMITER, "");
         public static string SCHEDULESAVE_DIR_PATH = APPLICATION_STATIC_DIR + "schedule_save" + FILE_PATH_DELIMITER;
 
-
+        public static string LocalMktDateFormat = "yyyyMMdd";
+        public static string UTCTimestampFormat = "yyyyMMdd-HH:mm:ss.fff";
+        
 
         public static void Bootstrap()
         {

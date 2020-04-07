@@ -28,6 +28,8 @@ namespace MarketTester.ViewModel
             CommandCancelAllOrders = new BaseCommand(CommandCancelAllOrdersExecute, CommandCancelAllOrdersCanExecute);
             CommandLogAnalyzers = new BaseCommand(CommandLogAnalyzersExecute, CommandLogAnalyzersCanExecute);
             CommandFixFreeFormat = new BaseCommand(CommandFixFreeFormatExecute, CommandFixFreeFormatCanExecute);
+            CommandScheduler = new BaseCommand(CommandSchedulerExecute, CommandSchedulerCanExecute);
+
         }
         #region commands
         #region CommanExportOrders
@@ -138,6 +140,18 @@ namespace MarketTester.ViewModel
         }
         #endregion
 
+
+        #region CommandScheduler
+        public BaseCommand CommandScheduler { get; set; }
+        public void CommandSchedulerExecute(object param)
+        {
+            MainWindowStarter.AddTab(new UserControlScheduler(), ResourceKeys.StringSchedule, false);
+        }
+        public bool CommandSchedulerCanExecute()
+        {
+            return true;
+        }
+        #endregion
         #endregion
 
 
