@@ -187,7 +187,6 @@ namespace BackOfficeEngine
             {
                 IMessage replaceMessage = Order.NonProtocolIDMap[prms.nonProtocolID].PrepareReplaceMessage(prms);
                 m_connectors[connectorName].SendMsgOrderEntry(replaceMessage);
-                m_messageQueue.Enqueue((replaceMessage, connectorName));
             }
         }
 
@@ -196,22 +195,18 @@ namespace BackOfficeEngine
             if (m_connectors.ContainsKey(connectorName))
             {
                 IMessage cancelMessage = Order.NonProtocolIDMap[prms.nonProtocolID].PrepareCancelMessage();
-                m_connectors[connectorName].SendMsgOrderEntry(cancelMessage);
-                m_messageQueue.Enqueue((cancelMessage, connectorName));
-                
+                m_connectors[connectorName].SendMsgOrderEntry(cancelMessage);                
             }
             
         }
 
         public void SendMessage(IMessage msg,string connectorName)
         {
-            m_messageQueue.Enqueue((msg,connectorName));
             m_connectors[connectorName].SendMsgOrderEntry(msg);
         }
 
         public void SendMessage(IMessage msg, string connectorName,bool overrideSessionTags)
         {
-            m_messageQueue.Enqueue((msg, connectorName));
             if (overrideSessionTags)
             {                
                 m_connectors[connectorName].SendMsgOrderEntry(msg);
@@ -233,10 +228,6 @@ namespace BackOfficeEngine
         void IConnectorSubscriber.OnInboundMessage(IConnector connector, string sessionID, IMessage msg)
         {
             InboundMessageEvent?.Invoke(this, new InboundMessageEventArgs(msg));
-            if (msg.IsSetClOrdID())
-            {
-                m_messageQueue.Enqueue((msg,connector.Name));
-            }
         }
 
         void IConnectorSubscriber.OnLogon(IConnector connector, string sessionID)
@@ -254,6 +245,10 @@ namespace BackOfficeEngine
             OnCreateSessionEvent?.Invoke(this, new OnCreateSessionEventArgs(connector.Name, sessionID));
         }
 
+        void IConnectorSubscriber.EnqueueMessage(IConnector connector, IMessage msg)
+        {
+            m_messageQueue.Enqueue((msg, connector.Name));
+        }
         private void MessageDequeuer()
         {
             while (true)

@@ -95,7 +95,11 @@
     <system:String x:Key="StringPriceOffsetEmpty">Please enter a price offset.</system:String>
     <system:String x:Key="StringQuantityMultiplierEmpty">Please enter a quantity multiplier.</system:String>
     <system:String x:Key="StringUnknownErrorOccured">Unknown error occured please try again.</system:String>
-    <system:String x:Key="StringConnectionNotActive">Connection not active.</system:String>    
+    <system:String x:Key="StringConnectionNotActive">Connection not active.</system:String>
+    <system:String x:Key="StringExportToCsv">Export to csv</system:String>
+    <system:String x:Key="StringAppendToCsv">Append to csv</system:String>
+    <system:String x:Key="StringExportToXLSX">Export to xlsx</system:String>
+    <system:String x:Key="StringAppendToXLSX">Append to xlsx</system:String>
     
 
     <system:String x:Key="StringFailedAnalysis">Analysis failed for an unknown reason.</system:String>

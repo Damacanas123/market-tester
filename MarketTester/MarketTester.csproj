@@ -159,6 +159,9 @@
     <Compile Include="UI\Usercontrol\UserControlInfoBox.xaml.cs">
       <DependentUpon>UserControlInfoBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Usercontrol\UserControlOrderHistoryFix.xaml.cs">
+      <DependentUpon>UserControlOrderHistoryFix.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Usercontrol\UserControlOrderList.xaml.cs">
       <DependentUpon>UserControlOrderList.xaml</DependentUpon>
     </Compile>
@@ -245,6 +248,10 @@
     <Page Include="UI\Usercontrol\UserControlOrderEntry1.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\Usercontrol\UserControlOrderHistoryFix.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Usercontrol\UserControlOrderList.xaml">
       <SubType>Designer</SubType>

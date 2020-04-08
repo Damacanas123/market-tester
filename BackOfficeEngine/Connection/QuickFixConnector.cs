@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using BackOfficeEngine.ParamPacker;
 using BackOfficeEngine.Helper;
 using QuickFix;
 using QuickFix.Fields;
+using System.Threading;
 
 namespace BackOfficeEngine.Connection
 {
@@ -26,6 +28,7 @@ namespace BackOfficeEngine.Connection
         private const string SessionQualifierRD = "RD";
         private const string SessionQualifierDC1 = "DC1";
         private const string SessionQualifierDC2 = "DC2";
+        private ConcurrentQueue<Message> m_messageQueue = new ConcurrentQueue<Message>();
         private BISTCredentialParams CredentialParams { get; set; }
 
         public List<IConnectorSubscriber> subscribers { get; }
@@ -34,6 +37,21 @@ namespace BackOfficeEngine.Connection
         private QuickFixConnector() 
         {
             subscribers = new List<IConnectorSubscriber>();
+            //enqueue messages to subscribers.
+            new Thread(() =>
+            {
+                while (true)
+                {
+                    while(m_messageQueue.TryDequeue(out Message m))
+                    {
+                        foreach(IConnectorSubscriber subscriber in subscribers)
+                        {
+                            subscriber.EnqueueMessage(this, new QuickFixMessage(m));
+                        }
+                    }
+                    Thread.Sleep(500);
+                }
+            }).Start();
         }
 
         internal static IConnector GetInstance(string configFilePath,IConnectorSubscriber subscriber)
@@ -97,6 +115,10 @@ namespace BackOfficeEngine.Connection
         {
             IMessage msg = new QuickFixMessage(message);
             msg.ReceiveTime = DateTime.Now;
+            if (message.IsSetField(Tags.ClOrdID))
+            {
+                m_messageQueue.Enqueue(message);
+            }
             foreach (IConnectorSubscriber subscriber in subscribers)
             {
                 subscriber.OnInboundMessage(this, sessionID.ToString(), msg);
@@ -166,7 +188,10 @@ namespace BackOfficeEngine.Connection
 
         void IApplication.ToApp(Message message, SessionID sessionId)
         {
-            
+            if ("DGF".Contains(message.Header.GetField(Tags.MsgType)))
+            {
+                m_messageQueue.Enqueue(message);
+            }
         }
 
 

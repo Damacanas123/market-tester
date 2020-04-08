@@ -94,6 +94,10 @@
     <system:String x:Key="StringQuantityMultiplier">Miktar çarpanı</system:String>
     <system:String x:Key="StringUnknownErrorOccured">Bilinmeyen bir hata oluştu tekrar deneyin.</system:String>
     <system:String x:Key="StringConnectionNotActive">Bağlantı aktif değil.</system:String>
+    <system:String x:Key="StringExportToCsv">Dışa aktar(csv)</system:String>
+    <system:String x:Key="StringAppendToCsv">Ekle(csv)</system:String>
+    <system:String x:Key="StringExportToXLSX">Dışa aktar(xlsx)</system:String>
+    <system:String x:Key="StringAppendToXLSX">Ekle(xlsx</system:String>
 
     <system:String x:Key="StringFailedAnalysis">Analiz bilinmeyen bir sebepten yapılamadı.</system:String>
     <system:String x:Key="StringFileIsBeingUsed">Dosya başka bir işlem tarafından kullanılıyor.</system:String>

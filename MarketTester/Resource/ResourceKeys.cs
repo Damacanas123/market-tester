@@ -117,6 +117,10 @@ namespace MarketTester
         public const string StringPriceOffsetEmpty = "StringPriceOffsetEmpty";
         public const string StringQuantityMultiplierEmpty = "StringQuantityMultiplierEmpty";
         public const string StringUnknownErrorOccured = "StringUnknownErrorOccured";
-        public const string StringConnectionNotActive = "StringConnectionNotActive";        
+        public const string StringConnectionNotActive = "StringConnectionNotActive";
+        public const string StringExportToCsv = "StringExportToCsv";
+        public const string StringAppendToCsv = "StringAppendToCsv";
+        public const string StringExportToXLSX = "StringExportToXLSX";
+        public const string StringAppendToXLSX = "StringAppendToXLSX";
     }
 }

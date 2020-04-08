@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="MarketTester.UI.Usercontrol.UserControlOrderHistoryFix"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MarketTester.UI.Usercontrol"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1700">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Menu Background="Transparent">
+            <MenuItem Header="{DynamicResource StringExport}">
+                <MenuItem Header="{DynamicResource StringExportToCsv}" Command="{Binding CommandExportToCsv}"/>
+                <MenuItem Header="{DynamicResource StringAppendToCsv}" Command="{Binding CommandAppendToCsv}"/>
+                <MenuItem Header="{DynamicResource StringExportToXLSX}" Command="{Binding CommandExportToXLSX}"/>
+                <MenuItem Header="{DynamicResource StringAppendToXLSX}" Command="{Binding CommandAppendToXLSX}"/>
+            </MenuItem>
+
+        </Menu>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <DataGrid></DataGrid>
+        </Grid>
+    </Grid>
+    
+</UserControl>
