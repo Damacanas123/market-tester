@@ -13,6 +13,19 @@ namespace MarketTester.Model.Scheduler
 {
     public class SchedulerRawItem : BaseNotifier
     {
+
+        private bool isSelected = true;
+
+        public bool IsSelected
+        {
+            get { return isSelected; }
+            set
+            {
+                isSelected = value;
+                NotifyPropertyChanged(nameof(IsSelected));
+            }
+        }
+
         private int delay = 0;
 
         public int Delay
@@ -199,14 +212,14 @@ namespace MarketTester.Model.Scheduler
         public SchedulerRawItem(string pipe)
         {
             string []values = pipe.Split(ValueDelimiter);
-            MsgType = FixMsgTypeConverter.Convert(values[0]);
+            MsgType = (MsgType)Enum.Parse(typeof(MsgType),values[0]);
             Account = values[1];
-            Side = FixSideConverter.Convert(values[2]);
-            OrdType = FixOrdTypeConverter.Convert(values[3]);
-            TimeInForce = FixTimeInForceConverter.Convert(values[4]);
+            Side = (Side)Enum.Parse(typeof(Side), values[2]);
+            OrdType = (OrdType)Enum.Parse(typeof(OrdType), values[3]);
+            TimeInForce = (TimeInForce)Enum.Parse(typeof(TimeInForce), values[4]);
             OrderQty = decimal.Parse(values[5],CultureInfo.InvariantCulture);
             Symbol = values[6];
-            ExpireDate = DateTime.ParseExact(values[7],Util.UTCTimestampFormat,CultureInfo.InvariantCulture);
+            ExpireDate = DateTime.ParseExact(values[7],Util.LocalMktDateFormat, CultureInfo.InvariantCulture);
             Price = decimal.Parse(values[8], CultureInfo.InvariantCulture);
             AllocID = values[9];
             Delay = Int32.Parse(values[10],CultureInfo.InvariantCulture);
@@ -215,7 +228,7 @@ namespace MarketTester.Model.Scheduler
         }
         public override string ToString()
         {
-            return MsgType + ValueDelimiter +
+            return MsgType.ToString() + ValueDelimiter +
                 Account + ValueDelimiter + 
                 Side + ValueDelimiter + 
                 OrdType + ValueDelimiter + 

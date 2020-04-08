@@ -15,6 +15,7 @@ using BackOfficeEngine.Helper.IdGenerator;
 using BackOfficeEngine.Events;
 using BackOfficeEngine.Bootstrap;
 using BackOfficeEngine.Helper;
+using BackOfficeEngine.Exceptions;
 
 namespace BackOfficeEngine
 {
@@ -134,8 +135,12 @@ namespace BackOfficeEngine
             m_connectors[connectorName].Connect();
         }
 
-        public (IMessage,string) PrepareMessageNew(NewMessageParameters prms)
+        public (IMessage,string) PrepareMessageNew(NewMessageParameters prms,string connectorName)
         {
+            if (!m_connectors.ContainsKey(connectorName))
+            {
+                throw new ConnectorNotPresentException(connectorName);
+            }
             IMessage newOrderMessage;
             string nonProtocolId;
             nonProtocolId = NonProtocolIDGenerator.Instance.GetNextId();
@@ -144,7 +149,7 @@ namespace BackOfficeEngine
             m_nonProtocolPseudoIDMap[nonProtocolId] = order;
             m_clOrdID_To_nonProtocolPseudoIdMap[newOrderMessage.GetClOrdID()] = nonProtocolId;
 
-            Order orderReal = new Order(newOrderMessage, nonProtocolId);
+            Order orderReal = new Order(newOrderMessage, nonProtocolId,connectorName);
             Order.NonProtocolIDMap[nonProtocolId] = orderReal;
             Order.ClOrdIDMap[newOrderMessage.GetClOrdID()] = orderReal;
             return (newOrderMessage,nonProtocolId);
@@ -202,6 +207,19 @@ namespace BackOfficeEngine
         {
             m_messageQueue.Enqueue((msg,connectorName));
             m_connectors[connectorName].SendMsgOrderEntry(msg);
+        }
+
+        public void SendMessage(IMessage msg, string connectorName,bool overrideSessionTags)
+        {
+            m_messageQueue.Enqueue((msg, connectorName));
+            if (overrideSessionTags)
+            {                
+                m_connectors[connectorName].SendMsgOrderEntry(msg);
+            }
+            else
+            {
+                m_connectors[connectorName].SendMsgOrderEntry(msg.ToString());
+            }
         }
 
         public void SendMessage(string fixMsg,string connectorName,bool overrideSessionTags)

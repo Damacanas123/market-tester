@@ -111,6 +111,12 @@ namespace MarketTester
         public const string StringExpireDate = "StringExpireDate";
         public const string StringAllocID = "StringAllocID";
         public const string StringDeleteSchedule = "StringDeleteSchedule";
-        
+        public const string StringCantEditIdTags = "StringCantEditIdTags";
+        public const string StringQuantityMultiplier = "StringQuantityMultiplier";
+        public const string StringPriceOffset = "StringPriceOffset";
+        public const string StringPriceOffsetEmpty = "StringPriceOffsetEmpty";
+        public const string StringQuantityMultiplierEmpty = "StringQuantityMultiplierEmpty";
+        public const string StringUnknownErrorOccured = "StringUnknownErrorOccured";
+        public const string StringConnectionNotActive = "StringConnectionNotActive";        
     }
 }

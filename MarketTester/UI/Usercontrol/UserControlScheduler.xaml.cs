@@ -50,5 +50,11 @@ namespace MarketTester.UI.Usercontrol
         {
             return new List<T>(e);
         }
+
+        private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            DataGridTagValues.UnselectAll();
+            DataGridSchedule.UnselectAll();
+        }
     }
 }

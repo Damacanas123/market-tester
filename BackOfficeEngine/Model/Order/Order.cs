@@ -26,7 +26,7 @@ namespace BackOfficeEngine.Model
         internal static ConcurrentDictionary<string, Order> ClOrdIDMap = new ConcurrentDictionary<string, Order>();
         internal static ConcurrentDictionary<string, Order> NonProtocolIDMap = new ConcurrentDictionary<string, Order>();
         private static readonly object OrdersLock = new object();
-        public static ObservableCollection<Order> Orders { get; } = new ObservableCollection<Order>();
+        public static ObservableCollectionEx<Order> Orders { get; } = new ObservableCollectionEx<Order>();
 
         #region static methods 
         public static void ClearOrders()
@@ -256,9 +256,15 @@ namespace BackOfficeEngine.Model
             ConstructorCommonWork();
         }
 
-        internal Order(IMessage newOrderMessage, string nonProtocolID) : base(newOrderMessage, nonProtocolID)
+        internal Order(IMessage newOrderMessage, string nonProtocolID,string connectorName) : base(newOrderMessage, nonProtocolID)
         {
             ConstructorCommonWork();
+            ConnectorName = connectorName;
+            AddMessage(newOrderMessage);
+            using (SQLiteHandler handler = new SQLiteHandler())
+            {
+                handler.Insert(this);
+            }
         }
 
         

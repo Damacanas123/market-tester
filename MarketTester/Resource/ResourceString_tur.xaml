@@ -89,6 +89,11 @@
     <system:String x:Key="StringExpireDate">Emir sonlanma tarihi</system:String>
     <system:String x:Key="StringAllocID">AllocID</system:String>
     <system:String x:Key="StringDeleteSchedule">Planı sil</system:String>
+    <system:String x:Key="StringCantEditIdTags">Sınırlandırılmış planyıcıyı kullanırken ID etiketleri düzenlenemez.</system:String>
+    <system:String x:Key="StringPriceOffset">Fiyat dengeleme</system:String>
+    <system:String x:Key="StringQuantityMultiplier">Miktar çarpanı</system:String>
+    <system:String x:Key="StringUnknownErrorOccured">Bilinmeyen bir hata oluştu tekrar deneyin.</system:String>
+    <system:String x:Key="StringConnectionNotActive">Bağlantı aktif değil.</system:String>
 
     <system:String x:Key="StringFailedAnalysis">Analiz bilinmeyen bir sebepten yapılamadı.</system:String>
     <system:String x:Key="StringFileIsBeingUsed">Dosya başka bir işlem tarafından kullanılıyor.</system:String>

@@ -89,6 +89,14 @@
     <system:String x:Key="StringExpireDate">Expire Date</system:String>
     <system:String x:Key="StringAllocID">Alloc ID</system:String>
     <system:String x:Key="StringDeleteSchedule">Delete Schedule</system:String>
+    <system:String x:Key="StringCantEditIdTags">You can't edit ID tags while using restricted scheduler.</system:String>
+    <system:String x:Key="StringPriceOffset">Price Offset</system:String>
+    <system:String x:Key="StringQuantityMultiplier">Quantity Multiplier</system:String>
+    <system:String x:Key="StringPriceOffsetEmpty">Please enter a price offset.</system:String>
+    <system:String x:Key="StringQuantityMultiplierEmpty">Please enter a quantity multiplier.</system:String>
+    <system:String x:Key="StringUnknownErrorOccured">Unknown error occured please try again.</system:String>
+    <system:String x:Key="StringConnectionNotActive">Connection not active.</system:String>    
+    
 
     <system:String x:Key="StringFailedAnalysis">Analysis failed for an unknown reason.</system:String>
     <system:String x:Key="StringFileIsBeingUsed">File is being used by another process.</system:String>

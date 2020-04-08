@@ -271,7 +271,11 @@ namespace MarketTester.ViewModel
                 InfoTextResourceKey = ResourceKeys.StringCantEditTag;
                 return;
             }
-            TagValuePairs.Add(new TagValuePair(TextTag, TextValue));
+
+            if(TagValuePairs.FirstOrDefault((o) => o.Tag == TextTag) == null)
+            {
+                TagValuePairs.Add(new TagValuePair(TextTag, TextValue));
+            }
         }
         public bool CommandAddTagValuePairCanExecute()
         {
@@ -397,11 +401,8 @@ namespace MarketTester.ViewModel
         public BaseCommand CommandSaveFile { get; set; }
         public void CommandSaveFileExecute(object param)
         {
-            SaveFileDialog dialog = new SaveFileDialog();
-            dialog.Filter = FreeFormatSaveFileExtension + " file|*." + FreeFormatSaveFileExtension;
-            dialog.InitialDirectory = Util.APPLICATION_FREEFORMATSCHEDULE_DIR;
-            dialog.ShowDialog();
-            if (!string.IsNullOrWhiteSpace(dialog.FileName))
+            string filePath = UIUtil.SaveFileDialog(new string[] { FreeFormatSaveFileExtension });
+            if (!string.IsNullOrWhiteSpace(filePath))
             {
                 new Thread(() =>
                 {
@@ -409,11 +410,11 @@ namespace MarketTester.ViewModel
                     {
                         foreach (FreeFormatSchedule schedule in Schedules)
                         {
-                            if (File.Exists(dialog.FileName))
+                            if (File.Exists(filePath))
                             {
-                                File.Delete(dialog.FileName);
+                                File.Delete(filePath);
                             }
-                            Util.AppendStringToFile(dialog.FileName, SaveDelimiter + schedule.SaveString);
+                            Util.AppendStringToFile(filePath, SaveDelimiter + schedule.SaveString);
                         }
                     }
                 }).Start();
@@ -430,32 +431,39 @@ namespace MarketTester.ViewModel
         public BaseCommand CommandLoadFile { get; set; }
         public void CommandLoadFileExecute(object param)
         {
-            OpenFileDialog dialog = new OpenFileDialog();
+            string filePath = "";            
             try
-            {   
-                dialog.InitialDirectory = Util.APPLICATION_FREEFORMATSCHEDULE_DIR;
-                dialog.Filter = FreeFormatSaveFileExtension + " file|*." + FreeFormatSaveFileExtension;
-                dialog.ShowDialog();
+            {
+                filePath = UIUtil.OpenFileDialog(new string[] { FreeFormatSaveFileExtension });
                 List<FreeFormatSchedule> tempList = new List<FreeFormatSchedule>(10);
-                if (!string.IsNullOrWhiteSpace(dialog.FileName))
+                if (!string.IsNullOrWhiteSpace(filePath))
                 {
                     new Thread(() =>
                     {
-                        string content = Util.ReadFile(dialog.FileName);
-                        string[] splits = content.Split(new string[] { SaveDelimiter }, StringSplitOptions.RemoveEmptyEntries);
-                        foreach (string saveString in splits)
+                        try
                         {
-                            FreeFormatSchedule schedule = FreeFormatSchedule.Load(saveString);
-                            tempList.Add(schedule);
-                        }
-                        App.Current.Dispatcher.Invoke(() =>
-                        {
-                            Schedules.Clear();
-                            foreach(FreeFormatSchedule schedule in tempList)
+                            string content = Util.ReadFile(filePath);
+                            string[] splits = content.Split(new string[] { SaveDelimiter }, StringSplitOptions.RemoveEmptyEntries);
+                            foreach (string saveString in splits)
                             {
-                                Schedules.Add(schedule);
+                                FreeFormatSchedule schedule = FreeFormatSchedule.Load(saveString);
+                                tempList.Add(schedule);
                             }
-                        });
+                            App.Current.Dispatcher.Invoke(() =>
+                            {
+                                Schedules.Clear();
+                                foreach (FreeFormatSchedule schedule in tempList)
+                                {
+                                    Schedules.Add(schedule);
+                                }
+                                SelectedSchedule = Schedules[0];
+                            });
+                        }
+                        catch
+                        {
+                            InfoTextResourceKey = ResourceKeys.StringUnknownErrorOccured;
+                        }
+                        
                     }).Start();
                 }
                 
@@ -465,14 +473,14 @@ namespace MarketTester.ViewModel
                 App.Current.Dispatcher.Invoke(() =>
                 {
                     UserControlErrorPopup popup = new UserControlErrorPopup(ResourceKeys.StringCannotParseDelayFromFile);
-                    popup.SetExtraText("\n" + dialog.FileName);
+                    popup.SetExtraText("\n" + filePath);
                     PopupManager.OpenErrorPopup(popup);
                 });
             }
             catch(Exception ex)
             {
                 UserControlErrorPopup popup = new UserControlErrorPopup();
-                popup.SetExtraText(dialog.FileName);
+                popup.SetExtraText(filePath);
                 PopupManager.OpenErrorPopup(popup);
             }
         }
@@ -489,8 +497,11 @@ namespace MarketTester.ViewModel
         {
             foreach(FreeFormatScheduleItem item in SelectedSchedule.Items)
             {
-                Thread.Sleep(item.Delay);
-                Connection.Connector.GetInstance().SendMessage(item.Channel, item.Message, !OverrideSessionTags);
+                if (item.IsSelected)
+                {
+                    Thread.Sleep(item.Delay);
+                    Connection.Connector.GetInstance().SendMessage(item.Channel, item.Message, !OverrideSessionTags);
+                }
             }
         }
         public bool CommandStartScheduleCanExecute()

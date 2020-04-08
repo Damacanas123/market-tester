@@ -169,11 +169,18 @@ namespace BackOfficeEngine.Connection
             
         }
 
+
         public void SendMsgOrderEntry(IMessage msg)
         {
             //Session session = m_symbolMap[msg.GetSymbol()];
             Message quickFixMsg = new Message(msg.ToString());
             primarySession.Send(quickFixMsg);
+        }
+
+        public void SendMsgOrderEntry(string msg)
+        {
+            //Session session = m_symbolMap[msg.GetSymbol()];
+            primarySession.Send(msg);
         }
 
         public void SendMsgOrderEntry(string msg,bool overrideSessionTags)

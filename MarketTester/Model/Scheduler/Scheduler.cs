@@ -13,6 +13,8 @@ using BackOfficeEngine.ParamPacker;
 using System.CodeDom.Compiler;
 using MarketTester.Connection;
 using BackOfficeEngine.GeneralBase;
+using MarketTester.Model.FixFreeFormat;
+using System.Reflection;
 
 namespace MarketTester.Model.Scheduler
 {
@@ -21,8 +23,8 @@ namespace MarketTester.Model.Scheduler
 
         //do not modify this collection from outside of this class. it is made public in order for use with bindings on xaml.
         public ObservableCollection<SchedulerRawItem> scheduleRaw { get; set; } = new ObservableCollection<SchedulerRawItem>();
-        //(message,connector name)
-        private List<(IMessage,string)> schedulePrepared;
+        //(message,connector name,delay)
+        private List<(IMessage,string,int)> schedulePrepared;
         //map between scheduler order id and backoffice order id
         private Dictionary<string, string> OrderIdMap { get; set; }
         private int schedulerOrderId = 1;
@@ -45,7 +47,7 @@ namespace MarketTester.Model.Scheduler
 
         public Scheduler(string name)
         {
-            schedulePrepared = new List<(IMessage,string)>();
+            schedulePrepared = new List<(IMessage,string,int)>();
             OrderIdMap = new Dictionary<string, string>();
             this.Name = name;
 
@@ -59,7 +61,7 @@ namespace MarketTester.Model.Scheduler
             TimeInForce timeInForce,
             string orderQty,
             string symbol,
-            string expireDate,
+            DateTime expireDate,
             string price,
             string allocId,
             string schedulerOrderId,
@@ -78,14 +80,13 @@ namespace MarketTester.Model.Scheduler
                 AllocID = allocId,
                 SchedulerOrderID = !string.IsNullOrWhiteSpace(schedulerOrderId) ? schedulerOrderId : (this.schedulerOrderId++).ToString(),
                 ConnectorName = connectorName,
-                Delay = int.Parse(delay, CultureInfo.InvariantCulture)
+                Delay = int.Parse(delay, CultureInfo.InvariantCulture),
+                ExpireDate = expireDate
             };
             if (!string.IsNullOrWhiteSpace(orderQty))
                 item.OrderQty = Decimal.Parse(orderQty, CultureInfo.InvariantCulture);
             if (!string.IsNullOrWhiteSpace(price))
                 item.Price = Decimal.Parse(price, CultureInfo.InvariantCulture);
-            if (!string.IsNullOrWhiteSpace(expireDate))
-                item.ExpireDate = DateTime.ParseExact(expireDate, Util.LocalMktDateFormat, CultureInfo.InvariantCulture);
             return item;
         }
 
@@ -138,37 +139,36 @@ namespace MarketTester.Model.Scheduler
             }
         }
         
-        public void StartSchedule()
+        public void StartSchedule(bool overrideSessionTags)
         {
             Engine engine = Engine.GetInstance();
-            for (int i = 0; i < selectedIndices.Length; i++)
+            foreach ((IMessage,string,int) item in schedulePrepared)
             {
-                SchedulerRawItem item = scheduleRaw[selectedIndices[i]];
-                IMessage m; string connectorName;
-                (m, connectorName) = schedulePrepared[i];
-                Thread.Sleep(item.Delay);
-                engine.SendMessage(m, connectorName);
+                IMessage m; string connectorName;int delay;
+                (m, connectorName, delay) = item;
+                Thread.Sleep(delay);
+                engine.SendMessage(m, connectorName,overrideSessionTags);
             }
             selectedIndices = new int[0];
         }
-        public void PrepareSchedule(decimal priceOffset, decimal quantityMultiplier)
+        public void PrepareSchedule(decimal priceOffset, decimal quantityMultiplier,List<TagValuePair> extraTagValuePairs)
         {
             //note that replace requests and cancel requests have to be based on ClOrdId and OrigClOrdId in case of preprocessing
             //and schedule is always preproccesed
             schedulePrepared.Clear();
 
             Matcher matcher = new Matcher();
-            if (selectedIndices.Length < 2)
+            
+            foreach (SchedulerRawItem item in scheduleRaw)
             {
-                selectedIndices = new int[scheduleRaw.Count];
-                for (int i = 0; i < scheduleRaw.Count; i++)
+                if (!item.IsSelected)
                 {
-                    selectedIndices[i] = i;
+                    continue;
                 }
-            }
-            foreach (int index in selectedIndices)
-            {
-                SchedulerRawItem item = scheduleRaw[index];
+                if (item.MsgType != MsgType.New && !OrderIdMap.ContainsKey(item.SchedulerOrderID))
+                {
+                    continue;
+                }
                 item.Price = item.Price + priceOffset;
                 item.OrderQty = item.OrderQty * quantityMultiplier;
 
@@ -179,12 +179,16 @@ namespace MarketTester.Model.Scheduler
                     if(item.Price != -1)
                     {
                         (m,nonProtocolOrderId) = engine.PrepareMessageNew(new NewMessageParameters(item.ProtocolType, item.Account, item.Symbol,
-                                                                       item.OrderQty, item.Side, item.TimeInForce, item.OrdType, item.Price));
+                                                                       item.OrderQty, item.Side, item.TimeInForce, item.OrdType, item.Price),item.ConnectorName);
                     }                    
                     else
                     {
                         (m,nonProtocolOrderId) = engine.PrepareMessageNew(new NewMessageParameters(item.ProtocolType, item.Account, item.Symbol,
-                                                                       item.OrderQty, item.Side, item.TimeInForce, item.OrdType));
+                                                                       item.OrderQty, item.Side, item.TimeInForce, item.OrdType),item.ConnectorName);
+                    }
+                    if(item.ExpireDate != DateTime.MinValue)
+                    {
+                        m.SetGenericField(432, item.ExpireDate.ToString(Util.LocalMktDateFormat));
                     }
                     OrderIdMap[item.SchedulerOrderID] = nonProtocolOrderId;
                 }
@@ -218,8 +222,12 @@ namespace MarketTester.Model.Scheduler
                 if (PreEvaluateReplaceQuantities)
                 {
                     matcher.AddMessage(item);
+                }                
+                foreach(TagValuePair pair in extraTagValuePairs)
+                {
+                    m.SetGenericField(int.Parse(pair.Tag, CultureInfo.InvariantCulture), pair.Value);
                 }
-                schedulePrepared.Add((m,item.ConnectorName));
+                schedulePrepared.Add((m, item.ConnectorName,item.Delay));
                 item.Price = item.Price - priceOffset;
                 item.OrderQty = item.OrderQty / quantityMultiplier;
             }

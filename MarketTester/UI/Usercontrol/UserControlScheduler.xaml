@@ -7,7 +7,7 @@
              xmlns:viewmodel="clr-namespace:MarketTester.ViewModel"
              xmlns:connection="clr-namespace:MarketTester.Connection"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="1700">
+             d:DesignHeight="800" d:DesignWidth="1700" MouseDown="UserControl_MouseDown">
     <UserControl.DataContext>
         <viewmodel:ViewModelScheduler/>
     </UserControl.DataContext>
@@ -106,7 +106,7 @@
                           />
                 <TextBlock VerticalAlignment="Center" Text="{DynamicResource StringExpireDate}" Grid.Column="6" Grid.Row="0" Grid.ColumnSpan="2"/>
                 <DatePicker Grid.ColumnSpan="2" Grid.Row="1" Grid.Column="6" 
-                            Text="{Binding TextExpireDate}"
+                            SelectedDate="{Binding ExpireDate}"
                         VerticalContentAlignment="Center"/>
                 <TextBlock VerticalAlignment="Center" Text="{DynamicResource StringDelayMilliSecond}" Grid.Column="6" Grid.Row="2" Grid.ColumnSpan="2"/>
                 <TextBox Grid.ColumnSpan="2" Grid.Row="3" Grid.Column="6" Text="{Binding TextDelay}" />
@@ -132,15 +132,15 @@
             <Separator Grid.ColumnSpan="6" Grid.Column="0" Grid.Row="6" VerticalAlignment="Top" Margin="0,-1,0,0"/>
             <TextBlock FontSize="24" VerticalAlignment="Center" Margin="13,0,0,0" Text="{DynamicResource StringScheduler}" Grid.Row="6" Grid.Column="0"/>
             <Button Grid.Column="5" Grid.Row="5" Content="{DynamicResource StringRemoveFromSchedule}" Command="{Binding CommandRemoveItemFromSchedule}"/>
-            <Button Grid.Column="0" Grid.Row="9" 
+            <Button Grid.Column="0" Grid.Row="8" 
                     Content="{DynamicResource StringClearSchedule}" 
                     Command="{Binding CommandClearSchedule}"
                     IsEnabled="{Binding ScheduleNotRunning}"/>
-            <Button Grid.Column="0" Grid.Row="8" 
+            <Button Grid.Column="0" Grid.Row="7" 
                     Content="{DynamicResource StringStartSchedule}" 
                     Command="{Binding CommandStartSchedule}"
                     IsEnabled="{Binding ScheduleNotRunning}"/>
-            <Button Grid.Column="0" Grid.Row="10" 
+            <Button Grid.Column="0" Grid.Row="9" 
                     Content="{DynamicResource StringDeleteSchedule}"
                     Command="{Binding CommandDeleteSchedule}"
                     IsEnabled="{Binding ScheduleNotRunning}"/>
@@ -182,7 +182,7 @@
                 </DataGrid.Columns>
 
             </DataGrid>
-            <Button Grid.Column="0" Grid.Row="11" Padding="7" Width="30" Height="30" Command="{Binding CommandAddSchedule}">
+            <Button Grid.Column="0" Grid.Row="10" Padding="7" Width="30" Height="30" Command="{Binding CommandAddSchedule}">
                 <Path Fill="{DynamicResource ActiveYellow}" Stretch="Fill"
                     Data="M 0,0 L 5,0 5,5 7,5 7,0 12,0 12,-2 7,-2 7,-7 5,-7 5,-2 0,-2">
 
@@ -227,11 +227,29 @@
             </DataGrid>
             <Button Grid.Column="4" Grid.Row="5" Content="{DynamicResource StringSend}" 
                 Command="{Binding CommandSendMessage}"/>
-            <TextBlock Text="{Binding InfoText}" Grid.Row="11" Grid.Column="1"
-                       Grid.ColumnSpan="5"
+            <TextBlock Text="{Binding InfoText}" Grid.Row="11" Grid.Column="0"
+                       Grid.ColumnSpan="6"
                        VerticalAlignment="Center"/>
             <CheckBox IsChecked="{Binding OverrideSessionTags}" Content="{DynamicResource StringOverrideSessionTags}" 
                       Grid.Column="5" Grid.Row="9" VerticalAlignment="Center"/>
+            <Grid Grid.Column="1" Grid.Row="6">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="5*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="{DynamicResource StringPriceOffset}"/>
+                <TextBox Grid.Row="1"
+                         Text="{Binding TextPriceOffset}"/>
+            </Grid>
+            <Grid Grid.Column="2" Grid.Row="6">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="5*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="{DynamicResource StringQuantityMultiplier}"/>
+                <TextBox Grid.Row="1"
+                         Text="{Binding TextQuantityMultiplier}"/>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>

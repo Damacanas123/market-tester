@@ -14,11 +14,17 @@ using BackOfficeEngine.Helper;
 using MarketTester.Helper;
 using System.Globalization;
 using System.Threading;
+using BackOfficeEngine.Model;
+using Microsoft.Win32;
 
 namespace MarketTester.ViewModel
 {
     public class ViewModelScheduler : BaseNotifier
     {
+        private static HashSet<string> IDTags { get; set; } = new HashSet<string>()
+        {
+            "11","41","37"
+        };
         public ViewModelScheduler()
         {
             CommandAddMessageToSchedule = new BaseCommand(CommandAddMessageToScheduleExecute, CommandAddMessageToScheduleCanExecute);
@@ -31,10 +37,20 @@ namespace MarketTester.ViewModel
             CommandDeleteSchedule = new BaseCommand(CommandDeleteScheduleExecute, CommandDeleteScheduleCanExecute);
             CommandRemoveItemFromSchedule = new BaseCommand(CommandRemoveItemFromScheduleExecute, CommandRemoveItemFromScheduleCanExecute);
             CommandStartSchedule = new BaseCommand(CommandStartScheduleExecute, CommandStartScheduleCanExecute);
+            CommandSaveFile = new BaseCommand(CommandSaveFileExecute, CommandSaveFileCanExecute);
+            CommandLoadFile = new BaseCommand(CommandLoadFileExecute, CommandLoadFileCanExecute);
+
+            Settings.GetInstance().LanguageChangedEventHandler += OnLanguageChange;
 
             Schedules.Add(new Scheduler("Schedule1"));
             SelectedSchedule = Schedules[0];
         }
+
+        public void OnLanguageChange()
+        {
+            InfoText = App.Current.Resources[InfoTextResourceKey].ToString();
+        }
+
         private string textAllocID;
 
         public string TextAllocID
@@ -102,7 +118,7 @@ namespace MarketTester.ViewModel
             get { return textPrice; }
             set
             {
-                textPrice = value;
+                textPrice = Util.RemoveNonNumericKeepDot(value);
                 NotifyPropertyChanged(nameof(TextPrice));
             }
         }
@@ -114,7 +130,7 @@ namespace MarketTester.ViewModel
             get { return textQuantity; }
             set
             {
-                textQuantity = value;
+                textQuantity = Util.RemoveNonNumeric(value);
                 NotifyPropertyChanged(nameof(TextQuantity));
             }
         }
@@ -143,17 +159,20 @@ namespace MarketTester.ViewModel
             }
         }
 
-        private string textExpireDate;
+       
 
-        public string TextExpireDate
+        private DateTime expireDate;
+
+        public DateTime ExpireDate
         {
-            get { return textExpireDate; }
+            get { return expireDate; }
             set
             {
-                textExpireDate = value;
-                NotifyPropertyChanged(nameof(TextExpireDate));
+                expireDate = value;
+                NotifyPropertyChanged(nameof(ExpireDate));
             }
         }
+
 
 
         private MsgType msgType = MsgType.New;
@@ -308,6 +327,31 @@ namespace MarketTester.ViewModel
             }
         }
 
+        private string textPriceOffset = "0.00";
+
+        public string TextPriceOffset
+        {
+            get { return textPriceOffset; }
+            set
+            {
+                textPriceOffset = Util.RemoveNonNumericKeepDot(value);
+                NotifyPropertyChanged(nameof(TextPriceOffset));
+            }
+        }
+
+        private string textQuantityMultiplier = "1";
+
+        public string TextQuantityMultiplier
+        {
+            get { return textQuantityMultiplier; }
+            set
+            {
+                textQuantityMultiplier = Util.RemoveNonNumeric(value);
+                NotifyPropertyChanged(nameof(TextQuantityMultiplier));
+            }
+        }
+
+
 
         public ObservableCollection<Scheduler> Schedules { get; set; } = new ObservableCollection<Scheduler>();
         public ObservableCollection<TagValuePair> TagValuePairs { get; set; } = new ObservableCollection<TagValuePair>();
@@ -333,7 +377,16 @@ namespace MarketTester.ViewModel
                 InfoTextResourceKey = ResourceKeys.StringCantEditTag;
                 return;
             }
-            TagValuePairs.Add(new TagValuePair(TextTag, TextValue));
+            if (IDTags.Contains(TextTag))
+            {
+                InfoTextResourceKey = ResourceKeys.StringCantEditIdTags;
+                return;
+            }
+
+            if (TagValuePairs.FirstOrDefault((o) => o.Tag == TextTag) == null)
+            {
+                TagValuePairs.Add(new TagValuePair(TextTag, TextValue));
+            }
         }
         public bool CommandAddTagValuePairCanExecute()
         {
@@ -372,6 +425,11 @@ namespace MarketTester.ViewModel
         public BaseCommand CommandAddMessageToSchedule { get; set; }
         public void CommandAddMessageToScheduleExecute(object param)
         {
+            if(SelectedChannel == null)
+            {
+                InfoTextResourceKey = ResourceKeys.StringPleaseSelectAChannel;
+                return;
+            }
             SchedulerRawItem item = SelectedSchedule.PrepareScheduleItem(SelectedMsgType,
                 TextAccount,
                 SelectedSide,
@@ -379,7 +437,7 @@ namespace MarketTester.ViewModel
                 SelectedTimeInForce,
                 TextQuantity,
                 TextSymbol,
-                (SelectedTimeInForce == TimeInForce.GoodTillDate ? TextExpireDate : null),
+                (SelectedTimeInForce == TimeInForce.GoodTillDate ? ExpireDate : DateTime.MinValue),
                 TextPrice,
                 TextAllocID,
                 (SelectedScheduleItem != null && SelectedMsgType == MsgType.Replace ? SelectedScheduleItem.SchedulerOrderID : null),
@@ -399,19 +457,22 @@ namespace MarketTester.ViewModel
         public BaseCommand CommandSelectMessageFromSchedule { get; set; }
         public void CommandSelectMessageFromScheduleExecute(object param)
         {
-            SchedulerRawItem item = SelectedScheduleItem;
-            SelectedMsgType = item.MsgType;
-            TextAccount = item.Account;
-            SelectedSide = item.Side;
-            SelectedOrdType = item.OrdType;
-            SelectedTimeInForce = item.TimeInForce;
-            TextQuantity = item.OrderQty.ToString(CultureInfo.InvariantCulture);
-            TextSymbol = item.Symbol;
-            SelectedTimeInForce = item.TimeInForce;
-            TextPrice = item.Price.ToString(CultureInfo.InvariantCulture);
-            TextAllocID = item.AllocID;
-            SelectedChannel = Connection.Connector.ActiveChannels.FirstOrDefault((o) => o.Name == item.ConnectorName);
-            TextDelay = item.Delay.ToString(CultureInfo.InvariantCulture);
+            if(SelectedScheduleItem != null)
+            {
+                SchedulerRawItem item = SelectedScheduleItem;
+                SelectedMsgType = item.MsgType;
+                TextAccount = item.Account;
+                SelectedSide = item.Side;
+                SelectedOrdType = item.OrdType;
+                SelectedTimeInForce = item.TimeInForce;
+                TextQuantity = item.OrderQty.ToString(CultureInfo.InvariantCulture);
+                TextSymbol = item.Symbol;
+                SelectedTimeInForce = item.TimeInForce;
+                TextPrice = item.Price.ToString(CultureInfo.InvariantCulture);
+                TextAllocID = item.AllocID;
+                SelectedChannel = Connection.Connector.ActiveChannels.FirstOrDefault((o) => o.Name == item.ConnectorName);
+                TextDelay = item.Delay.ToString(CultureInfo.InvariantCulture);
+            }            
         }
         public bool CommandSelectMessageFromScheduleCanExecute()
         {
@@ -466,16 +527,40 @@ namespace MarketTester.ViewModel
         public BaseCommand CommandStartSchedule { get; set; }
         public void CommandStartScheduleExecute(object param)
         {
-            ScheduleNotRunning = false;
-            SelectedSchedule.PrepareSchedule(0, 1);
-            new Thread(() =>
+            if (string.IsNullOrWhiteSpace(TextPriceOffset))
             {
-                
-                SelectedSchedule.StartSchedule();
-                App.Current.Dispatcher.Invoke(() =>
+                InfoTextResourceKey = ResourceKeys.StringPriceOffsetEmpty;
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(TextQuantityMultiplier))
+            {
+                InfoTextResourceKey = ResourceKeys.StringQuantityMultiplierEmpty;
+                return;
+            }
+            ScheduleNotRunning = false;
+            Order.Orders.SupressNotification = true;
+            new Thread(() =>
+            {                
+                try
                 {
-                    ScheduleNotRunning = true;
-                });
+                    SelectedSchedule.PrepareSchedule(decimal.Parse(TextPriceOffset, CultureInfo.InvariantCulture),
+                    decimal.Parse(TextQuantityMultiplier, CultureInfo.InvariantCulture), TagValuePairs.ToList());
+                    SelectedSchedule.StartSchedule(!OverrideSessionTags);
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        ScheduleNotRunning = true;
+                        Order.Orders.SupressNotification = false;
+                    });
+                }
+                catch(BackOfficeEngine.Exceptions.ConnectorNotPresentException ex)
+                {
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        ScheduleNotRunning = true;
+                        Order.Orders.SupressNotification = false;
+                        InfoTextResourceKey = ResourceKeys.StringConnectionNotActive;
+                    });
+                }
             }).Start();
 
         }
@@ -493,6 +578,61 @@ namespace MarketTester.ViewModel
             Schedules.Remove(SelectedSchedule);
         }
         public bool CommandDeleteScheduleCanExecute()
+        {
+            return true;
+        }
+        #endregion
+
+        private const string FileFormat = "fs";
+        private const string ScheduleSaveFileDelimeter = "sdfedbsfgdwrgs\n";
+        #region CommandSaveFile
+        public BaseCommand CommandSaveFile { get; set; }
+        public void CommandSaveFileExecute(object param)
+        {
+            string filePath = UIUtil.SaveFileDialog(new string[] { FileFormat });
+            new Thread(() =>
+            {
+                if (!string.IsNullOrWhiteSpace(filePath))
+                {
+                    foreach (Scheduler schedule in Schedules)
+                    {
+                        Util.AppendStringToFile(filePath, ScheduleSaveFileDelimeter + schedule.SaveSchedule());
+                    }
+                }
+            }).Start();
+        }
+        public bool CommandSaveFileCanExecute()
+        {
+            return true;
+        }
+        #endregion
+
+
+        #region CommandLoadFile
+        public BaseCommand CommandLoadFile { get; set; }
+        public void CommandLoadFileExecute(object param)
+        {
+            Schedules.Clear();
+            string filePath = UIUtil.OpenFileDialog(new string[] { FileFormat });
+            if (!string.IsNullOrWhiteSpace(filePath))
+            {
+                new Thread(() =>
+                {
+                    string content = Util.ReadFile(filePath);
+                    string[] scheduleStrings = content.Split(new string[] { ScheduleSaveFileDelimeter },StringSplitOptions.RemoveEmptyEntries);
+                    foreach(string scheduleString in scheduleStrings)
+                    {
+                        Scheduler scheduler = new Scheduler("dummy");
+                        scheduler.LoadSchedule(scheduleString.Split('\n'));
+                        App.Current.Dispatcher.Invoke(() =>
+                        {
+                             Schedules.Add(scheduler);
+                        });
+                    }                    
+                }).Start();
+            }
+        }
+        public bool CommandLoadFileCanExecute()
         {
             return true;
         }

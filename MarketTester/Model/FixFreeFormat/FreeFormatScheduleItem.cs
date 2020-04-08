@@ -10,6 +10,19 @@ namespace MarketTester.Model.FixFreeFormat
 {
     public class FreeFormatScheduleItem : BaseNotifier
     {
+
+		private bool isSelected = true;
+
+		public bool IsSelected
+		{
+			get { return isSelected; }
+			set
+			{
+				isSelected = value;
+				NotifyPropertyChanged(nameof(IsSelected));
+			}
+		}
+
 		private int delay;
 
 		public int Delay
