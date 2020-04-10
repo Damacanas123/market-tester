@@ -119,6 +119,7 @@
     <Compile Include="Model\ConfigFile.cs" />
     <Compile Include="Model\FixFreeFormat\FreeFormatSchedule.cs" />
     <Compile Include="Model\FixFreeFormat\FreeFormatScheduleItem.cs" />
+    <Compile Include="Model\FixFreeFormat\SavedMessage.cs" />
     <Compile Include="Model\FixFreeFormat\TagValuePair.cs" />
     <Compile Include="Model\LogAnalyzer\LineFormat.cs" />
     <Compile Include="Model\Scheduler\Matcher.cs" />

@@ -98,6 +98,12 @@
     <system:String x:Key="StringAppendToCsv">Ekle(csv)</system:String>
     <system:String x:Key="StringExportToXLSX">Dışa aktar(xlsx)</system:String>
     <system:String x:Key="StringAppendToXLSX">Ekle(xlsx</system:String>
+    <system:String x:Key="StringMessage">Mesah</system:String>
+    <system:String x:Key="StringSavedMessages">Kaydedilmiş Mesajlar</system:String>
+    <system:String x:Key="StringSaveMessage">Mesajı kaydet</system:String>
+    <system:String x:Key="StringMessageName">Mesaj ismi</system:String>
+    <system:String x:Key="StringEnterAMessageName">Lütfen mesaj ismi girin.</system:String>
+    <system:String x:Key="StringNoTagValuePairSet">Etiket değer ikilisi girilmedi.</system:String>
 
     <system:String x:Key="StringFailedAnalysis">Analiz bilinmeyen bir sebepten yapılamadı.</system:String>
     <system:String x:Key="StringFileIsBeingUsed">Dosya başka bir işlem tarafından kullanılıyor.</system:String>

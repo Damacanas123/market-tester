@@ -122,5 +122,11 @@ namespace MarketTester
         public const string StringAppendToCsv = "StringAppendToCsv";
         public const string StringExportToXLSX = "StringExportToXLSX";
         public const string StringAppendToXLSX = "StringAppendToXLSX";
+        public const string StringMessage = "StringMessage";
+        public const string StringSavedMessages = "StringSavedMessages";
+        public const string StringSaveMessage = "StringSaveMessage";
+        public const string StringMessageName = "StringMessageName";
+        public const string StringEnterAMessageName = "StringEnterAMessageName";
+        public const string StringNoTagValuePairSet = "StringNoTagValuePairSet";
     }
 }

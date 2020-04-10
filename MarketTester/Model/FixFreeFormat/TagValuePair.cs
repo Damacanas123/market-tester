@@ -46,5 +46,19 @@ namespace MarketTester.Model.FixFreeFormat
             Tag = tag;
             Value = value;
         }
+
+        public TagValuePair(string tag, string value,bool isSelected)
+        {
+            Tag = tag;
+            Value = value;
+            IsSelected = isSelected;
+        }
+
+        public TagValuePair(TagValuePair other)
+        {
+            Tag = other.Tag;
+            Value = other.Value;
+            IsSelected = other.IsSelected;
+        }
     }
 }

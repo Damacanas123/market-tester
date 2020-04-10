@@ -20,6 +20,7 @@ using System.Threading;
 using Microsoft.Win32;
 using MarketTester.UI.Popup;
 using System.IO;
+using System.Windows;
 
 namespace MarketTester.ViewModel
 {
@@ -45,6 +46,12 @@ namespace MarketTester.ViewModel
             CommandRemoveItemFromSchedule = new BaseCommand(CommandRemoveItemFromScheduleExecute, CommandRemoveItemFromScheduleCanExecute);
             CommandMoveMessageDown = new BaseCommand(CommandMoveMessageDownExecute, CommandMoveMessageDownCanExecute);
             CommandMoveMessageUp = new BaseCommand(CommandMoveMessageUpExecute, CommandMoveMessageUpCanExecute);
+            CommandAddMessageSavedMessages = new BaseCommand(CommandAddMessageSavedMessagesExecute, CommandAddMessageSavedMessagesCanExecute);
+
+            if (SavedMessage.SavedMessages.Count == 0)
+            {
+                SavedMessage.Load();
+            }
 
             Connection.Connector.ActiveChannels.CollectionChanged += OnActiveChannelsCollectionChanged;
             SelectedSchedule = new FreeFormatSchedule() { Name = "Schedule1" };
@@ -132,6 +139,34 @@ namespace MarketTester.ViewModel
             {
                 selectedSchedule = value;
                 NotifyPropertyChanged(nameof(SelectedSchedule));
+            }
+        }
+        private string savedMessageName;
+
+        public string SavedMessageName
+        {
+            get { return savedMessageName; }
+            set
+            {
+                savedMessageName = value;
+                NotifyPropertyChanged(nameof(SavedMessageName));
+            }
+        }
+
+        private SavedMessage selectedSavedMessage;
+
+        public SavedMessage SelectedSavedMessage
+        {
+            get { return selectedSavedMessage; }
+            set
+            {
+                selectedSavedMessage = value;
+                TagValuePairs.Clear();
+                foreach(TagValuePair pair in selectedSavedMessage.GetTagValuePairs())
+                {
+                    TagValuePairs.Add(new TagValuePair(pair));
+                }
+                NotifyPropertyChanged(nameof(SelectedSavedMessage));
             }
         }
 
@@ -571,6 +606,39 @@ namespace MarketTester.ViewModel
             return true;
         }
         #endregion
+
+
+        #region CommandAddMessageSavedMessages
+        public BaseCommand CommandAddMessageSavedMessages { get; set; }
+        public void CommandAddMessageSavedMessagesExecute(object param)
+        {
+            if (string.IsNullOrWhiteSpace(SavedMessageName))
+            {
+                InfoTextResourceKey = ResourceKeys.StringEnterAMessageName;
+                return;
+            }
+            if(TagValuePairs.Count == 0)
+            {
+                InfoTextResourceKey = ResourceKeys.StringNoTagValuePairSet;
+                return;
+            }
+            SavedMessage m = new SavedMessage();
+            m.Name = SavedMessageName;
+            foreach(TagValuePair pair in TagValuePairs)
+            {
+                m.AddTagValuePair(new TagValuePair(pair));
+            }
+            SavedMessage.SavedMessages.Add(m);
+            SavedMessage.Save();
+        }
+        public bool CommandAddMessageSavedMessagesCanExecute()
+        {
+            return true;
+        }
+        #endregion
+
+
+        
 
         #endregion
     }

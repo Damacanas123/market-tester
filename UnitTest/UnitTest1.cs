@@ -9,9 +9,9 @@ namespace UnitTest
         [TestMethod]
         public void TestMethod1()
         {
-            (string, string)[] heyo = new (string, string)[] { ("35", "D"), ("55", "GARAN"),("54","heyoo") };
-            string msg = BackOfficeEngine.Helper.Fix.GetFixString(BackOfficeEngine.ProtocolType.Fix42, heyo);
-            Console.WriteLine(msg);
+            //(string, string)[] heyo = new (string, string)[] { ("35", "D"), ("55", "GARAN"),("54","heyoo") };
+            //string msg = BackOfficeEngine.Helper.Fix.GetFixString(BackOfficeEngine.ProtocolType.Fix42, heyo);
+            //Console.WriteLine(msg);
         }
     }
 }

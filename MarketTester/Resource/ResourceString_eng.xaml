@@ -100,6 +100,12 @@
     <system:String x:Key="StringAppendToCsv">Append to csv</system:String>
     <system:String x:Key="StringExportToXLSX">Export to xlsx</system:String>
     <system:String x:Key="StringAppendToXLSX">Append to xlsx</system:String>
+    <system:String x:Key="StringMessage">Message</system:String>
+    <system:String x:Key="StringSavedMessages">Saved Messages</system:String>
+    <system:String x:Key="StringSaveMessage">Save Messages</system:String>
+    <system:String x:Key="StringMessageName">Message Name</system:String>
+    <system:String x:Key="StringEnterAMessageName">Please enter a message name.</system:String>
+    <system:String x:Key="StringNoTagValuePairSet">0 tag value pairs set.</system:String>
     
 
     <system:String x:Key="StringFailedAnalysis">Analysis failed for an unknown reason.</system:String>

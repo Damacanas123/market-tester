@@ -272,10 +272,11 @@ namespace BackOfficeEngine
                         }
                         switch (msg.GetMsgType())
                         {
-                            case MsgType.New:
-                                order = Order.ClOrdIDMap[msg.GetClOrdID()];
-                                order.ConnectorName = connectorName;
-                                break;
+                            //this are commented out just for now.
+                            //case MsgType.New:
+                            //    order = Order.ClOrdIDMap[msg.GetClOrdID()];
+                            //    order.ConnectorName = connectorName;
+                            //break;
                             case MsgType.Replace:
                                 ReplaceOrCancel();
                                 break;

@@ -260,7 +260,6 @@ namespace BackOfficeEngine.Model
         {
             ConstructorCommonWork();
             ConnectorName = connectorName;
-            AddMessage(newOrderMessage);
             using (SQLiteHandler handler = new SQLiteHandler())
             {
                 handler.Insert(this);
@@ -289,7 +288,6 @@ namespace BackOfficeEngine.Model
             BaseOrder baseOrder;
             (newOrderMessage, baseOrder) = BaseOrder.CreateNewOrder(prms, nonProtocolPseudoID);
             Order order = new Order(baseOrder,connectorName);
-            order.AddMessage(newOrderMessage);
             return (newOrderMessage, order);
         }
         
