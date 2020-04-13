@@ -104,6 +104,7 @@
     <system:String x:Key="StringMessageName">Mesaj ismi</system:String>
     <system:String x:Key="StringEnterAMessageName">Lütfen mesaj ismi girin.</system:String>
     <system:String x:Key="StringNoTagValuePairSet">Etiket değer ikilisi girilmedi.</system:String>
+    <system:String x:Key="StringOnlyNewMessage">Planlayıcı içnide sadece yeni emirler direk gönderilebilir.</system:String>
 
     <system:String x:Key="StringFailedAnalysis">Analiz bilinmeyen bir sebepten yapılamadı.</system:String>
     <system:String x:Key="StringFileIsBeingUsed">Dosya başka bir işlem tarafından kullanılıyor.</system:String>

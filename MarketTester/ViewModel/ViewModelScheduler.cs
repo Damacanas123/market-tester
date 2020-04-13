@@ -16,6 +16,8 @@ using System.Globalization;
 using System.Threading;
 using BackOfficeEngine.Model;
 using Microsoft.Win32;
+using MarketTester.Connection;
+using BackOfficeEngine.ParamPacker;
 
 namespace MarketTester.ViewModel
 {
@@ -48,7 +50,8 @@ namespace MarketTester.ViewModel
 
         public void OnLanguageChange()
         {
-            InfoText = App.Current.Resources[InfoTextResourceKey].ToString();
+            if(InfoTextResourceKey != null)
+                InfoText = App.Current.Resources[InfoTextResourceKey].ToString();
         }
 
         private string textAllocID;
@@ -633,6 +636,35 @@ namespace MarketTester.ViewModel
             }
         }
         public bool CommandLoadFileCanExecute()
+        {
+            return true;
+        }
+        #endregion
+
+
+        #region CommandSendMessage
+        public BaseCommand CommandSendMessage { get; set; }
+        public void CommandSendMessageExecute(object param)
+        {
+            //if (SelectedChannel == null)
+            //{
+            //    InfoTextResourceKey = ResourceKeys.StringPleaseSelectAChannel;
+            //    return;
+            //}
+            //if(SelectedMsgType != MsgType.New)
+            //{
+            //    InfoTextResourceKey = ResourceKeys.StringOnlyNewMessage;
+            //    return;
+            //}
+            //Connector connector = Connector.GetInstance();
+            //switch (SelectedMsgType)
+            //{
+            //    case MsgType.New:
+            //        connector.SendMessageNew(new NewMessageParameters(SelectedChannel.ProtocolType,TextAccount))
+
+            //}
+        }
+        public bool CommandSendMessageCanExecute()
         {
             return true;
         }

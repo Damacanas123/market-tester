@@ -60,7 +60,7 @@ namespace MarketTester.Model.FixFreeFormat
                 for(int i = 1; i < values.Length; i++)
                 {
                     string[] tagDetails = values[i].Split(new string[] { TagValueSeparator }, StringSplitOptions.RemoveEmptyEntries);
-                    bool isSelected = values[2] == "True" ? true : false;
+                    bool isSelected = tagDetails[2] == "True" ? true : false;
                     m.TagValuePairs.Add(new TagValuePair(tagDetails[0], tagDetails[1], isSelected));
                 }
                 SavedMessages.Add(m);

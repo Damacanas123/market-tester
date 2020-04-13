@@ -128,5 +128,7 @@ namespace MarketTester
         public const string StringMessageName = "StringMessageName";
         public const string StringEnterAMessageName = "StringEnterAMessageName";
         public const string StringNoTagValuePairSet = "StringNoTagValuePairSet";
+        public const string StringOnlyNewMessage = "StringOnlyNewMessage";
+        
     }
 }

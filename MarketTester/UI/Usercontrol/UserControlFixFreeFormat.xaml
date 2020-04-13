@@ -107,7 +107,11 @@
                                Grid.Row="0"
                                Grid.Column="1"/>
                     <DataGrid Grid.Column="0" Grid.Row="1"
-                        x:Name="DataGridTagValues" ItemsSource="{Binding TagValuePairs}" BorderBrush="{DynamicResource BackgroundTernary}"  Background="Transparent"
+                        x:Name="DataGridTagValues" 
+                              ItemsSource="{Binding TagValuePairs}" 
+                              BorderBrush="{DynamicResource BackgroundTernary}"
+                              SelectedIndex="{Binding SelectedTagValuePairIndex}"
+                              Background="Transparent"
                   AutoGenerateColumns="False"
                       Margin="3">
                         <DataGrid.Columns>
@@ -117,7 +121,7 @@
                                 </DataGridTemplateColumn.Header>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <CheckBox IsChecked="{Binding IsSelected}"/>
+                                        <CheckBox IsChecked="{Binding IsSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

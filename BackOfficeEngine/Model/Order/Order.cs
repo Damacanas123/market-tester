@@ -365,6 +365,8 @@ namespace BackOfficeEngine.Model
                     Account.AddTrade(new TradeParameters(Side, lastShares, lastPx, Symbol));
                     break;
             }
+            if(msg.IsSetOrdStatus())
+                OrdStatus = msg.GetOrdStatus();
             using(SQLiteHandler handler = new SQLiteHandler())
             {
                 handler.Update(this);
