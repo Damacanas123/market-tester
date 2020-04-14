@@ -14,6 +14,21 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -69,6 +84,10 @@
     <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net47\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -105,6 +124,7 @@
     <Compile Include="Connection\Connector.cs" />
     <Compile Include="Const\Const.cs" />
     <Compile Include="Converters\DoubleConverter.cs" />
+    <Compile Include="Converters\FixStringConverter.cs" />
     <Compile Include="Converters\RadioButtonOrdTypeConverter.cs" />
     <Compile Include="Converters\SideConverter.cs" />
     <Compile Include="Enumeration\EInfo.cs" />
@@ -122,6 +142,8 @@
     <Compile Include="Model\FixFreeFormat\SavedMessage.cs" />
     <Compile Include="Model\FixFreeFormat\TagValuePair.cs" />
     <Compile Include="Model\LogAnalyzer\LineFormat.cs" />
+    <Compile Include="Model\OrderHistoryFix\HistoryItem.cs" />
+    <Compile Include="Model\OrderHistoryFix\TagValueDescription.cs" />
     <Compile Include="Model\Scheduler\Matcher.cs" />
     <Compile Include="Model\Scheduler\Scheduler.cs" />
     <Compile Include="Model\Scheduler\SchedulerRawItem.cs" />
@@ -184,8 +206,12 @@
     <Compile Include="ViewModel\Singleton\ViewModelLogAnalyzer.cs" />
     <Compile Include="ViewModel\ViewModelMainWindowUpperBar.cs" />
     <Compile Include="ViewModel\ViewModelOrderEntry.cs" />
+    <Compile Include="ViewModel\ViewModelOrderHistoryFix.cs" />
     <Compile Include="ViewModel\ViewModelOrderList.cs" />
     <Compile Include="ViewModel\ViewModelScheduler.cs" />
+    <Compile Include="Worksheet\Csv.cs" />
+    <Compile Include="Worksheet\Excel.cs" />
+    <Compile Include="Worksheet\ExcelConstants.cs" />
     <Page Include="Resource\ResourceString_common.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -296,6 +322,7 @@
     <Resource Include="Resource\Image\error_image.png" />
     <Resource Include="Resource\Image\down_arrow.png" />
     <Resource Include="Resource\Image\up_arrow.png" />
+    <Resource Include="Resource\Image\history.png" />
     <Content Include="static\lineformats.save">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -325,6 +352,18 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Enumeration\Fix\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

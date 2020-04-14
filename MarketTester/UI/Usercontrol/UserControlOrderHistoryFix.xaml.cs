@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BackOfficeEngine.Model;
+using MarketTester.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +22,10 @@ namespace MarketTester.UI.Usercontrol
     /// </summary>
     public partial class UserControlOrderHistoryFix : UserControl
     {
-        public UserControlOrderHistoryFix()
+        public UserControlOrderHistoryFix(Order order)
         {
             InitializeComponent();
+            ((ViewModelOrderHistoryFix)this.DataContext).Order = order;
         }
     }
 }

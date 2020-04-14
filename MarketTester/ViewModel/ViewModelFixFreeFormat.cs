@@ -47,6 +47,7 @@ namespace MarketTester.ViewModel
             CommandMoveMessageDown = new BaseCommand(CommandMoveMessageDownExecute, CommandMoveMessageDownCanExecute);
             CommandMoveMessageUp = new BaseCommand(CommandMoveMessageUpExecute, CommandMoveMessageUpCanExecute);
             CommandAddMessageSavedMessages = new BaseCommand(CommandAddMessageSavedMessagesExecute, CommandAddMessageSavedMessagesCanExecute);
+            CommandDeleteSavedMessage = new BaseCommand(CommandDeleteSavedMessageExecute, CommandDeleteSavedMessageCanExecute);
 
             if (SavedMessage.SavedMessages.Count == 0)
             {
@@ -162,10 +163,13 @@ namespace MarketTester.ViewModel
             {
                 selectedSavedMessage = value;
                 TagValuePairs.Clear();
-                foreach(TagValuePair pair in selectedSavedMessage.GetTagValuePairs())
+                if(selectedSavedMessage != null)
                 {
-                    TagValuePairs.Add(new TagValuePair(pair));
-                }
+                    foreach (TagValuePair pair in selectedSavedMessage.GetTagValuePairs())
+                    {
+                        TagValuePairs.Add(new TagValuePair(pair));
+                    }
+                }                
                 NotifyPropertyChanged(nameof(SelectedSavedMessage));
             }
         }
@@ -638,7 +642,23 @@ namespace MarketTester.ViewModel
         #endregion
 
 
-        
+        #region CommandDeleteSavedMessage
+        public BaseCommand CommandDeleteSavedMessage { get; set; }
+        public void CommandDeleteSavedMessageExecute(object param)
+        {
+            if(SelectedSavedMessage != null)
+            {
+                SavedMessage.SavedMessages.Remove(SelectedSavedMessage);
+                SavedMessage.Save();
+            }
+        }
+        public bool CommandDeleteSavedMessageCanExecute()
+        {
+            return true;
+        }
+        #endregion
+
+
 
         #endregion
     }

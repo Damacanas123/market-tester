@@ -520,5 +520,16 @@ namespace BackOfficeEngine.Helper
         }
 
 
+        public static string GetRandomString(int length)
+        {
+            string s = "";
+            Random random = new Random();
+            for (int i = 0; i < length; i++)
+            {
+                s += (char)('A' + random.Next(0, 25));
+            }
+            return s;
+        }
+
     }
 }

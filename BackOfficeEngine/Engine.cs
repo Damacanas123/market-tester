@@ -33,6 +33,8 @@ namespace BackOfficeEngine
         public event OnLogoutEventHandler OnLogoutEvent;
         public event OnCreateSessionEventHandler OnCreateSessionEvent;
         public event UnknownClOrdIDReceivedEventHandler UnknownClOrdIDReceivedEvent;
+        public event OnSessionMessageRejectEventHandler SessionMessageRejectEvent;
+        public event OnApplicationMessageRejectEventHandler ApplicationMessageRejectEvent;
         #endregion
 
         
@@ -300,6 +302,14 @@ namespace BackOfficeEngine
             }
         }
 
-        
+        void IConnectorSubscriber.OnSessionMessageReject(IConnector connector, IMessage msg, MessageOrigin messageOrigin)
+        {
+            SessionMessageRejectEvent?.Invoke(this, new OnSessionMessageRejectEventArgs(msg, messageOrigin));
+        }
+
+        void IConnectorSubscriber.OnApplicationMessageReject(IConnector connector, IMessage msg, MessageOrigin messageOrigin)
+        {
+            ApplicationMessageRejectEvent?.Invoke(this, new OnApplicationMessageRejectEventArgs(msg, messageOrigin));
+        }
     }
 }

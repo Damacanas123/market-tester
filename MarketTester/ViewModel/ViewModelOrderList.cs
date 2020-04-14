@@ -34,6 +34,7 @@ namespace MarketTester.ViewModel
         {
             CommandOrderReplace = new BaseCommand(CommandOrderReplaceExecute, CommandOrderReplaceCanExecute);
             CommandCancelOrder = new BaseCommand(CommandCancelOrderExecute, CommandCancelOrderCanExecute);
+            CommandOpenOrderHistory = new BaseCommand(CommandOpenOrderHistoryExecute, CommandOpenOrderHistoryCanExecute);
         }
 
         #region commands
@@ -69,6 +70,19 @@ namespace MarketTester.ViewModel
         }
 
         public bool CommandCancelOrderCanExecute()
+        {
+            return true;
+        }
+        #endregion
+
+
+        #region CommandOpenOrderHistory
+        public BaseCommand CommandOpenOrderHistory { get; set; }
+        public void CommandOpenOrderHistoryExecute(object param)
+        {
+            MainWindowStarter.AddTab(new UserControlOrderHistoryFix(SelectedOrder), SelectedOrder.NonProtocolID, true);
+        }
+        public bool CommandOpenOrderHistoryCanExecute()
         {
             return true;
         }

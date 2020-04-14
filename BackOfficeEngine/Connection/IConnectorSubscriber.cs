@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using QuickFix;
 using BackOfficeEngine.Model;
+using BackOfficeEngine.MessageEnums;
 
 namespace BackOfficeEngine.Connection
 {
@@ -19,5 +20,9 @@ namespace BackOfficeEngine.Connection
         void OnCreateSession(IConnector connector, string sessionID);
 
         void EnqueueMessage(IConnector connector, IMessage msg);
+
+        void OnSessionMessageReject(IConnector connector, IMessage msg, MessageOrigin messageOrigin);
+
+        void OnApplicationMessageReject(IConnector connector, IMessage msg, MessageOrigin messageOrigin);
     }
 }

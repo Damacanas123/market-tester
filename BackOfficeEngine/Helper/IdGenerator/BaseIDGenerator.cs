@@ -38,7 +38,7 @@ namespace BackOfficeEngine.Helper.IdGenerator
                         seqnum = Int32.Parse(fileContent.GetString(byteArray), CultureInfo.CurrentCulture);
                     }
                 }
-                clOrdID = Util.GetTodayString() + seqnum;
+                clOrdID = Util.GetRandomString(2) + Util.GetTodayString() + seqnum;
                 seqnum++;
                 using (StreamWriter sw = new StreamWriter(filePath))
                 {

@@ -37,7 +37,7 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         
-        <usercontrol:UserControlInfoBox Grid.Row="0" Grid.RowSpan="2"
+        <usercontrol:UserControlInfoBox Grid.Row="0" Grid.RowSpan="4"
                                         Grid.Column="6" Grid.ColumnSpan="3"/>
         <usercontrol:UserControlChannels Grid.Row="0"
                                                   Grid.RowSpan="4"

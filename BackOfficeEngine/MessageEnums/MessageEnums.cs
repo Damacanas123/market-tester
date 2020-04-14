@@ -7,7 +7,10 @@ using QuickFix.Fields;
 
 namespace BackOfficeEngine.MessageEnums
 {
-    
+    public enum MessageOrigin
+    {
+        Outbound,Inbound
+    }
     public enum TimeInForce
     {
         UNKNOWN,FillOrKill, ImmediateOrCancel, Day,GoodTillCancel,GoodTillDate,GoodTillSession
@@ -205,6 +208,8 @@ namespace BackOfficeEngine.MessageEnums
                     return OrdStatus.Filled;
                 case QuickFix.Fields.OrdStatus.REJECTED:
                     return OrdStatus.Rejected;
+                case QuickFix.Fields.OrdStatus.CANCELED:
+                    return OrdStatus.Canceled;
                 default:
                     return OrdStatus.UNKNOWN;
             }
@@ -227,6 +232,8 @@ namespace BackOfficeEngine.MessageEnums
                     return QuickFix.Fields.OrdStatus.FILLED;
                 case OrdStatus.Rejected:
                     return QuickFix.Fields.OrdStatus.REJECTED;
+                case OrdStatus.Canceled:
+                    return QuickFix.Fields.OrdStatus.CANCELED;
                 default:
                     return 'U'; //U for unknown
             }

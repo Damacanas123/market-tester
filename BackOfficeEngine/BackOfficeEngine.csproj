@@ -88,9 +88,11 @@
     <Compile Include="DB\SQLite\Model\TableField.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="Events\InboundMessageEvent.cs" />
+    <Compile Include="Events\OnApplicationMessageRejectEventHandler.cs" />
     <Compile Include="Events\OnCreateSessionEvent.cs" />
     <Compile Include="Events\OnLogonEvent.cs" />
     <Compile Include="Events\OnLogoutEvent.cs" />
+    <Compile Include="Events\OnSessionMessageRejectEventHandler.cs" />
     <Compile Include="Events\UnknownClOrdIDReceivedEvent.cs" />
     <Compile Include="Exceptions\ConnectorNotPresentException.cs" />
     <Compile Include="GeneralBase\BaseNotifier.cs" />

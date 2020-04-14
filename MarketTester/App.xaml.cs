@@ -27,5 +27,11 @@ namespace MarketTester
             Util.Bootstrap();
             MainWindowStarter.Start();
         }
+
+        public delegate void InvokeFunction();
+        public static void Invoke(InvokeFunction func)
+        {
+            App.Current.Dispatcher.Invoke(func);
+        }
     }
 }

@@ -12,6 +12,7 @@ namespace BackOfficeEngine.Model
         DateTime SendTime { get; set; }
         DateTime ReceiveTime { get; set; }
         ProtocolType protocolType { get; set; }
+
         #region getters
         MsgType GetMsgType();
         string GetClOrdID();

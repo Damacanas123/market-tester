@@ -107,7 +107,33 @@
     <system:String x:Key="StringEnterAMessageName">Please enter a message name.</system:String>
     <system:String x:Key="StringNoTagValuePairSet">0 tag value pairs set.</system:String>
     <system:String x:Key="StringOnlyNewMessage">Only new orders can be directly sent in scheduler.</system:String>
-    
+    <system:String x:Key="StringHistory">History</system:String>
+    <system:String x:Key="StringMessageType">Message Type</system:String>
+    <system:String x:Key="StringOrderID">Order ID</system:String>
+    <system:String x:Key="StringExecType">Exec Type</system:String>
+    <system:String x:Key="StringExecID">Exec ID</system:String>
+    <system:String x:Key="StringOrderQty">Order Qty</system:String>
+    <system:String x:Key="StringLeavesQty">LeavesQty</system:String>
+    <system:String x:Key="StringCouldntExportCsv">Couldn't export to csv.</system:String>
+    <system:String x:Key="StringFinishedExporting">Finished exporting.</system:String>
+    <system:String x:Key="StringCouldntExportXlsx">Couldn't export to xlsx.</system:String>
+    <system:String x:Key="StringStartingToWriteToXLSXFile">Starting to write xlsx file.</system:String>
+    <system:String x:Key="StringStartingToWriteToCsvFile">Starting to write csv file.</system:String>
+    <system:String x:Key="StringEnterASheetName">Enter a sheet name.</system:String>
+    <system:String x:Key="StringSheetName">Sheet name</system:String>
+    <system:String x:Key="StringCOMExplanation">Failed to export to excel\n. Possible reasons: File is being used by another process or a duplicate sheet name.</system:String>
+    <system:String x:Key="StringTagDescription">Tag Description</system:String>
+    <system:String x:Key="StringValueDescription">Value Description</system:String>
+    <system:String x:Key="StringRejectMessage">reject message received. Message :</system:String>
+    <system:String x:Key="StringRejectReason">Reject Reason :</system:String>
+    <system:String x:Key="StringInbound">Inbound</system:String>
+    <system:String x:Key="StringOutbound">Outbound</system:String>
+    <system:String x:Key="StringSession">session</system:String>
+    <system:String x:Key="StringApplication">application</system:String>
+    <system:String x:Key="StringNoReasonStated">No reason stated.</system:String>
+    <system:String x:Key="StringDeleteMessage">Delete Saved Message</system:String>
+
+
     <system:String x:Key="StringFailedAnalysis">Analysis failed for an unknown reason.</system:String>
     <system:String x:Key="StringFileIsBeingUsed">File is being used by another process.</system:String>
     <system:String x:Key="StringPleaseFillNameAndFormat">Please enter a name and a format.</system:String>

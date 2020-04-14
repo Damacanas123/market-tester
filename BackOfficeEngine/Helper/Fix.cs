@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BackOfficeEngine.MessageEnums;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -9,9 +10,14 @@ namespace BackOfficeEngine.Helper
 {
     public class Fix
     {
-        public static HashSet<string> CantBeEditedTags { get; set; } = new HashSet<string>()
+        public static HashSet<string> CantBeEditedTags { get; } = new HashSet<string>()
         {
             "8","9","10"
+        };
+
+        public static HashSet<MsgType> OrderEntryOutboundMessageTypes { get; } = new HashSet<MsgType>()
+        {
+            MsgType.New,MsgType.Replace,MsgType.Cancel
         };
         public const char FixDelimiter = (char)1;
         public static string GetFixString(ProtocolType protocolType,List<(string,string)> tagValuePairs)
@@ -58,5 +64,7 @@ namespace BackOfficeEngine.Helper
             msg += "10=" + checksum + FixDelimiter;
             return msg;
         }
+
+
     }
 }

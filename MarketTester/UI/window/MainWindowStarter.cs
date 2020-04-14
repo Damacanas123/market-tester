@@ -37,7 +37,7 @@ namespace MarketTester.UI.window
             {
                 foreach(TabItem createdItem in tabControl.Items)
                 {
-                    if(createdItem.Name.Equals(nameResourceKey))
+                    if(createdItem.Name.Equals("k" + nameResourceKey))
                     {
                         tabControl.SelectedItem = createdItem;
                         return;
@@ -49,11 +49,14 @@ namespace MarketTester.UI.window
             item.Content = content;
 
             UserControlTabHeader tabHeader = new UserControlTabHeader();
-            tabHeader.TextBlockHeader.SetResourceReference(TextBlock.TextProperty, nameResourceKey);
+            if (App.Current.Resources.Contains(nameResourceKey))
+                tabHeader.TextBlockHeader.SetResourceReference(TextBlock.TextProperty, nameResourceKey);
+            else
+                tabHeader.TextBlockHeader.Text = nameResourceKey;
             tabHeader.ButtonCloseTab.tabControl = tabControl;
             tabHeader.ButtonCloseTab.item = item;
             item.Header = tabHeader;
-            item.Name = nameResourceKey;
+            item.Name = "k" + nameResourceKey;
             tabControl.Items.Add(item);
             tabControl.SelectedIndex = tabControl.Items.Count - 1;
         }

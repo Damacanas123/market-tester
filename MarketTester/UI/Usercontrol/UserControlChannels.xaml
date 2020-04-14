@@ -24,7 +24,7 @@
         <GridSplitter Grid.Row="1"/>
         <StackPanel Grid.Row="0" Orientation="Vertical" Background="{StaticResource BackgroundPrimary}">
             <TextBlock Text="{DynamicResource StringChannels}"/>
-            <ListView Height="Auto"
+            <ListView Height="120"
                       HorizontalContentAlignment="Stretch"
                   ItemsSource="{Binding Source={x:Static connection:Connector.Channels}}"
                       SelectedItem="{Binding SelectedChannel}">

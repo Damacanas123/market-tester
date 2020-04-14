@@ -4,22 +4,35 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MarketTester.UI.Usercontrol"
+             xmlns:viewmodel="clr-namespace:MarketTester.ViewModel"
+             xmlns:converter="clr-namespace:MarketTester.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1700">
+    <UserControl.DataContext>
+        <viewmodel:ViewModelOrderHistoryFix/>
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <converter:FixStringConverter x:Key="FixConverter"/>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Menu Background="Transparent">
-            <MenuItem Header="{DynamicResource StringExport}">
-                <MenuItem Header="{DynamicResource StringExportToCsv}" Command="{Binding CommandExportToCsv}"/>
-                <MenuItem Header="{DynamicResource StringAppendToCsv}" Command="{Binding CommandAppendToCsv}"/>
-                <MenuItem Header="{DynamicResource StringExportToXLSX}" Command="{Binding CommandExportToXLSX}"/>
-                <MenuItem Header="{DynamicResource StringAppendToXLSX}" Command="{Binding CommandAppendToXLSX}"/>
-            </MenuItem>
+        <StackPanel Orientation="Horizontal">
 
-        </Menu>
+            <Menu Background="Transparent" VerticalAlignment="Center" Margin="5,0,0,0">
+                <MenuItem Header="{DynamicResource StringExport}">
+                    <MenuItem Header="{DynamicResource StringExportToCsv}" Command="{Binding CommandExportToCsv}"/>
+                    <MenuItem Header="{DynamicResource StringAppendToCsv}" Command="{Binding CommandAppendToCsv}"/>
+                    <MenuItem Header="{DynamicResource StringExportToXLSX}" Command="{Binding CommandExportToXLSX}"/>
+                    <MenuItem Header="{DynamicResource StringAppendToXLSX}" Command="{Binding CommandAppendToXLSX}"/>
+                </MenuItem>
+
+            </Menu>
+            <TextBlock Margin="20,0,0,0" Text="{DynamicResource StringSheetName}" VerticalAlignment="Center"/>
+            <TextBox Margin="20,5,0,5" Text="{Binding SheetName,UpdateSourceTrigger=PropertyChanged}" Height="20" Width="150"/>
+        </StackPanel>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
@@ -34,23 +47,147 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <DataGrid></DataGrid>
+            <DataGrid ItemsSource="{Binding HistoryItems}"
+                      Grid.Column="0"
+                      Grid.Row="0"
+                      Grid.ColumnSpan="10"
+                      Grid.RowSpan="11"
+                      AutoGenerateColumns="False"
+                      Margin="10"
+                      SelectedItem="{Binding SelectedHistoryItem}"
+                      IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding ClOrdID}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringClOrdID}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding OrigClOrdID}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringOrigClOrdID}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding MessageType}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringMessageType}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding OrderId}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringOrderID}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding ExecType}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringExecType}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding ExecId}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringExecID}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding OrdStatus}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringOrdStatus}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding OrderQty}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringOrderQty}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Price}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringPrice}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding CumQty}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringCumulativeQty}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding AvgPx}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringAvgPx}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding LeavesQty}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringLeavesQty}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding LastShares}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringLastQty}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding LastPx}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringLastPx}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding MessageString,Converter={StaticResource FixConverter}}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringMessage}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <DataGrid Grid.Column="10"
+                      Grid.ColumnSpan="3"
+                      Grid.Row="0"
+                      Grid.RowSpan="11"
+                      Margin="10"
+                      ItemsSource="{Binding TagValues}"
+                      IsReadOnly="True"
+                      AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Tag}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringTag}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Value}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringValue}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TagDescription}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringTagDescription}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding ValueDescription}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringValueDescription}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            
+            <TextBlock Text="{Binding InfoText}"
+                       Grid.Column="0"
+                       Grid.Row="11"
+                       Grid.ColumnSpan="7"
+                       Margin="10,2,0,0"/>
         </Grid>
     </Grid>
-    
+
 </UserControl>

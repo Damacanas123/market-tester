@@ -135,7 +135,7 @@ namespace BackOfficeEngine.DB.SQLite
             string query = $"DELETE FROM {writable.TableName};";
             return ExecuteNonQuery(query);
         }
-        private string TypeConvert(Type type)
+        private static string TypeConvert(Type type)
         {
             if(type == typeof(string))
             {

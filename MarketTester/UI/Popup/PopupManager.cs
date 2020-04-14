@@ -29,5 +29,7 @@ namespace MarketTester.UI.Popup
         {
             OpenGeneralPopup(popup, ResourceKeys.StringErrorPopupName);
         }
+
+        
     }
 }

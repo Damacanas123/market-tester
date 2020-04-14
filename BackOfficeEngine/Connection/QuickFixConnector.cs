@@ -108,12 +108,29 @@ namespace BackOfficeEngine.Connection
 
         void IApplication.FromAdmin(Message message, SessionID sessionID)
         {
-
+            if(message.Header.GetField(Tags.MsgType) == MsgType.REJECT)
+            {
+                IMessage msg = new QuickFixMessage(message);
+                if (msg.GetMsgType() == MessageEnums.MsgType.Reject)
+                {
+                    foreach (IConnectorSubscriber subscriber in subscribers)
+                    {
+                        subscriber.OnApplicationMessageReject(this, msg, MessageEnums.MessageOrigin.Inbound);
+                    }
+                }
+            }            
         }
 
         void IApplication.FromApp(Message message, SessionID sessionID)
         {
             IMessage msg = new QuickFixMessage(message);
+            if (msg.GetMsgType() == MessageEnums.MsgType.Reject)
+            {
+                foreach(IConnectorSubscriber subscriber in subscribers)
+                {
+                    subscriber.OnApplicationMessageReject(this, msg, MessageEnums.MessageOrigin.Inbound);
+                }
+            }
             msg.ReceiveTime = DateTime.Now;
             if (message.IsSetField(Tags.ClOrdID))
             {
@@ -184,6 +201,17 @@ namespace BackOfficeEngine.Connection
                 message.SetField(new Username(CredentialParams.Username));
                 message.SetField(new Password(CredentialParams.Password));
             }
+            if (message.Header.GetField(Tags.MsgType) == MsgType.REJECT)
+            {
+                IMessage msg = new QuickFixMessage(message);
+                if (msg.GetMsgType() == MessageEnums.MsgType.Reject)
+                {
+                    foreach (IConnectorSubscriber subscriber in subscribers)
+                    {
+                        subscriber.OnApplicationMessageReject(this, msg, MessageEnums.MessageOrigin.Outbound);
+                    }
+                }
+            }
         }
 
         void IApplication.ToApp(Message message, SessionID sessionId)
@@ -191,6 +219,14 @@ namespace BackOfficeEngine.Connection
             if ("DGF".Contains(message.Header.GetField(Tags.MsgType)))
             {
                 m_messageQueue.Enqueue(message);
+            }
+            IMessage msg = new QuickFixMessage(message);
+            if (msg.GetMsgType() == MessageEnums.MsgType.Reject)
+            {
+                foreach (IConnectorSubscriber subscriber in subscribers)
+                {
+                    subscriber.OnApplicationMessageReject(this, msg, MessageEnums.MessageOrigin.Outbound);
+                }
             }
         }
 

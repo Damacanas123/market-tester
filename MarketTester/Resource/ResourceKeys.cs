@@ -129,6 +129,30 @@ namespace MarketTester
         public const string StringEnterAMessageName = "StringEnterAMessageName";
         public const string StringNoTagValuePairSet = "StringNoTagValuePairSet";
         public const string StringOnlyNewMessage = "StringOnlyNewMessage";
+        public const string StringHistory= "StringHistory";
+        public const string StringMessageType = "StringMessageType";
+        public const string StringOrderID = "StringOrderID";
+        public const string StringExecType = "StringExecType";
+        public const string StringExecID = "StringExecID";
+        public const string StringOrderQty = "StringOrderQty";
+        public const string StringLeavesQty = "StringLeavesQty";
+        public const string StringCouldntExportCsv= "StringCouldntExportCsv";
+        public const string StringFinishedExporting = "StringFinishedExporting";
+        public const string StringCouldntExportXlsx = "StringCouldntExportXlsx";
+        public const string StringStartingToWriteToXLSXFile = "StringStartingToWriteToXLSXFile";
+        public const string StringStartingToWriteToCsvFile = "StringStartingToWriteToCsvFile";
+        public const string StringEnterASheetName = "StringEnterASheetName";
+        public const string StringCOMExplanation = "StringCOMExplanation";
+        public const string StringTagDescription = "StringTagDescription";
+        public const string StringValueDescription = "StringValueDescription";
+        public const string StringRejectMessage = "StringRejectMessage";
+        public const string StringRejectReason = "StringRejectReason";
+        public const string StringInbound = "StringInbound";
+        public const string StringOutbound = "StringOutbound";
+        public const string StringSession = "StringSession";
+        public const string StringApplication = "StringApplication";
+        public const string StringNoReasonStated = "StringNoReasonStated";
+        public const string StringDeleteMessage = "StringDeleteMessage";
         
     }
 }

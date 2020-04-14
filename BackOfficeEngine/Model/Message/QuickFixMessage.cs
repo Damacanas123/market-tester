@@ -17,6 +17,7 @@ namespace BackOfficeEngine.Model
         public ProtocolType protocolType { get; set; }
         public DateTime SendTime { get; set; }
         public DateTime ReceiveTime { get; set; }
+        
 
         private void PreConstructorCommonWork()
         {
@@ -139,7 +140,14 @@ namespace BackOfficeEngine.Model
 
         public string GetGenericField(int field)
         {
-            return GetField(field);
+            if (Header.IsSetField(field))
+            {
+                return Header.GetField(field);
+            }
+            else
+            {
+                return GetField(field);
+            }            
         }
 
         public void SetClOrdID(string value)
@@ -289,7 +297,14 @@ namespace BackOfficeEngine.Model
 
         public bool IsSetGenericField(int field)
         {
-            return IsSetField(field);
+            if (Header.IsSetField(field))
+            {
+                return true;
+            }
+            else
+            {
+                return IsSetField(field);
+            }            
         }
 
         public bool IsSetLastPx()

@@ -12,6 +12,10 @@ using MarketTester.Helper;
 using BackOfficeEngine;
 using BackOfficeEngine.Events;
 using BackOfficeEngine.ParamPacker;
+using MarketTester.ViewModel.Manager;
+using BackOfficeEngine.MessageEnums;
+
+using QuickFix.Fields;
 
 namespace MarketTester.Connection
 {
@@ -146,6 +150,44 @@ namespace MarketTester.Connection
         public void SendMessage(string connectorName,string fixMsg,bool overrideSessionTags)
         {
             engine.SendMessage(fixMsg, connectorName, overrideSessionTags);
+        }
+
+        private void OnSessionMessageReject(object sender,OnSessionMessageRejectEventArgs args)
+        {
+         //   < system:String x:Key = "StringRejectMessage" > mesajı reddedildi.Mesaj :</ system:String >
+     
+         //< system:String x:Key = "StringRejectReason" > Red nedeni:</ system:String >
+          
+         //     < system:String x:Key = "StringInbound" > Gelen </ system:String >
+                 
+         //            < system:String x:Key = "StringOutbound" > Giden </ system:String >
+                        
+         //                   < system:String x:Key = "StringSession" > bağlantı </ system:String >
+                               
+         //                          < system:String x:Key = "StringApplication" > uygulama </ system:String >
+
+            string infoMsg = App.Current.Resources[ResourceKeys.StringSession].ToString();
+            switch (args.messageOrigin)
+            {
+                case MessageOrigin.Inbound:
+                    infoMsg += App.Current.Resources[ResourceKeys.StringInbound].ToString();
+                    break;
+                case MessageOrigin.Outbound:
+                    infoMsg += App.Current.Resources[ResourceKeys.StringOutbound].ToString();
+                    break;
+            }
+            infoMsg += App.Current.Resources[ResourceKeys.StringRejectMessage];
+            infoMsg += "\n" + args.msg.ToString();
+            infoMsg += "\n" + App.Current.Resources[ResourceKeys.StringRejectReason] + "\n";
+            if (args.msg.IsSetGenericField(Tags.Text))
+            {
+                infoMsg += args.msg.GetGenericField(Tags.Text);
+            }
+            else
+            {
+                infoMsg += "\n" + App.Current.Resources[ResourceKeys.StringNoReasonStated];
+            }
+            InfoManager.PublishInfo(Enumeration.EInfo.Primary, infoMsg);
         }
     }
 }

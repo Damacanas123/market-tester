@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using FixHelper;
 using System.Data;
 using System.Windows.Navigation;
+using BackOfficeEngine.Model;
 
 namespace MarketTester.Helper
 {
@@ -361,14 +362,24 @@ namespace MarketTester.Helper
 
         public static List<int> GetAllTagsOfAMessage(Message m)
         {
+            return GetAllTagsOfAMessage(m.ToString());
+        }
+
+        public static List<int> GetAllTagsOfAMessage(string m)
+        {
             string pattern = @"(?<=\x01).*?(?==)";
             Regex rgx = new Regex(pattern);
             List<int> tags = new List<int>();
-            foreach (Match match in rgx.Matches(m.ToString()))
+            foreach (Match match in rgx.Matches(m))
             {
                 tags.Add(Int32.Parse(match.Value, CultureInfo.CurrentCulture));
             }
             return tags;
+        }
+
+        public static List<int> GetAllTagsOfAMessage(IMessage m)
+        {
+            return GetAllTagsOfAMessage(m.ToString());
         }
 
         public static string GetPrettyStringOfMessage(Message m)
@@ -493,6 +504,11 @@ namespace MarketTester.Helper
         public static string GetField(QuickFix.Message m, int tag)
         {
             return m.IsSetField(tag) ? m.GetField(tag) : "";
+        }
+
+        public static string GetField(IMessage m, int tag)
+        {
+            return m.IsSetGenericField(tag) ? m.GetGenericField(tag) : "";
         }
 
         public static void DeleteFile(string filePath, object fileLock)

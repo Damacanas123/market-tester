@@ -9,6 +9,7 @@ using System.IO;
 using System.Globalization;
 using System.Data.SQLite;
 
+
 using FixHelper;
 
 using BackOfficeEngine.Helper;
@@ -142,7 +143,8 @@ namespace BackOfficeEngine.Model
         }
         
         public string ConnectorName { get; set; }
-        public ObservableCollection<IMessage> m_messages { get; set; } = new ObservableCollection<IMessage>();
+        public object MessagesLock { get; set; } = new object();
+        public ObservableCollection<IMessage> Messages { get; set; } = new ObservableCollection<IMessage>();
 
         private string MessagesFilePath { get { return CommonFolders.OrderMessagesBaseDir + NonProtocolID + ".fixmessages"; } }
         
@@ -298,7 +300,10 @@ namespace BackOfficeEngine.Model
 
         internal void AddMessage(IMessage msg)
         {
-            m_messages.Add(msg);
+            lock (MessagesLock)
+            {
+                Messages.Add(msg);
+            }            
             Util.AppendStringToFile(MessagesFilePath, msg.ToString());
             switch (msg.GetMsgType())
             {
@@ -376,7 +381,12 @@ namespace BackOfficeEngine.Model
         private IMessage FindRequestOfReject(IMessage rejectMsg)
         {
             string rejectClOrdID = rejectMsg.GetClOrdID();
-            return m_messages.First((o) => o.GetClOrdID() == rejectClOrdID);
+            IMessage rejectMessage;
+            lock (MessagesLock)
+            {
+                rejectMessage = Messages.First((o) => o.GetClOrdID() == rejectClOrdID);
+            }
+            return rejectMessage;
         }
 
 
@@ -392,7 +402,10 @@ namespace BackOfficeEngine.Model
                         switch (protocolType)
                         {
                             case ProtocolType.Fix50sp2:
-                                m_messages.Add(new QuickFixMessage(line));
+                                lock (MessagesLock)
+                                {
+                                    Messages.Add(new QuickFixMessage(line));
+                                }                                
                                 break;
                         }
                     }
@@ -421,11 +434,14 @@ namespace BackOfficeEngine.Model
             repr += OrdStatus + "|";
             repr += date + "|";
             repr += ConnectorName + "|";
-            repr += m_messages.Count.ToString(CultureInfo.InvariantCulture) + "|";
-            foreach(IMessage msg in m_messages)
+            lock (MessagesLock)
             {
-                repr += msg.ToString() + "|";
-            }
+                repr += Messages.Count.ToString(CultureInfo.InvariantCulture) + "|";
+                foreach (IMessage msg in Messages)
+                {
+                    repr += msg.ToString() + "|";
+                }
+            }            
             return repr;
         }
         internal Order(string exportRepr)
@@ -463,7 +479,11 @@ namespace BackOfficeEngine.Model
                 {
                     case ProtocolType.Fix50sp2:
                         IMessage msg = new QuickFixMessage(arguements[19 + i]);
-                        m_messages.Add(msg);
+                        lock (MessagesLock)
+                        {
+                            Messages.Add(msg);
+                        }
+                        
                         if (msg.GetMsgType() == MsgType.Trade)
                         {
                             Account.AddTrade(new TradeParameters(Side, msg.GetLastQty(), msg.GetLastPx(), Symbol));
