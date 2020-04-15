@@ -19,6 +19,18 @@ namespace MarketTester.Model
         public string Name { get; private set; }
         public string ConnectorName { get; set; } = "";
         public bool IsConfigured { get; set; }
+        private bool isConnectingDisconnecting;
+
+        public bool IsConnectingDisconnecting
+        {
+            get { return isConnectingDisconnecting; }
+            set
+            {
+                isConnectingDisconnecting = value;
+                NotifyPropertyChanged(nameof(IsConnectingDisconnecting));
+            }
+        }
+
         private bool isConnected;
         public bool IsConnected 
         { 

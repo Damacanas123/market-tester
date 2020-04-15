@@ -531,5 +531,14 @@ namespace BackOfficeEngine.Helper
             return s;
         }
 
+
+        public static string GetTag(string msg, string tag)
+        {
+            string searchString = $"\u0001{tag}=";
+            int startIndex = msg.IndexOf(searchString) + searchString.Length;
+            int endIndex = msg.IndexOf("\u0001", startIndex);
+            return msg.Substring(startIndex, endIndex - startIndex);
+        }
+
     }
 }

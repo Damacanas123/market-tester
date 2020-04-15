@@ -30,7 +30,7 @@ namespace BackOfficeEngine.DB.SQLite
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Problem connecting to database. \n" + ex.ToString() + "\n\n");
+                ErrorLogger.DBError(ex);
             }         
         }
 

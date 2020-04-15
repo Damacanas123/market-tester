@@ -16,6 +16,7 @@ using MarketTester.ViewModel.Manager;
 using BackOfficeEngine.MessageEnums;
 
 using QuickFix.Fields;
+using BackOfficeEngine.Model;
 
 namespace MarketTester.Connection
 {
@@ -37,6 +38,8 @@ namespace MarketTester.Connection
             engine.OnLogonEvent += OnLogon;
             engine.OnLogoutEvent += OnLogout;
             engine.OnCreateSessionEvent += OnCreateSession;
+            engine.SessionMessageRejectEvent += OnSessionMessageReject;
+            engine.ApplicationMessageRejectEvent += OnApplicationMessageReject;
             foreach(ConfigFile configFile  in JsonConfig.GetInstance().ConfigFiles)
             {
                 Channel channel = new Channel(configFile.FilePath, configFile.ProtocolType);
@@ -60,7 +63,8 @@ namespace MarketTester.Connection
         public void Connect(Channel channel)
         {
             new Thread(() =>
-            {                
+            {
+                channel.IsConnectingDisconnecting = true;
                 engine.Connect(channel.ConnectorName);
             }).Start();
         }
@@ -80,7 +84,7 @@ namespace MarketTester.Connection
                     engine.ConfigureConnection(channel.ConnectorName, channel.ConfigFilePath,channel.credentialParams);
                 }                
                 channel.IsConfigured = true;
-                engine.Connect(channel.ConnectorName);
+                Connect(channel);
             }).Start();
         }
 
@@ -89,10 +93,10 @@ namespace MarketTester.Connection
             Channel ch = Channels.First((o) => o.ConnectorName == args.ConnectorName);
 
             lock (channelLock)
-            {
-                
+            {                
                 if (!ch.IsConnected)
                 {
+                    ch.IsConnectingDisconnecting = false;
                     ch.IsConnected = true;
                     ActiveChannels.Add(ch);
                     InactiveChannels.Remove(ch);
@@ -105,13 +109,14 @@ namespace MarketTester.Connection
         public void OnLogout(object sender, OnLogoutEventArgs args)
         {
             Channel ch = Channels.First((o) => o.ConnectorName == args.ConnectorName);
-            ch.RemoveActive(args.SessionID);
-            ch.AddInactive(args.SessionID);
-            if(ch.ActiveSessions.Count == 0)
+            lock (channelLock)
             {
-                ch.IsConnected = false;
-                lock (channelLock)
+                ch.RemoveActive(args.SessionID);
+                ch.AddInactive(args.SessionID);
+                if(ch.ActiveSessions.Count == 0)
                 {
+                    ch.IsConnectingDisconnecting = false;
+                    ch.IsConnected = false;
                     ActiveChannels.Add(ch);
                     InactiveChannels.Remove(ch);
                 }
@@ -128,6 +133,7 @@ namespace MarketTester.Connection
         {
             new Thread(() =>
             {
+                ch.IsConnectingDisconnecting = true;
                 engine.Disconnect(ch.ConnectorName);
             }).Start();
         }
@@ -153,41 +159,42 @@ namespace MarketTester.Connection
         }
 
         private void OnSessionMessageReject(object sender,OnSessionMessageRejectEventArgs args)
-        {
-         //   < system:String x:Key = "StringRejectMessage" > mesajı reddedildi.Mesaj :</ system:String >
-     
-         //< system:String x:Key = "StringRejectReason" > Red nedeni:</ system:String >
-          
-         //     < system:String x:Key = "StringInbound" > Gelen </ system:String >
-                 
-         //            < system:String x:Key = "StringOutbound" > Giden </ system:String >
-                        
-         //                   < system:String x:Key = "StringSession" > bağlantı </ system:String >
-                               
-         //                          < system:String x:Key = "StringApplication" > uygulama </ system:String >
-
+        {   
             string infoMsg = App.Current.Resources[ResourceKeys.StringSession].ToString();
-            switch (args.messageOrigin)
+            infoMsg += MessageRejectCommon(args.messageOrigin, args.msg);
+            InfoManager.PublishInfo(Enumeration.EInfo.Primary, infoMsg);
+        }
+
+        private void OnApplicationMessageReject(object sender, OnApplicationMessageRejectEventArgs args)
+        {
+            string infoMsg = App.Current.Resources[ResourceKeys.StringApplication].ToString();
+            infoMsg += MessageRejectCommon(args.messageOrigin, args.msg);
+            InfoManager.PublishInfo(Enumeration.EInfo.Primary, infoMsg);
+        }
+
+        private string MessageRejectCommon(MessageOrigin messageOrigin,IMessage msg)
+        {
+            string infoMsg = "";
+            switch (messageOrigin)
             {
                 case MessageOrigin.Inbound:
-                    infoMsg += App.Current.Resources[ResourceKeys.StringInbound].ToString();
+                    infoMsg += " " + App.Current.Resources[ResourceKeys.StringInbound].ToString();
                     break;
                 case MessageOrigin.Outbound:
-                    infoMsg += App.Current.Resources[ResourceKeys.StringOutbound].ToString();
+                    infoMsg += " " + App.Current.Resources[ResourceKeys.StringOutbound].ToString();
                     break;
             }
-            infoMsg += App.Current.Resources[ResourceKeys.StringRejectMessage];
-            infoMsg += "\n" + args.msg.ToString();
+            infoMsg += " " + App.Current.Resources[ResourceKeys.StringRejectMessage];
             infoMsg += "\n" + App.Current.Resources[ResourceKeys.StringRejectReason] + "\n";
-            if (args.msg.IsSetGenericField(Tags.Text))
+            if (msg.IsSetGenericField(Tags.Text))
             {
-                infoMsg += args.msg.GetGenericField(Tags.Text);
+                infoMsg += " " + msg.GetGenericField(Tags.Text);
             }
             else
             {
                 infoMsg += "\n" + App.Current.Resources[ResourceKeys.StringNoReasonStated];
             }
-            InfoManager.PublishInfo(Enumeration.EInfo.Primary, infoMsg);
+            return infoMsg;
         }
     }
 }

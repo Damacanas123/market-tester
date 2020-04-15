@@ -122,12 +122,12 @@
     <system:String x:Key="StringCOMExplanation">Xlsx dışa aktarımı başarısız. Muhtemel nedenler: Dosya başka bir işlem tarafından kullanılıyor veya tekrarlayan sayfa ismi.</system:String>
     <system:String x:Key="StringTagDescription">Etiket açıklaması</system:String>
     <system:String x:Key="StringValueDescription">Değer açıklaması</system:String>
-    <system:String x:Key="StringRejectMessage">mesaj reddedildi. Mesaj :</system:String>
+    <system:String x:Key="StringRejectMessage">mesaj reddedildi.</system:String>
     <system:String x:Key="StringRejectReason">Red nedeni :</system:String>
-    <system:String x:Key="StringInbound">Gelen</system:String>
-    <system:String x:Key="StringOutbound">Giden</system:String>
+    <system:String x:Key="StringInbound">gelen</system:String>
+    <system:String x:Key="StringOutbound">giden</system:String>
     <system:String x:Key="StringSession">bağlantı</system:String>
-    <system:String x:Key="StringApplication">uygulama</system:String>
+    <system:String x:Key="StringApplication">Uygulama</system:String>
     <system:String x:Key="StringNoReasonStated">Neden belirtilmemiş.</system:String>
     <system:String x:Key="StringDeleteMessage">Kaydedilmiş Mesajı Sil</system:String>
 

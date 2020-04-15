@@ -29,7 +29,7 @@ namespace BackOfficeEngine.MessageEnums
     }
     public enum OrdStatus
     {
-        UNKNOWN, InitialPending, New,PendingNew,PendingReplace,PendingCancel,PartialFilled,Filled,Canceled,Rejected
+        UNKNOWN, InitialPending, New,PendingNew,PendingReplace,PendingCancel,PartialFilled,Filled,Canceled,Rejected,Suspended
     }
     //reject in OrdStatus enum is a general reject. When a reject is received the corresponding request message has to be traced by ClOrdId and the logic for that reject 
     //should be implemented for each type seperately via an interface
@@ -208,6 +208,8 @@ namespace BackOfficeEngine.MessageEnums
                     return OrdStatus.Filled;
                 case QuickFix.Fields.OrdStatus.REJECTED:
                     return OrdStatus.Rejected;
+                case QuickFix.Fields.OrdStatus.SUSPENDED:
+                    return OrdStatus.Suspended;
                 case QuickFix.Fields.OrdStatus.CANCELED:
                     return OrdStatus.Canceled;
                 default:
@@ -232,6 +234,8 @@ namespace BackOfficeEngine.MessageEnums
                     return QuickFix.Fields.OrdStatus.FILLED;
                 case OrdStatus.Rejected:
                     return QuickFix.Fields.OrdStatus.REJECTED;
+                case OrdStatus.Suspended:
+                    return QuickFix.Fields.OrdStatus.SUSPENDED;
                 case OrdStatus.Canceled:
                     return QuickFix.Fields.OrdStatus.CANCELED;
                 default:

@@ -274,7 +274,7 @@ namespace BackOfficeEngine
                         }
                         switch (msg.GetMsgType())
                         {
-                            //this are commented out just for now.
+                            //these are commented out just for now.
                             //case MsgType.New:
                             //    order = Order.ClOrdIDMap[msg.GetClOrdID()];
                             //    order.ConnectorName = connectorName;

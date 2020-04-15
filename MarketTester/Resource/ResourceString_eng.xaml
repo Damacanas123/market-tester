@@ -124,12 +124,12 @@
     <system:String x:Key="StringCOMExplanation">Failed to export to excel\n. Possible reasons: File is being used by another process or a duplicate sheet name.</system:String>
     <system:String x:Key="StringTagDescription">Tag Description</system:String>
     <system:String x:Key="StringValueDescription">Value Description</system:String>
-    <system:String x:Key="StringRejectMessage">reject message received. Message :</system:String>
+    <system:String x:Key="StringRejectMessage">message rejected.</system:String>
     <system:String x:Key="StringRejectReason">Reject Reason :</system:String>
-    <system:String x:Key="StringInbound">Inbound</system:String>
-    <system:String x:Key="StringOutbound">Outbound</system:String>
+    <system:String x:Key="StringInbound">inbound</system:String>
+    <system:String x:Key="StringOutbound">outbound</system:String>
     <system:String x:Key="StringSession">session</system:String>
-    <system:String x:Key="StringApplication">application</system:String>
+    <system:String x:Key="StringApplication">Application</system:String>
     <system:String x:Key="StringNoReasonStated">No reason stated.</system:String>
     <system:String x:Key="StringDeleteMessage">Delete Saved Message</system:String>
 

@@ -115,7 +115,7 @@ namespace BackOfficeEngine.Connection
                 {
                     foreach (IConnectorSubscriber subscriber in subscribers)
                     {
-                        subscriber.OnApplicationMessageReject(this, msg, MessageEnums.MessageOrigin.Inbound);
+                        subscriber.OnApplicationMessageReject(this, msg, MessageEnums.MessageOrigin.Outbound);
                     }
                 }
             }            
@@ -128,7 +128,7 @@ namespace BackOfficeEngine.Connection
             {
                 foreach(IConnectorSubscriber subscriber in subscribers)
                 {
-                    subscriber.OnApplicationMessageReject(this, msg, MessageEnums.MessageOrigin.Inbound);
+                    subscriber.OnApplicationMessageReject(this, msg, MessageEnums.MessageOrigin.Outbound);
                 }
             }
             msg.ReceiveTime = DateTime.Now;
@@ -172,6 +172,7 @@ namespace BackOfficeEngine.Connection
                     break;
                 case SessionQualifierRD:
                     RDSession = session;
+                    SendApplicationMessageRequest(RDSession);
                     break;
                 case SessionQualifierDC1:
                     DC1Session = session;
@@ -208,7 +209,7 @@ namespace BackOfficeEngine.Connection
                 {
                     foreach (IConnectorSubscriber subscriber in subscribers)
                     {
-                        subscriber.OnApplicationMessageReject(this, msg, MessageEnums.MessageOrigin.Outbound);
+                        subscriber.OnApplicationMessageReject(this, msg, MessageEnums.MessageOrigin.Inbound);
                     }
                 }
             }
@@ -225,7 +226,7 @@ namespace BackOfficeEngine.Connection
             {
                 foreach (IConnectorSubscriber subscriber in subscribers)
                 {
-                    subscriber.OnApplicationMessageReject(this, msg, MessageEnums.MessageOrigin.Outbound);
+                    subscriber.OnApplicationMessageReject(this, msg, MessageEnums.MessageOrigin.Inbound);
                 }
             }
         }
@@ -233,29 +234,62 @@ namespace BackOfficeEngine.Connection
 
         public void SendMsgOrderEntry(IMessage msg)
         {
-            //Session session = m_symbolMap[msg.GetSymbol()];
             Message quickFixMsg = new Message(msg.ToString());
-            primarySession.Send(quickFixMsg);
+            if (m_symbolMap.TryGetValue(msg.GetSymbol(),out Session session))
+            { 
+                session.Send(quickFixMsg);
+            }
+            else
+            {
+                primarySession.Send(quickFixMsg);
+            }
+            
         }
 
         public void SendMsgOrderEntry(string msg)
         {
-            //Session session = m_symbolMap[msg.GetSymbol()];
-            primarySession.Send(msg);
-        }
-
-        public void SendMsgOrderEntry(string msg,bool overrideSessionTags)
-        {
-            if (overrideSessionTags)
+            if (m_symbolMap.TryGetValue(Util.GetTag(msg,"55"), out Session session))
             {
-                //Session session = m_symbolMap[msg.GetSymbol()];
-                Message quickFixMsg = new Message(msg);
-                primarySession.Send(quickFixMsg);
+                session.Send(msg);
             }
             else
             {
                 primarySession.Send(msg);
             }
+        }
+
+        public void SendMsgOrderEntry(string msg,bool overrideSessionTags)
+        {
+            if (m_symbolMap.TryGetValue(Util.GetTag(msg, "55"), out Session session))
+            {
+
+            }
+            else
+            {
+                session = primarySession;
+            }
+            if (overrideSessionTags)
+            {
+                Message quickFixMsg = new Message(msg);
+                session.Send(quickFixMsg);
+            }
+            else
+            {
+                session.Send(msg);
+            }
+        }
+
+        public void SendApplicationMessageRequest(Session session)
+        {
+            QuickFix.FIX50SP2.ApplicationMessageRequest amr = new QuickFix.FIX50SP2.ApplicationMessageRequest();
+            amr.SetField(new ApplReqType(1));
+            amr.SetField(new ApplReqID((1).ToString()));
+            QuickFix.FIX50SP2.ApplicationMessageRequest.NoApplIDsGroup group = new QuickFix.FIX50SP2.ApplicationMessageRequest.NoApplIDsGroup();
+            group.SetField(new RefApplID("R"));
+            group.SetField(new ApplBegSeqNum(1));
+            group.SetField(new ApplEndSeqNum(0));
+            amr.AddGroup(group);
+            session.Send(amr);   
         }
     }
 }
