@@ -10,6 +10,7 @@ using BackOfficeEngine.Helper;
 using QuickFix;
 using QuickFix.Fields;
 using System.Threading;
+using BackOfficeEngine.Extensions;
 
 namespace BackOfficeEngine.Connection
 {
@@ -46,7 +47,14 @@ namespace BackOfficeEngine.Connection
                     {
                         foreach(IConnectorSubscriber subscriber in subscribers)
                         {
-                            subscriber.EnqueueMessage(this, new QuickFixMessage(m));
+                            IMessage msg = new QuickFixMessage(m);
+                            msg.SendTime = m.GetSendTime();
+                            msg.ReceiveTime = m.GetReceiveTime();
+                            subscriber.EnqueueMessage(this, msg);
+                            if (msg.GetMsgType() == MessageEnums.MsgType.Reject)
+                            {
+                                subscriber.OnApplicationMessageReject(this, msg, MessageEnums.MessageOrigin.Outbound);
+                            }
                         }
                     }
                     Thread.Sleep(500);
@@ -108,7 +116,8 @@ namespace BackOfficeEngine.Connection
 
         void IApplication.FromAdmin(Message message, SessionID sessionID)
         {
-            if(message.Header.GetField(Tags.MsgType) == MsgType.REJECT)
+            message.SetReceiveTime(DateTime.Now);
+            if (message.Header.GetField(Tags.MsgType) == MsgType.REJECT)
             {
                 IMessage msg = new QuickFixMessage(message);
                 if (msg.GetMsgType() == MessageEnums.MsgType.Reject)
@@ -123,22 +132,11 @@ namespace BackOfficeEngine.Connection
 
         void IApplication.FromApp(Message message, SessionID sessionID)
         {
-            IMessage msg = new QuickFixMessage(message);
-            if (msg.GetMsgType() == MessageEnums.MsgType.Reject)
-            {
-                foreach(IConnectorSubscriber subscriber in subscribers)
-                {
-                    subscriber.OnApplicationMessageReject(this, msg, MessageEnums.MessageOrigin.Outbound);
-                }
-            }
-            msg.ReceiveTime = DateTime.Now;
+            message.SetReceiveTime(DateTime.Now);
+            
             if (message.IsSetField(Tags.ClOrdID))
-            {
+            {                
                 m_messageQueue.Enqueue(message);
-            }
-            foreach (IConnectorSubscriber subscriber in subscribers)
-            {
-                subscriber.OnInboundMessage(this, sessionID.ToString(), msg);
             }
             if (sessionID.SessionQualifier == SessionQualifierRD)
             {
@@ -213,28 +211,32 @@ namespace BackOfficeEngine.Connection
                     }
                 }
             }
+            message.SetSendTime(DateTime.Now);
         }
 
         void IApplication.ToApp(Message message, SessionID sessionId)
         {
             if ("DGF".Contains(message.Header.GetField(Tags.MsgType)))
-            {
+            {                
                 m_messageQueue.Enqueue(message);
             }
-            IMessage msg = new QuickFixMessage(message);
-            if (msg.GetMsgType() == MessageEnums.MsgType.Reject)
-            {
-                foreach (IConnectorSubscriber subscriber in subscribers)
-                {
-                    subscriber.OnApplicationMessageReject(this, msg, MessageEnums.MessageOrigin.Inbound);
-                }
-            }
+            //comment ou for performance reasons for scheduler
+            //IMessage msg = new QuickFixMessage(message);
+            //if (msg.GetMsgType() == MessageEnums.MsgType.Reject)
+            //{
+            //    foreach (IConnectorSubscriber subscriber in subscribers)
+            //    {
+            //        subscriber.OnApplicationMessageReject(this, msg, MessageEnums.MessageOrigin.Inbound);
+            //    }
+            //}
+            message.SetSendTime(DateTime.Now);
         }
 
 
         public void SendMsgOrderEntry(IMessage msg)
         {
             Message quickFixMsg = new Message(msg.ToString());
+            msg.SendTime = DateTime.Now;
             if (m_symbolMap.TryGetValue(msg.GetSymbol(),out Session session))
             { 
                 session.Send(quickFixMsg);
@@ -244,6 +246,29 @@ namespace BackOfficeEngine.Connection
                 primarySession.Send(quickFixMsg);
             }
             
+        }
+
+        public void SendMsgOrderEntry(IMessage msg,bool overrideSessionTags)
+        {            
+            if (m_symbolMap.TryGetValue(msg.GetSymbol(), out Session session))
+            {
+
+            }
+            else
+            {
+                session = primarySession;
+            }
+            msg.SendTime = DateTime.Now;
+            if (overrideSessionTags)
+            {
+                Message quickFixMsg = new Message(msg.ToString());
+                session.Send(quickFixMsg);
+            }
+            else
+            {
+                session.Send(msg.ToString());
+            }
+
         }
 
         public void SendMsgOrderEntry(string msg)

@@ -11,8 +11,6 @@ namespace BackOfficeEngine.Connection
 {
     internal interface IConnectorSubscriber
     {
-        void OnInboundMessage(IConnector connector, string sessionID, IMessage msg);
-
         void OnLogon(IConnector connector, string sessionID);
 
         void OnLogout(IConnector connector, string sessionID);

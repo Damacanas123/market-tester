@@ -27,8 +27,6 @@ namespace BackOfficeEngine
         internal static string resourcePath;
         #endregion
         #region public
-
-        public event InboundMessageEventHandler InboundMessageEvent;
         public event OnLogonEventHandler OnLogonEvent;
         public event OnLogoutEventHandler OnLogoutEvent;
         public event OnCreateSessionEventHandler OnCreateSessionEvent;
@@ -209,14 +207,7 @@ namespace BackOfficeEngine
 
         public void SendMessage(IMessage msg, string connectorName,bool overrideSessionTags)
         {
-            if (overrideSessionTags)
-            {                
-                m_connectors[connectorName].SendMsgOrderEntry(msg);
-            }
-            else
-            {
-                m_connectors[connectorName].SendMsgOrderEntry(msg.ToString());
-            }
+            m_connectors[connectorName].SendMsgOrderEntry(msg,overrideSessionTags);
         }
 
         public void SendMessage(string fixMsg,string connectorName,bool overrideSessionTags)
@@ -227,10 +218,7 @@ namespace BackOfficeEngine
         {
             m_connectors[connectorName].Disconnect();
         }
-        void IConnectorSubscriber.OnInboundMessage(IConnector connector, string sessionID, IMessage msg)
-        {
-            InboundMessageEvent?.Invoke(this, new InboundMessageEventArgs(msg));
-        }
+        
 
         void IConnectorSubscriber.OnLogon(IConnector connector, string sessionID)
         {
@@ -260,11 +248,9 @@ namespace BackOfficeEngine
                 {
                     Console.WriteLine(m_messageQueue.Count);
                     IMessage msg;
-                    string connectorName;
                     if (m_messageQueue.TryDequeue(out var tuple))
                     {
                         msg = tuple.Item1;
-                        connectorName = tuple.Item2;
                         Order order;
                         void ReplaceOrCancel()
                         {
@@ -274,11 +260,9 @@ namespace BackOfficeEngine
                         }
                         switch (msg.GetMsgType())
                         {
-                            //these are commented out just for now.
-                            //case MsgType.New:
-                            //    order = Order.ClOrdIDMap[msg.GetClOrdID()];
-                            //    order.ConnectorName = connectorName;
-                            //break;
+                            
+                            case MsgType.New:
+                                break;
                             case MsgType.Replace:
                                 ReplaceOrCancel();
                                 break;

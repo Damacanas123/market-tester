@@ -95,6 +95,7 @@
     <Compile Include="Events\OnSessionMessageRejectEventHandler.cs" />
     <Compile Include="Events\UnknownClOrdIDReceivedEvent.cs" />
     <Compile Include="Exceptions\ConnectorNotPresentException.cs" />
+    <Compile Include="Extensions\QuickFixMessageExtension.cs" />
     <Compile Include="GeneralBase\BaseNotifier.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helper\Fix.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="Model\Account\Position.cs" />
     <Compile Include="DB\SQLite\Interface\IDataBaseWritable.cs" />
     <Compile Include="Model\Collection\ObservableCollectionEx.cs" />
+    <Compile Include="Model\DelayProfiler\DelayItem.cs" />
     <Compile Include="Model\Message\MessageManager.cs" />
     <Compile Include="Model\Order\BaseOrder.cs" />
     <Compile Include="Model\Order\PseudoOrder.cs" />
