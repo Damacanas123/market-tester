@@ -117,7 +117,7 @@ namespace MarketTester.ViewModel
             {
                 selectedHistoryItem = value;
                 NotifyPropertyChanged(nameof(SelectedHistoryItem));
-                Dictionary<int,string> tagValuePairs = Util.GetTagValuePairs(selectedHistoryItem.MessageString);
+                Dictionary<int,string> tagValuePairs = MarketTesterUtil.GetTagValuePairs(selectedHistoryItem.MessageString);
                 TagValues.Clear();
                 foreach(KeyValuePair<int,string> pair in tagValuePairs)
                 {
@@ -323,9 +323,9 @@ namespace MarketTester.ViewModel
 
         private void AddMessage(IMessage msg)
         {
-            string oldClOrdId = Util.GetField(msg, Tags.ClOrdID);
+            string oldClOrdId = MarketTesterUtil.GetField(msg, Tags.ClOrdID);
             string newClOrdId = "";
-            string oldOrigClOrdId = Util.GetField(msg, Tags.OrigClOrdID);
+            string oldOrigClOrdId = MarketTesterUtil.GetField(msg, Tags.OrigClOrdID);
             string newOrigClOrdId = "";
             if (!oldClOrdId.Equals(""))
             {

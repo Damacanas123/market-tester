@@ -406,7 +406,7 @@ namespace MarketTester.ViewModel
             if(SelectedScheduleItem != null)
             {
                 TagValuePairs.Clear();
-                Dictionary<int,string> tagValuePairs = Util.GetTagValuePairs(SelectedScheduleItem.Message);
+                Dictionary<int,string> tagValuePairs = MarketTesterUtil.GetTagValuePairs(SelectedScheduleItem.Message);
                 foreach(KeyValuePair<int,string> pair in tagValuePairs)
                 {
                     if(!Fix.CantBeEditedTags.Contains(pair.Key.ToString()))
@@ -481,7 +481,7 @@ namespace MarketTester.ViewModel
                     {
                         try
                         {
-                            string content = Util.ReadFile(filePath);
+                            string content = MarketTesterUtil.ReadFile(filePath);
                             string[] splits = content.Split(new string[] { SaveDelimiter }, StringSplitOptions.RemoveEmptyEntries);
                             foreach (string saveString in splits)
                             {

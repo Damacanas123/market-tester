@@ -151,7 +151,7 @@ namespace MarketTester.ViewModel
                 NotifyPropertyChanged(nameof(Format));
             }
         }
-        private string outFilePath = Util.APPLICATION_RESULTS_DIR + "analysis.csv";
+        private string outFilePath = MarketTesterUtil.APPLICATION_RESULTS_DIR + "analysis.csv";
         public string OutFilePath
         {
             get
@@ -295,7 +295,7 @@ namespace MarketTester.ViewModel
             }
             catch(Exception ex)
             {
-                Util.LogError(ex);
+                MarketTesterUtil.LogError(ex);
                 SetInfoText("StringInvalidLineFormat");
             }
             
@@ -317,7 +317,7 @@ namespace MarketTester.ViewModel
                 }
                 catch(Exception ex)
                 {
-                    Util.LogError(ex);
+                    MarketTesterUtil.LogError(ex);
                     errorMsgResourceKey = "StringFailedAnalysis";
                 }
                 finally

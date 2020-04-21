@@ -24,7 +24,7 @@ namespace MarketTester
                 DefaultValue = FindResource(typeof(Window))
             });
             
-            Util.Bootstrap();
+            MarketTesterUtil.Bootstrap();
             MainWindowStarter.Start();
         }
 

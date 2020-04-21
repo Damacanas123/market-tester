@@ -19,7 +19,7 @@ namespace MarketTester.Helper
     
     public class JsonConfig
     {
-        private static string SETTINGS_FILEPATH = Util.APPLICATION_STATIC_DIR + "config.json";
+        private static string SETTINGS_FILEPATH = MarketTesterUtil.APPLICATION_STATIC_DIR + "config.json";
 
         private const string CONFIG_FILES = "ConfigFiles";
         private const string DATA_REFRESH_RATE = "DataRefreshRate";
@@ -103,9 +103,9 @@ namespace MarketTester.Helper
         {
             switch (protocolTypeString)
             {
-                case Util.FIX50SP2:
+                case MarketTesterUtil.FIX50SP2:
                     return ProtocolType.Fix50sp2;
-                case Util.OUCH:
+                case MarketTesterUtil.OUCH:
                     return ProtocolType.OUCH;
                 default:
                     throw new Exception("Unsopprted protocol type in config File");

@@ -621,7 +621,7 @@ namespace MarketTester.ViewModel
             {
                 new Thread(() =>
                 {
-                    string content = Util.ReadFile(filePath);
+                    string content = MarketTesterUtil.ReadFile(filePath);
                     string[] scheduleStrings = content.Split(new string[] { ScheduleSaveFileDelimeter },StringSplitOptions.RemoveEmptyEntries);
                     foreach(string scheduleString in scheduleStrings)
                     {

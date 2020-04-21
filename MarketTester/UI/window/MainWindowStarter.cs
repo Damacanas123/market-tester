@@ -9,6 +9,7 @@ using System.Windows;
 using MarketTester.Extensions;
 using MarketTester.UI.Usercontrol.Custom;
 using System.Runtime.Remoting.Messaging;
+using MarketTester.Events;
 
 namespace MarketTester.UI.window
 {
@@ -33,18 +34,23 @@ namespace MarketTester.UI.window
 
         public static void AddTab(UserControl content,string nameResourceKey,bool openCheckAlreadyOpened)
         {
+            AddTab(content, nameResourceKey, openCheckAlreadyOpened, null);
+        }
+
+        public static void AddTab(UserControl content,string nameResourceKey,bool openCheckAlreadyOpened,OnCloseEventHandler onClose)
+        {
             if (openCheckAlreadyOpened)
             {
-                foreach(TabItem createdItem in tabControl.Items)
+                foreach (TabItem createdItem in tabControl.Items)
                 {
-                    if(createdItem.Name.Equals("k" + nameResourceKey))
+                    if (createdItem.Name.Equals("k" + nameResourceKey))
                     {
                         tabControl.SelectedItem = createdItem;
                         return;
                     }
                 }
             }
-            
+
             TabItem item = new TabItem();
             item.Content = content;
 
@@ -59,6 +65,11 @@ namespace MarketTester.UI.window
             item.Name = "k" + nameResourceKey;
             tabControl.Items.Add(item);
             tabControl.SelectedIndex = tabControl.Items.Count - 1;
+
+            if(onClose != null)
+            {
+                tabHeader.ButtonCloseTab.OnCloseEvent += onClose;
+            }
         }
 
         

@@ -14,6 +14,7 @@ using MarketTester.UI.Usercontrol;
 using MarketTester.UI.window;
 using MarketTester.Helper;
 using MarketTester.Enumeration;
+using Microsoft.Office.Interop.Excel;
 
 namespace MarketTester.ViewModel
 {
@@ -29,6 +30,7 @@ namespace MarketTester.ViewModel
             CommandLogAnalyzers = new BaseCommand(CommandLogAnalyzersExecute, CommandLogAnalyzersCanExecute);
             CommandFixFreeFormat = new BaseCommand(CommandFixFreeFormatExecute, CommandFixFreeFormatCanExecute);
             CommandScheduler = new BaseCommand(CommandSchedulerExecute, CommandSchedulerCanExecute);
+            CommandFixSniffer = new BaseCommand(CommandFixSnifferExecute, CommandFixSnifferCanExecute);
 
         }
         #region commands
@@ -65,7 +67,7 @@ namespace MarketTester.ViewModel
         public void CommandImportOrdersExecute(object param)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = Util.APPLICATION_EXPORT_DIR;
+            openFileDialog.InitialDirectory = MarketTesterUtil.APPLICATION_EXPORT_DIR;
             openFileDialog.ShowDialog();
             if (openFileDialog.FileName != null)
             {
@@ -75,7 +77,7 @@ namespace MarketTester.ViewModel
                 }
                 catch(Exception ex)
                 {
-                    Util.LogError(ex);
+                    MarketTesterUtil.LogError(ex);
                 }
                 
             }
@@ -148,6 +150,19 @@ namespace MarketTester.ViewModel
             MainWindowStarter.AddTab(new UserControlScheduler(), ResourceKeys.StringSchedule, false);
         }
         public bool CommandSchedulerCanExecute()
+        {
+            return true;
+        }
+        #endregion
+
+        #region CommandFixSniffer
+        public BaseCommand CommandFixSniffer { get; set; }
+        public void CommandFixSnifferExecute(object param)
+        {
+            UserControlFixSniffer userControlFixSniffer = new UserControlFixSniffer();
+            MainWindowStarter.AddTab(userControlFixSniffer, ResourceKeys.StringSniffer, true, userControlFixSniffer.OnClose);
+        }
+        public bool CommandFixSnifferCanExecute()
         {
             return true;
         }

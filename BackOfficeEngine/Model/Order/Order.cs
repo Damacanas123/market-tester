@@ -235,27 +235,34 @@ namespace BackOfficeEngine.Model
         }
         internal Order(SQLiteDataReader reader)
         {
-            NonProtocolID = reader[nameof(NonProtocolID)].ToString();
-            Price = decimal.Parse(reader[nameof(Price)].ToString(),CultureInfo.CurrentCulture);
-            OrderQty = decimal.Parse(reader[nameof(OrderQty)].ToString(),CultureInfo.CurrentCulture);
-            Account = Account.GetInstance(reader[nameof(Account)].ToString());
-            Symbol = reader[nameof(Symbol)].ToString();
-            ClOrdID = reader[nameof(ClOrdID)].ToString();
-            OrigClOrdID = reader[nameof(OrigClOrdID)].ToString();
-            Side = new StringToEnumConverter<Side>().Convert(reader[nameof(Side)].ToString());
-            OrdType = new StringToEnumConverter<OrdType>().Convert(reader[nameof(OrdType)].ToString());
-            TimeInForce = new StringToEnumConverter<TimeInForce>().Convert(reader[nameof(TimeInForce)].ToString());
-            protocolType = new StringToEnumConverter<ProtocolType>().Convert(reader[nameof(protocolType)].ToString());
-            CumulativeQty = decimal.Parse(reader[nameof(CumulativeQty)].ToString(),CultureInfo.CurrentCulture);
-            LastPx = decimal.Parse(reader[nameof(LastPx)].ToString(),CultureInfo.CurrentCulture);
-            LastQty = decimal.Parse(reader[nameof(LastQty)].ToString(), CultureInfo.CurrentCulture);
-            AvgPx = decimal.Parse(reader[nameof(AvgPx)].ToString(),CultureInfo.CurrentCulture);
-            OrdStatus = new StringToEnumConverter<OrdStatus>().Convert(reader[nameof(OrdStatus)].ToString());
-            Date = reader[nameof(Date)].ToString();
-            IsImported = reader[nameof(IsImported)].ToString() == "0" ? false : true;
-            ConnectorName = reader[nameof(ConnectorName)].ToString();
-            LoadMessages();
-            ConstructorCommonWork();
+            try
+            {
+                NonProtocolID = reader[nameof(NonProtocolID)].ToString();
+                Price = decimal.Parse(reader[nameof(Price)].ToString(), CultureInfo.CurrentCulture);
+                OrderQty = decimal.Parse(reader[nameof(OrderQty)].ToString(), CultureInfo.CurrentCulture);
+                Account = Account.GetInstance(reader[nameof(Account)].ToString());
+                Symbol = reader[nameof(Symbol)].ToString();
+                ClOrdID = reader[nameof(ClOrdID)].ToString();
+                OrigClOrdID = reader[nameof(OrigClOrdID)].ToString();
+                Side = new StringToEnumConverter<Side>().Convert(reader[nameof(Side)].ToString());
+                OrdType = new StringToEnumConverter<OrdType>().Convert(reader[nameof(OrdType)].ToString());
+                TimeInForce = new StringToEnumConverter<TimeInForce>().Convert(reader[nameof(TimeInForce)].ToString());
+                protocolType = new StringToEnumConverter<ProtocolType>().Convert(reader[nameof(protocolType)].ToString());
+                CumulativeQty = decimal.Parse(reader[nameof(CumulativeQty)].ToString(), CultureInfo.CurrentCulture);
+                LastPx = decimal.Parse(reader[nameof(LastPx)].ToString(), CultureInfo.CurrentCulture);
+                LastQty = decimal.Parse(reader[nameof(LastQty)].ToString(), CultureInfo.CurrentCulture);
+                AvgPx = decimal.Parse(reader[nameof(AvgPx)].ToString(), CultureInfo.CurrentCulture);
+                OrdStatus = new StringToEnumConverter<OrdStatus>().Convert(reader[nameof(OrdStatus)].ToString());
+                Date = reader[nameof(Date)].ToString();
+                IsImported = reader[nameof(IsImported)].ToString() == "0" ? false : true;
+                ConnectorName = reader[nameof(ConnectorName)].ToString();
+                LoadMessages();
+                ConstructorCommonWork();
+            }
+            catch(Exception ex)
+            {
+                Util.LogError(ex);
+            }
         }
 
         internal Order(IMessage newOrderMessage, string nonProtocolID,string connectorName) : base(newOrderMessage, nonProtocolID)
@@ -392,10 +399,10 @@ namespace BackOfficeEngine.Model
 
         private void LoadMessages()
         {
-            using(StreamReader sr = new StreamReader(MessagesFilePath))
+            using (StreamReader sr = new StreamReader(MessagesFilePath))
             {
                 string line;
-                while((line = sr.ReadLine()) != null)
+                while ((line = sr.ReadLine()) != null)
                 {
                     if (!string.IsNullOrEmpty(line))
                     {
@@ -405,12 +412,12 @@ namespace BackOfficeEngine.Model
                                 lock (MessagesLock)
                                 {
                                     Messages.Add(new QuickFixMessage(line));
-                                }                                
+                                }
                                 break;
                         }
                     }
                 }
-            }
+            }            
         }
 
         public string GetExportRepr()

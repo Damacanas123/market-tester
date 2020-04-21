@@ -12,7 +12,7 @@ namespace MarketTester.Model.FixFreeFormat
 {
     public class SavedMessage : BaseNotifier
     {
-        private static string SaveFilePath= Util.APPLICATION_SAVEDMESSAGES_DIR + "saved_messages";
+        private static string SaveFilePath= MarketTesterUtil.APPLICATION_SAVEDMESSAGES_DIR + "saved_messages";
         private const string TagValueSeparator = "=";
         private const string Pipe = "|";
         public static ObservableCollection<SavedMessage> SavedMessages { get; set; } = new ObservableCollection<SavedMessage>();
@@ -44,12 +44,12 @@ namespace MarketTester.Model.FixFreeFormat
                 }
                 content += "\n";
             }
-            Util.OverwriteToFile(SaveFilePath, content);
+            MarketTesterUtil.OverwriteToFile(SaveFilePath, content);
         }
 
         public static void Load()
         {
-            string[] lines = Util.ReadLines(SaveFilePath);
+            string[] lines = MarketTesterUtil.ReadLines(SaveFilePath);
             foreach(string line in lines)
             {
                 if (string.IsNullOrWhiteSpace(line))

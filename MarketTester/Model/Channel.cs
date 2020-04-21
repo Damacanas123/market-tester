@@ -53,7 +53,7 @@ namespace MarketTester.Model
         public ObservableCollection<string> InactiveSessions { get; set; } = new ObservableCollection<string>();
         public Channel (string configFilePath,ProtocolType protocolType)
         {
-            Name = Util.GetFileNameWithoutExtensionFromFullPath(configFilePath);
+            Name = MarketTesterUtil.GetFileNameWithoutExtensionFromFullPath(configFilePath);
             ConfigFilePath = configFilePath;
             ProtocolType = protocolType;
 

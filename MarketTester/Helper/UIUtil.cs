@@ -39,7 +39,7 @@ namespace MarketTester.Helper
             {
                 dialog.Filter += filter + " file|*." + filter;
             }            
-            dialog.InitialDirectory = Util.APPLICATION_FREEFORMATSCHEDULE_DIR;
+            dialog.InitialDirectory = MarketTesterUtil.APPLICATION_FREEFORMATSCHEDULE_DIR;
             dialog.ShowDialog();
             return dialog.FileName;
         }
@@ -47,7 +47,7 @@ namespace MarketTester.Helper
         public static string OpenFileDialog(string[] filters)
         {
             OpenFileDialog dialog = new OpenFileDialog();
-            dialog.InitialDirectory = Util.APPLICATION_FREEFORMATSCHEDULE_DIR;
+            dialog.InitialDirectory = MarketTesterUtil.APPLICATION_FREEFORMATSCHEDULE_DIR;
             foreach (string filter in filters)
             {
                 dialog.Filter += filter + " file|*." + filter;

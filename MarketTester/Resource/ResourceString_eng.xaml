@@ -132,7 +132,18 @@
     <system:String x:Key="StringApplication">Application</system:String>
     <system:String x:Key="StringNoReasonStated">No reason stated.</system:String>
     <system:String x:Key="StringDeleteMessage">Delete Saved Message</system:String>
-
+    <system:String x:Key="StringNetworkAdapters">Network adapters</system:String>
+    <system:String x:Key="StringStart">Start</system:String>
+    <system:String x:Key="StringStop">Stop</system:String>
+    <system:String x:Key="StringAverageDelay">Average Delay(Microsecond)</system:String>
+    <system:String x:Key="StringTotalRequests">Total requests(D,G,F)</system:String>
+    <system:String x:Key="StringTotalAcknowledgements">Total acknowledgements(8,9)</system:String>
+    <system:String x:Key="StringSniffer">Fix Sniffer</system:String>
+    <system:String x:Key="StringPorts">Ports (Ex : 10056;10011)</system:String>
+    <system:String x:Key="StringPleaseEnterPort">Please enter at least one valid port. Valid ports range from 0 to 65535.Put ; between port without a space.</system:String>
+    <system:String x:Key="StringPleaseSelectANetworkAdapter">Please select a network adapter.</system:String>
+    <system:String x:Key="StringInvalidPort">Invalid port detected : </system:String>
+    
 
     <system:String x:Key="StringFailedAnalysis">Analysis failed for an unknown reason.</system:String>
     <system:String x:Key="StringFileIsBeingUsed">File is being used by another process.</system:String>

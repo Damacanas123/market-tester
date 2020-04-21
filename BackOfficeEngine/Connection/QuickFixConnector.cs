@@ -273,7 +273,7 @@ namespace BackOfficeEngine.Connection
 
         public void SendMsgOrderEntry(string msg)
         {
-            if (m_symbolMap.TryGetValue(Util.GetTag(msg,"55"), out Session session))
+            if (m_symbolMap.TryGetValue(Fix.GetTag(msg,"55"), out Session session))
             {
                 session.Send(msg);
             }
@@ -285,7 +285,7 @@ namespace BackOfficeEngine.Connection
 
         public void SendMsgOrderEntry(string msg,bool overrideSessionTags)
         {
-            if (m_symbolMap.TryGetValue(Util.GetTag(msg, "55"), out Session session))
+            if (m_symbolMap.TryGetValue(Fix.GetTag(msg, "55"), out Session session))
             {
 
             }

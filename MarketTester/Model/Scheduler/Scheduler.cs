@@ -188,7 +188,7 @@ namespace MarketTester.Model.Scheduler
                     }
                     if(item.ExpireDate != DateTime.MinValue)
                     {
-                        m.SetGenericField(432, item.ExpireDate.ToString(Util.LocalMktDateFormat));
+                        m.SetGenericField(432, item.ExpireDate.ToString(MarketTesterUtil.LocalMktDateFormat));
                     }
                     OrderIdMap[item.SchedulerOrderID] = nonProtocolOrderId;
                 }
@@ -272,7 +272,7 @@ namespace MarketTester.Model.Scheduler
             }
             catch (Exception ex)
             {
-                Util.LogError(ex);
+                MarketTesterUtil.LogError(ex);
                 return false;
             }
 

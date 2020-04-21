@@ -27,7 +27,7 @@ namespace MarketTester.Worksheet
                 }
                 csv = csv.Substring(0, csv.Length - 1) + "\n";
             }
-            Util.OverwriteToFile(filePath, csv);
+            MarketTesterUtil.OverwriteToFile(filePath, csv);
         }
         public static void AppendCsvFromHistoryItems(string filePath, List<HistoryItem> historyItems)
         {
@@ -41,7 +41,7 @@ namespace MarketTester.Worksheet
                 }
                 csv = csv.Substring(0, csv.Length - 1) + "\n";
             }
-            Util.AppendStringToFile(filePath, csv);
+            MarketTesterUtil.AppendStringToFile(filePath, csv);
         }
     }
 }

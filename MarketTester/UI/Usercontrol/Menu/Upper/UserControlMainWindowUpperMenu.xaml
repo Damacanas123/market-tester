@@ -30,8 +30,11 @@
         </MenuItem>
         <MenuItem Header="{DynamicResource StringTools}">
             <MenuItem Header="{DynamicResource StringLogAnalyzers}" Command="{Binding CommandLogAnalyzers}"/>
+            <Separator></Separator>
             <MenuItem Header="{DynamicResource StringFixFreeFormat}" Command="{Binding CommandFixFreeFormat}"/>
             <MenuItem Header="{DynamicResource StringSchedule}" Command="{Binding CommandScheduler}"/>
+            <Separator></Separator>
+            <MenuItem Header="{DynamicResource StringSniffer}" Command="{Binding CommandFixSniffer}"/>
         </MenuItem>
         
     </Menu>

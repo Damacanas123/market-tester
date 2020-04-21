@@ -15,7 +15,7 @@ using BackOfficeEngine.Model;
 
 namespace MarketTester.Helper
 {
-    internal class Util
+    public class MarketTesterUtil
     {
         public const string FIX50SP2 = "Fix50sp2";
         public const string OUCH = "OUCH";
@@ -42,7 +42,7 @@ namespace MarketTester.Helper
         public static string APPLICATION_NONFREEFORMATSCHEDULE_DIR = APPLICATION_SCHEDULESAVE_DIR + "nonfreeformat" + FILE_PATH_DELIMITER;
         public static string APPLICATION_SAVEDMESSAGES_DIR = APPLICATION_SAVE_DIR + "saved_messages" + FILE_PATH_DELIMITER;
         public static string EXCEPTIONLOG_FILE_PATH = APPLICATION_STATIC_DIR + "exception.log";
-        public static string USERNAME = System.Security.Principal.WindowsIdentity.GetCurrent().Name.Replace(Util.FILE_PATH_DELIMITER, "");
+        public static string USERNAME = System.Security.Principal.WindowsIdentity.GetCurrent().Name.Replace(MarketTesterUtil.FILE_PATH_DELIMITER, "");
         public static string SCHEDULESAVE_DIR_PATH = APPLICATION_STATIC_DIR + "schedule_save" + FILE_PATH_DELIMITER;
 
         public static string LocalMktDateFormat = "yyyyMMdd";
@@ -147,9 +147,9 @@ namespace MarketTester.Helper
 
         public static void CopyDirectoryAndSubDirectoriesToApplicationCommonPath(string dir)
         {
-            if (!Directory.Exists(Util.APPLICATION_COMMON_DIR + dir))
+            if (!Directory.Exists(MarketTesterUtil.APPLICATION_COMMON_DIR + dir))
             {
-                Directory.CreateDirectory(Util.APPLICATION_COMMON_DIR + dir);
+                Directory.CreateDirectory(MarketTesterUtil.APPLICATION_COMMON_DIR + dir);
             }
             string[] filePaths = Directory.GetFiles(dir);
             string[] dirPaths = Directory.GetDirectories(dir);
@@ -270,7 +270,7 @@ namespace MarketTester.Helper
             string content = ReadFile(filePath);
             if (!string.IsNullOrEmpty(content))
             {
-                return content.Split(new char[] { '\n' });
+                return content.Split(new char[] { '\n' },StringSplitOptions.RemoveEmptyEntries);
             }
             else
             {
@@ -483,7 +483,7 @@ namespace MarketTester.Helper
 
         public static string GetFileNameWithoutExtensionFromFullPath(string fullPath)
         {
-            int lastDelimiterIndex = fullPath.LastIndexOf(Util.FILE_PATH_DELIMITER) + 1;
+            int lastDelimiterIndex = fullPath.LastIndexOf(MarketTesterUtil.FILE_PATH_DELIMITER) + 1;
             int dotIndex = fullPath.LastIndexOf(".");
             if (lastDelimiterIndex == -1)
             {

@@ -219,7 +219,7 @@ namespace MarketTester.Model.Scheduler
             TimeInForce = (TimeInForce)Enum.Parse(typeof(TimeInForce), values[4]);
             OrderQty = decimal.Parse(values[5],CultureInfo.InvariantCulture);
             Symbol = values[6];
-            ExpireDate = DateTime.ParseExact(values[7],Util.LocalMktDateFormat, CultureInfo.InvariantCulture);
+            ExpireDate = DateTime.ParseExact(values[7],MarketTesterUtil.LocalMktDateFormat, CultureInfo.InvariantCulture);
             Price = decimal.Parse(values[8], CultureInfo.InvariantCulture);
             AllocID = values[9];
             Delay = Int32.Parse(values[10],CultureInfo.InvariantCulture);
@@ -235,7 +235,7 @@ namespace MarketTester.Model.Scheduler
                 TimeInForce + ValueDelimiter +
                 OrderQty.ToString(CultureInfo.InvariantCulture) + ValueDelimiter +
                 Symbol + ValueDelimiter + 
-                ExpireDate.ToString(Util.LocalMktDateFormat,CultureInfo.InvariantCulture) + ValueDelimiter +
+                ExpireDate.ToString(MarketTesterUtil.LocalMktDateFormat,CultureInfo.InvariantCulture) + ValueDelimiter +
                 Price.ToString(CultureInfo.InvariantCulture) + ValueDelimiter +
                 AllocID + ValueDelimiter +
                 Delay.ToString(CultureInfo.InvariantCulture) + ValueDelimiter +

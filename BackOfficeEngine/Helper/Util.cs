@@ -11,10 +11,13 @@ using System.Text.RegularExpressions;
 using FixHelper;
 using System.Data;
 using System.Deployment.Application;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("UnitTest")]
 namespace BackOfficeEngine.Helper
 {
-    internal class Util
+    
+    public class Util
     {
         public const string APP_VERSION = "1.0.0.1";
 
@@ -532,13 +535,7 @@ namespace BackOfficeEngine.Helper
         }
 
 
-        public static string GetTag(string msg, string tag)
-        {
-            string searchString = $"\u0001{tag}=";
-            int startIndex = msg.IndexOf(searchString) + searchString.Length;
-            int endIndex = msg.IndexOf("\u0001", startIndex);
-            return msg.Substring(startIndex, endIndex - startIndex);
-        }
+        
 
     }
 }

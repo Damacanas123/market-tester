@@ -26,11 +26,11 @@ namespace MarketTester.Model
         public const string MessageCard = "{message}";
         private const string SaveDelimiter = "dfbdfbdbd";
 
-        public static string SaveFilePath = Util.APPLICATION_STATIC_DIR + "lineformats.save";
+        public static string SaveFilePath = MarketTesterUtil.APPLICATION_STATIC_DIR + "lineformats.save";
         public static ObservableCollection<LineFormat> Formats { get; set; } = new ObservableCollection<LineFormat>();
         public static void LoadLineFormats()
         {
-            string[] formats = Util.ReadLines(SaveFilePath);
+            string[] formats = MarketTesterUtil.ReadLines(SaveFilePath);
             Formats.Clear();
             for(int i = 0; i < formats.Length - 1; i++)
             {
@@ -50,7 +50,7 @@ namespace MarketTester.Model
             {
                 content += format.ToString() + "\n";
             }
-            Util.OverwriteToFile(SaveFilePath,content);
+            MarketTesterUtil.OverwriteToFile(SaveFilePath,content);
         }
 
         public override string ToString()
@@ -142,7 +142,7 @@ namespace MarketTester.Model
                 }
                 catch(Exception ex)
                 {
-                    Util.LogError(ex);
+                    MarketTesterUtil.LogError(ex);
                     throw new Exception("Date format does not match log date format");
                 }
                 

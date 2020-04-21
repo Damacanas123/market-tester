@@ -153,6 +153,19 @@ namespace MarketTester
         public const string StringApplication = "StringApplication";
         public const string StringNoReasonStated = "StringNoReasonStated";
         public const string StringDeleteMessage = "StringDeleteMessage";
-        
+        public const string StringAdapters = "StringNetworkAdapters";
+        public const string StringStart = "StringStart";
+        public const string StringStop = "StringStop";
+        public const string StringAverageDelay = "StringAverageDelay";
+        public const string StringTotalRequests = "StringTotalRequests";
+        public const string StringTotalAcknowledgements = "StringTotalAcknowledgements";
+        public const string StringSniffer = "StringSniffer";
+        public const string StringPorts = "StringPorts";
+        public const string StringPleaseEnterPort = "StringPleaseEnterPort";
+        public const string StringPleaseSelectANetworkAdapter = "StringPleaseSelectANetworkAdapter";
+        public const string StringInvalidPort = "StringInvalidPort";
+
+
+
     }
 }

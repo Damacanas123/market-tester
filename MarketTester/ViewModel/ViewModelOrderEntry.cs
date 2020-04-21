@@ -31,7 +31,7 @@ namespace MarketTester.ViewModel
             set 
             { 
                 priceText = value;
-                priceText = Util.RemoveNonNumericKeepDot(priceText);
+                priceText = MarketTesterUtil.RemoveNonNumericKeepDot(priceText);
                 NotifyPropertyChanged(nameof(PriceText)); 
             } 
         }

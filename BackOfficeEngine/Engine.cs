@@ -262,6 +262,8 @@ namespace BackOfficeEngine
                         {
                             
                             case MsgType.New:
+                                order = Order.ClOrdIDMap[msg.GetClOrdID()];
+                                order.AddMessage(msg);
                                 break;
                             case MsgType.Replace:
                                 ReplaceOrCancel();

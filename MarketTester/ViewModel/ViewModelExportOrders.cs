@@ -50,7 +50,7 @@ namespace MarketTester.ViewModel
         public ViewModelExportOrders()
         {
             CommandOkayClick = new BaseCommand(CommandOkayClickExecute, CommandOkayClickCanExecute);
-            OutFilePath = Util.APPLICATION_EXPORT_DIR + "export.orders";
+            OutFilePath = MarketTesterUtil.APPLICATION_EXPORT_DIR + "export.orders";
         }
     }
 }

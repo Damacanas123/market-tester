@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using BackOfficeEngine.Helper;
 
 namespace UnitTest
 {
@@ -9,9 +10,15 @@ namespace UnitTest
         [TestMethod]
         public void TestMethod1()
         {
-            //(string, string)[] heyo = new (string, string)[] { ("35", "D"), ("55", "GARAN"),("54","heyoo") };
-            //string msg = BackOfficeEngine.Helper.Fix.GetFixString(BackOfficeEngine.ProtocolType.Fix42, heyo);
-            //Console.WriteLine(msg);
+            string filePath = @"C:\MATRIKS_OMS\MarketTester\FIXLog\Primary\FIXT.1.1-FC221_FE343-BI_TEST2-Primary.messages.current.log";
+            int startIndex = "20200410-13:47:24.131 : ".Length;
+
+            foreach (string msg in MarketTester.Helper.MarketTesterUtil.ReadLines(filePath))
+            {
+                    Assert.AreEqual(true, Fix.CheckMessageValidity(msg.Substring(startIndex, msg.Length - startIndex)));
+            }            
         }
+
+
     }
 }

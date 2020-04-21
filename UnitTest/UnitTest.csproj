@@ -60,6 +60,10 @@
       <Project>{549e570d-dca5-4529-b011-ad981a07a6a2}</Project>
       <Name>BackOfficeEngine</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MarketTester\MarketTester.csproj">
+      <Project>{b5cbf187-5d4e-4cc3-8e47-fefe27d18c27}</Project>
+      <Name>MarketTester</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

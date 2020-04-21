@@ -1,4 +1,4 @@
-﻿using MarketTester.Events;
+﻿using MarketTester.UI.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,25 +13,23 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MarketTester.ViewModel;
 
-namespace MarketTester.UI.Usercontrol.Custom
+namespace MarketTester.UI.Usercontrol
 {
     /// <summary>
-    /// Interaction logic for UserControlCloseButton.xaml
+    /// Interaction logic for UserControlFixSniffer.xaml
     /// </summary>
-    public partial class UserControlCloseButton : UserControl
+    public partial class UserControlFixSniffer : UserControl,ITabOnCloseHandler
     {
-        public UserControlCloseButton()
+        public UserControlFixSniffer()
         {
             InitializeComponent();
         }
-        public TabControl tabControl;
-        public TabItem item;
-        public OnCloseEventHandler OnCloseEvent;
-        private void ButtonClose_Click(object sender, RoutedEventArgs e)
+
+        public void OnClose()
         {
-            OnCloseEvent?.Invoke();
-            tabControl.Items.Remove(item);
+            ((ViewModelFixSniffer)this.DataContext).OnClose();
         }
     }
 }
