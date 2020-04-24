@@ -1,4 +1,5 @@
-﻿using System;
+﻿#define DEBUG
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -47,8 +48,14 @@ namespace MarketTester.Helper
 
         public static string LocalMktDateFormat = "yyyyMMdd";
         public static string UTCTimestampFormat = "yyyyMMdd-HH:mm:ss.fff";
-        
+        public static string DateFormatMicrosecondPrecision = "yyyyMMdd-HH:mm:ss.ffffff";
 
+        public static void ConsoleDebug(string s)
+        {
+            #if DEBUG
+                Console.WriteLine(s);
+            #endif
+        }
         public static void Bootstrap()
         {
             Directory.CreateDirectory(APPLICATION_RESULTS_DIR);
@@ -111,7 +118,6 @@ namespace MarketTester.Helper
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
                 return -1;
             }
 
@@ -204,7 +210,6 @@ namespace MarketTester.Helper
             {
                 outputFile.Write(fileContent);
             }
-            Console.WriteLine(fileContent);
         }
 
 

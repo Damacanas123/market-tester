@@ -1,7 +1,12 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:MarketTester.Resource"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:converter="clr-namespace:MarketTester.Converters">
+    <!--Converters-->
+    <converter:DoubleConverter x:Key="DoubleConverter"/>
+
+
     <SolidColorBrush x:Key="ColorBuy">#35af71</SolidColorBrush>
     <SolidColorBrush x:Key="ColorSell">#bd0303</SolidColorBrush>
     <sys:Double x:Key="OrderEntryMargin">10</sys:Double>
@@ -565,7 +570,10 @@
                         <ContentPresenter Name="ContentSite" IsHitTestVisible="True"  Content="{TemplateBinding SelectedItem}"
                             ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                             ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                            Margin="3,3,23,3"
+                            Margin="3"
+                            Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBox}}, 
+                            Path=ActualWidth,
+                            Converter={StaticResource DoubleConverter},ConverterParameter=1.4}"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left" />
                         <TextBox x:Name="PART_EditableTextBox"
@@ -573,7 +581,10 @@
                             Template="{StaticResource ComboBoxTextBox}" 
                             HorizontalAlignment="Left" 
                             VerticalAlignment="Center" 
-                            Margin="3,3,23,3"
+                            Margin="3"
+                            Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBox}}, 
+                            Path=ActualWidth,
+                            Converter={StaticResource DoubleConverter},ConverterParameter=1.4}"
                             Focusable="True" 
                             Foreground="{StaticResource TextColor}"
                             Background="{TemplateBinding Background}"

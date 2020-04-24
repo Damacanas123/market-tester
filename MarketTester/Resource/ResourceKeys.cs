@@ -129,14 +129,14 @@ namespace MarketTester
         public const string StringEnterAMessageName = "StringEnterAMessageName";
         public const string StringNoTagValuePairSet = "StringNoTagValuePairSet";
         public const string StringOnlyNewMessage = "StringOnlyNewMessage";
-        public const string StringHistory= "StringHistory";
+        public const string StringHistory = "StringHistory";
         public const string StringMessageType = "StringMessageType";
         public const string StringOrderID = "StringOrderID";
         public const string StringExecType = "StringExecType";
         public const string StringExecID = "StringExecID";
         public const string StringOrderQty = "StringOrderQty";
         public const string StringLeavesQty = "StringLeavesQty";
-        public const string StringCouldntExportCsv= "StringCouldntExportCsv";
+        public const string StringCouldntExportCsv = "StringCouldntExportCsv";
         public const string StringFinishedExporting = "StringFinishedExporting";
         public const string StringCouldntExportXlsx = "StringCouldntExportXlsx";
         public const string StringStartingToWriteToXLSXFile = "StringStartingToWriteToXLSXFile";
@@ -164,8 +164,11 @@ namespace MarketTester
         public const string StringPleaseEnterPort = "StringPleaseEnterPort";
         public const string StringPleaseSelectANetworkAdapter = "StringPleaseSelectANetworkAdapter";
         public const string StringInvalidPort = "StringInvalidPort";
-
-
-
+        public const string StringStartedSniffing = "StringStartedSniffing";
+        public const string StringStoppedSniffing = "StringStoppedSniffing";
+        public const string StringRequestMsgType = "StringRequestMsgType";
+        public const string StringResponseMsgType = "StringResponseMsgType";
+        public const string StringRequestTime = "StringRequestTime";
+        public const string StringResponseTime = "StringResponseTime";
     }
 }

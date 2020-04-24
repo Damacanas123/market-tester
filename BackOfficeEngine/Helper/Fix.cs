@@ -61,7 +61,6 @@ namespace BackOfficeEngine.Helper
             
             short msgLength = (short)(msg.Length - initialLen);
             msg = msg.Insert(initialLen,FixDelimiter + "9=" + msgLength );
-            Console.WriteLine(msg.Length);
             uint checksumTotal = 0;
             msg += FixDelimiter;
             for (int i = 0; i < msg.Length; checksumTotal += msg[i++]) ;

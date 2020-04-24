@@ -31,7 +31,6 @@ namespace MarketTester.UI.window
         {
             if (WindowState == WindowState.Maximized)
             {
-                Console.WriteLine(RestoreBounds.Width + "," + RestoreBounds.Height);
                 var point = PointToScreen(e.MouseDevice.GetPosition(this));
 
                 if (point.X <= RestoreBounds.Width / 2)

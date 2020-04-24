@@ -239,11 +239,11 @@ namespace BackOfficeEngine.Connection
             msg.SendTime = DateTime.Now;
             if (m_symbolMap.TryGetValue(msg.GetSymbol(),out Session session))
             { 
-                session.Send(quickFixMsg);
+                session?.Send(quickFixMsg);
             }
             else
             {
-                primarySession.Send(quickFixMsg);
+                primarySession?.Send(quickFixMsg);
             }
             
         }
@@ -262,11 +262,11 @@ namespace BackOfficeEngine.Connection
             if (overrideSessionTags)
             {
                 Message quickFixMsg = new Message(msg.ToString());
-                session.Send(quickFixMsg);
+                session?.Send(quickFixMsg);
             }
             else
             {
-                session.Send(msg.ToString());
+                session?.Send(msg.ToString());
             }
 
         }
@@ -275,11 +275,11 @@ namespace BackOfficeEngine.Connection
         {
             if (m_symbolMap.TryGetValue(Fix.GetTag(msg,"55"), out Session session))
             {
-                session.Send(msg);
+                session?.Send(msg);
             }
             else
             {
-                primarySession.Send(msg);
+                primarySession?.Send(msg);
             }
         }
 
@@ -296,11 +296,11 @@ namespace BackOfficeEngine.Connection
             if (overrideSessionTags)
             {
                 Message quickFixMsg = new Message(msg);
-                session.Send(quickFixMsg);
+                session?.Send(quickFixMsg);
             }
             else
             {
-                session.Send(msg);
+                session?.Send(msg);
             }
         }
 
@@ -314,7 +314,7 @@ namespace BackOfficeEngine.Connection
             group.SetField(new ApplBegSeqNum(1));
             group.SetField(new ApplEndSeqNum(0));
             amr.AddGroup(group);
-            session.Send(amr);   
+            session?.Send(amr);   
         }
     }
 }

@@ -133,7 +133,7 @@
     <system:String x:Key="StringNetworkAdapters">Ağ adaptörleri</system:String>
     <system:String x:Key="StringStart">Başlat</system:String>
     <system:String x:Key="StringStop">Durdur</system:String>
-    <system:String x:Key="StringAverageDelay">Ortalama gecikme(Mikro saniye)</system:String>
+    <system:String x:Key="StringAverageDelay">Ortalama gecikme(Milisaniye)</system:String>
     <system:String x:Key="StringTotalRequests">Toplam istek(DGF)</system:String>
     <system:String x:Key="StringTotalAcknowledgements">Toplam cevap(8,9)</system:String>
     <system:String x:Key="StringSniffer">Fix Koklayıcısı</system:String>
@@ -141,6 +141,12 @@
     <system:String x:Key="StringPleaseEnterPort">Lütfen en az bir tane geçerli port girin. Geçerli portlar 0 ile 65535 arasındadır.Çoklu portlar için portların arasına ; koyun..</system:String>
     <system:String x:Key="StringPleaseSelectANetworkAdapter">Lütfen bir ağ bağdaştırıcısı seçin.</system:String>
     <system:String x:Key="StringInvalidPort">Geçersiz port :</system:String>
+    <system:String x:Key="StringStartedSniffing">Koklamaya başlandı</system:String>
+    <system:String x:Key="StringStoppedSniffing">Koklama sonlandı</system:String>
+    <system:String x:Key="StringRequestMsgType">İstek tipi</system:String>
+    <system:String x:Key="StringResponseMsgType">Cevap tipi</system:String>
+    <system:String x:Key="StringRequestTime">İstek zamanı</system:String>
+    <system:String x:Key="StringResponseTime">Cevap zamanı</system:String>
 
     <system:String x:Key="StringFailedAnalysis">Analiz bilinmeyen bir sebepten yapılamadı.</system:String>
     <system:String x:Key="StringFileIsBeingUsed">Dosya başka bir işlem tarafından kullanılıyor.</system:String>

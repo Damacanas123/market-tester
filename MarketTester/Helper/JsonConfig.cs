@@ -108,7 +108,7 @@ namespace MarketTester.Helper
                 case MarketTesterUtil.OUCH:
                     return ProtocolType.OUCH;
                 default:
-                    throw new Exception("Unsopprted protocol type in config File");
+                    throw new Exception("Unsupported protocol type in config File");
             }
         }
 

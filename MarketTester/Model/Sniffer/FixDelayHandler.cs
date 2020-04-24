@@ -17,10 +17,12 @@ using PcapDotNet.Packets;
 using PcapDotNet.Packets.Transport;
 using MarketTester.Extensions;
 using BackOfficeEngine.Model;
+using MarketTester.Base;
+using System.Globalization;
 
 namespace MarketTester.Model.Sniffer
 {
-    public class FixDelayHandler
+    public class FixDelayHandler :BaseNotifier
     {
         private static string Tag8 = "8=";
         private static string Tag10 = "\u000110=";
@@ -29,14 +31,93 @@ namespace MarketTester.Model.Sniffer
         private bool TagFound8 { get; set; }
         private bool TagFound10 { get; set; }
         private FixSniffer sniffer { get; set; }
-        private static List<IPAddress> HostIpAddresses { get; } = Dns.GetHostAddresses(Dns.GetHostName()).ToList();
+        
+
+        private string textAverageDelay;
+        public string TextAverageDelay
+        {
+            get { return textAverageDelay; }
+            set
+            {
+                textAverageDelay = value;
+                NotifyPropertyChanged(nameof(TextAverageDelay));
+            }
+        }
+
+        private string textTotalRequests;
+
+        public string TextTotalRequest
+        {
+            get { return textTotalRequests; }
+            set
+            {
+                textTotalRequests = value;
+                NotifyPropertyChanged(nameof(TextTotalRequest));
+            }
+        }
+
+        private string textTotalAcknowledgements;
+
+        public string TextTotalAcknowledgements
+        {
+            get { return textTotalAcknowledgements; }
+            set
+            {
+                textTotalAcknowledgements = value;
+                NotifyPropertyChanged(nameof(TextTotalAcknowledgements));
+            }
+        }
+
+
+        private int TotalPairs { get; set; }
+        private decimal averageDelay;
+        private decimal AverageDelay
+        {
+            get
+            {
+                return averageDelay;
+            }
+            set
+            {
+                averageDelay = value;
+                TextAverageDelay = ((int)averageDelay/1000m).ToString(CultureInfo.InvariantCulture);
+            }
+        }
+
+        private int totalRequests;
+
+        public int TotalRequests
+        {
+            get { return totalRequests; }
+            set
+            {
+                totalRequests = value;
+                TextTotalRequest = totalRequests.ToString(CultureInfo.InvariantCulture);
+            }
+        }
+
+        private int totalAcknowledgements;
+
+        public int TotalAcknowledgements
+        {
+            get { return totalAcknowledgements; }
+            set
+            {
+                totalAcknowledgements = value;
+                TextTotalAcknowledgements = totalAcknowledgements.ToString(CultureInfo.InvariantCulture);
+            }
+        }
+
+
         public FixDelayHandler()
         {
             sniffer = new FixSniffer();
         }
-        public FixDelayHandler(LivePacketDevice device, List<ushort> ports)
+        
+
+        public void SetPorts(List<ushort> ports)
         {
-            sniffer = new FixSniffer(device, ports, HostIpAddresses);
+            sniffer.SetPorts(ports);
         }
 
         public void SetDevice(LivePacketDevice device)
@@ -59,6 +140,11 @@ namespace MarketTester.Model.Sniffer
                     if(sniffer.MessageQueue.TryDequeue(out (byte[],DateTime) messageTuple))
                     {
                         string nextString = Encoding.UTF8.GetString(messageTuple.Item1);
+                        if (string.IsNullOrWhiteSpace(nextString))
+                        {
+                            continue;
+                        }
+                        MarketTesterUtil.ConsoleDebug("Dequeued a packet : " + nextString);
                         int index8 = nextString.IndexOf(Tag8);
                         int index10 = nextString.IndexOf(Tag10);
                         if (index8 != -1 && index10 != -1)
@@ -112,6 +198,7 @@ namespace MarketTester.Model.Sniffer
         public void Stop()
         {
             IsRunning = false;
+            sniffer.Stop();
         }
 
 
@@ -130,68 +217,91 @@ namespace MarketTester.Model.Sniffer
             {
                 item = new DiffItem();
                 ClOrdIdMap[clOrdID] = item;
+                App.Invoke(() =>
+                {
+                    DiffItems.Add(item);
+                });
             }
             if (FixHelper.FixValues.MsgTypesOrderEntryOutbound.ContainsKey(msgType))
             {
                 item.Request = message;
                 item.RequestTime = timeStamp;
+                TotalRequests += 1;
             }
-            else
+            else if(FixValues.MsgTypesOrderEntryInbound.ContainsKey(msgType))
             {
-                item.Response = message;
-                item.ResponseTime = timeStamp;
+                if(msgType == MsgType.EXECUTIONREPORT)
+                {
+                    string execType = Fix.GetTag(message, Tags.ExecType.ToString());
+                    if (FixValues.IncomingExecTypesOrderEntry.ContainsKey(execType))
+                    {
+                        item.Response = message;
+                        item.ResponseTime = timeStamp;
+                        TotalAcknowledgements += 1;
+                    }
+                }
+                else
+                {
+                    item.Response = message;
+                    item.ResponseTime = timeStamp;
+                    TotalAcknowledgements += 1;
+                }
+                
             }
-            DiffItems.SupressNotification = true;
-            DiffItems.Add(item);
-            DiffItems.SupressNotification = false;
+            
+            if(item.Request != null && item.Response != null)
+            {
+                AverageDelay = (AverageDelay * TotalPairs + item.Delay.GetTotalMicroSeconds()) / (++TotalPairs);
+                MarketTesterUtil.ConsoleDebug("Average delay : " + AverageDelay);
+            }
+            
         }
 
         private class FixSniffer : IDisposable
         {
             private PacketDevice Device { get; set; }
             private PacketCommunicator Communicator { get; set; }
-            private List<ushort> Ports { get; set; } = new List<ushort>();
-            private List<IpV4Address> HostIpAddresses { get; set; } = new List<IpV4Address>();
+            private HashSet<ushort> Ports { get; set; } = new HashSet<ushort>();
+            private List<IpV4Address> LocalHostIpAddresses { get; set; } = new List<IpV4Address>();
             private bool IsRunning { get; set; }
             public ConcurrentQueue<(byte[], DateTime)> MessageQueue { get; set; } = new ConcurrentQueue<(byte[], DateTime)>();
-            public FixSniffer() { }
-            public FixSniffer(PacketDevice device, List<ushort> ports, List<IPAddress> hostIpAddresses)
-            {
-                Device = device;
-                Ports = ports;
-                foreach (IPAddress address in hostIpAddresses)
+            public FixSniffer() 
+            {                
+                foreach(IPAddress address in Dns.GetHostAddresses(Dns.GetHostName()).ToList())
                 {
+                    MarketTesterUtil.ConsoleDebug(address.ToString());
                     if (IpV4Address.TryParse(address.ToString(), out IpV4Address ip4address))
                     {
-                        HostIpAddresses.Add(ip4address);
+                        LocalHostIpAddresses.Add(ip4address);
+                        MarketTesterUtil.ConsoleDebug("--------" + ip4address.ToString());
                     }
                 }
-                if (Device != null)
-                {
-                    Communicator = Device.Open(65536, PacketDeviceOpenAttributes.Promiscuous, 1000);
-                    using (BerkeleyPacketFilter filter = Communicator.CreateFilter("ip and tcp"))
-                    {
-                        // Set the filter
-                        Communicator.SetFilter(filter);
-                    }
-                }
-                else
-                {
-                    throw new DeviceCantBeNull("Given device is null");
-                }
+            }
+           
 
+            public void SetPorts(List<ushort> ports)
+            {
+                Ports.Clear();
+                foreach (ushort port in ports)
+                {
+                    Ports.Add(port);
+                    MarketTesterUtil.ConsoleDebug(port.ToString());
+                }
             }
 
             public void SetDevice(LivePacketDevice device)
             {
-                if (Device != null)
+                if (device != null)
                 {
+                    Device = device;
                     Communicator = Device.Open(65536, PacketDeviceOpenAttributes.Promiscuous, 1000);
-                    using (BerkeleyPacketFilter filter = Communicator.CreateFilter("ip and tcp"))
-                    {
-                        // Set the filter
-                        Communicator.SetFilter(filter);
-                    }
+                    //using (BerkeleyPacketFilter filter = Communicator.CreateFilter("ip and tcp"))
+                    //{
+                    //    // Set the filter
+                    //    Communicator.SetFilter(filter);
+                        
+                    //}
+                    MarketTesterUtil.ConsoleDebug("Instantiated communicator : " + Communicator.ToString());
                 }
 
             }
@@ -211,10 +321,12 @@ namespace MarketTester.Model.Sniffer
                     {
                         new Thread(() =>
                         {
+                            MarketTesterUtil.ConsoleDebug("Started sniffer");
                             while (IsRunning)
                             {
                                 Communicator.ReceivePacket(out Packet packet);
-                                PacketHandler(packet);
+                                if(packet != null)
+                                    PacketHandler(packet);
                             }
                             //If code reaches here Stop function has been called
                         }).Start();
@@ -224,12 +336,17 @@ namespace MarketTester.Model.Sniffer
 
             public void Stop()
             {
+                string ports = "";
+                foreach(ushort port in Ports)
+                {
+                    ports += port.ToString(CultureInfo.InvariantCulture) + ", ";
+                }
+                MarketTesterUtil.ConsoleDebug("Stopped Sniffing on ports : " + ports);
                 IsRunning = false;
             }
 
             private void PacketHandler(Packet packet)
             {
-
                 IpV4Datagram ip = packet.Ethernet.IpV4;
                 TcpDatagram tcp = ip.Tcp;
                 void HandlePacket()
@@ -237,7 +354,11 @@ namespace MarketTester.Model.Sniffer
                     byte[] tcpData = tcp.ToArray().SubArray(tcp.HeaderLength, tcp.Length - tcp.HeaderLength);
                     MessageQueue.Enqueue((tcpData, packet.Timestamp));
                 }
-                if (HostIpAddresses.Contains(ip.Source))
+                //if(Ports.Contains(tcp.DestinationPort) || Ports.Contains(tcp.SourcePort))
+                //{
+                //    HandlePacket();
+                //}
+                if (LocalHostIpAddresses.Contains(ip.Source))
                 {
                     if (Ports.Contains(tcp.SourcePort))
                     {

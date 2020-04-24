@@ -246,7 +246,6 @@ namespace BackOfficeEngine
                 int dequeuedMsgCount = 0;
                 while(dequeuedMsgCount < dequeueAmountPerUpdate && m_messageQueue.Count != 0)
                 {
-                    Console.WriteLine(m_messageQueue.Count);
                     IMessage msg;
                     if (m_messageQueue.TryDequeue(out var tuple))
                     {

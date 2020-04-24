@@ -53,7 +53,48 @@
                       Grid.Row="0"
                       Grid.ColumnSpan="10"
                       Grid.RowSpan="11"
-                      ItemsSource="{Binding FixDelayHandler.DiffItems}">
+                      ItemsSource="{Binding FixDelayHandler.DiffItems}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding RequestMsgType}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringRequestMsgType}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding ResponseMsgType}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringResponseMsgType}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Symbol}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringSymbol}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>                    
+                    <DataGridTextColumn Binding="{Binding TextOrderQty}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringOrderQty}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TextDelay}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringDelayMilliSecond}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TextRequestTime}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringRequestTime}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TextResponseTime}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringResponseTime}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    
+                    
+                </DataGrid.Columns>
 
             </DataGrid>
             <Grid Grid.Column="0" Grid.Row="0"
@@ -113,7 +154,7 @@
                        TextWrapping="Wrap"/>
                 <TextBlock Grid.Column="1"
                        Grid.Row="3"
-                       Text="{Binding TextAverageDelay}"
+                       Text="{Binding FixDelayHandler.TextAverageDelay}"
                        VerticalAlignment="Center"
                        />
                 <TextBlock Grid.Column="0"
@@ -125,7 +166,7 @@
                        TextWrapping="Wrap"/>
                 <TextBlock Grid.Column="1"
                        Grid.Row="4"
-                       Text="{Binding TextTotalRequests}"
+                       Text="{Binding FixDelayHandler.TextTotalRequest}"
                        VerticalAlignment="Center"
                        />
                 <TextBlock Grid.Column="0"
@@ -137,7 +178,7 @@
                        TextWrapping="Wrap"/>
                 <TextBlock Grid.Column="1"
                        Grid.Row="5"
-                       Text="{Binding TextTotalAcknowledgements}"
+                       Text="{Binding FixDelayHandler.TextTotalAcknowledgements}"
                        VerticalAlignment="Center"
                        />
             </Grid>

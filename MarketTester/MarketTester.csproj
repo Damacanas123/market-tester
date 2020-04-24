@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B5CBF187-5D4E-4CC3-8E47-FEFE27D18C27}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>MarketTester</RootNamespace>
     <AssemblyName>MarketTester</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -88,12 +88,15 @@
   <PropertyGroup>
     <SignManifests>true</SignManifests>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net462\ControlzEx.dll</HintPath>
-    </Reference>
-    <Reference Include="FixHelper">
-      <HintPath>..\..\..\..\..\..\MATRIKS_OMS\.NET dependencies\FixHelper.dll</HintPath>
     </Reference>
     <Reference Include="FixLogAnalyzer">
       <HintPath>..\..\..\..\..\..\MATRIKS_OMS\.NET dependencies\FixLogAnalyzer.dll</HintPath>
@@ -168,6 +171,7 @@
     <Compile Include="Exceptions\DeviceCantBeNull.cs" />
     <Compile Include="Exceptions\ShouldNotHappenException.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
+    <Compile Include="Extensions\TimeSpanExtension.cs" />
     <Compile Include="Helper\JsonConfig.cs" />
     <Compile Include="Helper\DataContextProxy.cs" />
     <Compile Include="Extensions\WindowExtensions.cs" />
@@ -410,6 +414,10 @@
     <ProjectReference Include="..\BackOfficeEngine\BackOfficeEngine.csproj">
       <Project>{549e570d-dca5-4529-b011-ad981a07a6a2}</Project>
       <Name>BackOfficeEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FixHelper\FixHelper.csproj">
+      <Project>{8e3bd2eb-f21a-425b-b8f9-467f1f609f3f}</Project>
+      <Name>FixHelper</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

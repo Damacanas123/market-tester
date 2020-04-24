@@ -86,7 +86,6 @@ namespace BackOfficeEngine.Helper
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
                 return -1;
             }
 
@@ -179,7 +178,7 @@ namespace BackOfficeEngine.Helper
             {
                 outputFile.Write(fileContent);
             }
-            Console.WriteLine(fileContent);
+
         }
 
 

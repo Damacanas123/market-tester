@@ -91,6 +91,7 @@ namespace MarketTester.ViewModel
             set
             {
                 selectedDevice = value;
+                MarketTesterUtil.ConsoleDebug("Set selected device " + selectedDevice.Description);
                 NotifyPropertyChanged(nameof(SelectedDevice));
             }
         }
@@ -103,21 +104,22 @@ namespace MarketTester.ViewModel
             set
             {
                 selectedDeviceIndex = value;
-                NotifyPropertyChanged(nameof(SelectedDeviceIndex));
                 SelectedDevice = Devices[selectedDeviceIndex];
+                NotifyPropertyChanged(nameof(SelectedDeviceIndex));                
             }
         }
 
 
         public FixDelayHandler FixDelayHandler { get; } = new FixDelayHandler();
 
-        public List<LivePacketDevice> Devices { get; set; } = new List<LivePacketDevice>();
+        public List<LivePacketDevice> Devices { get; set; }
         public List<string> DeviceNames { get; set; }
         public ViewModelFixSniffer()
         {
             CommandStartStop = new BaseCommand(CommandStartStopExecute, CommandStartStopCanExecute);
             Devices = LivePacketDevice.AllLocalMachine.ToList();
             DeviceNames = Devices.Select(item => item.Description).ToList();
+            SelectedDeviceIndex = 0;
             Settings.GetInstance().LanguageChangedEventHandler += OnLanguageChanged;
             TextStartStop = App.Current.Resources[ResourceKeys.StringStart].ToString();
         }
@@ -128,6 +130,7 @@ namespace MarketTester.ViewModel
         {
             if (!IsRunning)
             {
+                IsRunning = true;
                 if (SelectedDevice == null)
                 {
                     InfoTextResourceKey = ResourceKeys.StringPleaseSelectANetworkAdapter;
@@ -145,6 +148,7 @@ namespace MarketTester.ViewModel
                 {
                     if (!ushort.TryParse(port, out ushort portUshort))
                     {
+                        InvalidPort = port;
                         InfoTextResourceKey = ResourceKeys.StringInvalidPort;
                         InfoText += InvalidPort;
                         return;
@@ -155,11 +159,14 @@ namespace MarketTester.ViewModel
                     }
                 }
                 FixDelayHandler.SetDevice(SelectedDevice);
+                FixDelayHandler.SetPorts(portsUshort);
                 FixDelayHandler.Start();
+                InfoTextResourceKey = ResourceKeys.StringStartedSniffing;
                 TextStartStop = App.Current.Resources[ResourceKeys.StringStop].ToString();
             }
             else
             {
+                IsRunning = false;
                 FixDelayHandler.Stop();
                 TextStartStop = App.Current.Resources[ResourceKeys.StringStart].ToString();
             }
