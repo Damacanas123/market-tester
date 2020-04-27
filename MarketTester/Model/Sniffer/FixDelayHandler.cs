@@ -354,24 +354,24 @@ namespace MarketTester.Model.Sniffer
                     byte[] tcpData = tcp.ToArray().SubArray(tcp.HeaderLength, tcp.Length - tcp.HeaderLength);
                     MessageQueue.Enqueue((tcpData, packet.Timestamp));
                 }
-                //if(Ports.Contains(tcp.DestinationPort) || Ports.Contains(tcp.SourcePort))
+                if (Ports.Contains(tcp.DestinationPort) || Ports.Contains(tcp.SourcePort))
+                {
+                    HandlePacket();
+                }
+                //if (LocalHostIpAddresses.Contains(ip.Source))
                 //{
-                //    HandlePacket();
+                //    if (Ports.Contains(tcp.SourcePort))
+                //    {
+                //        HandlePacket();
+                //    }
                 //}
-                if (LocalHostIpAddresses.Contains(ip.Source))
-                {
-                    if (Ports.Contains(tcp.SourcePort))
-                    {
-                        HandlePacket();
-                    }
-                }
-                else
-                {
-                    if (Ports.Contains(tcp.DestinationPort))
-                    {
-                        HandlePacket();
-                    }
-                }
+                //else
+                //{
+                //    if (Ports.Contains(tcp.DestinationPort))
+                //    {
+                //        HandlePacket();
+                //    }
+                //}
 
             }
             public void Dispose()

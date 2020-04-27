@@ -170,5 +170,8 @@ namespace MarketTester
         public const string StringResponseMsgType = "StringResponseMsgType";
         public const string StringRequestTime = "StringRequestTime";
         public const string StringResponseTime = "StringResponseTime";
+        public const string StringMakeSureWinpCapInstalled = "StringMakeSureWinpCapInstalled";
+        public const string StringCantFindConfigFile = "StringCantFindConfigFile";
+
     }
 }

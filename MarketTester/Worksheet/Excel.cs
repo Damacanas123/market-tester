@@ -87,7 +87,7 @@ namespace MarketTester.Worksheet
                     }
                 }
 
-                int fixHistoryLineCount = fixHistory.Count(f => f == '\n');
+                int fixHistoryLineCount = fixHistory.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Length;
                 excelSheet.Cells[historyItems.Count + 2, 1] = "FIX Logs";
                 excelSheet.Cells[historyItems.Count + 2, 1].Interior.Color = headerColor;
                 excelSheet.Range[excelSheet.Cells[historyItems.Count + 2, 1], excelSheet.Cells[historyItems.Count + 2, HistoryItem.ColumnNames.Count]].Merge();
@@ -178,7 +178,7 @@ namespace MarketTester.Worksheet
                         excelSheet.Cells[i + 2, j].Borders.Color = Color.White;
                     }
                 }
-                int fixHistoryLineCount = fixHistory.Count(f => f == '\n');
+                int fixHistoryLineCount = fixHistory.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Length;
                 excelSheet.Cells[historyItems.Count + 2, 1] = "FIX Logs";
                 excelSheet.Cells[historyItems.Count + 2, 1].Interior.Color = headerColor;
                 excelSheet.Range[excelSheet.Cells[historyItems.Count + 2, 1], excelSheet.Cells[historyItems.Count + 2, HistoryItem.ColumnNames.Count]].Merge();

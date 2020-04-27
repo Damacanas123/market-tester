@@ -42,7 +42,7 @@ namespace MarketTester.Helper
         public static string APPLICATION_FREEFORMATSCHEDULE_DIR = APPLICATION_SCHEDULESAVE_DIR + "freeformat" + FILE_PATH_DELIMITER;
         public static string APPLICATION_NONFREEFORMATSCHEDULE_DIR = APPLICATION_SCHEDULESAVE_DIR + "nonfreeformat" + FILE_PATH_DELIMITER;
         public static string APPLICATION_SAVEDMESSAGES_DIR = APPLICATION_SAVE_DIR + "saved_messages" + FILE_PATH_DELIMITER;
-        public static string EXCEPTIONLOG_FILE_PATH = APPLICATION_STATIC_DIR + "exception.log";
+        
         public static string USERNAME = System.Security.Principal.WindowsIdentity.GetCurrent().Name.Replace(MarketTesterUtil.FILE_PATH_DELIMITER, "");
         public static string SCHEDULESAVE_DIR_PATH = APPLICATION_STATIC_DIR + "schedule_save" + FILE_PATH_DELIMITER;
 
@@ -67,10 +67,7 @@ namespace MarketTester.Helper
             CopyDirectoryAndSubDirectoriesToApplicationCommonPath(STATIC_DIR_PATH);
             Connection.Connector.GetInstance();
         }
-        public static void LogError(Exception ex)
-        {
-            AppendStringToFile(EXCEPTIONLOG_FILE_PATH, $"Appl version({APP_VERSION}) {DateTime.Now} {ex.ToString()}\n");
-        }
+        
 
         public static int ReadSeqNum(string filePath)
         {
@@ -187,7 +184,7 @@ namespace MarketTester.Helper
                 {
                     if (!(line.Contains("FileStorePath") || line.Contains("FileLogPath")))
                     {
-                        fileContent += line + "\n";
+                        fileContent += line + Environment.NewLine;
                     }
                     if (line.Contains("SessionQualifier"))
                     {
@@ -195,13 +192,13 @@ namespace MarketTester.Helper
                         session = line.Substring(startIndex, line.Length - startIndex);
                         if (line.Contains("#"))
                         {
-                            fileContent += "#FileStorePath=" + APPLICATION_COMMON_DIR + "FIXLog\\" + session + "\n";
-                            fileContent += "#FileLogPath=" + APPLICATION_COMMON_DIR + "FIXLog\\" + session + "\n";
+                            fileContent += "#FileStorePath=" + APPLICATION_COMMON_DIR + "FIXLog\\" + session + Environment.NewLine;
+                            fileContent += "#FileLogPath=" + APPLICATION_COMMON_DIR + "FIXLog\\" + session + Environment.NewLine;
                         }
                         else
                         {
-                            fileContent += "FileStorePath=" + APPLICATION_COMMON_DIR + "FIXLog\\" + session + "\n";
-                            fileContent += "FileLogPath=" + APPLICATION_COMMON_DIR + "FIXLog\\" + session + "\n";
+                            fileContent += "FileStorePath=" + APPLICATION_COMMON_DIR + "FIXLog\\" + session + Environment.NewLine;
+                            fileContent += "FileLogPath=" + APPLICATION_COMMON_DIR + "FIXLog\\" + session + Environment.NewLine;
                         }
                     }
                 }
@@ -257,7 +254,6 @@ namespace MarketTester.Helper
                 if (File.Exists(filePath))
                 {
                     string content = File.ReadAllText(filePath);
-                    content = content.Replace("\r", "");
                     return content;
                 }
                 else
@@ -275,7 +271,7 @@ namespace MarketTester.Helper
             string content = ReadFile(filePath);
             if (!string.IsNullOrEmpty(content))
             {
-                return content.Split(new char[] { '\n' },StringSplitOptions.RemoveEmptyEntries);
+                return content.Split(new string[] { Environment.NewLine },StringSplitOptions.RemoveEmptyEntries);
             }
             else
             {
@@ -420,7 +416,7 @@ namespace MarketTester.Helper
                         }
                         s += " : " + m.GetField(tag);
                     }
-                    s += "\n";
+                    s += Environment.NewLine;
                 }
             }
             s = s.Substring(0, s.Length - 1);

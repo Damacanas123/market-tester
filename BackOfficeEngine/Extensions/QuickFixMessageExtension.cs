@@ -16,11 +16,11 @@ namespace BackOfficeEngine.Extensions
 
         public static DateTime GetSendTime(this Message message) { return SendTime.GetOrCreateValue(message).Value; }
 
-        public static void SetSendTime(this Message message, DateTime newFlags) { SendTime.GetOrCreateValue(message).Value = newFlags; }
+        public static void SetSendTime(this Message message, DateTime newDatetime) { SendTime.GetOrCreateValue(message).Value = newDatetime; }
 
         public static DateTime GetReceiveTime(this Message message) { return ReceiveTime.GetOrCreateValue(message).Value; }
 
-        public static void SetReceiveTime(this Message message, DateTime newFlags) { ReceiveTime.GetOrCreateValue(message).Value = newFlags; }
+        public static void SetReceiveTime(this Message message, DateTime newDatetime) { ReceiveTime.GetOrCreateValue(message).Value = newDatetime; }
 
         class DateTimeObject
         {

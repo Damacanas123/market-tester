@@ -102,7 +102,7 @@
     <system:String x:Key="StringAppendToXLSX">Append to xlsx</system:String>
     <system:String x:Key="StringMessage">Message</system:String>
     <system:String x:Key="StringSavedMessages">Saved Messages</system:String>
-    <system:String x:Key="StringSaveMessage">Save Messages</system:String>
+    <system:String x:Key="StringSaveMessage">Save Message</system:String>
     <system:String x:Key="StringMessageName">Message Name</system:String>
     <system:String x:Key="StringEnterAMessageName">Please enter a message name.</system:String>
     <system:String x:Key="StringNoTagValuePairSet">0 tag value pairs set.</system:String>
@@ -121,7 +121,7 @@
     <system:String x:Key="StringStartingToWriteToCsvFile">Starting to write csv file.</system:String>
     <system:String x:Key="StringEnterASheetName">Enter a sheet name.</system:String>
     <system:String x:Key="StringSheetName">Sheet name</system:String>
-    <system:String x:Key="StringCOMExplanation">Failed to export to excel\n. Possible reasons: File is being used by another process or a duplicate sheet name.</system:String>
+    <system:String x:Key="StringCOMExplanation">Failed to export to excel. Possible reasons: File is being used by another process or a duplicate sheet name.</system:String>
     <system:String x:Key="StringTagDescription">Tag Description</system:String>
     <system:String x:Key="StringValueDescription">Value Description</system:String>
     <system:String x:Key="StringRejectMessage">message rejected.</system:String>
@@ -149,7 +149,7 @@
     <system:String x:Key="StringResponseMsgType">Response Msgtype</system:String>
     <system:String x:Key="StringRequestTime">Request Time</system:String>
     <system:String x:Key="StringResponseTime">Response Time</system:String>
-
+    <system:String x:Key="StringMakeSureWinpCapInstalled">Looks like winpcap is not installed on your machine. You can download it from https://www.winpcap.org/install/bin/WinPcap_4_1_3.exe</system:String>
     <system:String x:Key="StringFailedAnalysis">Analysis failed for an unknown reason.</system:String>
     <system:String x:Key="StringFileIsBeingUsed">File is being used by another process.</system:String>
     <system:String x:Key="StringPleaseFillNameAndFormat">Please enter a name and a format.</system:String>
@@ -158,6 +158,7 @@
     <system:String x:Key="StringChannelNotConnectedWarning">Channel of this order does not have an active connection.</system:String>
     <system:String x:Key="StringConfigPasswordNotSetWarning">Password has not been set in json config file for configuration </system:String>
     <system:String x:Key="StringCannotParseDelayFromFile">Can't parse delay from file</system:String>
+    <system:String x:Key="StringCantFindConfigFile">Can't find the related configuration file specified in json config. Make sure file exists and you did not mistype the file path in json config.</system:String>
 
 
 </ResourceDictionary>

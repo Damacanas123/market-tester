@@ -181,8 +181,8 @@
                     </DataGrid>
                     <Button Content="{DynamicResource StringDeleteMessage}"
                             Grid.Column="1"
-                            Grid.Row="2"
-                            Margin="3"
+                            Grid.Row="3"
+                            Width="170"
                             HorizontalAlignment="Left"
                             Command="{Binding CommandDeleteSavedMessage}"/>
                 </Grid>

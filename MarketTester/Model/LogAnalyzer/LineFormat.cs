@@ -8,6 +8,7 @@ using System.Globalization;
 using MarketTester.Base;
 using MarketTester.Helper;
 using FixLogAnalyzer;
+using BackOfficeEngine.Helper;
 
 namespace MarketTester.Model
 {
@@ -48,7 +49,7 @@ namespace MarketTester.Model
             string content = "";
             foreach (LineFormat format in Formats)
             {
-                content += format.ToString() + "\n";
+                content += format.ToString() + Environment.NewLine;
             }
             MarketTesterUtil.OverwriteToFile(SaveFilePath,content);
         }
@@ -142,7 +143,7 @@ namespace MarketTester.Model
                 }
                 catch(Exception ex)
                 {
-                    MarketTesterUtil.LogError(ex);
+                    Util.LogError(ex);
                     throw new Exception("Date format does not match log date format");
                 }
                 

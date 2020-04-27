@@ -147,7 +147,7 @@
     <system:String x:Key="StringResponseMsgType">Cevap tipi</system:String>
     <system:String x:Key="StringRequestTime">İstek zamanı</system:String>
     <system:String x:Key="StringResponseTime">Cevap zamanı</system:String>
-
+    <system:String x:Key="StringMakeSureWinpCapInstalled">Bilgisayarınızda winpcap yüklü değil gibi duruyor. Buradan indirebilirsiniz https://www.winpcap.org/install/bin/WinPcap_4_1_3.exe</system:String>
     <system:String x:Key="StringFailedAnalysis">Analiz bilinmeyen bir sebepten yapılamadı.</system:String>
     <system:String x:Key="StringFileIsBeingUsed">Dosya başka bir işlem tarafından kullanılıyor.</system:String>
     <system:String x:Key="StringPleaseFillNameAndFormat">Lütfen isim ve format girin.</system:String>
@@ -156,4 +156,5 @@
     <system:String x:Key="StringChannelNotConnectedWarning">Bu emrin kanalı için aktif bir bağlantı bulunamadı.</system:String>
     <system:String x:Key="StringConfigPasswordNotSetWarning">Konfigurasyonda "Password" belirtilmedi</system:String>
     <system:String x:Key="StringCannotParseDelayFromFile">Gecikme dosyadan ayrıştırılamadı.</system:String>
+    <system:String x:Key="StringCantFindConfigFile">Belirtilen konfigürasyon dosyası bulunamıyor. Dosyanın varlığından emin olun ve dosya yolunu doğru json konfigürasyon dosyası içine doğru yazdığınızdan emin olun.</system:String>
 </ResourceDictionary>

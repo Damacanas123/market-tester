@@ -42,7 +42,7 @@ namespace MarketTester.Model.FixFreeFormat
                 {
                     content += Pipe + pair.Tag + TagValueSeparator + pair.Value + TagValueSeparator + pair.IsSelected;
                 }
-                content += "\n";
+                content += Environment.NewLine;
             }
             MarketTesterUtil.OverwriteToFile(SaveFilePath, content);
         }

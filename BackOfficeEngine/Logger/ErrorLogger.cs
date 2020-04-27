@@ -13,12 +13,12 @@ namespace BackOfficeEngine.Logger
         private const string LOG_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.ffffff";
         internal static void LogError(Exception ex)
         {
-            Util.AppendStringToFile(CommonFolders.ErrorLogPath, DateTime.Now.ToString(LOG_DATE_FORMAT) + "\n" +  ex.ToString());
+            Util.AppendStringToFile(CommonFolders.ErrorLogPath, DateTime.Now.ToString(LOG_DATE_FORMAT) + Environment.NewLine +  ex.ToString());
         }
 
         internal static void DBError(Exception ex)
         {
-            Util.AppendStringToFile(CommonFolders.DBErrorLogPath,DateTime.Now.ToString(LOG_DATE_FORMAT) + "\n" + ex.ToString());
+            Util.AppendStringToFile(CommonFolders.DBErrorLogPath,DateTime.Now.ToString(LOG_DATE_FORMAT) + Environment.NewLine + ex.ToString());
         }
     }
 }

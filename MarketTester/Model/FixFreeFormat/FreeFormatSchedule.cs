@@ -19,7 +19,7 @@ namespace MarketTester.Model.FixFreeFormat
         #region static
         public static FreeFormatSchedule Load(string s)
         {
-            string[] lines = s.Split(new char[] { '\n' },StringSplitOptions.RemoveEmptyEntries);
+            string[] lines = s.Split(new string[] { Environment.NewLine },StringSplitOptions.RemoveEmptyEntries);
             FreeFormatSchedule schedule = new FreeFormatSchedule() { Name = lines[0] };
             for(int i = 1; i < lines.Length; i++)
             {
@@ -49,10 +49,10 @@ namespace MarketTester.Model.FixFreeFormat
         {
             get
             {
-                string s = Name + "\n";
+                string s = Name + Environment.NewLine;
                 foreach(FreeFormatScheduleItem item in Items)
                 {
-                    s += item.Channel + ValueDelimiter + item.Delay + ValueDelimiter + item.Message + "\n";
+                    s += item.Channel + ValueDelimiter + item.Delay + ValueDelimiter + item.Message + Environment.NewLine;
                 }
                 return s;
             }

@@ -17,7 +17,7 @@ namespace MarketTester.ViewModel.Manager
             foreach(ViewModelInfoBox vm in InfoViewModels)
             {
                 if(vm.InfoPriority == infoType)
-                    vm.InfoText += "--> " + message + "\n";
+                    vm.InfoText += "--> " + message + Environment.NewLine;
             }
         }
     }

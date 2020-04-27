@@ -15,6 +15,8 @@ using MarketTester.UI.window;
 using MarketTester.Helper;
 using MarketTester.Enumeration;
 using Microsoft.Office.Interop.Excel;
+using BackOfficeEngine.Helper;
+using System.Windows.Markup;
 
 namespace MarketTester.ViewModel
 {
@@ -38,7 +40,7 @@ namespace MarketTester.ViewModel
         public BaseCommand CommandExportOrders { get; set; }
         public void CommandExportOrdersExecute(object parameter)
         {
-            PopupManager.OpenGeneralPopup(new UserControlExportOrders(),"StringExportOrders",300,150);
+            PopupManager.OpenGeneralPopup(new UserControlExportOrders(),"StringExportOrders",300,180);
         }
 
         public bool CommandExportOrdersCanExecute()
@@ -77,7 +79,7 @@ namespace MarketTester.ViewModel
                 }
                 catch(Exception ex)
                 {
-                    MarketTesterUtil.LogError(ex);
+                    Util.LogError(ex);
                 }
                 
             }
@@ -159,8 +161,20 @@ namespace MarketTester.ViewModel
         public BaseCommand CommandFixSniffer { get; set; }
         public void CommandFixSnifferExecute(object param)
         {
-            UserControlFixSniffer userControlFixSniffer = new UserControlFixSniffer();
-            MainWindowStarter.AddTab(userControlFixSniffer, ResourceKeys.StringSniffer, true, userControlFixSniffer.OnClose);
+            try
+            {
+                UserControlFixSniffer userControlFixSniffer = new UserControlFixSniffer();
+                MainWindowStarter.AddTab(userControlFixSniffer, ResourceKeys.StringSniffer, true, userControlFixSniffer.OnClose);
+            }
+            catch(XamlParseException ex)
+            {
+                PopupManager.OpenErrorPopup(new UserControlErrorPopup(ResourceKeys.StringMakeSureWinpCapInstalled));
+            }
+            catch(Exception ex)
+            {
+                Util.LogError(ex);                
+            }
+            
         }
         public bool CommandFixSnifferCanExecute()
         {

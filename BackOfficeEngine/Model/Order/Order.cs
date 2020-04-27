@@ -495,7 +495,7 @@ namespace BackOfficeEngine.Model
                         {
                             Account.AddTrade(new TradeParameters(Side, msg.GetLastQty(), msg.GetLastPx(), Symbol));
                         }
-                        messages += arguements[19 + i] + "\n";
+                        messages += arguements[19 + i] + Environment.NewLine;
                         break;
                 }                
             }

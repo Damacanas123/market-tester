@@ -15,6 +15,7 @@ using MarketTester.Connection;
 using BackOfficeEngine.GeneralBase;
 using MarketTester.Model.FixFreeFormat;
 using System.Reflection;
+using BackOfficeEngine.Helper;
 
 namespace MarketTester.Model.Scheduler
 {
@@ -238,10 +239,10 @@ namespace MarketTester.Model.Scheduler
 
         public string SaveSchedule()
         {
-            string s = name + "\n";
+            string s = name + Environment.NewLine;
             foreach (SchedulerRawItem item in scheduleRaw)
             {
-                s += item.ToString() + "\n";
+                s += item.ToString() + Environment.NewLine;
             }
             s = s.Substring(0, s.Length - 1);
             return s;
@@ -272,7 +273,7 @@ namespace MarketTester.Model.Scheduler
             }
             catch (Exception ex)
             {
-                MarketTesterUtil.LogError(ex);
+                Util.LogError(ex);
                 return false;
             }
 

@@ -5,9 +5,23 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MarketTester.UI.Popup"
              mc:Ignorable="d" 
-             d:DesignHeight="180" d:DesignWidth="500">
+             d:DesignHeight="180" d:DesignWidth="380">
     <StackPanel Orientation="Horizontal" Margin="10">
         <Image Source="/Resource/Image/error_image.png" Stretch="Fill" Width="120" Height="120"/>
-        <TextBlock x:Name="TextBlockErrorText" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap" Text="Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet" Width="360"/>
+
+        <TextBox Background="Transparent" 
+                 BorderBrush="Transparent"
+                 x:Name="TextBlockErrorText" 
+                 Margin="10" 
+                 HorizontalAlignment="Left" 
+                 VerticalAlignment="Center" 
+                 TextWrapping="Wrap" 
+                 Text="Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet"
+                 Width="200"
+                 Height="150"
+                 VerticalContentAlignment="Center"
+                 IsReadOnly="True"
+                 BorderThickness="0">
+        </TextBox>
     </StackPanel>
 </UserControl>

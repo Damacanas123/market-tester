@@ -247,7 +247,7 @@ namespace MarketTester.ViewModel
                 string fixHistory = "";
                 foreach (HistoryItem m in HistoryItems)
                 {
-                    fixHistory += m.ToString() + "\n";
+                    fixHistory += m.ToString() + Environment.NewLine;
                 }
                 InfoTextResourceKey = ResourceKeys.StringStartingToWriteToXLSXFile;
                 bool result; string resultMessageKey;
@@ -287,7 +287,7 @@ namespace MarketTester.ViewModel
                     string fixHistory = "";
                     foreach (HistoryItem m in HistoryItems)
                     {
-                        fixHistory += m.ToString() + "\n";
+                        fixHistory += m.ToString() + Environment.NewLine;
                     }
                     bool result; string resultMessageKey;
                     (result, resultMessageKey) = Excel.AppendSheetSaveXLSXFromDataTable(HistoryItems.ToList(), filePath, fixHistory, SheetName);

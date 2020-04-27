@@ -18,14 +18,14 @@ namespace MarketTester.Worksheet
             {
                 csv += column.ToString() + ",";
             }
-            csv = csv.Substring(0, csv.Length - 1) + "\n";
+            csv = csv.Substring(0, csv.Length - 1) + Environment.NewLine;
             foreach (HistoryItem historyItem in historyItems)
             {
                 foreach (string column in historyItem.Columns)
                 {
                     csv += "\"" + column + "\",";
                 }
-                csv = csv.Substring(0, csv.Length - 1) + "\n";
+                csv = csv.Substring(0, csv.Length - 1) + Environment.NewLine;
             }
             MarketTesterUtil.OverwriteToFile(filePath, csv);
         }
@@ -39,7 +39,7 @@ namespace MarketTester.Worksheet
                 {
                     csv += "\"" + column + "\",";
                 }
-                csv = csv.Substring(0, csv.Length - 1) + "\n";
+                csv = csv.Substring(0, csv.Length - 1) + Environment.NewLine;
             }
             MarketTesterUtil.AppendStringToFile(filePath, csv);
         }

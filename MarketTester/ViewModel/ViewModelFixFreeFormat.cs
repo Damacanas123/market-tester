@@ -434,25 +434,25 @@ namespace MarketTester.ViewModel
         #endregion
 
 
-        private const string SaveDelimiter = "dsdfprtotoelxlvmbd\n";
+        private static string SaveDelimiter = $"dsdfprtotoelxlvmbd{Environment.NewLine}";
         private const string FreeFormatSaveFileExtension = "ffsf";
         #region CommandSaveFile
         public BaseCommand CommandSaveFile { get; set; }
         public void CommandSaveFileExecute(object param)
         {
-            string filePath = UIUtil.SaveFileDialog(new string[] { FreeFormatSaveFileExtension });
+            string filePath = UIUtil.SaveFileDialog(new string[] { FreeFormatSaveFileExtension },MarketTesterUtil.APPLICATION_FREEFORMATSCHEDULE_DIR);
             if (!string.IsNullOrWhiteSpace(filePath))
             {
                 new Thread(() =>
                 {
                     lock (Schedules)
                     {
-                        foreach (FreeFormatSchedule schedule in Schedules)
+                        if (File.Exists(filePath))
                         {
-                            if (File.Exists(filePath))
-                            {
-                                File.Delete(filePath);
-                            }
+                            File.Delete(filePath);
+                        }
+                        foreach (FreeFormatSchedule schedule in Schedules)
+                        {                            
                             Util.AppendStringToFile(filePath, SaveDelimiter + schedule.SaveString);
                         }
                     }
@@ -473,7 +473,7 @@ namespace MarketTester.ViewModel
             string filePath = "";            
             try
             {
-                filePath = UIUtil.OpenFileDialog(new string[] { FreeFormatSaveFileExtension });
+                filePath = UIUtil.OpenFileDialog(new string[] { FreeFormatSaveFileExtension }, MarketTesterUtil.APPLICATION_FREEFORMATSCHEDULE_DIR);
                 List<FreeFormatSchedule> tempList = new List<FreeFormatSchedule>(10);
                 if (!string.IsNullOrWhiteSpace(filePath))
                 {
@@ -512,7 +512,7 @@ namespace MarketTester.ViewModel
                 App.Current.Dispatcher.Invoke(() =>
                 {
                     UserControlErrorPopup popup = new UserControlErrorPopup(ResourceKeys.StringCannotParseDelayFromFile);
-                    popup.SetExtraText("\n" + filePath);
+                    popup.SetExtraText(Environment.NewLine + filePath);
                     PopupManager.OpenErrorPopup(popup);
                 });
             }

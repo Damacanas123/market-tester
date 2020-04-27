@@ -34,7 +34,7 @@ namespace MarketTester.UI.Popup
         public void SetErrorText(string resourceKey)
         {
             if (App.Current.Resources.Contains(resourceKey))
-                TextBlockErrorText.SetResourceReference(TextBlock.TextProperty, resourceKey);
+                TextBlockErrorText.SetResourceReference(TextBox.TextProperty, resourceKey);
             else
                 TextBlockErrorText.Text = resourceKey;
         }

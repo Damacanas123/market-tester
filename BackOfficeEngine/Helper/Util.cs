@@ -28,17 +28,23 @@ namespace BackOfficeEngine.Helper
         public const string RD_STRING = "RD";
 
         public const string FILE_PATH_DELIMITER = "\\";
-        public static string APPLICATION_COMMON_DIR = "C:\\MATRIKS_OMS" + FILE_PATH_DELIMITER + "TestClient" + FILE_PATH_DELIMITER;
+        public static string APPLICATION_COMMON_DIR = "C:\\MATRIKS_OMS" + FILE_PATH_DELIMITER + "MarketTester" + FILE_PATH_DELIMITER;
         public static string APPLICATION_SEQ_NUM_DIR = APPLICATION_COMMON_DIR + "sequence_nums\\";
         public static string STATIC_DIR_PATH = "static" + FILE_PATH_DELIMITER;
         public static string APPLICATION_STATIC_DIR = APPLICATION_COMMON_DIR + STATIC_DIR_PATH;
         public static string EXCEPTIONLOG_FILE_PATH = APPLICATION_STATIC_DIR + "exception.log";
+        public static string APPLICATIONLOG_FILE_PATH = APPLICATION_STATIC_DIR + "application.log";
         public static string USERNAME = System.Security.Principal.WindowsIdentity.GetCurrent().Name.Replace(Util.FILE_PATH_DELIMITER, "");
         public static string SCHEDULESAVE_DIR_PATH = APPLICATION_STATIC_DIR + "schedule_save" + FILE_PATH_DELIMITER;
 
         public static void LogError(Exception ex)
         {
-            AppendStringToFile(EXCEPTIONLOG_FILE_PATH, $"Appl version({APP_VERSION}) {DateTime.Now} {ex.ToString()}\n");
+            AppendStringToFile(EXCEPTIONLOG_FILE_PATH, $"Appl version({APP_VERSION}) {DateTime.Now} {Environment.NewLine}Type : {ex.GetType().ToString()} {Environment.NewLine} ToString() : {ex.ToString()}{Environment.NewLine}");
+        }
+
+        public static void Log(string s)
+        {
+            AppendStringToFile(APPLICATIONLOG_FILE_PATH, $"Appl version({APP_VERSION}) {DateTime.Now} : {s}{Environment.NewLine}");
         }
         public static int ReadSeqNum(string filePath)
         {
@@ -155,7 +161,7 @@ namespace BackOfficeEngine.Helper
                 {
                     if (!(line.Contains("FileStorePath") || line.Contains("FileLogPath")))
                     {
-                        fileContent += line + "\n";
+                        fileContent += line + Environment.NewLine;
                     }
                     if (line.Contains("SessionQualifier"))
                     {
@@ -163,13 +169,13 @@ namespace BackOfficeEngine.Helper
                         session = line.Substring(startIndex, line.Length - startIndex);
                         if (line.Contains("#"))
                         {
-                            fileContent += "#FileStorePath=" + APPLICATION_COMMON_DIR + "FIXLog\\" + session + "\n";
-                            fileContent += "#FileLogPath=" + APPLICATION_COMMON_DIR + "FIXLog\\" + session + "\n";
+                            fileContent += "#FileStorePath=" + APPLICATION_COMMON_DIR + "FIXLog\\" + session + Environment.NewLine;
+                            fileContent += "#FileLogPath=" + APPLICATION_COMMON_DIR + "FIXLog\\" + session + Environment.NewLine;
                         }
                         else
                         {
-                            fileContent += "FileStorePath=" + APPLICATION_COMMON_DIR + "FIXLog\\" + session + "\n";
-                            fileContent += "FileLogPath=" + APPLICATION_COMMON_DIR + "FIXLog\\" + session + "\n";
+                            fileContent += "FileStorePath=" + APPLICATION_COMMON_DIR + "FIXLog\\" + session + Environment.NewLine;
+                            fileContent += "FileLogPath=" + APPLICATION_COMMON_DIR + "FIXLog\\" + session + Environment.NewLine;
                         }
                     }
                 }
@@ -403,7 +409,7 @@ namespace BackOfficeEngine.Helper
                         }
                         s += " : " + m.GetField(tag);
                     }
-                    s += "\n";
+                    s += Environment.NewLine;
                 }
             }
             s = s.Substring(0, s.Length - 1);

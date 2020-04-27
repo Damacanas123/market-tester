@@ -18,6 +18,7 @@ using BackOfficeEngine.Model;
 using Microsoft.Win32;
 using MarketTester.Connection;
 using BackOfficeEngine.ParamPacker;
+using System.IO;
 
 namespace MarketTester.ViewModel
 {
@@ -587,16 +588,20 @@ namespace MarketTester.ViewModel
         #endregion
 
         private const string FileFormat = "fs";
-        private const string ScheduleSaveFileDelimeter = "sdfedbsfgdwrgs\n";
+        private static string ScheduleSaveFileDelimeter = $"sdfedbsfgdwrgs{Environment.NewLine}";
         #region CommandSaveFile
         public BaseCommand CommandSaveFile { get; set; }
         public void CommandSaveFileExecute(object param)
         {
-            string filePath = UIUtil.SaveFileDialog(new string[] { FileFormat });
+            string filePath = UIUtil.SaveFileDialog(new string[] { FileFormat },MarketTesterUtil.APPLICATION_NONFREEFORMATSCHEDULE_DIR);
             new Thread(() =>
             {
                 if (!string.IsNullOrWhiteSpace(filePath))
                 {
+                    if (File.Exists(filePath))
+                    {
+                        File.Delete(filePath);
+                    }
                     foreach (Scheduler schedule in Schedules)
                     {
                         Util.AppendStringToFile(filePath, ScheduleSaveFileDelimeter + schedule.SaveSchedule());
@@ -616,7 +621,7 @@ namespace MarketTester.ViewModel
         public void CommandLoadFileExecute(object param)
         {
             Schedules.Clear();
-            string filePath = UIUtil.OpenFileDialog(new string[] { FileFormat });
+            string filePath = UIUtil.OpenFileDialog(new string[] { FileFormat }, MarketTesterUtil.APPLICATION_NONFREEFORMATSCHEDULE_DIR);
             if (!string.IsNullOrWhiteSpace(filePath))
             {
                 new Thread(() =>
@@ -626,7 +631,7 @@ namespace MarketTester.ViewModel
                     foreach(string scheduleString in scheduleStrings)
                     {
                         Scheduler scheduler = new Scheduler("dummy");
-                        scheduler.LoadSchedule(scheduleString.Split('\n'));
+                        scheduler.LoadSchedule(scheduleString.Split(new string[] { Environment.NewLine },StringSplitOptions.RemoveEmptyEntries));
                         App.Current.Dispatcher.Invoke(() =>
                         {
                              Schedules.Add(scheduler);

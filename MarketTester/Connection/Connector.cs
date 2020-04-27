@@ -17,6 +17,9 @@ using BackOfficeEngine.MessageEnums;
 
 using QuickFix.Fields;
 using BackOfficeEngine.Model;
+using BackOfficeEngine.Helper;
+using System.IO;
+using MarketTester.UI.Popup;
 
 namespace MarketTester.Connection
 {
@@ -72,19 +75,35 @@ namespace MarketTester.Connection
         
         public void ConfigureAndConnect(Channel channel)
         {
-            new Task(() =>
+            new Thread(() =>
             {
-                channel.ConnectorName = engine.NewConnection(channel.ConfigFilePath, channel.ProtocolType);
-                if(channel.credentialParams == null)
+                try
                 {
-                    engine.ConfigureConnection(channel.ConnectorName, channel.ConfigFilePath);
+                    if (!File.Exists(channel.ConfigFilePath))
+                    {
+                        App.Invoke(() =>
+                        {
+                            PopupManager.OpenErrorPopup(new UserControlErrorPopup(ResourceKeys.StringCantFindConfigFile));
+                        });
+                        return;
+                    }
+                    channel.ConnectorName = engine.NewConnection(channel.ConfigFilePath, channel.ProtocolType);
+                    if (channel.credentialParams == null)
+                    {
+                        engine.ConfigureConnection(channel.ConnectorName, channel.ConfigFilePath);
+                    }
+                    else
+                    {
+                        engine.ConfigureConnection(channel.ConnectorName, channel.ConfigFilePath, channel.credentialParams);
+                    }
+                    channel.IsConfigured = true;
+                    Connect(channel);
                 }
-                else
+                catch(Exception ex)
                 {
-                    engine.ConfigureConnection(channel.ConnectorName, channel.ConfigFilePath,channel.credentialParams);
-                }                
-                channel.IsConfigured = true;
-                Connect(channel);
+                    Util.LogError(ex);
+                }
+                
             }).Start();
         }
 
@@ -185,14 +204,14 @@ namespace MarketTester.Connection
                     break;
             }
             infoMsg += " " + App.Current.Resources[ResourceKeys.StringRejectMessage];
-            infoMsg += "\n" + App.Current.Resources[ResourceKeys.StringRejectReason] + "\n";
+            infoMsg += Environment.NewLine + App.Current.Resources[ResourceKeys.StringRejectReason] + Environment.NewLine;
             if (msg.IsSetGenericField(Tags.Text))
             {
                 infoMsg += " " + msg.GetGenericField(Tags.Text);
             }
             else
             {
-                infoMsg += "\n" + App.Current.Resources[ResourceKeys.StringNoReasonStated];
+                infoMsg += Environment.NewLine + App.Current.Resources[ResourceKeys.StringNoReasonStated];
             }
             return infoMsg;
         }

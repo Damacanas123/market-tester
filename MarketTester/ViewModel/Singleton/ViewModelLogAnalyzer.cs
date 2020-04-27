@@ -15,6 +15,7 @@ using MarketTester.Helper;
 using System.Threading;
 using System.Runtime.CompilerServices;
 using System.IO;
+using BackOfficeEngine.Helper;
 
 namespace MarketTester.ViewModel
 {
@@ -295,7 +296,7 @@ namespace MarketTester.ViewModel
             }
             catch(Exception ex)
             {
-                MarketTesterUtil.LogError(ex);
+                Util.LogError(ex);
                 SetInfoText("StringInvalidLineFormat");
             }
             
@@ -317,7 +318,7 @@ namespace MarketTester.ViewModel
                 }
                 catch(Exception ex)
                 {
-                    MarketTesterUtil.LogError(ex);
+                    Util.LogError(ex);
                     errorMsgResourceKey = "StringFailedAnalysis";
                 }
                 finally

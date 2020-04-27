@@ -27,7 +27,7 @@ namespace BackOfficeEngine.ParamPacker
 
         public override string ToString()
         {
-            return $"Side : {side}\nLastShares : {lastShares}\nPrice : {price}\nSymbol : {symbol}";
+            return $"Side : {side}{Environment.NewLine}LastShares : {lastShares}{Environment.NewLine}Price : {price}{Environment.NewLine}Symbol : {symbol}";
         }
     }
 }
