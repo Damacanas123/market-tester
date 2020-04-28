@@ -157,4 +157,12 @@
     <system:String x:Key="StringConfigPasswordNotSetWarning">Konfigurasyonda "Password" belirtilmedi</system:String>
     <system:String x:Key="StringCannotParseDelayFromFile">Gecikme dosyadan ayrıştırılamadı.</system:String>
     <system:String x:Key="StringCantFindConfigFile">Belirtilen konfigürasyon dosyası bulunamıyor. Dosyanın varlığından emin olun ve dosya yolunu doğru json konfigürasyon dosyası içine doğru yazdığınızdan emin olun.</system:String>
+    <system:String x:Key="StringLocalSniff">Yerel Koklayıcı</system:String>
+    <system:String x:Key="StringRemoteSniff">Uzak koklayıcı</system:String>
+    <system:String x:Key="StringRemoteSnifferPort">Uzak koklayıcı port</system:String>
+    <system:String x:Key="StringRemoteSnifferHost">Uzak koklayıcı host</system:String>
+    <system:String x:Key="StringCantConnectToRemoteServer">Cant connect to remote server.</system:String>
+    <system:String x:Key="StringHostAddressInvalid">Host adresi geçerli değil.</system:String>
+    <system:String x:Key="StringStartedRemoteSniffing">Uzaktan koklanmaya başlandı.</system:String>
+    <system:String x:Key="StringRemoteSnifferHasStopped">Uzak koklayıcı çalışmayı durdurdu.</system:String>
 </ResourceDictionary>

@@ -172,6 +172,15 @@ namespace MarketTester
         public const string StringResponseTime = "StringResponseTime";
         public const string StringMakeSureWinpCapInstalled = "StringMakeSureWinpCapInstalled";
         public const string StringCantFindConfigFile = "StringCantFindConfigFile";
+        public const string StringLocalSniff = "StringLocalSniff";
+        public const string StringRemoteSniff = "StringRemoteSniff";
+        public const string StringRemoteSnifferPort = "StringRemoteSnifferPort";
+        public const string StringRemoteSnifferHost = "StringRemoteSnifferHost";
+        public const string StringCantConnectToRemoteServer = "StringCantConnectToRemoteServer";
+        public const string StringHostAddressInvalid = "StringHostAddressInvalid";
+        public const string StringStartedRemoteSniffing = "StringStartedRemoteSniffing";
+        public const string StringRemoteSnifferHasStopped = "StringRemoteSnifferHasStopped";
+        
 
     }
 }

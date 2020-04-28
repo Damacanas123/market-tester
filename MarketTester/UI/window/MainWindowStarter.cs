@@ -26,8 +26,8 @@ namespace MarketTester.UI.window
             tabControl.Items.Add(item);
             window.MainGrid.Children.Add(tabControl);
             System.Windows.Forms.Screen screen = window.GetScreen();
-            window.Width = screen.WorkingArea.Width * 0.8;
-            window.Height = screen.WorkingArea.Height * 0.8;
+            window.Width = 1536;
+            window.Height = 864;
             window.SetMenu(new MarketTester.UI.Usercontrol.Menu.Upper.UserControlMainWindowUpperMenu());
             window.Show();
         }        

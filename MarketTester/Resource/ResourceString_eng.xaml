@@ -159,6 +159,15 @@
     <system:String x:Key="StringConfigPasswordNotSetWarning">Password has not been set in json config file for configuration </system:String>
     <system:String x:Key="StringCannotParseDelayFromFile">Can't parse delay from file</system:String>
     <system:String x:Key="StringCantFindConfigFile">Can't find the related configuration file specified in json config. Make sure file exists and you did not mistype the file path in json config.</system:String>
+    <system:String x:Key="StringLocalSniff">Local Sniffer</system:String>
+    <system:String x:Key="StringRemoteSniff">Remote Sniffer</system:String>
+    <system:String x:Key="StringRemoteSnifferPort">Remote Sniffer Port</system:String>
+    <system:String x:Key="StringRemoteSnifferHost">Remote Sniffer Host</system:String>
+    <system:String x:Key="StringCantConnectToRemoteServer">Cant connect to remote server.</system:String>
+    <system:String x:Key="StringHostAddressInvalid">Host address is invalid.</system:String>
+    <system:String x:Key="StringStartedRemoteSniffing">Started remote sniffing.</system:String>
+    <system:String x:Key="StringRemoteSnifferHasStopped">Remote sniffer has stopped working.</system:String>
+
 
 
 </ResourceDictionary>

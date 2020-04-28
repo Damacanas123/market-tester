@@ -553,7 +553,25 @@ namespace MarketTester.Helper
             return Math.Floor((number + decimalPower) * power) / power;
         }
 
-        
+        public static bool CheckIPv4AddressValidity(string address)
+        {
+            string[] values = address.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+            if(values.Length != 4)
+            {
+                return false;
+            }
+            foreach(string value in values)
+            {
+                foreach(char c in value)
+                {
+                    if(c > '9' || c < '0')
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
 
     }
 }

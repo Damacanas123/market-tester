@@ -10,6 +10,8 @@ using MarketTester.UI.window;
 using MarketTester.Helper;
 using BackOfficeEngine.Helper;
 using System.Windows.Threading;
+using System.Windows.Controls.Primitives;
+using MarketTester.UI.Popup;
 
 namespace MarketTester
 {
@@ -32,6 +34,8 @@ namespace MarketTester
         void CurrentDomain_UnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             Util.LogError(e.Exception);
+            PopupManager.OpenErrorPopup(new UserControlErrorPopup(e.Exception.ToString()));
+            Environment.Exit(1);
         }
 
         public delegate void InvokeFunction();

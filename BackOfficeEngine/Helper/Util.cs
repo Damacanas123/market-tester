@@ -12,6 +12,7 @@ using FixHelper;
 using System.Data;
 using System.Deployment.Application;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 [assembly: InternalsVisibleTo("UnitTest")]
 namespace BackOfficeEngine.Helper
@@ -33,18 +34,24 @@ namespace BackOfficeEngine.Helper
         public static string STATIC_DIR_PATH = "static" + FILE_PATH_DELIMITER;
         public static string APPLICATION_STATIC_DIR = APPLICATION_COMMON_DIR + STATIC_DIR_PATH;
         public static string EXCEPTIONLOG_FILE_PATH = APPLICATION_STATIC_DIR + "exception.log";
+        public static string DEBUG_EXCEPTIONLOG_FILE_PATH = APPLICATION_STATIC_DIR + "debug_exception.log";
         public static string APPLICATIONLOG_FILE_PATH = APPLICATION_STATIC_DIR + "application.log";
         public static string USERNAME = System.Security.Principal.WindowsIdentity.GetCurrent().Name.Replace(Util.FILE_PATH_DELIMITER, "");
         public static string SCHEDULESAVE_DIR_PATH = APPLICATION_STATIC_DIR + "schedule_save" + FILE_PATH_DELIMITER;
 
         public static void LogError(Exception ex)
         {
-            AppendStringToFile(EXCEPTIONLOG_FILE_PATH, $"Appl version({APP_VERSION}) {DateTime.Now} {Environment.NewLine}Type : {ex.GetType().ToString()} {Environment.NewLine} ToString() : {ex.ToString()}{Environment.NewLine}");
+            AppendStringToFile(EXCEPTIONLOG_FILE_PATH, $"Appl version({APP_VERSION}) - {DateTime.Now} {Environment.NewLine}Type : {ex.GetType().ToString()} {Environment.NewLine}Exception : {ex.ToString()}{Environment.NewLine}");
         }
 
         public static void Log(string s)
         {
-            AppendStringToFile(APPLICATIONLOG_FILE_PATH, $"Appl version({APP_VERSION}) {DateTime.Now} : {s}{Environment.NewLine}");
+            AppendStringToFile(APPLICATIONLOG_FILE_PATH, $"Appl version({APP_VERSION}) - {DateTime.Now} {Environment.NewLine}{s}{Environment.NewLine}");
+        }
+
+        public static void LogDebugError(Exception ex)
+        {
+            AppendStringToFile(DEBUG_EXCEPTIONLOG_FILE_PATH, $"Appl version({APP_VERSION}) - {DateTime.Now} {Environment.NewLine}Type : {ex.GetType().ToString()} {Environment.NewLine}Exception : {ex.ToString()}{Environment.NewLine}");
         }
         public static int ReadSeqNum(string filePath)
         {
@@ -539,8 +546,21 @@ namespace BackOfficeEngine.Helper
             return s;
         }
 
+        public delegate void ThreadParameterlessFunction();
+        public static Thread ThreadStart(ThreadParameterlessFunction func)
+        {
+            Thread t = new Thread(() =>
+            {
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
+                func();
+            });
+            t.Start();
+            return t;
 
-        
+        }
+
+
+
 
     }
 }

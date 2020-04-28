@@ -19,6 +19,7 @@ using MarketTester.Extensions;
 using BackOfficeEngine.Model;
 using MarketTester.Base;
 using System.Globalization;
+using System.Net.Sockets;
 
 namespace MarketTester.Model.Sniffer
 {
@@ -127,6 +128,10 @@ namespace MarketTester.Model.Sniffer
         
         public void Start()
         {
+            if (IsRemoteRunning)
+            {
+                throw new ParallelRunException("Remote sniffer is already running while trying to start local sniffer");
+            }
             sniffer.Start();
             new Thread(() =>
             {
@@ -255,6 +260,99 @@ namespace MarketTester.Model.Sniffer
                 MarketTesterUtil.ConsoleDebug("Average delay : " + AverageDelay);
             }
             
+        }
+
+        private IPAddress RemoteIPAddress { get; set; }
+        private ushort RemotePort { get; set; }
+        private IPEndPoint RemoteEndPoint { get; set; }
+        private bool IsRemoteRunning { get; set; }
+
+        private const string REQUEST_RESPONSE = "Req-Res";
+        private const string REQUEST = "Req";
+        private const string RESPONSE = "Res";
+        private const string HEARTBEAT = "Hrtbt";
+
+
+
+        public void SetParameters(IPAddress ipAddress, ushort port)
+        {
+            RemoteIPAddress = ipAddress;
+            RemotePort = port;
+            RemoteEndPoint = new IPEndPoint(RemoteIPAddress, RemotePort);
+        }
+
+        public delegate void OnUnMatureSocketClose();
+        
+        /// <summary>
+        /// Tries to start a connection and listen for incoming diff item from remote sniffer. If an error occurs at initilization returns false and a ResourceKey
+        /// indicating what the error was.
+        /// </summary>
+        /// <returns></returns>
+        public (bool, string) StartRemote(OnUnMatureSocketClose onSocketClose)
+        {
+            if (IsRunning)
+            {
+                throw new ParallelRunException("Local sniffer is already running while trying to start remote sniffer");
+            }
+            Socket sender;
+            try
+            {
+                sender = new Socket(RemoteIPAddress.AddressFamily,
+                   SocketType.Stream, ProtocolType.Tcp);
+                sender.Connect(RemoteEndPoint);
+            }
+            catch (SocketException ex)
+            {
+                Util.LogDebugError(ex);
+                return (false, ResourceKeys.StringCantConnectToRemoteServer);
+            }
+            catch (Exception ex)
+            {
+                Util.LogError(ex);
+                return (false, ResourceKeys.StringUnknownErrorOccured);
+            }
+            IsRemoteRunning = true;
+            sender.Send(REQUEST_RESPONSE);
+
+            Util.ThreadStart(() =>
+            {
+                while (IsRemoteRunning)
+                {
+                    string s = null;
+                    try
+                    {
+                        s = sender.ReadMessage();
+                    }
+                    catch(SocketException ex)
+                    {
+                        IsRemoteRunning = false;
+                        onSocketClose();
+                    }
+                    if(s == null)
+                    {
+                        continue;
+                    }
+                    if(s == HEARTBEAT)
+                    {
+                        sender.Send(HEARTBEAT);
+                        continue;
+                    }
+                    string[] values = s.Split('|');
+                    DateTime timeStamp = DateTime.ParseExact(values[2], MarketTesterUtil.DateFormatMicrosecondPrecision, CultureInfo.InvariantCulture);
+                    AddItem(values[1], timeStamp);
+                }
+                sender.Close();
+            });
+            return (true, "");
+        }
+
+
+
+
+
+        public void StopRemote()
+        {
+            IsRemoteRunning = false;
         }
 
         private class FixSniffer : IDisposable
