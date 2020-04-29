@@ -188,6 +188,8 @@ namespace MarketTester
         public const string StringFinishedSchedule = "StringFinishedSchedule";
         public const string StringStartedSchedule = "StringStartedSchedule";
         public const string StringCouldntFinishSchedule = "StringCouldntFinishSchedule";
+        public const string StringIsSelected = "StringIsSelected";
+        public const string StringDelay = "StringDelay";
         
 
 

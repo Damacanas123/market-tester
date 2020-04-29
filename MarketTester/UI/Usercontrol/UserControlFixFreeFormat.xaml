@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MarketTester.UI.Usercontrol"
              xmlns:connection="clr-namespace:MarketTester.Connection"
+             xmlns:converter="clr-namespace:MarketTester.Converters"
              xmlns:viewmodel="clr-namespace:MarketTester.ViewModel"
              xmlns:modelfixfreeformat="clr-namespace:MarketTester.Model.FixFreeFormat"
              mc:Ignorable="d" 
@@ -12,6 +13,9 @@
     <UserControl.DataContext>
         <viewmodel:ViewModelFixFreeFormat/>
     </UserControl.DataContext>
+    <UserControl.Resources>
+        <converter:FixStringConverter x:Key="FixStringConverter"/>
+    </UserControl.Resources>
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -214,7 +218,30 @@
             <TextBlock Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="3" Margin="70,0,0,0" Text="{Binding SelectedSchedule.Name}"/>
             <DataGrid x:Name="DataGridScheduleItems" Grid.Column="5" Grid.Row="0" Grid.RowSpan="12" Margin="0,30,0,0" Grid.ColumnSpan="7" ItemsSource="{Binding SelectedSchedule.Items}"
                   SelectedItem="{Binding SelectedScheduleItem}"
-                  SelectedIndex="{Binding SelectedScheduleItemIndex}">
+                  SelectedIndex="{Binding SelectedScheduleItemIndex}"
+                      AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn Binding="{Binding IsSelected}">
+                        <DataGridCheckBoxColumn.Header>
+                            <TextBlock Text="{DynamicResource StringIsSelected}"/>
+                        </DataGridCheckBoxColumn.Header>
+                    </DataGridCheckBoxColumn>
+                    <DataGridTextColumn Binding="{Binding Delay}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringDelay}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Channel}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringChannel}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Message,Converter={StaticResource FixStringConverter}}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringMessage}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
 
             </DataGrid>
             <Separator Grid.ColumnSpan="4" Grid.Column="0" Grid.Row="8" VerticalAlignment="Top" Margin="0,-1,0,0"/>

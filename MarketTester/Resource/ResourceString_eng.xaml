@@ -175,6 +175,8 @@
     <system:String x:Key="StringStartedSchedule">Started schedule.</system:String>
     <system:String x:Key="StringFinishedSchedule">Finished schedule.</system:String>
     <system:String x:Key="StringCouldntFinishSchedule">Couldn't finish schedule.</system:String>
+    <system:String x:Key="StringIsSelected">IsSelected</system:String>
+    <system:String x:Key="StringDelay">Delay</system:String>
     
 
 

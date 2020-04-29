@@ -253,16 +253,24 @@ namespace BackOfficeEngine
                         Order order;
                         void ReplaceOrCancel()
                         {
-                            order = Order.ClOrdIDMap[msg.GetOrigClOrdID()];
-                            order.AddMessage(msg);
-                            Order.ClOrdIDMap[msg.GetClOrdID()] = order;
+                            string origClOrdId = msg.GetOrigClOrdID();
+                            if (Order.ClOrdIDMap.ContainsKey(origClOrdId))
+                            {
+                                order = Order.ClOrdIDMap[origClOrdId];
+                                order.AddMessage(msg);
+                                Order.ClOrdIDMap[msg.GetClOrdID()] = order;
+                            }
                         }
                         switch (msg.GetMsgType())
                         {
                             
                             case MsgType.New:
-                                order = Order.ClOrdIDMap[msg.GetClOrdID()];
-                                order.AddMessage(msg);
+                                string clOrdID = msg.GetClOrdID();
+                                if (Order.ClOrdIDMap.ContainsKey(clOrdID))
+                                {
+                                    order = Order.ClOrdIDMap[clOrdID];
+                                    order.AddMessage(msg);
+                                }
                                 break;
                             case MsgType.Replace:
                                 ReplaceOrCancel();

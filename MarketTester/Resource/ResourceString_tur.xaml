@@ -173,4 +173,6 @@
     <system:String x:Key="StringStartedSchedule">Plana başlandı.</system:String>
     <system:String x:Key="StringFinishedSchedule">Plana sonlandı.</system:String>
     <system:String x:Key="StringCouldntFinishSchedule">Plan tamamlanamadı.</system:String>
+    <system:String x:Key="StringIsSelected">Seçilmiş?</system:String>
+    <system:String x:Key="StringDelay">Gecikme</system:String>
 </ResourceDictionary>

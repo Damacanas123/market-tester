@@ -56,7 +56,7 @@ namespace BackOfficeEngine.Connection
                         }
                         else if(msgType == MsgType.ORDERCANCELREPLACEREQUEST || msgType == MsgType.ORDER_CANCEL_REQUEST)
                         {
-                            if (!m.IsSetField(Tags.ClOrdID) || !m.IsSetField(Tags.OrigClOrdID))
+                            if (!(m.IsSetField(Tags.ClOrdID) && m.IsSetField(Tags.OrigClOrdID)))
                                 continue;
                         }
                         //in order not to enqueue messages that lack CLordId and OrigClOrdID that may be sent from free format scheduler
@@ -228,7 +228,10 @@ namespace BackOfficeEngine.Connection
 
         void IApplication.ToApp(Message message, SessionID sessionId)
         {
-            
+            if (message.IsSetField(Tags.ClOrdID))
+            {
+                m_messageQueue.Enqueue(message);
+            }
             //comment ou for performance reasons for scheduler
             //IMessage msg = new QuickFixMessage(message);
             //if (msg.GetMsgType() == MessageEnums.MsgType.Reject)
