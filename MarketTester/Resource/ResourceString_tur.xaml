@@ -165,4 +165,12 @@
     <system:String x:Key="StringHostAddressInvalid">Host adresi geçerli değil.</system:String>
     <system:String x:Key="StringStartedRemoteSniffing">Uzaktan koklanmaya başlandı.</system:String>
     <system:String x:Key="StringRemoteSnifferHasStopped">Uzak koklayıcı çalışmayı durdurdu.</system:String>
+    <system:String x:Key="StringConfigurationError">Konfigürasyon hatası.</system:String>
+    <system:String x:Key="StringCantConnect">Bağlanılamadı.</system:String>
+    <system:String x:Key="StringAccountCantBeEmpty">Hesap boş olamaz. Eğer hesap göndermek istemiyorsanız serbest format planlyıcıyı kullanın.</system:String>
+    <system:String x:Key="StringSymbolCantBeEmpty">Sembol boş olamaz. Eğer sembol göndermek istemiyorsanız serbest format planlyıcıyı kullanın.</system:String>
+    <system:String x:Key="StringQuantityCantBeEmpty">Miktar boş olamaz. Eğer miktar göndermek istemiyorsanız serbest format planlyıcıyı kullanın.</system:String>
+    <system:String x:Key="StringStartedSchedule">Plana başlandı.</system:String>
+    <system:String x:Key="StringFinishedSchedule">Plana sonlandı.</system:String>
+    <system:String x:Key="StringCouldntFinishSchedule">Plan tamamlanamadı.</system:String>
 </ResourceDictionary>

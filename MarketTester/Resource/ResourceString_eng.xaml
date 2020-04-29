@@ -167,7 +167,15 @@
     <system:String x:Key="StringHostAddressInvalid">Host address is invalid.</system:String>
     <system:String x:Key="StringStartedRemoteSniffing">Started remote sniffing.</system:String>
     <system:String x:Key="StringRemoteSnifferHasStopped">Remote sniffer has stopped working.</system:String>
-
+    <system:String x:Key="StringConfigurationError">Configuration error occured.</system:String>
+    <system:String x:Key="StringCantConnect">Can't connect.</system:String>
+    <system:String x:Key="StringAccountCantBeEmpty">Account can't be empty. If you don't want to send Account use free format scheduler.</system:String>
+    <system:String x:Key="StringSymbolCantBeEmpty">Symbol can't be empty. If you don't want to send Symbol use free format scheduler.</system:String>
+    <system:String x:Key="StringQuantityCantBeEmpty">Quantity can't be empty. If you don't want to send Quantity use free format scheduler.</system:String>
+    <system:String x:Key="StringStartedSchedule">Started schedule.</system:String>
+    <system:String x:Key="StringFinishedSchedule">Finished schedule.</system:String>
+    <system:String x:Key="StringCouldntFinishSchedule">Couldn't finish schedule.</system:String>
+    
 
 
 </ResourceDictionary>

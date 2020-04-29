@@ -21,6 +21,7 @@ using Microsoft.Win32;
 using MarketTester.UI.Popup;
 using System.IO;
 using System.Windows;
+using MarketTester.Connection;
 
 namespace MarketTester.ViewModel
 {
@@ -534,14 +535,47 @@ namespace MarketTester.ViewModel
         public BaseCommand CommandStartSchedule { get; set; }
         public void CommandStartScheduleExecute(object param)
         {
-            foreach(FreeFormatScheduleItem item in SelectedSchedule.Items)
+            Connector connector = Connector.GetInstance();
+            foreach (FreeFormatScheduleItem item in SelectedSchedule.Items)
             {
                 if (item.IsSelected)
                 {
-                    Thread.Sleep(item.Delay);
-                    Connection.Connector.GetInstance().SendMessage(item.Channel, item.Message, !OverrideSessionTags);
+                    if (!connector.CheckChannelConnection(item.Channel))
+                    {
+                        InfoTextResourceKey = ResourceKeys.StringChannelNotConnected;
+                        return;
+                    }
                 }
             }
+            InfoTextResourceKey = ResourceKeys.StringStartedSchedule;
+            Util.ThreadStart(() =>
+            {
+                try
+                {
+
+                    foreach (FreeFormatScheduleItem item in SelectedSchedule.Items)
+                    {
+                        if (item.IsSelected)
+                        {
+                            Thread.Sleep(item.Delay);
+                            connector.SendMessage(item.Channel, item.Message, !OverrideSessionTags);
+                        }
+                    }
+                }
+                catch(Exception ex)
+                {
+                    Util.LogDebugError(ex);
+                    App.Invoke(() =>
+                    {
+                        InfoTextResourceKey = ResourceKeys.StringCouldntFinishSchedule;
+                    });
+                    
+                }
+                App.Invoke(() =>
+                {
+                    InfoTextResourceKey = ResourceKeys.StringFinishedSchedule;
+                });
+            });
         }
         public bool CommandStartScheduleCanExecute()
         {

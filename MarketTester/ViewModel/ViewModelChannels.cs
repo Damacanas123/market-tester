@@ -7,8 +7,7 @@ using System.Windows.Input;
 
 using MarketTester.Base;
 using MarketTester.Model;
-
-
+using MarketTester.UI.Popup;
 
 namespace MarketTester.ViewModel
 {
@@ -51,13 +50,15 @@ namespace MarketTester.ViewModel
         public void CommandConnectChannelExecute(object param)
         {
             Connection.Connector connector = Connection.Connector.GetInstance();
+            
             SelectedChannel = (Channel)param;
+            
             if (!SelectedChannel.IsConfigured)
             {
                 connector.ConfigureAndConnect(SelectedChannel);
                 return;
             }
-                
+
             if (SelectedChannel.IsConnected)
             {
                 connector.Disconnect(SelectedChannel);

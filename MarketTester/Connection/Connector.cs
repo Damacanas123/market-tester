@@ -20,6 +20,7 @@ using BackOfficeEngine.Model;
 using BackOfficeEngine.Helper;
 using System.IO;
 using MarketTester.UI.Popup;
+using System.Windows.Controls;
 
 namespace MarketTester.Connection
 {
@@ -88,16 +89,34 @@ namespace MarketTester.Connection
                         return;
                     }
                     channel.ConnectorName = engine.NewConnection(channel.ConfigFilePath, channel.ProtocolType);
-                    if (channel.credentialParams == null)
+                    try
                     {
-                        engine.ConfigureConnection(channel.ConnectorName, channel.ConfigFilePath);
+                        if (channel.credentialParams == null)
+                        {
+                            engine.ConfigureConnection(channel.ConnectorName, channel.ConfigFilePath);
+                        }
+                        else
+                        {
+                            engine.ConfigureConnection(channel.ConnectorName, channel.ConfigFilePath, channel.credentialParams);
+                        }
                     }
-                    else
+                    catch(Exception ex)
                     {
-                        engine.ConfigureConnection(channel.ConnectorName, channel.ConfigFilePath, channel.credentialParams);
+                        UserControlErrorPopup errorPopup = new UserControlErrorPopup(ResourceKeys.StringConfigurationError);
+                        errorPopup.SetExtraText(ex.Message);
+                        PopupManager.OpenErrorPopup(errorPopup);
                     }
-                    channel.IsConfigured = true;
-                    Connect(channel);
+                    try
+                    {
+                        channel.IsConfigured = true;
+                        Connect(channel);
+                    }
+                    catch(Exception ex)
+                    {
+                        UserControlErrorPopup errorPopup = new UserControlErrorPopup(ResourceKeys.StringCantConnect);
+                        errorPopup.SetExtraText(channel.Name);
+                        PopupManager.OpenErrorPopup(errorPopup);
+                    }
                 }
                 catch(Exception ex)
                 {
@@ -214,6 +233,16 @@ namespace MarketTester.Connection
                 infoMsg += Environment.NewLine + App.Current.Resources[ResourceKeys.StringNoReasonStated];
             }
             return infoMsg;
+        }
+
+        public bool CheckChannelConnection(string channelName)
+        {
+            Channel channel = ActiveChannels.FirstOrDefault((o) => o.Name == channelName);
+            if (channel == null)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

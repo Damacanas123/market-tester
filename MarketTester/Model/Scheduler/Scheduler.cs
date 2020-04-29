@@ -197,7 +197,7 @@ namespace MarketTester.Model.Scheduler
                 {
                     if(item.Price != -1 && item.OrderQty != -1)
                     {
-                        m = engine.PrepareMessageReplace(new ReplaceMessageParameters(OrderIdMap[item.SchedulerOrderID], item.Price, item.OrderQty));
+                        m = engine.PrepareMessageReplace(new ReplaceMessageParameters(OrderIdMap[item.SchedulerOrderID], item.OrderQty, item.Price));
                     }
                     else if(item.Price != -1)
                     {
@@ -244,7 +244,7 @@ namespace MarketTester.Model.Scheduler
             {
                 s += item.ToString() + Environment.NewLine;
             }
-            s = s.Substring(0, s.Length - 1);
+            s = s.Substring(0, s.Length - Environment.NewLine.Length);
             return s;
 
         }

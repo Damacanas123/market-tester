@@ -207,6 +207,8 @@ namespace MarketTester.ViewModel
             SelectedDeviceIndex = 0;
             Settings.GetInstance().LanguageChangedEventHandler += OnLanguageChanged;
             TextStartStop = App.Current.Resources[ResourceKeys.StringStart].ToString();
+            TextRemoteSnifferHost = "192.168.108.42";
+            TextRemoteSnifferPort = "15003";
         }
         #region commands
         #region CommandStartStop

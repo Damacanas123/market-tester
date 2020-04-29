@@ -180,7 +180,16 @@ namespace MarketTester
         public const string StringHostAddressInvalid = "StringHostAddressInvalid";
         public const string StringStartedRemoteSniffing = "StringStartedRemoteSniffing";
         public const string StringRemoteSnifferHasStopped = "StringRemoteSnifferHasStopped";
+        public const string StringConfigurationError = "StringConfigurationError";
+        public const string StringCantConnect = "StringCantConnect";
+        public const string StringAccountCantBeEmpty = "StringAccountCantBeEmpty";
+        public const string StringSymbolCantBeEmpty = "StringSymbolCantBeEmpty";
+        public const string StringQuantityCantBeEmpty = "StringQuantityCantBeEmpty";
+        public const string StringFinishedSchedule = "StringFinishedSchedule";
+        public const string StringStartedSchedule = "StringStartedSchedule";
+        public const string StringCouldntFinishSchedule = "StringCouldntFinishSchedule";
         
+
 
     }
 }

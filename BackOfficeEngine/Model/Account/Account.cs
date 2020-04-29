@@ -16,6 +16,10 @@ namespace BackOfficeEngine.Model
         
         internal static Account GetInstance(string accountString)
         {
+            if(accountString == null)
+            {
+                return null;
+            }
             if(instances.TryGetValue(accountString, out Account account))
             {
                 

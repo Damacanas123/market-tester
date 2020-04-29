@@ -334,8 +334,17 @@ namespace MarketTester.Model.Sniffer
                     }
                     if(s == HEARTBEAT)
                     {
-                        sender.Send(HEARTBEAT);
-                        continue;
+                        try
+                        {
+
+                            sender.Send(HEARTBEAT);
+                            continue;
+                        }
+                        catch (SocketException ex)
+                        {
+                            IsRemoteRunning = false;
+                            onSocketClose();
+                        }
                     }
                     string[] values = s.Split('|');
                     DateTime timeStamp = DateTime.ParseExact(values[2], MarketTesterUtil.DateFormatMicrosecondPrecision, CultureInfo.InvariantCulture);

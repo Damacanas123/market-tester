@@ -434,6 +434,21 @@ namespace MarketTester.ViewModel
                 InfoTextResourceKey = ResourceKeys.StringPleaseSelectAChannel;
                 return;
             }
+            if (string.IsNullOrWhiteSpace(TextAccount))
+            {
+                InfoTextResourceKey = ResourceKeys.StringAccountCantBeEmpty;
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(TextSymbol))
+            {
+                InfoTextResourceKey = ResourceKeys.StringSymbolCantBeEmpty;
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(TextQuantity))
+            {
+                InfoTextResourceKey = ResourceKeys.StringQuantityCantBeEmpty;
+                return;
+            }
             SchedulerRawItem item = SelectedSchedule.PrepareScheduleItem(SelectedMsgType,
                 TextAccount,
                 SelectedSide,
@@ -444,7 +459,7 @@ namespace MarketTester.ViewModel
                 (SelectedTimeInForce == TimeInForce.GoodTillDate ? ExpireDate : DateTime.MinValue),
                 TextPrice,
                 TextAllocID,
-                (SelectedScheduleItem != null && SelectedMsgType == MsgType.Replace ? SelectedScheduleItem.SchedulerOrderID : null),
+                (SelectedScheduleItem != null && (SelectedMsgType == MsgType.Replace || SelectedMsgType == MsgType.Cancel) ? SelectedScheduleItem.SchedulerOrderID : null),
                 SelectedChannel.Name,
                 TextDelay
                 );
@@ -549,11 +564,16 @@ namespace MarketTester.ViewModel
                 {
                     SelectedSchedule.PrepareSchedule(decimal.Parse(TextPriceOffset, CultureInfo.InvariantCulture),
                     decimal.Parse(TextQuantityMultiplier, CultureInfo.InvariantCulture), TagValuePairs.ToList());
+                    App.Invoke(() =>
+                    {
+                        InfoTextResourceKey = ResourceKeys.StringStartedSchedule;
+                    });
                     SelectedSchedule.StartSchedule(!OverrideSessionTags);
                     App.Current.Dispatcher.Invoke(() =>
                     {
                         ScheduleNotRunning = true;
                         Order.Orders.SupressNotification = false;
+                        InfoTextResourceKey = ResourceKeys.StringFinishedSchedule;
                     });
                 }
                 catch(BackOfficeEngine.Exceptions.ConnectorNotPresentException ex)
@@ -620,10 +640,11 @@ namespace MarketTester.ViewModel
         public BaseCommand CommandLoadFile { get; set; }
         public void CommandLoadFileExecute(object param)
         {
-            Schedules.Clear();
+            
             string filePath = UIUtil.OpenFileDialog(new string[] { FileFormat }, MarketTesterUtil.APPLICATION_NONFREEFORMATSCHEDULE_DIR);
             if (!string.IsNullOrWhiteSpace(filePath))
             {
+                Schedules.Clear();
                 new Thread(() =>
                 {
                     string content = MarketTesterUtil.ReadFile(filePath);
@@ -636,7 +657,12 @@ namespace MarketTester.ViewModel
                         {
                              Schedules.Add(scheduler);
                         });
-                    }                    
+                    }
+                    App.Invoke(() =>
+                    {
+                        if(Schedules.Count > 0)
+                            SelectedSchedule = Schedules[0];
+                    });
                 }).Start();
             }
         }

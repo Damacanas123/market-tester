@@ -45,7 +45,22 @@ namespace BackOfficeEngine.Connection
                 {
                     while(m_messageQueue.TryDequeue(out Message m))
                     {
-                        foreach(IConnectorSubscriber subscriber in subscribers)
+                        //in order not to enqueue messages that lack CLordId and OrigClOrdID that may be sent from free format scheduler
+                        if (!m.Header.IsSetField(Tags.MsgType))
+                            continue;
+                        string msgType = m.Header.GetField(Tags.MsgType);
+                        if(msgType == MsgType.NEWORDERSINGLE)
+                        {
+                            if (!m.IsSetField(Tags.ClOrdID))
+                                continue;
+                        }
+                        else if(msgType == MsgType.ORDERCANCELREPLACEREQUEST || msgType == MsgType.ORDER_CANCEL_REQUEST)
+                        {
+                            if (!m.IsSetField(Tags.ClOrdID) || !m.IsSetField(Tags.OrigClOrdID))
+                                continue;
+                        }
+                        //in order not to enqueue messages that lack CLordId and OrigClOrdID that may be sent from free format scheduler
+                        foreach (IConnectorSubscriber subscriber in subscribers)
                         {
                             IMessage msg = new QuickFixMessage(m);
                             msg.SendTime = m.GetSendTime();
@@ -120,12 +135,9 @@ namespace BackOfficeEngine.Connection
             if (message.Header.GetField(Tags.MsgType) == MsgType.REJECT)
             {
                 IMessage msg = new QuickFixMessage(message);
-                if (msg.GetMsgType() == MessageEnums.MsgType.Reject)
+                foreach (IConnectorSubscriber subscriber in subscribers)
                 {
-                    foreach (IConnectorSubscriber subscriber in subscribers)
-                    {
-                        subscriber.OnApplicationMessageReject(this, msg, MessageEnums.MessageOrigin.Outbound);
-                    }
+                    subscriber.OnSessionMessageReject(this, msg, MessageEnums.MessageOrigin.Outbound);
                 }
             }            
         }
@@ -207,7 +219,7 @@ namespace BackOfficeEngine.Connection
                 {
                     foreach (IConnectorSubscriber subscriber in subscribers)
                     {
-                        subscriber.OnApplicationMessageReject(this, msg, MessageEnums.MessageOrigin.Inbound);
+                        subscriber.OnSessionMessageReject(this, msg, MessageEnums.MessageOrigin.Inbound);
                     }
                 }
             }
@@ -216,10 +228,7 @@ namespace BackOfficeEngine.Connection
 
         void IApplication.ToApp(Message message, SessionID sessionId)
         {
-            if ("DGF".Contains(message.Header.GetField(Tags.MsgType)))
-            {                
-                m_messageQueue.Enqueue(message);
-            }
+            
             //comment ou for performance reasons for scheduler
             //IMessage msg = new QuickFixMessage(message);
             //if (msg.GetMsgType() == MessageEnums.MsgType.Reject)
