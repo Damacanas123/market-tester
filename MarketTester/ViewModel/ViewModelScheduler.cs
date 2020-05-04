@@ -19,6 +19,7 @@ using Microsoft.Win32;
 using MarketTester.Connection;
 using BackOfficeEngine.ParamPacker;
 using System.IO;
+using BackOfficeEngine;
 
 namespace MarketTester.ViewModel
 {
@@ -42,11 +43,53 @@ namespace MarketTester.ViewModel
             CommandStartSchedule = new BaseCommand(CommandStartScheduleExecute, CommandStartScheduleCanExecute);
             CommandSaveFile = new BaseCommand(CommandSaveFileExecute, CommandSaveFileCanExecute);
             CommandLoadFile = new BaseCommand(CommandLoadFileExecute, CommandLoadFileCanExecute);
+            CommandSendMessage = new BaseCommand(CommandSendMessageExecute, CommandSendMessageCanExecute);
 
             Settings.GetInstance().LanguageChangedEventHandler += OnLanguageChange;
 
             Schedules.Add(new Scheduler("Schedule1"));
             SelectedSchedule = Schedules[0];
+            GetCurrentActiveChannels();
+            Connector.ActiveChannels.CollectionChanged += OnActiveChannelsCollectionChanged;
+            
+        }
+
+        private void GetCurrentActiveChannels()
+        {
+            foreach(Channel channel in Connector.ActiveChannels)
+            {
+                if (!Channels.Contains(channel))
+                {
+                    Channels.Add(channel);
+                }
+            }
+        }
+
+        private void OnActiveChannelsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            UpdateChannelsCollection();
+        }
+
+        private void UpdateChannelsCollection()
+        {
+            if (App.Current != null)
+            {
+                App.Current.Dispatcher.Invoke((Action)delegate
+                {
+                    lock (Channels)
+                    {
+                        Channels.Clear();
+                        foreach (Channel channel in Connection.Connector.ActiveChannels)
+                        {
+                            if (channel.IsConnected)
+                            {
+                                if (!Channels.Contains(channel))
+                                    Channels.Add(channel);
+                            }
+                        }
+                    }
+                });
+            }
         }
 
         public void OnLanguageChange()
@@ -54,6 +97,23 @@ namespace MarketTester.ViewModel
             if(InfoTextResourceKey != null)
                 InfoText = App.Current.Resources[InfoTextResourceKey].ToString();
         }
+
+        private bool preEvaluateQuantities;
+
+        public bool PreEvaluateQuantities
+        {
+            get { return preEvaluateQuantities; }
+            set
+            {
+                if(SelectedSchedule != null)
+                {
+                    SelectedSchedule.PreEvaluateReplaceQuantities = value;
+                }
+                preEvaluateQuantities = value;
+                NotifyPropertyChanged(nameof(PreEvaluateQuantities));
+            }
+        }
+
 
         private string textAllocID;
 
@@ -66,6 +126,7 @@ namespace MarketTester.ViewModel
                 NotifyPropertyChanged(nameof(TextAllocID));
             }
         }
+
 
         private string textTag;
         public string TextTag
@@ -429,26 +490,8 @@ namespace MarketTester.ViewModel
         public BaseCommand CommandAddMessageToSchedule { get; set; }
         public void CommandAddMessageToScheduleExecute(object param)
         {
-            if(SelectedChannel == null)
-            {
-                InfoTextResourceKey = ResourceKeys.StringPleaseSelectAChannel;
+            if (!CheckMandatoryFieldsOnMessageAdd())
                 return;
-            }
-            if (string.IsNullOrWhiteSpace(TextAccount))
-            {
-                InfoTextResourceKey = ResourceKeys.StringAccountCantBeEmpty;
-                return;
-            }
-            if (string.IsNullOrWhiteSpace(TextSymbol))
-            {
-                InfoTextResourceKey = ResourceKeys.StringSymbolCantBeEmpty;
-                return;
-            }
-            if (string.IsNullOrWhiteSpace(TextQuantity))
-            {
-                InfoTextResourceKey = ResourceKeys.StringQuantityCantBeEmpty;
-                return;
-            }
             SchedulerRawItem item = SelectedSchedule.PrepareScheduleItem(SelectedMsgType,
                 TextAccount,
                 SelectedSide,
@@ -457,13 +500,46 @@ namespace MarketTester.ViewModel
                 TextQuantity,
                 TextSymbol,
                 (SelectedTimeInForce == TimeInForce.GoodTillDate ? ExpireDate : DateTime.MinValue),
-                TextPrice,
+                (SelectedOrdType == OrdType.Limit ? TextPrice : null),
                 TextAllocID,
                 (SelectedScheduleItem != null && (SelectedMsgType == MsgType.Replace || SelectedMsgType == MsgType.Cancel) ? SelectedScheduleItem.SchedulerOrderID : null),
                 SelectedChannel.Name,
                 TextDelay
                 );
             SelectedSchedule.AddItem(item);
+        }
+
+        private bool CheckMandatoryFieldsOnMessageAdd()
+        {
+            if (SelectedChannel == null)
+            {
+                InfoTextResourceKey = ResourceKeys.StringPleaseSelectAChannel;
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(TextAccount))
+            {
+                InfoTextResourceKey = ResourceKeys.StringAccountCantBeEmpty;
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(TextSymbol))
+            {
+                InfoTextResourceKey = ResourceKeys.StringSymbolCantBeEmpty;
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(TextQuantity))
+            {
+                InfoTextResourceKey = ResourceKeys.StringQuantityCantBeEmpty;
+                return false;
+            }
+            if(SelectedOrdType == OrdType.Limit)
+            {
+                if (string.IsNullOrWhiteSpace(TextPrice))
+                {
+                    InfoTextResourceKey = ResourceKeys.StringPriceCantBeEmptyOnLimit;
+                    return false;
+                }
+            }
+            return true;
         }
         public bool CommandAddMessageToScheduleCanExecute()
         {
@@ -677,23 +753,25 @@ namespace MarketTester.ViewModel
         public BaseCommand CommandSendMessage { get; set; }
         public void CommandSendMessageExecute(object param)
         {
-            //if (SelectedChannel == null)
-            //{
-            //    InfoTextResourceKey = ResourceKeys.StringPleaseSelectAChannel;
-            //    return;
-            //}
-            //if(SelectedMsgType != MsgType.New)
-            //{
-            //    InfoTextResourceKey = ResourceKeys.StringOnlyNewMessage;
-            //    return;
-            //}
-            //Connector connector = Connector.GetInstance();
-            //switch (SelectedMsgType)
-            //{
-            //    case MsgType.New:
-            //        connector.SendMessageNew(new NewMessageParameters(SelectedChannel.ProtocolType,TextAccount))
-
-            //}
+            if (!CheckMandatoryFieldsOnMessageAdd())
+                return;
+            if (SelectedMsgType != MsgType.New)
+            {
+                InfoTextResourceKey = ResourceKeys.StringOnlyNewMessage;
+                return;
+            }
+            Connector connector = Connector.GetInstance();
+            if(SelectedOrdType == OrdType.Limit)
+            {
+                connector.SendMessageNew(SelectedChannel, new NewMessageParameters(SelectedChannel.ProtocolType, TextAccount, TextSymbol,
+                    decimal.Parse(TextQuantity, CultureInfo.InvariantCulture), SelectedSide, SelectedTimeInForce, SelectedOrdType,
+                    decimal.Parse(textPrice, CultureInfo.InvariantCulture)));
+            }
+            else
+            {
+                connector.SendMessageNew(SelectedChannel, new NewMessageParameters(SelectedChannel.ProtocolType, TextAccount, TextSymbol,
+                    decimal.Parse(TextQuantity, CultureInfo.InvariantCulture), SelectedSide, SelectedTimeInForce, SelectedOrdType));
+            }
         }
         public bool CommandSendMessageCanExecute()
         {

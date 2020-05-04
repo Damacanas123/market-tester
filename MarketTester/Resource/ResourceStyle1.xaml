@@ -28,6 +28,24 @@
     <SolidColorBrush x:Key="InactiveRed">#b53737</SolidColorBrush>
     
     
+    <!--Tool tip -->
+    <Style TargetType="ToolTip">
+        <Setter Property="Background" Value="{DynamicResource BackgroundSecondary}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BackgroundTernary}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+        <Setter Property="MaxWidth" Value="300"/>
+        <Style.Resources>
+            <Style TargetType="ContentPresenter">
+                <Style.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="TextWrapping" Value="Wrap" />
+                    </Style>
+                </Style.Resources>
+            </Style>
+        </Style.Resources>
+    </Style>
+
     <!-- CheckBox -->
     <Style TargetType="CheckBox">
         <Setter Property="Background" Value="{DynamicResource BackgroundSecondary}"/>

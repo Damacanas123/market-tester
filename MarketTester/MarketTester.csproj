@@ -28,7 +28,7 @@
     <InstallUrl>\\192.168.108.42\c%24\MATRIKS_OMS\MarketTesterSetup\</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>33</ApplicationRevision>
+    <ApplicationRevision>36</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -169,6 +169,7 @@
     <Compile Include="Events\LanguageChangedEvent.cs" />
     <Compile Include="Events\OnCloseEvent.cs" />
     <Compile Include="Exceptions\DeviceCantBeNull.cs" />
+    <Compile Include="Exceptions\NotSupportedProtocolType.cs" />
     <Compile Include="Exceptions\ParallelRunException.cs" />
     <Compile Include="Exceptions\ShouldNotHappenException.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />

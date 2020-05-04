@@ -190,8 +190,17 @@ namespace MarketTester
         public const string StringCouldntFinishSchedule = "StringCouldntFinishSchedule";
         public const string StringIsSelected = "StringIsSelected";
         public const string StringDelay = "StringDelay";
+        public const string StringMainPage = "StringMainPage";
+        public const string StringReferenceTag = "StringReferenceTag";
+        public const string StringReferenceMsgType = "StringReferenceMsgType";
+        public const string StringSessionRejectReason = "StringSessionRejectReason";
+        public const string StringExpectedThrottling = "StringExpectedThrottling";
+        public const string StringPriceCantBeEmptyOnLimit = "StringPriceCantBeEmptyOnLimit";
+        public const string StringUnsupportedProtocolType = "StringUnsupportedProtocolType";
+        public const string StringInvalidJsonFormat = "StringInvalidJsonFormat";
+        public const string StringFileNotFound = "StringFileNotFound";
+        public const string StringPreEvaluateQuantities = "StringPreEvaluateQuantities";
+        public const string StringPreEvaluateQuantitiesExplanation = "StringPreEvaluateQuantitiesExplanation";
         
-
-
     }
 }

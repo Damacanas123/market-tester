@@ -206,6 +206,7 @@ namespace MarketTester.ViewModel
             SideColor = (SolidColorBrush)Application.Current.Resources[Const.ResourceColorSell];
             Side = Side.Sell;
             UpdateChannelsCollection();
+            GetCurrentActiveChannels();
             Connection.Connector.ActiveChannels.CollectionChanged += OnActiveChannelsCollectionChanged;
             SetDefault();
             Settings.GetInstance().LanguageChangedEventHandler += OnLanguageChanged;
@@ -245,6 +246,17 @@ namespace MarketTester.ViewModel
 
 
         #endregion
+
+        private void GetCurrentActiveChannels()
+        {
+            foreach (Channel channel in Connector.ActiveChannels)
+            {
+                if (!Channels.Contains(channel))
+                {
+                    Channels.Add(channel);
+                }
+            }
+        }
 
         private void OnActiveChannelsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {

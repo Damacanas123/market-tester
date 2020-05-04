@@ -49,18 +49,23 @@ namespace MarketTester.ViewModel
             CommandMoveMessageUp = new BaseCommand(CommandMoveMessageUpExecute, CommandMoveMessageUpCanExecute);
             CommandAddMessageSavedMessages = new BaseCommand(CommandAddMessageSavedMessagesExecute, CommandAddMessageSavedMessagesCanExecute);
             CommandDeleteSavedMessage = new BaseCommand(CommandDeleteSavedMessageExecute, CommandDeleteSavedMessageCanExecute);
+            CommandDeleteSchedule = new BaseCommand(CommandDeleteScheduleExecute, CommandDeleteScheduleCanExecute);
+
 
             if (SavedMessage.SavedMessages.Count == 0)
             {
                 SavedMessage.Load();
             }
-
+            GetCurrentActiveChannels();
             Connection.Connector.ActiveChannels.CollectionChanged += OnActiveChannelsCollectionChanged;
             SelectedSchedule = new FreeFormatSchedule() { Name = "Schedule1" };
             Schedules.Add(SelectedSchedule);
 
             TagValuePairs.Add(new TagValuePair("35", "D"));
         }
+
+        
+
         public ObservableCollection<FreeFormatSchedule> Schedules { get; set; } = new ObservableCollection<FreeFormatSchedule>();
         public ObservableCollection<TagValuePair> TagValuePairs { get; set; } = new ObservableCollection<TagValuePair>();
         public ObservableCollection<Channel> Channels { get; set; } = new ObservableCollection<Channel>();
@@ -88,10 +93,7 @@ namespace MarketTester.ViewModel
             }
         }
 
-        public List<ProtocolType> AvailableProtocols { get; set; } = new List<ProtocolType>()
-        {
-            ProtocolType.Fix50sp2,ProtocolType.Fix44,ProtocolType.Fix42,ProtocolType.Fix40,ProtocolType.Fix41,ProtocolType.Fix43,ProtocolType.Fix50
-        };
+        
 
         
 
@@ -263,6 +265,17 @@ namespace MarketTester.ViewModel
             }
         }
 
+        private void GetCurrentActiveChannels()
+        {
+            foreach (Channel channel in Connector.ActiveChannels)
+            {
+                if (!Channels.Contains(channel))
+                {
+                    Channels.Add(channel);
+                }
+            }
+        }
+
         private void OnActiveChannelsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
              UpdateChannelsCollection();
@@ -292,6 +305,19 @@ namespace MarketTester.ViewModel
 
 
         #region commands 
+
+
+        #region CommandDeleteSchedule
+        public BaseCommand CommandDeleteSchedule { get; set; }
+        public void CommandDeleteScheduleExecute(object param)
+        {
+            Schedules.Remove(SelectedSchedule);
+        }
+        public bool CommandDeleteScheduleCanExecute()
+        {
+            return true;
+        }
+        #endregion
         #region CommandAddTagValuePair
         public BaseCommand CommandAddTagValuePair { get; set; }
         public void CommandAddTagValuePairExecute(object param)
@@ -328,7 +354,8 @@ namespace MarketTester.ViewModel
         public BaseCommand CommandDeleteTagValuePair { get; set; }
         public void CommandDeleteTagValuePairExecute(object param)
         {
-            TagValuePairs.RemoveAt(SelectedTagValuePairIndex);
+            if(SelectedTagValuePairIndex < TagValuePairs.Count && SelectedTagValuePairIndex > -1)
+                TagValuePairs.RemoveAt(SelectedTagValuePairIndex);
         }
         public bool CommandDeleteTagValuePairCanExecute()
         {

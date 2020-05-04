@@ -11,7 +11,7 @@ using MarketTester.Base;
 using MarketTester.Helper;
 namespace MarketTester.Model
 {
-    public class Channel :BaseNotifier
+    public class Channel :BaseNotifier,IEquatable<Channel>
     {
         public BISTCredentialParams credentialParams { get; set; }
         public string ConfigFilePath { get; set; }
@@ -100,6 +100,11 @@ namespace MarketTester.Model
         public override string ToString()
         {
             return this.Name;
+        }
+
+        public bool Equals(Channel other)
+        {
+            return this.Name == other.Name;
         }
     }
 }

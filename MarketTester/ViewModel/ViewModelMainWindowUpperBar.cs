@@ -136,7 +136,7 @@ namespace MarketTester.ViewModel
         public BaseCommand CommandFixFreeFormat { get; set; }
         public void CommandFixFreeFormatExecute(object param)
         {
-            MainWindowStarter.AddTab(new UserControlFixFreeFormat(), ResourceKeys.StringFixFreeFormat, false);
+            MainWindowStarter.AddTab(new UserControlFixFreeFormat(), ResourceKeys.StringFixFreeFormat, true);
         }
         public bool CommandFixFreeFormatCanExecute()
         {
@@ -149,7 +149,7 @@ namespace MarketTester.ViewModel
         public BaseCommand CommandScheduler { get; set; }
         public void CommandSchedulerExecute(object param)
         {
-            MainWindowStarter.AddTab(new UserControlScheduler(), ResourceKeys.StringSchedule, false);
+            MainWindowStarter.AddTab(new UserControlScheduler(), ResourceKeys.StringSchedule, true);
         }
         public bool CommandSchedulerCanExecute()
         {

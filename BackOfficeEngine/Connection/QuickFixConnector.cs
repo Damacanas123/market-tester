@@ -308,6 +308,7 @@ namespace BackOfficeEngine.Connection
             if (overrideSessionTags)
             {
                 Message quickFixMsg = new Message(msg);
+                quickFixMsg.SetField(new TransactTime(DateTime.Now));
                 session?.Send(quickFixMsg);
             }
             else

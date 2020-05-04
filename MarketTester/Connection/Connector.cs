@@ -21,6 +21,9 @@ using BackOfficeEngine.Helper;
 using System.IO;
 using MarketTester.UI.Popup;
 using System.Windows.Controls;
+using FixHelper;
+using MarketTester.Exceptions;
+using System.Windows.Controls.Primitives;
 
 namespace MarketTester.Connection
 {
@@ -44,6 +47,48 @@ namespace MarketTester.Connection
             engine.OnCreateSessionEvent += OnCreateSession;
             engine.SessionMessageRejectEvent += OnSessionMessageReject;
             engine.ApplicationMessageRejectEvent += OnApplicationMessageReject;
+            bool exceptionThrown = false;
+            try
+            {
+                JsonConfig jsonConfig = JsonConfig.GetInstance();
+            }
+            catch(NotSupportedProtocolType ex)
+            {
+                exceptionThrown = true;
+                Util.LogDebugError(ex);
+                UserControlErrorPopup popup = new UserControlErrorPopup(ResourceKeys.StringUnsupportedProtocolType);
+                popup.SetExtraText(ex.Data["data1"].ToString());
+                PopupManager.OpenErrorPopup(popup);
+            }
+            catch(FileFormatException ex)
+            {
+                exceptionThrown = true;
+                Util.LogDebugError(ex);
+                UserControlErrorPopup popup = new UserControlErrorPopup(ResourceKeys.StringInvalidJsonFormat);
+                PopupManager.OpenErrorPopup(popup);
+            }
+            catch(FileNotFoundException ex)
+            {
+                exceptionThrown = true;
+                Util.LogDebugError(ex);
+                UserControlErrorPopup popup = new UserControlErrorPopup(ResourceKeys.StringFileNotFound);
+                popup.SetExtraText(JsonConfig.JSON_CONFIG_PATH);
+                PopupManager.OpenErrorPopup(popup);
+            }
+            catch(Exception ex)
+            {
+                exceptionThrown = true;
+                Util.LogError(ex);
+                UserControlErrorPopup popup = new UserControlErrorPopup(ResourceKeys.StringUnknownErrorOccured);
+                popup.SetExtraText(JsonConfig.JSON_CONFIG_PATH);
+                PopupManager.OpenErrorPopup(popup);
+                
+            }
+            finally
+            {
+                if(exceptionThrown)
+                    Environment.Exit(0);
+            }
             foreach(ConfigFile configFile  in JsonConfig.GetInstance().ConfigFiles)
             {
                 Channel channel = new Channel(configFile.FilePath, configFile.ProtocolType);
@@ -155,8 +200,8 @@ namespace MarketTester.Connection
                 {
                     ch.IsConnectingDisconnecting = false;
                     ch.IsConnected = false;
-                    ActiveChannels.Add(ch);
-                    InactiveChannels.Remove(ch);
+                    ActiveChannels.Remove(ch);
+                    InactiveChannels.Add(ch);
                 }
             }
         }
@@ -200,7 +245,40 @@ namespace MarketTester.Connection
         {   
             string infoMsg = App.Current.Resources[ResourceKeys.StringSession].ToString();
             infoMsg += MessageRejectCommon(args.messageOrigin, args.msg);
+            if (args.msg.IsSetGenericField(Tags.RefTagID))
+            {
+                infoMsg += Environment.NewLine;
+                string value = args.msg.GetGenericField(Tags.RefTagID);
+                string explanation = GetValueExplanation(Tags.RefTagID, value);
+                infoMsg += App.Current.Resources[ResourceKeys.StringReferenceTag] + " : " + (explanation != null ? explanation : "") + $" ({value})" + Environment.NewLine;
+                if (args.msg.IsSetGenericField(Tags.RefMsgType))
+                {
+                    value = args.msg.GetGenericField(Tags.RefMsgType);
+                    explanation = GetValueExplanation(Tags.MsgType, value);
+                    infoMsg += App.Current.Resources[ResourceKeys.StringReferenceMsgType] + " : " + (explanation != null ? explanation : "") + $" ({value})" + Environment.NewLine;
+                }
+            }
+            
+            if (args.msg.IsSetGenericField(Tags.SessionRejectReason))
+            {
+                string value = args.msg.GetGenericField(Tags.SessionRejectReason);
+                string explanation = GetValueExplanation(Tags.SessionRejectReason, value);
+                infoMsg += App.Current.Resources[ResourceKeys.StringSessionRejectReason] + " : " + (explanation != null ? explanation : "") + $" ({value})";
+            }
             InfoManager.PublishInfo(Enumeration.EInfo.Primary, infoMsg);
+        }
+
+        public string GetValueExplanation(int tag,string value)
+        {
+            AllFixTags allFixTags = AllFixTags.GetInstance();
+            if (allFixTags.msgValueMap.TryGetValue(tag, out Dictionary<string, string> valueMap))
+            {
+                if (valueMap.TryGetValue(value, out string explanation))
+                {
+                    return explanation;
+                }
+            }
+            return null;
         }
 
         private void OnApplicationMessageReject(object sender, OnApplicationMessageRejectEventArgs args)
@@ -226,7 +304,7 @@ namespace MarketTester.Connection
             infoMsg += Environment.NewLine + App.Current.Resources[ResourceKeys.StringRejectReason] + Environment.NewLine;
             if (msg.IsSetGenericField(Tags.Text))
             {
-                infoMsg += " " + msg.GetGenericField(Tags.Text);
+                infoMsg += msg.GetGenericField(Tags.Text);
             }
             else
             {

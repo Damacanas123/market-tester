@@ -13,16 +13,16 @@ using BackOfficeEngine.ParamPacker;
 
 using MarketTester.Model;
 using MarketTester.ViewModel.Manager;
+using MarketTester.Exceptions;
 
 namespace MarketTester.Helper
 {
     
     public class JsonConfig
     {
-        private static string SETTINGS_FILEPATH = MarketTesterUtil.APPLICATION_STATIC_DIR + "config.json";
+        public static string JSON_CONFIG_PATH = MarketTesterUtil.APPLICATION_STATIC_DIR + "config.json";
 
         private const string CONFIG_FILES = "ConfigFiles";
-        private const string DATA_REFRESH_RATE = "DataRefreshRate";
         private const string FILE_PATH = "FilePath";
         private const string PROTOCOL_TYPE = "ProtocolType";
         private const string USERNAME = "Username";
@@ -32,7 +32,6 @@ namespace MarketTester.Helper
 
         #region properties
         public List<ConfigFile> ConfigFiles { get; set; } = new List<ConfigFile>();
-        public int DataRefreshRate { get; set; }
         #endregion
         public static JsonConfig GetInstance()
         {
@@ -44,10 +43,10 @@ namespace MarketTester.Helper
         }
         private JsonConfig()
         {
-            if (File.Exists(SETTINGS_FILEPATH))
+            if (File.Exists(JSON_CONFIG_PATH))
             {
                 string configContent = "";
-                using (StreamReader file = new StreamReader(SETTINGS_FILEPATH))
+                using (StreamReader file = new StreamReader(JSON_CONFIG_PATH))
                 {
                     string ln;
 
@@ -59,10 +58,18 @@ namespace MarketTester.Helper
                         }
                     }
                 }
-                Dictionary<string, object> jsonDeserialized = JsonConvert.DeserializeObject<Dictionary<string, object>>(configContent);
+                Dictionary<string, object> jsonDeserialized;
+                try
+                {
+                    jsonDeserialized = JsonConvert.DeserializeObject<Dictionary<string, object>>(configContent);
+                }
+                catch
+                {
+                    throw new FileFormatException();
+                }
+                
                 //Check mandatory fields
                 CheckJsonKey(CONFIG_FILES, jsonDeserialized);
-                CheckJsonKey(DATA_REFRESH_RATE, jsonDeserialized);
                 if (jsonDeserialized.TryGetValue(CONFIG_FILES, out object configFiles))
                 {
                     foreach (JObject configFile in (JArray)configFiles)
@@ -72,30 +79,27 @@ namespace MarketTester.Helper
                         {
                             if (!configFile.ContainsKey(PASSWORD))
                             {
-                                InfoManager.PublishInfo(Enumeration.EInfo.Primary, App.Current.Resources["StringConfigPasswordNotSetWarning"].ToString() + " " + configFile[FILE_PATH]);
+                                InfoManager.PublishInfo(Enumeration.EInfo.Primary, App.Current.Resources[ResourceKeys.StringConfigPasswordNotSetWarning].ToString() + " " + configFile[FILE_PATH]);
                             }
                             else
                             {
                                 credentialParams = new BISTCredentialParams((string)configFile[USERNAME], (string)configFile[PASSWORD]);
                             }
                         }
-                        if(credentialParams != null)
-                        {
-                            ConfigFiles.Add(new ConfigFile((string)configFile[FILE_PATH], ConvertProtocolType((string)configFile[PROTOCOL_TYPE]),
-                            credentialParams));
-                        }
-                        else
-                        {
-                            ConfigFiles.Add(new ConfigFile((string)configFile[FILE_PATH], ConvertProtocolType((string)configFile[PROTOCOL_TYPE])));
-                        }
+                        ConfigFile cfgFile = new ConfigFile((string)configFile[FILE_PATH], ConvertProtocolType((string)configFile[PROTOCOL_TYPE]));
                         
+                        if (credentialParams != null)
+                        {
+                            cfgFile.CredentialParams = credentialParams;
+                        }
+                        ConfigFiles.Add(cfgFile);
+
                     }
                 }
-                DataRefreshRate = int.Parse(jsonDeserialized[DATA_REFRESH_RATE].ToString(), CultureInfo.CurrentCulture);
             }
             else
             {
-                throw new FileNotFoundException($"{SETTINGS_FILEPATH} can't be found");
+                throw new FileNotFoundException($"{JSON_CONFIG_PATH} can't be found");
             }
 
         }
@@ -105,10 +109,22 @@ namespace MarketTester.Helper
             {
                 case MarketTesterUtil.FIX50SP2:
                     return ProtocolType.Fix50sp2;
-                case MarketTesterUtil.OUCH:
-                    return ProtocolType.OUCH;
+                case MarketTesterUtil.FIX40:
+                    return ProtocolType.Fix40;
+                case MarketTesterUtil.FIX41:
+                    return ProtocolType.Fix41;
+                case MarketTesterUtil.FIX42:
+                    return ProtocolType.Fix42;
+                case MarketTesterUtil.FIX43:
+                    return ProtocolType.Fix43;
+                case MarketTesterUtil.FIX44:
+                    return ProtocolType.Fix44;
+                case MarketTesterUtil.FIX50:
+                    return ProtocolType.Fix50;
                 default:
-                    throw new Exception("Unsupported protocol type in config File");
+                    NotSupportedProtocolType ex = new NotSupportedProtocolType("Unsupported protocol type in config File");
+                    ex.Data.Add("data1", protocolTypeString);
+                    throw ex;
             }
         }
 

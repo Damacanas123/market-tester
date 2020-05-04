@@ -19,6 +19,12 @@ namespace MarketTester.Helper
     public class MarketTesterUtil
     {
         public const string FIX50SP2 = "Fix50sp2";
+        public const string FIX50 = "Fix50";
+        public const string FIX40 = "Fix40";
+        public const string FIX41 = "Fix41";
+        public const string FIX42 = "Fix42";
+        public const string FIX43 = "Fix43";
+        public const string FIX44 = "Fix44";
         public const string OUCH = "OUCH";
 
         public const string APP_VERSION = "1.0.0.1";

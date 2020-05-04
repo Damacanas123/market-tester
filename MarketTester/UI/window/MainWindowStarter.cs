@@ -22,7 +22,9 @@ namespace MarketTester.UI.window
             
             TabItem item = new TabItem();
             item.Content = new Usercontrol.MultiContainersUC.UserControlMainContainer();
-            item.Header = "Main Page";
+            TextBlock headerTextBlock = new TextBlock();
+            headerTextBlock.SetResourceReference(TextBlock.TextProperty, ResourceKeys.StringMainPage);
+            item.Header = headerTextBlock;
             tabControl.Items.Add(item);
             window.MainGrid.Children.Add(tabControl);
             System.Windows.Forms.Screen screen = window.GetScreen();

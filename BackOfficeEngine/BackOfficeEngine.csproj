@@ -95,6 +95,7 @@
     <Compile Include="Events\OnSessionMessageRejectEventHandler.cs" />
     <Compile Include="Events\UnknownClOrdIDReceivedEvent.cs" />
     <Compile Include="Exceptions\ConnectorNotPresentException.cs" />
+    <Compile Include="Exceptions\UnSupportedMessageType.cs" />
     <Compile Include="Extensions\QuickFixMessageExtension.cs" />
     <Compile Include="GeneralBase\BaseNotifier.cs" />
     <Compile Include="GlobalSuppressions.cs" />

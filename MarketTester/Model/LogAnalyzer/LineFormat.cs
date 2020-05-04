@@ -33,7 +33,7 @@ namespace MarketTester.Model
         {
             string[] formats = MarketTesterUtil.ReadLines(SaveFilePath);
             Formats.Clear();
-            for(int i = 0; i < formats.Length - 1; i++)
+            for(int i = 0; i < formats.Length; i++)
             {
                 string format = formats[i];
                 int nameEnd = format.IndexOf(SaveDelimiter);

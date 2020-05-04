@@ -16,6 +16,7 @@ using System.Threading;
 using System.Runtime.CompilerServices;
 using System.IO;
 using BackOfficeEngine.Helper;
+using System.Globalization;
 
 namespace MarketTester.ViewModel
 {
@@ -76,6 +77,14 @@ namespace MarketTester.ViewModel
                 else
                 {
                     SecondFilePathVisibility = Visibility.Hidden;
+                }
+                if(value.GetType() == typeof(ThrottlingAnalyzer))
+                {
+                    ThrottlingVisibility = Visibility.Visible;
+                }
+                else
+                {
+                    ThrottlingVisibility = Visibility.Hidden;
                 }
                 selectedAnalyzer = value;
                 NotifyPropertyChanged(nameof(SelectedAnalyzer));
@@ -179,6 +188,34 @@ namespace MarketTester.ViewModel
                 NotifyPropertyChanged(nameof(SecondFilePathVisibility));
             }
         }
+
+        private Visibility throttlingVisibility;
+
+        public Visibility ThrottlingVisibility
+        {
+            get { return throttlingVisibility; }
+            set
+            {
+                throttlingVisibility = value;
+                NotifyPropertyChanged(nameof(ThrottlingVisibility));
+            }
+        }
+
+
+        private string textExpectedThrottling = Const.DefaultExpectedThrottling.ToString(CultureInfo.InvariantCulture);
+
+        public string TextExpectedThrottling
+        {
+            get { return textExpectedThrottling; }
+            set
+            {
+
+                textExpectedThrottling = MarketTesterUtil.RemoveNonNumeric(value);
+                NotifyPropertyChanged(nameof(TextExpectedThrottling));
+            }
+        }
+
+
         private ViewModelLogAnalyzer()
         {
             LineFormat.LoadLineFormats();
@@ -287,6 +324,16 @@ namespace MarketTester.ViewModel
             else
             {
                 SelectedAnalyzer.SetInFilePath(InputFilePath1);
+            }
+            if(SelectedAnalyzer.GetType() == typeof(ThrottlingAnalyzer))
+            {
+                int expectedThrottling = Const.DefaultExpectedThrottling;
+                if (!string.IsNullOrWhiteSpace(TextExpectedThrottling))
+                {
+                    expectedThrottling = int.Parse(TextExpectedThrottling, CultureInfo.InvariantCulture);
+                }
+                ThrottlingAnalyzer analyzer = (ThrottlingAnalyzer)SelectedAnalyzer;
+                analyzer.SetExpectedThrottling(expectedThrottling);
             }
             SelectedAnalyzer.SetOutFilePath(OutFilePath);
             LineFormat format = new LineFormat(Name, Format);

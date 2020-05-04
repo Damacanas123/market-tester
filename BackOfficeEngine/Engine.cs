@@ -110,15 +110,9 @@ namespace BackOfficeEngine
             {
                 throw new Exception("A connection is already configured with the same name. Note that name is the file name without its extension");
             }
-            switch(protocolType)
-            {
-                case ProtocolType.Fix50sp2:
-                    IConnector connector = QuickFixConnector.GetInstance(configFilePath,this);
-                    m_connectors[connector.Name] = connector;
-                    return connector.Name;
-                default:
-                    throw new NotImplementedException("Unimplemented protocol type : " + protocolType);
-            }
+            IConnector connector = QuickFixConnector.GetInstance(configFilePath,this);
+            m_connectors[connector.Name] = connector;
+            return connector.Name;
         }
         public void ConfigureConnection(string connectorName,string configFilePath)
         {

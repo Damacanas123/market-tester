@@ -71,7 +71,7 @@ namespace BackOfficeEngine.Model
             get { return timeInForce; }
             protected set { timeInForce = value; NotifyPropertyChanged(nameof(TimeInForce)); }
         }
-        internal ProtocolType protocolType;
+        internal ProtocolType protocolType { get; set; }
         
         
 
@@ -80,31 +80,23 @@ namespace BackOfficeEngine.Model
         internal static (IMessage, BaseOrder) CreateNewOrder(NewMessageParameters prms, string nonProtocolPseudoID)
         {
             IMessage newOrderMessage;
-            
-            switch (prms.protocolType)
-            {
-                case ProtocolType.Fix50sp2:
-                    newOrderMessage = QuickFixMessage.CreateRequestMessage(MsgType.New);
-                    newOrderMessage.SetClOrdID(ClOrdIdGenerator.Instance.GetNextId());
-                    newOrderMessage.SetAccount(prms.account);
-                    newOrderMessage.SetOrderQty(prms.orderQty);
-                    newOrderMessage.SetOrdType(prms.ordType);
-                    newOrderMessage.SetSymbol(prms.symbol);
-                    newOrderMessage.SetTimeInForce(prms.timeInForce);
-                    newOrderMessage.SetSide(prms.side);
-                    newOrderMessage.SetTransactTime(DateTime.Now);
+            newOrderMessage = QuickFixMessage.CreateRequestMessage(MsgType.New,prms.protocolType);
+            newOrderMessage.SetClOrdID(ClOrdIdGenerator.Instance.GetNextId());
+            newOrderMessage.SetAccount(prms.account);
+            newOrderMessage.SetOrderQty(prms.orderQty);
+            newOrderMessage.SetOrdType(prms.ordType);
+            newOrderMessage.SetSymbol(prms.symbol);
+            newOrderMessage.SetTimeInForce(prms.timeInForce);
+            newOrderMessage.SetSide(prms.side);
+            newOrderMessage.SetTransactTime(DateTime.Now);
                     
-                    switch (prms.price)
-                    {
-                        case decimal.MaxValue:
-                            break;
-                        default:
-                            newOrderMessage.SetPrice(prms.price);
-                            break;
-                    }
+            switch (prms.price)
+            {
+                case decimal.MaxValue:
                     break;
                 default:
-                    throw new NotImplementedException("Unimplemented protocol type : " + prms.protocolType);
+                    newOrderMessage.SetPrice(prms.price);
+                    break;
             }
             BaseOrder order = new BaseOrder(newOrderMessage, nonProtocolPseudoID);
             order.protocolType = prms.protocolType;
@@ -144,56 +136,46 @@ namespace BackOfficeEngine.Model
         internal virtual IMessage PrepareReplaceMessage(ReplaceMessageParameters prms)
         {
             IMessage replaceRequest = null;
-            switch (protocolType)
+            replaceRequest = QuickFixMessage.CreateRequestMessage(MsgType.Replace,protocolType);
+            replaceRequest.SetClOrdID(ClOrdIdGenerator.Instance.GetNextId());
+            replaceRequest.SetOrigClOrdID(clOrdID);
+            switch (prms.orderQty)
             {
-                case ProtocolType.Fix50sp2:
-                    replaceRequest = QuickFixMessage.CreateRequestMessage(MsgType.Replace);
-                    replaceRequest.SetClOrdID(ClOrdIdGenerator.Instance.GetNextId());
-                    replaceRequest.SetOrigClOrdID(clOrdID);
-                    switch (prms.orderQty)
-                    {
-                        case decimal.MaxValue:
-                            break;
-                        default:
-                            replaceRequest.SetOrderQty(prms.orderQty);
-                            break;
-                    }
-                    switch (prms.price)
-                    {
-                        case decimal.MaxValue:
-                            break;
-                        default:
-                            replaceRequest.SetPrice(prms.price);
-                            break;
-                    }
-                    replaceRequest.SetSide(side);
-                    replaceRequest.SetOrdType(ordType);
-                    replaceRequest.SetTransactTime(DateTime.Now);
-                    replaceRequest.SetTransactTime(DateTime.Now);
-                    replaceRequest.SetAccount(account.name);
-                    replaceRequest.SetSymbol(Symbol);
+                case decimal.MaxValue:
+                    break;
+                default:
+                    replaceRequest.SetOrderQty(prms.orderQty);
                     break;
             }
+            switch (prms.price)
+            {
+                case decimal.MaxValue:
+                    break;
+                default:
+                    replaceRequest.SetPrice(prms.price);
+                    break;
+            }
+            replaceRequest.SetSide(side);
+            replaceRequest.SetOrdType(ordType);
+            replaceRequest.SetTransactTime(DateTime.Now);
+            replaceRequest.SetTransactTime(DateTime.Now);
+            replaceRequest.SetAccount(account.name);
+            replaceRequest.SetSymbol(Symbol);
             return replaceRequest;
         }
 
         internal virtual IMessage PrepareCancelMessage()
         {
             IMessage cancelRequest = null;
-            switch (protocolType)
-            {
-                case ProtocolType.Fix50sp2:
-                    cancelRequest = QuickFixMessage.CreateRequestMessage(MsgType.Cancel);
-                    cancelRequest.SetClOrdID(ClOrdIdGenerator.Instance.GetNextId());
-                    cancelRequest.SetOrigClOrdID(clOrdID);
-                    cancelRequest.SetSide(side);
-                    //cancelRequest.SetOrdType(ordType);
-                    cancelRequest.SetOrderQty(orderQty);
-                    cancelRequest.SetTransactTime(DateTime.Now);
-                    cancelRequest.SetAccount(account.name);
-                    cancelRequest.SetSymbol(symbol);
-                    break;
-            }
+            cancelRequest = QuickFixMessage.CreateRequestMessage(MsgType.Cancel,protocolType);
+            cancelRequest.SetClOrdID(ClOrdIdGenerator.Instance.GetNextId());
+            cancelRequest.SetOrigClOrdID(clOrdID);
+            cancelRequest.SetSide(side);
+            //cancelRequest.SetOrdType(ordType);
+            cancelRequest.SetOrderQty(orderQty);
+            cancelRequest.SetTransactTime(DateTime.Now);
+            cancelRequest.SetAccount(account.name);
+            cancelRequest.SetSymbol(symbol);
             return cancelRequest;
         }
     }

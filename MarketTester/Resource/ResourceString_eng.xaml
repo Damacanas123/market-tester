@@ -177,7 +177,16 @@
     <system:String x:Key="StringCouldntFinishSchedule">Couldn't finish schedule.</system:String>
     <system:String x:Key="StringIsSelected">IsSelected</system:String>
     <system:String x:Key="StringDelay">Delay</system:String>
+    <system:String x:Key="StringMainPage">Main Page</system:String>
+    <system:String x:Key="StringReferenceTag">Reference tag</system:String>
+    <system:String x:Key="StringReferenceMsgType">Reference message type</system:String>
+    <system:String x:Key="StringSessionRejectReason">Session reject reason</system:String>
+    <system:String x:Key="StringExpectedThrottling">Expected Throttling</system:String>
+    <system:String x:Key="StringPriceCantBeEmptyOnLimit">Price can't be empty on limit orders.</system:String>
+    <system:String x:Key="StringUnsupportedProtocolType">Protocol type not supported.</system:String>
+    <system:String x:Key="StringInvalidJsonFormat">Invalid json format in configuration file(config.json).</system:String>
+    <system:String x:Key="StringFileNotFound">File not found.</system:String>
+    <system:String x:Key="StringPreEvaluateQuantities">Pre-evaluate quantities.</system:String>
+    <system:String x:Key="StringPreEvaluateQuantitiesExplanation">If you check this box a matcher will be in operation. It will assume the whole market consists of your schedule and calculate execution quantities in order to prepare replace messages to leave open quantities equal to the numbers that you enter</system:String>
     
-
-
 </ResourceDictionary>

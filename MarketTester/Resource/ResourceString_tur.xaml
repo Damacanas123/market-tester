@@ -171,8 +171,19 @@
     <system:String x:Key="StringSymbolCantBeEmpty">Sembol boş olamaz. Eğer sembol göndermek istemiyorsanız serbest format planlyıcıyı kullanın.</system:String>
     <system:String x:Key="StringQuantityCantBeEmpty">Miktar boş olamaz. Eğer miktar göndermek istemiyorsanız serbest format planlyıcıyı kullanın.</system:String>
     <system:String x:Key="StringStartedSchedule">Plana başlandı.</system:String>
-    <system:String x:Key="StringFinishedSchedule">Plana sonlandı.</system:String>
+    <system:String x:Key="StringFinishedSchedule">Plan sonlandı.</system:String>
     <system:String x:Key="StringCouldntFinishSchedule">Plan tamamlanamadı.</system:String>
     <system:String x:Key="StringIsSelected">Seçilmiş?</system:String>
     <system:String x:Key="StringDelay">Gecikme</system:String>
+    <system:String x:Key="StringMainPage">Ana sayfa</system:String>
+    <system:String x:Key="StringReferenceTag">Referans etiket</system:String>
+    <system:String x:Key="StringReferenceMsgType">Referans mesaj tipi</system:String>
+    <system:String x:Key="StringSessionRejectReason">Bağlantı red nedeni</system:String>
+    <system:String x:Key="StringExpectedThrottling">Beklenen Throttling</system:String>
+    <system:String x:Key="StringPriceCantBeEmptyOnLimit">Limit emirlerde fiyat boş olamaz.</system:String>
+    <system:String x:Key="StringUnsupportedProtocolType">Protokol tipi desteklenmiyor.</system:String>
+    <system:String x:Key="StringInvalidJsonFormat">Konfigürasyon dosyasında geçersiz json formatı(config.json).</system:String>
+    <system:String x:Key="StringFileNotFound">Dosya bulunamadı.</system:String>
+    <system:String x:Key="StringPreEvaluateQuantities">Miktarları önceden hesapla.</system:String>
+    <system:String x:Key="StringPreEvaluateQuantitiesExplanation">If you check this box a matcher will be in operation. It will assume the whole market consists of your schedule and calculate execution quantities in order to prepare replace messages to leave open quantities equal to the numbers that you enter</system:String>
 </ResourceDictionary>

@@ -7,7 +7,7 @@ using System.Globalization;
 using QuickFix;
 using QuickFix.Fields;
 using BackOfficeEngine.MessageEnums;
-
+using BackOfficeEngine.Exceptions;
 
 namespace BackOfficeEngine.Model
 {
@@ -39,23 +39,94 @@ namespace BackOfficeEngine.Model
         {
             PreConstructorCommonWork();
         }
-        public static QuickFixMessage CreateRequestMessage(MessageEnums.MsgType msgType)
+        public static QuickFixMessage CreateRequestMessage(MessageEnums.MsgType msgType,ProtocolType protocolType)
         {
             
-            Message msg;
+            Message msg = null;
             switch (msgType)
             {
                 case MessageEnums.MsgType.New:
-                    msg = new QuickFix.FIX50SP2.NewOrderSingle();
+                    switch (protocolType)
+                    {
+                        case ProtocolType.Fix40:
+                            msg = new QuickFix.FIX40.NewOrderSingle();
+                            break;
+                        case ProtocolType.Fix41:
+                            msg = new QuickFix.FIX41.NewOrderSingle();
+                            break;
+                        case ProtocolType.Fix42:
+                            msg = new QuickFix.FIX42.NewOrderSingle();
+                            break;
+                        case ProtocolType.Fix43:
+                            msg = new QuickFix.FIX43.NewOrderSingle();
+                            break;
+                        case ProtocolType.Fix44:
+                            msg = new QuickFix.FIX44.NewOrderSingle();
+                            break;
+                        case ProtocolType.Fix50:
+                            msg = new QuickFix.FIX50.NewOrderSingle();
+                            break;
+                        case ProtocolType.Fix50sp2:
+                            msg = new QuickFix.FIX50SP2.NewOrderSingle();
+                            break;
+                    }
                     break;
                 case MessageEnums.MsgType.Replace:
-                    msg = new QuickFix.FIX50SP2.OrderCancelReplaceRequest();
+                    switch (protocolType)
+                    {
+                        case ProtocolType.Fix40:
+                            msg = new QuickFix.FIX40.OrderCancelReplaceRequest();
+                            break;
+                        case ProtocolType.Fix41:
+                            msg = new QuickFix.FIX41.OrderCancelReplaceRequest();
+                            break;
+                        case ProtocolType.Fix42:
+                            msg = new QuickFix.FIX42.OrderCancelReplaceRequest();
+                            break;
+                        case ProtocolType.Fix43:
+                            msg = new QuickFix.FIX43.OrderCancelReplaceRequest();
+                            break;
+                        case ProtocolType.Fix44:
+                            msg = new QuickFix.FIX44.OrderCancelReplaceRequest();
+                            break;
+                        case ProtocolType.Fix50:
+                            msg = new QuickFix.FIX50.OrderCancelReplaceRequest();
+                            break;
+                        case ProtocolType.Fix50sp2:
+                            msg = new QuickFix.FIX50SP2.OrderCancelReplaceRequest();
+                            break;
+                    }
                     break;
                 case MessageEnums.MsgType.Cancel:
-                    msg = new QuickFix.FIX50SP2.OrderCancelRequest();
+                    switch (protocolType)
+                    {
+                        case ProtocolType.Fix40:
+                            msg = new QuickFix.FIX40.OrderCancelRequest();
+                            break;
+                        case ProtocolType.Fix41:
+                            msg = new QuickFix.FIX41.OrderCancelRequest();
+                            break;
+                        case ProtocolType.Fix42:
+                            msg = new QuickFix.FIX42.OrderCancelRequest();
+                            break;
+                        case ProtocolType.Fix43:
+                            msg = new QuickFix.FIX43.OrderCancelRequest();
+                            break;
+                        case ProtocolType.Fix44:
+                            msg = new QuickFix.FIX44.OrderCancelRequest();
+                            break;
+                        case ProtocolType.Fix50:
+                            msg = new QuickFix.FIX50.OrderCancelRequest();
+                            break;
+                        case ProtocolType.Fix50sp2:
+                            msg = new QuickFix.FIX50SP2.OrderCancelRequest();
+                            break;
+                    }
                     break;
-                default:
-                    throw new ArgumentException("Unsupported message type");
+            }
+            if(msg == null)
+            {
+                throw new UnSupportedMessageType("Unsupported message type");
             }
             return new QuickFixMessage(msg);
         }
