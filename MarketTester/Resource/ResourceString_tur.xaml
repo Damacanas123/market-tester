@@ -186,4 +186,26 @@
     <system:String x:Key="StringFileNotFound">Dosya bulunamadı.</system:String>
     <system:String x:Key="StringPreEvaluateQuantities">Miktarları önceden hesapla.</system:String>
     <system:String x:Key="StringPreEvaluateQuantitiesExplanation">If you check this box a matcher will be in operation. It will assume the whole market consists of your schedule and calculate execution quantities in order to prepare replace messages to leave open quantities equal to the numbers that you enter</system:String>
+    <system:String x:Key="StringToolTipSchedulerDelay">Planlayıcı başlatıldığında her mesaj öncesinde belirtilen milisaniye kadar bekler.</system:String>
+    <system:String x:Key="StringToolTipComboBoxChannels">Bağlı kanallar. Bir kanalın en az bir bağlantısı aktif ise o kanal bağlı sayılır.</system:String>    
+    <system:String x:Key="StringToolTipTextBoxPriceOffset">Fiyat makası uygulamak için girilen değer her mesajın fiyatını belirtilen miktarda değiiştirir. 
+        Devre dışı bırakmak için 0 yazın.</system:String>    
+    <system:String x:Key="StringToolTipTextBoxQuantityMultiplier">Bütün mesajlardaki miktarları belirtilen değerle çarpar. 
+        Borsa tarafında bölünen emirler için kullanışlıdır. Devre dışı bırakmak için 1 yazın.</system:String>
+    <system:String x:Key="StringToolTipDataGridExtraTagValues">Planlayıcıdaki her mesaja eklenmek üzere ekstra etiket-değer ikilileri. 
+        Eğer mesajda varolan bir etiket eklerseniz buraya girdiğiniz değer geçerli olacaktır.</system:String>
+    <system:String x:Key="StringToolTipButtonAddTagValuePair">Etiket-değer ikilisi ekle.</system:String>
+    <system:String x:Key="StringToolTipButtonDeleteTagValuePair">Etiket-değer ikilisi ekle sil.</system:String>
+    <system:String x:Key="StringToolTipButtonClearTagValuePairs">Bütün etiket-değer ikililerini sil.</system:String>
+    <system:String x:Key="StringToolTipCheckBoxOverrideSession">Eğer bu kutucuğu işaretlerseniz FIX motoru bağlantı seviyesi etiketleri otomatik olarak mesaja eklemeyecektir(49,50 gibi). 
+        Bu etiketleri kendiniz oluşturabilirsiniz. Eğer işaretlemezseniz FIX motoru bağlantı seviyesi etiketleri ezecektir, 
+        buraya yazdığınız değerlerin önemi olmayacaktır.</system:String>    
+    <system:String x:Key="StringToolTipButtonStartSchedule">Seçili planı başlat.</system:String>
+    <system:String x:Key="StringToolTipButtonClearSchedule">Seçili planı temizle.</system:String>
+    <system:String x:Key="StringToolTipButtonDeleteSchedule">Seçili planı sil.</system:String>
+    <system:String x:Key="StringToolTipButtonAddSchedule">Plan ekle.</system:String>
+    <system:String x:Key="StringToolTipInfoText">Bilgilendirme.</system:String>
+    <system:String x:Key="StringToolTipButtonMoveMessageUpScheduler">Seçili mesajı yukarı oynatın. Emir düzeltme ilgili emrin yeni emir mesajının, emir iptal ilgili emrin düzeltme ve yeni emir mesajlarının üstüne oynatılamaz.</system:String>
+    <system:String x:Key="StringToolTipButtonMoveMessageDownScheduler">Seçili mesajı aşağı oynatın. Yeni emir mesajı emir ilgili emrin düzeltme ve iptal mesajlarının altına, emir düzeltme ilgili emrin iptal mesajının altına oynatılamaz.</system:String>
+    <system:String x:Key="StringToolTipButtonRemoveItem">Plandan seçili mesajı silin.</system:String>
 </ResourceDictionary>

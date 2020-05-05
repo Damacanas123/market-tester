@@ -9,7 +9,7 @@ namespace BackOfficeEngine.ParamPacker
 {
     public class NewMessageParameters
     {
-        public ProtocolType protocolType;
+        public ProtocolType protocolType { get;set; }
         public string account;
         public string symbol;
         public decimal orderQty;

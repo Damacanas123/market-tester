@@ -8,6 +8,7 @@ using QuickFix;
 using QuickFix.Fields;
 using BackOfficeEngine.MessageEnums;
 using BackOfficeEngine.Exceptions;
+using FixHelper;
 
 namespace BackOfficeEngine.Model
 {
@@ -313,7 +314,14 @@ namespace BackOfficeEngine.Model
 
         public void SetGenericField(int field, string value)
         {
-            SetField(new StringField(field, value));
+            if (AllFixTags.GetInstance().headerTagToObjectMap.ContainsKey(field))
+            {
+                Header.SetField(new StringField(field, value));
+            }
+            else
+            {
+                SetField(new StringField(field, value));
+            }            
         }
 
         public bool IsSetClOrdID()

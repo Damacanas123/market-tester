@@ -641,11 +641,12 @@ namespace MarketTester.ViewModel
         public BaseCommand CommandMoveMessageUp { get; set; }
         public void CommandMoveMessageUpExecute(object param)
         {
-            if(SelectedScheduleItemIndex > 0)
+            if(SelectedScheduleItemIndex < SelectedSchedule.Items.Count && SelectedScheduleItemIndex > 0)
             {
                 FreeFormatScheduleItem temp = SelectedSchedule.Items[SelectedScheduleItemIndex];
                 SelectedSchedule.Items[SelectedScheduleItemIndex] = SelectedSchedule.Items[SelectedScheduleItemIndex - 1];
                 SelectedSchedule.Items[SelectedScheduleItemIndex - 1] = temp;
+                SelectedScheduleItemIndex--;
             }
         }
         public bool CommandMoveMessageUpCanExecute()
@@ -659,11 +660,12 @@ namespace MarketTester.ViewModel
         public BaseCommand CommandMoveMessageDown { get; set; }
         public void CommandMoveMessageDownExecute(object param)
         {
-            if (SelectedScheduleItemIndex < SelectedSchedule.Items.Count - 1)
+            if (SelectedScheduleItemIndex < SelectedSchedule.Items.Count - 1 && SelectedScheduleItemIndex > -1)
             {
                 FreeFormatScheduleItem temp = SelectedSchedule.Items[SelectedScheduleItemIndex];
                 SelectedSchedule.Items[SelectedScheduleItemIndex] = SelectedSchedule.Items[SelectedScheduleItemIndex + 1];
                 SelectedSchedule.Items[SelectedScheduleItemIndex + 1] = temp;
+                SelectedScheduleItemIndex++;
             }
         }
         public bool CommandMoveMessageDownCanExecute()

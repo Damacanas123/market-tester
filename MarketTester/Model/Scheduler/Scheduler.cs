@@ -16,6 +16,7 @@ using BackOfficeEngine.GeneralBase;
 using MarketTester.Model.FixFreeFormat;
 using System.Reflection;
 using BackOfficeEngine.Helper;
+using MarketTester.Exceptions;
 
 namespace MarketTester.Model.Scheduler
 {
@@ -127,16 +128,55 @@ namespace MarketTester.Model.Scheduler
 
         
 
-        public void SwapItem(int index1, int index2)
+        public bool SwapItem(int index1, int index2)
         {
             if (index1 < scheduleRaw.Count ||
                index1 >= 0 ||
                index2 < scheduleRaw.Count ||
                index2 >= 0)
             {
+                SchedulerRawItem upItem;
+                SchedulerRawItem downItem;
+                if (index1 == index2)
+                {
+                    return false;
+                }
+                if(index1 > index2)
+                {
+                    upItem = scheduleRaw[index2];
+                    downItem = scheduleRaw[index1];
+                }
+                else
+                {
+                    upItem = scheduleRaw[index1];
+                    downItem = scheduleRaw[index2];
+                }
+                if(upItem.SchedulerOrderID == downItem.SchedulerOrderID)
+                {
+                    switch (upItem.MsgType)
+                    {
+                        case MsgType.New:
+                            if(downItem.MsgType == MsgType.Replace || downItem.MsgType == MsgType.Cancel)
+                            {
+                                return false;
+                            }
+                            break;
+                        case MsgType.Replace:
+                            if(downItem.MsgType == MsgType.Cancel)
+                            {
+                                return false;
+                            }
+                            break;
+                    }
+                }
                 SchedulerRawItem item1 = scheduleRaw[index1];
                 scheduleRaw[index1] = scheduleRaw[index2];
                 scheduleRaw[index2] = item1;
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
         
@@ -175,16 +215,17 @@ namespace MarketTester.Model.Scheduler
 
                 Engine engine = Engine.GetInstance();
                 IMessage m;string nonProtocolOrderId;
+                Channel channel = Connector.ActiveChannels.FirstOrDefault((o) => o.Name == item.ConnectorName);
                 if (item.MsgType == MsgType.New)
                 {
                     if(item.Price != -1)
                     {
-                        (m,nonProtocolOrderId) = engine.PrepareMessageNew(new NewMessageParameters(item.ProtocolType, item.Account, item.Symbol,
+                        (m,nonProtocolOrderId) = engine.PrepareMessageNew(new NewMessageParameters(channel.ProtocolType, item.Account, item.Symbol,
                                                                        item.OrderQty, item.Side, item.TimeInForce, item.OrdType, item.Price),item.ConnectorName);
                     }                    
                     else
                     {
-                        (m,nonProtocolOrderId) = engine.PrepareMessageNew(new NewMessageParameters(item.ProtocolType, item.Account, item.Symbol,
+                        (m,nonProtocolOrderId) = engine.PrepareMessageNew(new NewMessageParameters(channel.ProtocolType, item.Account, item.Symbol,
                                                                        item.OrderQty, item.Side, item.TimeInForce, item.OrdType),item.ConnectorName);
                     }
                     if(item.ExpireDate != DateTime.MinValue)

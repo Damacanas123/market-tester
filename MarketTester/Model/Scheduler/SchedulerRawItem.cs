@@ -50,20 +50,6 @@ namespace MarketTester.Model.Scheduler
             }
         }
 
-        private ProtocolType protocolType;
-
-        public ProtocolType ProtocolType
-        {
-            get { return protocolType; }
-            set
-            {
-                protocolType = value;
-                NotifyPropertyChanged(nameof(ProtocolType));
-            }
-        }
-
-
-
         private string schedulerOrderID;
         public string SchedulerOrderID
         {

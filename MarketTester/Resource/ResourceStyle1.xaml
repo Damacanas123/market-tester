@@ -26,6 +26,7 @@
     <Color x:Key="ActiveYellowColor">#ffcf44</Color>
     <SolidColorBrush x:Key="ActiveGreen">#149414</SolidColorBrush>
     <SolidColorBrush x:Key="InactiveRed">#b53737</SolidColorBrush>
+    <sys:Int32 x:Key="ToolTipDuration">100000</sys:Int32>
     
     
     <!--Tool tip -->
@@ -51,6 +52,7 @@
         <Setter Property="Background" Value="{DynamicResource BackgroundSecondary}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource BackgroundTernary}"/>
         <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
+        <Setter Property="ToolTipService.ShowDuration" Value="{StaticResource ToolTipDuration}"/>
     </Style>
     
     
@@ -68,6 +70,7 @@
         <Setter Property="IsSynchronizedWithCurrentItem" Value="True"/>
         <Setter Property="CanUserAddRows" Value="False"/>
         <Setter Property="CanUserDeleteRows" Value="False"/>
+        <Setter Property="ToolTipService.ShowDuration" Value="{StaticResource ToolTipDuration}"/>
     </Style>
 
     <Style TargetType="{x:Type DataGridCell}">
@@ -146,6 +149,7 @@
     </Style>-->
 
     <Style TargetType="MenuItem">
+        <Setter Property="ToolTipService.ShowDuration" Value="{StaticResource ToolTipDuration}"/>
         <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
         <Setter Property="Background" Value="{DynamicResource BackgroundSecondary}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource BackgroundTernary}"/>
@@ -162,6 +166,7 @@
                 <Setter Property="Background" Value="LightSlateGray"/>
             </Trigger>
         </Style.Triggers>
+        
     </Style>
 
     <!--Sroll Bar -->
@@ -359,12 +364,14 @@
         <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+        <Setter Property="ToolTipService.ShowDuration" Value="{StaticResource ToolTipDuration}"/>
     </Style>
 
     <!-- ListView -->
     <Style TargetType="{x:Type ListView}">
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="ToolTipService.ShowDuration" Value="{StaticResource ToolTipDuration}"/>
     </Style>
 
     <!--<Style TargetType="ListViewItem">
@@ -389,6 +396,7 @@
         <Setter Property="Height" Value="30"/>
         <Setter Property="Margin" Value="5,0,5,0"/>
         <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+        <Setter Property="ToolTipService.ShowDuration" Value="{StaticResource ToolTipDuration}"/>
     </Style>
 
     <!-- Button Style-->
@@ -399,6 +407,7 @@
         <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
         <Setter Property="Height" Value="30"/>
         <Setter Property="Width" Value="100"/>
+        <Setter Property="ToolTipService.ShowDuration" Value="{StaticResource ToolTipDuration}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -449,9 +458,11 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Setter Property="ToolTipService.ShowDuration" Value="{StaticResource ToolTipDuration}"/>
     </Style>
 
     <Style x:Key="ButtonSwitchSide" TargetType="Button">
+        <Setter Property="ToolTipService.ShowDuration" Value="{StaticResource ToolTipDuration}"/>
         <Setter Property="Background" Value="{Binding SideColor}"/>
         <Setter Property="Command" Value="{Binding CommandSwitchSide}"/>
         <Setter Property="Template">
@@ -490,6 +501,7 @@
 
     <!-- RadioButton Style-->
     <Style x:Key="RadioButtonGeneral" TargetType="{x:Type RadioButton}">
+        <Setter Property="ToolTipService.ShowDuration" Value="{StaticResource ToolTipDuration}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type RadioButton}">
@@ -564,6 +576,7 @@
     </ControlTemplate>
 
     <Style x:Key="{x:Type ComboBox}" TargetType="{x:Type ComboBox}">
+        <Setter Property="ToolTipService.ShowDuration" Value="{StaticResource ToolTipDuration}"/>
         <Setter Property="SnapsToDevicePixels" Value="true"/>
         <Setter Property="OverridesDefaultStyle" Value="true"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
@@ -689,17 +702,20 @@
     
     <!-- Label Style -->
     <Style TargetType="Label">
+        <Setter Property="ToolTipService.ShowDuration" Value="{StaticResource ToolTipDuration}"/>
         <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
     </Style>
     
     
     <!-- TabControl -->
     <Style TargetType="TabControl">
+        <Setter Property="ToolTipService.ShowDuration" Value="{StaticResource ToolTipDuration}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="{DynamicResource BackgroundSecondary}"/>
     </Style>
 
     <Style TargetType="TabItem">
+        <Setter Property="ToolTipService.ShowDuration" Value="{StaticResource ToolTipDuration}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TabItem">

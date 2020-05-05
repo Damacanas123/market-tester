@@ -201,6 +201,25 @@ namespace MarketTester
         public const string StringFileNotFound = "StringFileNotFound";
         public const string StringPreEvaluateQuantities = "StringPreEvaluateQuantities";
         public const string StringPreEvaluateQuantitiesExplanation = "StringPreEvaluateQuantitiesExplanation";
-        
+
+        public const string StringToolTipSchedulerDelay = "StringToolTipSchedulerDelay";
+        public const string StringToolTipComboBoxChannels = "StringToolTipComboBoxChannels";
+        public const string StringToolTipTextBoxPriceOffset = "StringToolTipTextBoxPriceOffset";
+        public const string StringToolTipTextBoxQuantityMultiplier = "StringToolTipTextBoxQuantityMultiplier";
+        public const string StringToolTipDataGridExtraTagValues = "StringToolTipDataGridExtraTagValues";
+        public const string StringToolTipButtonAddTagValuePair = "StringToolTipButtonAddTagValuePair";
+        public const string StringToolTipButtonDeleteTagValuePair = "StringToolTipButtonDeleteTagValuePair";
+        public const string StringToolTipButtonClearTagValuePairs = "StringToolTipButtonClearTagValuePairs";
+        public const string StringToolTipCheckBoxOverrideSession = "StringToolTipCheckBoxOverrideSession";
+        public const string StringToolTipButtonStartSchedule = "StringToolTipButtonStartSchedule";
+        public const string StringToolTipButtonClearSchedule = "StringToolTipButtonClearSchedule";
+        public const string StringToolTipButtonDeleteSchedule = "StringToolTipButtonDeleteSchedule";
+        public const string StringToolTipButtonAddSchedule = "StringToolTipButtonAddSchedule";
+        public const string StringToolTipInfoText = "StringToolTipInfoText";
+        public const string StringToolTipButtonMoveMessageUpScheduler = "StringToolTipButtonMoveMessageUpScheduler";
+        public const string StringToolTipButtonMoveMessageDownScheduler = "StringToolTipButtonMoveMessageDownScheduler";
+        public const string StringToolTipButtonRemoveItem = "StringToolTipButtonRemoveItem";
+
+
     }
 }

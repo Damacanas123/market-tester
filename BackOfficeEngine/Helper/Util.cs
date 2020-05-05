@@ -132,6 +132,31 @@ namespace BackOfficeEngine.Helper
             return temp;
         }
 
+        public static string RemoveNonNumericKeepDotAndDash(string s)
+        {
+            string temp = "";
+            bool isDotPresent = false;
+            for (int i = 0; i < s.Length; i++)
+            {
+                char c = s[i];
+                          
+                if (c <= '9' && c >= '0')
+                {
+                    temp += c;
+                }
+                else if (c == '.' && !isDotPresent)
+                {
+                    temp += c;
+                    isDotPresent = true;
+                }
+                else if (i == 0 && c == '-')
+                {
+                    temp += c;
+                }
+            }
+            return temp;
+        }
+
         public static void CopyDirectoryAndSubDirectoriesToApplicationCommonPath(string dir)
         {
             if (!Directory.Exists(Util.APPLICATION_COMMON_DIR + dir))

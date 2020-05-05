@@ -188,5 +188,24 @@
     <system:String x:Key="StringFileNotFound">File not found.</system:String>
     <system:String x:Key="StringPreEvaluateQuantities">Pre-evaluate quantities.</system:String>
     <system:String x:Key="StringPreEvaluateQuantitiesExplanation">If you check this box a matcher will be in operation. It will assume the whole market consists of your schedule and calculate execution quantities in order to prepare replace messages to leave open quantities equal to the numbers that you enter</system:String>
+    <system:String x:Key="StringToolTipSchedulerDelay">Scheduler will wait specified amount of milliseconds before sending next message when schedule is running.</system:String>
+    <system:String x:Key="StringToolTipComboBoxChannels">Connected channels. A channel is considered connected if at least one of its sessions is connected.</system:String>
+    <system:String x:Key="StringToolTipTextBoxPriceOffset">Apply a price offset to all orders in the schedule. If you don't want to apply an offset leave this 0.</system:String>
+    <system:String x:Key="StringToolTipTextBoxQuantityMultiplier">Multiply every quantity with this amount. Useful when testing orders that are splitted at the sell side. Leave this 1 if you don't want a change.</system:String>
+    <system:String x:Key="StringToolTipDataGridExtraTagValues">Extra tag-value pairs that will be set for each message on the schedule. If you enter tag which is existent in the message the value you write here will be applied.</system:String>
+    <system:String x:Key="StringToolTipButtonAddTagValuePair">Add tag value pair.</system:String>
+    <system:String x:Key="StringToolTipButtonDeleteTagValuePair">Delete selected tag value pair.</system:String>
+    <system:String x:Key="StringToolTipButtonClearTagValuePairs">Delete all tag value pairs.</system:String>
+    <system:String x:Key="StringToolTipCheckBoxOverrideSession">If you check this box FIX engine will not automatically put session tags like 49,50 etc. 
+        You should manually give those tags. If this is unchecked even if you set session tags they will be overriden by fix engine.</system:String>
+    <system:String x:Key="StringToolTipButtonStartSchedule">Start selected schedule.</system:String>
+    <system:String x:Key="StringToolTipButtonClearSchedule">Clear selected schedule.</system:String>
+    <system:String x:Key="StringToolTipButtonDeleteSchedule">Delete selected schedule.</system:String>
+    <system:String x:Key="StringToolTipButtonAddSchedule">Add new schedule.</system:String>
+    <system:String x:Key="StringToolTipInfoText">Info text.</system:String>
+    <system:String x:Key="StringToolTipButtonMoveMessageUpScheduler">Move selected message up in scheduler. A Replace request can't be moved up the corresponding NewOrderSingle message and a Cancel request can't be moved up corresponding Replace or NewOrderSingle messages.</system:String>
+    <system:String x:Key="StringToolTipButtonMoveMessageDownScheduler">Move selected message down. A NewOrderSingle can't be moved down to Replace request and Cancel request. A Replace request can't be moved down to corresponding Cancel Request.</system:String>
+    <system:String x:Key="StringToolTipButtonRemoveItem">Remove selected item from schedule.</system:String>
+    
     
 </ResourceDictionary>

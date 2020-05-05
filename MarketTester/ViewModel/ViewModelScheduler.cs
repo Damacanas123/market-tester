@@ -44,6 +44,9 @@ namespace MarketTester.ViewModel
             CommandSaveFile = new BaseCommand(CommandSaveFileExecute, CommandSaveFileCanExecute);
             CommandLoadFile = new BaseCommand(CommandLoadFileExecute, CommandLoadFileCanExecute);
             CommandSendMessage = new BaseCommand(CommandSendMessageExecute, CommandSendMessageCanExecute);
+            CommandMoveMessageUp = new BaseCommand(CommandMoveMessageUpExecute, CommandMoveMessageUpCanExecute);
+            CommandMoveMessageDown = new BaseCommand(CommandMoveMessageDownExecute, CommandMoveMessageDownCanExecute);
+
 
             Settings.GetInstance().LanguageChangedEventHandler += OnLanguageChange;
 
@@ -399,7 +402,7 @@ namespace MarketTester.ViewModel
             get { return textPriceOffset; }
             set
             {
-                textPriceOffset = Util.RemoveNonNumericKeepDot(value);
+                textPriceOffset = Util.RemoveNonNumericKeepDotAndDash(value);
                 NotifyPropertyChanged(nameof(TextPriceOffset));
             }
         }
@@ -683,7 +686,7 @@ namespace MarketTester.ViewModel
         }
         #endregion
 
-        private const string FileFormat = "fs";
+        private const string FileFormat = "sche";
         private static string ScheduleSaveFileDelimeter = $"sdfedbsfgdwrgs{Environment.NewLine}";
         #region CommandSaveFile
         public BaseCommand CommandSaveFile { get; set; }
@@ -774,6 +777,39 @@ namespace MarketTester.ViewModel
             }
         }
         public bool CommandSendMessageCanExecute()
+        {
+            return true;
+        }
+        #endregion
+
+        #region CommandMoveMessageUp
+        public BaseCommand CommandMoveMessageUp { get; set; }
+        public void CommandMoveMessageUpExecute(object param)
+        {
+            if (SelectedScheduleItemIndex < SelectedSchedule.scheduleRaw.Count && SelectedScheduleItemIndex > 0)
+            {
+                if(SelectedSchedule.SwapItem(SelectedScheduleItemIndex, SelectedScheduleItemIndex - 1))
+                    SelectedScheduleItemIndex--;
+            }
+        }
+        public bool CommandMoveMessageUpCanExecute()
+        {
+            return true;
+        }
+        #endregion
+
+
+        #region CommandMoveMessageDown
+        public BaseCommand CommandMoveMessageDown { get; set; }
+        public void CommandMoveMessageDownExecute(object param)
+        {
+            if (SelectedScheduleItemIndex < SelectedSchedule.scheduleRaw.Count - 1 && SelectedScheduleItemIndex > -1)
+            {
+                if(SelectedSchedule.SwapItem(SelectedScheduleItemIndex, SelectedScheduleItemIndex + 1))
+                    SelectedScheduleItemIndex++;
+            }
+        }
+        public bool CommandMoveMessageDownCanExecute()
         {
             return true;
         }
