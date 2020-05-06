@@ -17,10 +17,12 @@ namespace BackOfficeEngine.Connection
 
         void OnCreateSession(IConnector connector, string sessionID);
 
-        void EnqueueMessage(IConnector connector, IMessage msg);
+        void EnqueueMessageThatContainsClOrdID(IConnector connector, IMessage msg);
 
         void OnSessionMessageReject(IConnector connector, IMessage msg, MessageOrigin messageOrigin);
 
         void OnApplicationMessageReject(IConnector connector, IMessage msg, MessageOrigin messageOrigin);
+
+        void OnMessage(string message, string connectionName,string sessionID);
     }
 }

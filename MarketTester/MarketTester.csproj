@@ -162,6 +162,7 @@
     <Compile Include="Converters\BoolInveter.cs" />
     <Compile Include="Converters\DoubleConverter.cs" />
     <Compile Include="Converters\FixStringConverter.cs" />
+    <Compile Include="Converters\MessageTypeColorConverter.cs" />
     <Compile Include="Converters\RadioButtonOrdTypeConverter.cs" />
     <Compile Include="Converters\SideConverter.cs" />
     <Compile Include="Enumeration\EInfo.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="Model\ConfigFile.cs" />
     <Compile Include="Model\FixFreeFormat\FreeFormatSchedule.cs" />
     <Compile Include="Model\FixFreeFormat\FreeFormatScheduleItem.cs" />
+    <Compile Include="Model\FixFreeFormat\LogSession.cs" />
     <Compile Include="Model\FixFreeFormat\SavedMessage.cs" />
     <Compile Include="Model\FixFreeFormat\TagValuePair.cs" />
     <Compile Include="Model\LogAnalyzer\LineFormat.cs" />

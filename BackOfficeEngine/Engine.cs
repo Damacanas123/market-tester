@@ -33,6 +33,7 @@ namespace BackOfficeEngine
         public event UnknownClOrdIDReceivedEventHandler UnknownClOrdIDReceivedEvent;
         public event OnSessionMessageRejectEventHandler SessionMessageRejectEvent;
         public event OnApplicationMessageRejectEventHandler ApplicationMessageRejectEvent;
+        public event OnMessageEventHandler OnMessageEvent;
         #endregion
 
         
@@ -229,7 +230,7 @@ namespace BackOfficeEngine
             OnCreateSessionEvent?.Invoke(this, new OnCreateSessionEventArgs(connector.Name, sessionID));
         }
 
-        void IConnectorSubscriber.EnqueueMessage(IConnector connector, IMessage msg)
+        void IConnectorSubscriber.EnqueueMessageThatContainsClOrdID(IConnector connector, IMessage msg)
         {
             m_messageQueue.Enqueue((msg, connector.Name));
         }
@@ -297,6 +298,11 @@ namespace BackOfficeEngine
         void IConnectorSubscriber.OnApplicationMessageReject(IConnector connector, IMessage msg, MessageOrigin messageOrigin)
         {
             ApplicationMessageRejectEvent?.Invoke(this, new OnApplicationMessageRejectEventArgs(msg, messageOrigin));
+        }
+
+        public void OnMessage(string message, string connectionName,string sessionID)
+        {
+            OnMessageEvent?.Invoke(this, new OnMessageEventArgs(message,connectionName, sessionID));
         }
     }
 }

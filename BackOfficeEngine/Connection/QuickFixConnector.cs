@@ -29,7 +29,7 @@ namespace BackOfficeEngine.Connection
         private const string SessionQualifierRD = "RD";
         private const string SessionQualifierDC1 = "DC1";
         private const string SessionQualifierDC2 = "DC2";
-        private ConcurrentQueue<Message> m_messageQueue = new ConcurrentQueue<Message>();
+        private ConcurrentQueue<(Message,SessionID)> m_messageQueue = new ConcurrentQueue<(Message, SessionID)>();
         private BISTCredentialParams CredentialParams { get; set; }
 
         public List<IConnectorSubscriber> subscribers { get; }
@@ -43,34 +43,44 @@ namespace BackOfficeEngine.Connection
             {
                 while (true)
                 {
-                    while(m_messageQueue.TryDequeue(out Message m))
+                    
+                    while(m_messageQueue.TryDequeue(out var pair))
                     {
-                        //in order not to enqueue messages that lack CLordId and OrigClOrdID that may be sent from free format scheduler
-                        if (!m.Header.IsSetField(Tags.MsgType))
-                            continue;
-                        string msgType = m.Header.GetField(Tags.MsgType);
-                        if(msgType == MsgType.NEWORDERSINGLE)
+                        Message m = pair.Item1;
+                        SessionID sessionID = pair.Item2;
+                        foreach(IConnectorSubscriber subscriber in subscribers)
                         {
-                            if (!m.IsSetField(Tags.ClOrdID))
-                                continue;
+                            subscriber.OnMessage(m.ToString(),this.Name, sessionID.ToString());
                         }
-                        else if(msgType == MsgType.ORDERCANCELREPLACEREQUEST || msgType == MsgType.ORDER_CANCEL_REQUEST)
+                        if (m.IsSetField(Tags.ClOrdID))
                         {
-                            if (!(m.IsSetField(Tags.ClOrdID) && m.IsSetField(Tags.OrigClOrdID)))
+                            //in order not to enqueue messages that lack CLordId and OrigClOrdID that may be sent from free format scheduler
+                            if (!m.Header.IsSetField(Tags.MsgType))
                                 continue;
-                        }
-                        //in order not to enqueue messages that lack CLordId and OrigClOrdID that may be sent from free format scheduler
-                        foreach (IConnectorSubscriber subscriber in subscribers)
-                        {
-                            IMessage msg = new QuickFixMessage(m);
-                            msg.SendTime = m.GetSendTime();
-                            msg.ReceiveTime = m.GetReceiveTime();
-                            subscriber.EnqueueMessage(this, msg);
-                            if (msg.GetMsgType() == MessageEnums.MsgType.Reject)
+                            string msgType = m.Header.GetField(Tags.MsgType);
+                            if (msgType == MsgType.NEWORDERSINGLE)
                             {
-                                subscriber.OnApplicationMessageReject(this, msg, MessageEnums.MessageOrigin.Outbound);
+                                if (!m.IsSetField(Tags.ClOrdID))
+                                    continue;
                             }
-                        }
+                            else if (msgType == MsgType.ORDERCANCELREPLACEREQUEST || msgType == MsgType.ORDER_CANCEL_REQUEST)
+                            {
+                                if (!(m.IsSetField(Tags.ClOrdID) && m.IsSetField(Tags.OrigClOrdID)))
+                                    continue;
+                            }
+                            //in order not to enqueue messages that lack CLordId and OrigClOrdID that may be sent from free format scheduler
+                            foreach (IConnectorSubscriber subscriber in subscribers)
+                            {
+                                IMessage msg = new QuickFixMessage(m);
+                                msg.SendTime = m.GetSendTime();
+                                msg.ReceiveTime = m.GetReceiveTime();
+                                subscriber.EnqueueMessageThatContainsClOrdID(this, msg);
+                                if (msg.GetMsgType() == MessageEnums.MsgType.Reject)
+                                {
+                                    subscriber.OnApplicationMessageReject(this, msg, MessageEnums.MessageOrigin.Outbound);
+                                }
+                            }
+                        }                        
                     }
                     Thread.Sleep(500);
                 }
@@ -132,6 +142,7 @@ namespace BackOfficeEngine.Connection
         void IApplication.FromAdmin(Message message, SessionID sessionID)
         {
             message.SetReceiveTime(DateTime.Now);
+            m_messageQueue.Enqueue((message, sessionID));
             if (message.Header.GetField(Tags.MsgType) == MsgType.REJECT)
             {
                 IMessage msg = new QuickFixMessage(message);
@@ -144,12 +155,8 @@ namespace BackOfficeEngine.Connection
 
         void IApplication.FromApp(Message message, SessionID sessionID)
         {
-            message.SetReceiveTime(DateTime.Now);
-            
-            if (message.IsSetField(Tags.ClOrdID))
-            {                
-                m_messageQueue.Enqueue(message);
-            }
+            message.SetReceiveTime(DateTime.Now);            
+            m_messageQueue.Enqueue((message,sessionID));
             if (sessionID.SessionQualifier == SessionQualifierRD)
             {
                 if (message.Header.GetField(Tags.MsgType) == MsgType.SECURITYDEFINITION)
@@ -207,6 +214,7 @@ namespace BackOfficeEngine.Connection
 
         void IApplication.ToAdmin(Message message, SessionID sessionID)
         {
+            m_messageQueue.Enqueue((message, sessionID));
             if(message.Header.GetField(Tags.MsgType) == MsgType.LOGON && CredentialParams != null)
             {
                 message.SetField(new Username(CredentialParams.Username));
@@ -228,10 +236,7 @@ namespace BackOfficeEngine.Connection
 
         void IApplication.ToApp(Message message, SessionID sessionId)
         {
-            if (message.IsSetField(Tags.ClOrdID))
-            {
-                m_messageQueue.Enqueue(message);
-            }
+            m_messageQueue.Enqueue((message,sessionId));
             //comment ou for performance reasons for scheduler
             //IMessage msg = new QuickFixMessage(message);
             //if (msg.GetMsgType() == MessageEnums.MsgType.Reject)

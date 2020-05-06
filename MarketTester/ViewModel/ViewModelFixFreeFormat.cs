@@ -22,11 +22,14 @@ using MarketTester.UI.Popup;
 using System.IO;
 using System.Windows;
 using MarketTester.Connection;
+using BackOfficeEngine.Events;
+using BackOfficeEngine.Model;
 
 namespace MarketTester.ViewModel
 {
     public class ViewModelFixFreeFormat :BaseNotifier
     {
+        
         
         public ViewModelFixFreeFormat()
         {
@@ -50,7 +53,9 @@ namespace MarketTester.ViewModel
             CommandAddMessageSavedMessages = new BaseCommand(CommandAddMessageSavedMessagesExecute, CommandAddMessageSavedMessagesCanExecute);
             CommandDeleteSavedMessage = new BaseCommand(CommandDeleteSavedMessageExecute, CommandDeleteSavedMessageCanExecute);
             CommandDeleteSchedule = new BaseCommand(CommandDeleteScheduleExecute, CommandDeleteScheduleCanExecute);
+            CommandClearLog = new BaseCommand(CommandClearLogExecute, CommandClearLogCanExecute);
 
+            Engine.GetInstance().OnMessageEvent += OnMessage;
 
             if (SavedMessage.SavedMessages.Count == 0)
             {
@@ -62,13 +67,81 @@ namespace MarketTester.ViewModel
             Schedules.Add(SelectedSchedule);
 
             TagValuePairs.Add(new TagValuePair("35", "D"));
+            LogMessageUpdateLoopStart();
+
         }
 
-        
 
+        private void LogMessageUpdateLoopStart()
+        {
+            Util.ThreadStart(() =>
+            {
+                while (IsPageActive)
+                {
+                    if (LogMessagesBacking.Count != 0)
+                    {
+                        LogMessages.SupressNotification = true;
+                        lock (LogMessagesBacking)
+                        {
+                            foreach (string msg in LogMessagesBacking)
+                            {
+                                LogMessages.Add(msg);
+                            }
+                            LogMessagesBacking.Clear();
+                        }                        
+                        App.Invoke(() =>
+                        {
+                            LogMessages.SupressNotification = false;
+                            if(IsAutoScroll)
+                                View.ListViewLog.ScrollIntoView(LogMessages.Last());
+                        });
+                    }
+                    Thread.Sleep(1000);
+                }
+            });
+        }
+
+        private void OnMessage(object sender,OnMessageEventArgs args)
+        {
+            if(SelectedLogChannel != null && args.connectionName == SelectedLogChannel.Name)
+            {
+                LogSession s = ActiveSessions.FirstOrDefault((o) => o.SessionID == args.sessionID);
+                if (s != null && s.IsChecked)
+                {
+                    lock (LogMessagesBacking)
+                    {
+                        LogMessagesBacking.Add(args.msg);
+                    }
+                    
+                }
+            }
+        }
+
+        //instead of writing extra code for auto scroll down in log history i do this. ViewModel should not be aware of its view is garbage in this case because 
+        //at logic level ViewModel and View are tightly coupled. You will never ever create another view for FreeFormatScheduling.
+        public UserControlFixFreeFormat View { get; set; }
+        private bool IsPageActive { get; set; } = true;
         public ObservableCollection<FreeFormatSchedule> Schedules { get; set; } = new ObservableCollection<FreeFormatSchedule>();
         public ObservableCollection<TagValuePair> TagValuePairs { get; set; } = new ObservableCollection<TagValuePair>();
         public ObservableCollection<Channel> Channels { get; set; } = new ObservableCollection<Channel>();
+        public ObservableCollection<Channel> LogChannels { get; set; } = new ObservableCollection<Channel>();
+        public ObservableCollection<LogSession> ActiveSessions { get; set; } = new ObservableCollection<LogSession>();
+        public List<string> LogMessagesBacking { get; set; } = new List<string>();
+        public ObservableCollectionEx<string> LogMessages { get; set; } = new ObservableCollectionEx<string>();
+
+
+        private bool isAutoScroll;
+
+        public bool IsAutoScroll
+        {
+            get { return isAutoScroll; }
+            set
+            {
+                isAutoScroll = value;
+                NotifyPropertyChanged(nameof(IsAutoScroll));
+            }
+        }
+
 
         private bool overrideSessionTags;
 
@@ -108,6 +181,27 @@ namespace MarketTester.ViewModel
                 NotifyPropertyChanged(nameof(SelectedChannel));
             }
         }
+
+        private Channel selectedLogChannel;
+
+        public Channel SelectedLogChannel
+        {
+            get { return selectedLogChannel; }
+            set
+            {
+                ActiveSessions.Clear();
+                if(value != null)
+                {
+                    foreach (string activeSession in value.ActiveSessions)
+                    {
+                        ActiveSessions.Add(new LogSession() { IsChecked = true, SessionID = activeSession });
+                    }
+                }                
+                selectedLogChannel = value;
+                NotifyPropertyChanged(nameof(SelectedLogChannel));
+            }
+        }
+
 
         private FreeFormatScheduleItem selectedScheduleItem;
 
@@ -273,6 +367,10 @@ namespace MarketTester.ViewModel
                 {
                     Channels.Add(channel);
                 }
+                if (!LogChannels.Contains(channel))
+                {
+                    LogChannels.Add(channel);
+                }
             }
         }
 
@@ -296,6 +394,18 @@ namespace MarketTester.ViewModel
                             {
                                 if (!Channels.Contains(channel))
                                     Channels.Add(channel);
+                            }
+                        }
+                    }
+                    lock (LogChannels)
+                    {
+                        LogChannels.Clear();
+                        foreach (Channel channel in Connection.Connector.ActiveChannels)
+                        {
+                            if (channel.IsConnected)
+                            {
+                                if (!LogChannels.Contains(channel))
+                                    LogChannels.Add(channel);
                             }
                         }
                     }
@@ -721,8 +831,22 @@ namespace MarketTester.ViewModel
         }
         #endregion
 
-
-
+        #region CommandClearLog
+        public BaseCommand CommandClearLog { get; set; }
+        public void CommandClearLogExecute(object param)
+        {
+            LogMessages.Clear();
+        }
+        public bool CommandClearLogCanExecute()
+        {
+            return true;
+        }
         #endregion
+        #endregion
+
+        public void OnClose()
+        {
+            IsPageActive = false;
+        }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using MarketTester.Helper;
+using MarketTester.UI.Interface;
+using MarketTester.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +21,18 @@ namespace MarketTester.UI.Usercontrol
     /// <summary>
     /// Interaction logic for UserControlFixFreeFormat.xaml
     /// </summary>
-    public partial class UserControlFixFreeFormat : UserControl
+    public partial class UserControlFixFreeFormat : UserControl,ITabOnCloseHandler
     {
         public UserControlFixFreeFormat()
         {
             InitializeComponent();
+            this.DataContext = new ViewModelFixFreeFormat();
+            ((ViewModelFixFreeFormat)DataContext).View = this;
+        }
+
+        public void OnClose()
+        {
+            ((ViewModelFixFreeFormat)DataContext).OnClose();
         }
 
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)

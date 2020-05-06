@@ -11,7 +11,7 @@ namespace MarketTester.Converters
 {
     public class FixStringConverter : IValueConverter
     {
-        //clasas to UI
+        //class to UI
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             string msg = value.ToString();

@@ -210,4 +210,6 @@
     <system:String x:Key="StringToolTipButtonMoveMessageUpScheduler">Seçili mesajı yukarı oynatın. Emir düzeltme ilgili emrin yeni emir mesajının, emir iptal ilgili emrin düzeltme ve yeni emir mesajlarının üstüne oynatılamaz.</system:String>
     <system:String x:Key="StringToolTipButtonMoveMessageDownScheduler">Seçili mesajı aşağı oynatın. Yeni emir mesajı emir ilgili emrin düzeltme ve iptal mesajlarının altına, emir düzeltme ilgili emrin iptal mesajının altına oynatılamaz.</system:String>
     <system:String x:Key="StringToolTipButtonRemoveItem">Plandan seçili mesajı silin.</system:String>
+    <system:String x:Key="StringAutoScroll">Otomatik kaydırma.</system:String>
+    <system:String x:Key="StringClearLog">Logu temizle.</system:String>
 </ResourceDictionary>

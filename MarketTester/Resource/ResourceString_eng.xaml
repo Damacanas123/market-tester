@@ -206,6 +206,8 @@
     <system:String x:Key="StringToolTipButtonMoveMessageUpScheduler">Move selected message up in scheduler. A Replace request can't be moved up the corresponding NewOrderSingle message and a Cancel request can't be moved up corresponding Replace or NewOrderSingle messages.</system:String>
     <system:String x:Key="StringToolTipButtonMoveMessageDownScheduler">Move selected message down. A NewOrderSingle can't be moved down to Replace request and Cancel request. A Replace request can't be moved down to corresponding Cancel Request.</system:String>
     <system:String x:Key="StringToolTipButtonRemoveItem">Remove selected item from schedule.</system:String>
+    <system:String x:Key="StringAutoScroll">Auto scroll.</system:String>
+    <system:String x:Key="StringClearLog">Clear log.</system:String>
     
     
 </ResourceDictionary>

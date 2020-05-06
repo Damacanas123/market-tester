@@ -10,11 +10,10 @@
              xmlns:modelfixfreeformat="clr-namespace:MarketTester.Model.FixFreeFormat"
              mc:Ignorable="d" 
              d:DesignHeight="700" d:DesignWidth="1500" MouseDown="UserControl_MouseDown">
-    <UserControl.DataContext>
-        <viewmodel:ViewModelFixFreeFormat/>
-    </UserControl.DataContext>
+
     <UserControl.Resources>
         <converter:FixStringConverter x:Key="FixStringConverter"/>
+        <converter:MessageTypeColorConverter x:Key="MessageTypeColorConverter"/>
     </UserControl.Resources>
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
@@ -202,7 +201,8 @@
                             Command="{Binding CommandDeleteSavedMessage}"/>
                 </Grid>
                 
-                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
+                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical"
+                            Grid.RowSpan="2">
                     <Button  Width="30" Height="40" Command="{Binding CommandMoveMessageUp}" Margin="0 0 0 10">
                         <Image Source="/Resource/Image/up_arrow.png" Stretch="Fill"/>
                     </Button>
@@ -232,37 +232,166 @@
                 </StackPanel>
 
             </Grid>
-            <TextBlock Grid.Row="0" Grid.Column="5" Text="{DynamicResource StringSchedule}"/>
-            <TextBlock Grid.Row="0" Grid.Column="5" Margin="60,0,0,0" Text=" : "/>
-            <TextBlock Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="3" Margin="70,0,0,0" Text="{Binding SelectedSchedule.Name}"/>
-            <DataGrid x:Name="DataGridScheduleItems" Grid.Column="5" Grid.Row="0" Grid.RowSpan="12" Margin="0,30,0,0" Grid.ColumnSpan="7" ItemsSource="{Binding SelectedSchedule.Items}"
+            <TabControl Grid.Column="5"
+                  Grid.Row="0"
+                  Grid.ColumnSpan="7"
+                  Grid.RowSpan="12">
+                <TabItem Header="{DynamicResource StringSchedule}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource StringSchedule}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="60,0,0,0" Text=" : "/>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="70,0,0,0" Text="{Binding SelectedSchedule.Name}"/>
+                        <DataGrid x:Name="DataGridScheduleItems" Grid.Column="0" Grid.Row="0" Grid.RowSpan="12" Margin="0,30,0,0" Grid.ColumnSpan="7" ItemsSource="{Binding SelectedSchedule.Items}"
                   SelectedItem="{Binding SelectedScheduleItem}"
                   SelectedIndex="{Binding SelectedScheduleItemIndex}"
                       AutoGenerateColumns="False">
-                <DataGrid.Columns>
-                    <DataGridCheckBoxColumn Binding="{Binding IsSelected}">
-                        <DataGridCheckBoxColumn.Header>
-                            <TextBlock Text="{DynamicResource StringIsSelected}"/>
-                        </DataGridCheckBoxColumn.Header>
-                    </DataGridCheckBoxColumn>
-                    <DataGridTextColumn Binding="{Binding Delay}">
-                        <DataGridTextColumn.Header>
-                            <TextBlock Text="{DynamicResource StringDelay}"/>
-                        </DataGridTextColumn.Header>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding Channel}">
-                        <DataGridTextColumn.Header>
-                            <TextBlock Text="{DynamicResource StringChannel}"/>
-                        </DataGridTextColumn.Header>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding Message,Converter={StaticResource FixStringConverter}}">
-                        <DataGridTextColumn.Header>
-                            <TextBlock Text="{DynamicResource StringMessage}"/>
-                        </DataGridTextColumn.Header>
-                    </DataGridTextColumn>
-                </DataGrid.Columns>
+                            <DataGrid.Columns>
+                                <DataGridCheckBoxColumn Binding="{Binding IsSelected}">
+                                    <DataGridCheckBoxColumn.Header>
+                                        <TextBlock Text="{DynamicResource StringIsSelected}"/>
+                                    </DataGridCheckBoxColumn.Header>
+                                </DataGridCheckBoxColumn>
+                                <DataGridTextColumn Binding="{Binding Delay}">
+                                    <DataGridTextColumn.Header>
+                                        <TextBlock Text="{DynamicResource StringDelay}"/>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Binding="{Binding Channel}">
+                                    <DataGridTextColumn.Header>
+                                        <TextBlock Text="{DynamicResource StringChannel}"/>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Binding="{Binding Message,Converter={StaticResource FixStringConverter}}">
+                                    <DataGridTextColumn.Header>
+                                        <TextBlock Text="{DynamicResource StringMessage}"/>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
 
-            </DataGrid>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="{DynamicResource StringFixLog}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="4"
+                              Grid.RowSpan="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="2*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="{DynamicResource StringChannels}"
+                                   Grid.Column="0"
+                                   Grid.Row="0"
+                                   VerticalAlignment="Bottom"/>
+                            <ComboBox Grid.Column="0"
+                                  Grid.Row="1"
+                                      ItemsSource="{Binding LogChannels}"
+                                      SelectedItem="{Binding SelectedLogChannel}"/>
+                            <TextBlock Text="{DynamicResource StringActiveSessions}"
+                                   Grid.Column="1"
+                                   Grid.Row="0"
+                                   VerticalAlignment="Bottom"/>
+                            <DataGrid Grid.Row="1"
+                                      Grid.Column="1"
+                                      Grid.RowSpan="2"
+                                      Height="Auto" 
+                                      ItemsSource="{Binding ActiveSessions}"
+                                      AutoGenerateColumns="False">
+                                <DataGrid.Columns>
+                                    <DataGridCheckBoxColumn Binding="{Binding IsChecked}">
+                                        <DataGridCheckBoxColumn.Header>
+                                            <TextBlock Text="{DynamicResource StringIsSelected}"/>
+                                        </DataGridCheckBoxColumn.Header>
+                                    </DataGridCheckBoxColumn>
+                                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding SessionID}">
+                                        <DataGridTextColumn.Header>
+                                            <TextBlock Text="{DynamicResource StringSession}"/>
+                                        </DataGridTextColumn.Header>
+                                    </DataGridTextColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <CheckBox Content="{DynamicResource StringAutoScroll}"
+                                      Grid.Column="2"
+                                      Grid.Row="0"
+                                      VerticalAlignment="Bottom"
+                                      IsChecked="{Binding IsAutoScroll}"/>
+                            <Button Grid.Row="1"
+                                    Grid.Column="2"
+                                    Content="{DynamicResource StringClearLog}"
+                                    Command="{Binding CommandClearLog}"/>
+                        </Grid>
+                        <ListView Grid.Row="2"
+                                  Grid.Column="0"
+                                  Grid.ColumnSpan="7"
+                                  Grid.RowSpan="10"
+                                  ItemsSource="{Binding LogMessages}"
+                                  x:Name="ListViewLog"
+                                  >
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding .,Converter={StaticResource FixStringConverter}}" Margin="2"
+                                               Background="{Binding .,Converter={StaticResource MessageTypeColorConverter}}"/>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>                    
+                </TabItem>
+            </TabControl>
+            
+            
             <Separator Grid.ColumnSpan="4" Grid.Column="0" Grid.Row="8" VerticalAlignment="Top" Margin="0,-1,0,0"/>
             <TextBlock FontSize="24" VerticalAlignment="Center" Margin="13,0,0,0" Text="{DynamicResource StringScheduler}" Grid.Row="8" Grid.Column="0"/>
             

@@ -13,4 +13,5 @@
     <system:String x:Key="NameRadioButtonMarketToLimit">RadioButtonMarketToLimit</system:String>
     <system:String x:Key="StringEnglish">English</system:String>
     <system:String x:Key="StringTurkish">Türkçe</system:String>
+    <system:String x:Key="StringFixLog">Fix Log</system:String>
 </ResourceDictionary>

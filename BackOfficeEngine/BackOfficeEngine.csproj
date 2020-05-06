@@ -87,7 +87,7 @@
     <Compile Include="DB\SQLite\Connection\SQLiteHandler.cs" />
     <Compile Include="DB\SQLite\Model\TableField.cs" />
     <Compile Include="Engine.cs" />
-    <Compile Include="Events\InboundMessageEvent.cs" />
+    <Compile Include="Events\OnMessageEvent.cs" />
     <Compile Include="Events\OnApplicationMessageRejectEventHandler.cs" />
     <Compile Include="Events\OnCreateSessionEvent.cs" />
     <Compile Include="Events\OnLogonEvent.cs" />
