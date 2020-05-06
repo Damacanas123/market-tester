@@ -53,6 +53,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource BackgroundTernary}"/>
         <Setter Property="Foreground" Value="{DynamicResource TextColor}"/>
         <Setter Property="ToolTipService.ShowDuration" Value="{StaticResource ToolTipDuration}"/>
+        <Setter Property="TextBlock.TextWrapping" Value="WrapWithOverflow"/>
     </Style>
     
     
@@ -365,6 +366,7 @@
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
         <Setter Property="ToolTipService.ShowDuration" Value="{StaticResource ToolTipDuration}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
     </Style>
 
     <!-- ListView -->

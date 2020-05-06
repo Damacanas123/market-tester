@@ -195,6 +195,10 @@ namespace MarketTester.Model.Sniffer
                         }
                         
                     }
+                    else
+                    {
+                        Thread.Sleep(1000);
+                    }
                 }
             }).Start();
             
@@ -203,6 +207,7 @@ namespace MarketTester.Model.Sniffer
         public void Stop()
         {
             IsRunning = false;
+            IsRemoteRunning = false;
             sniffer.Stop();
         }
 

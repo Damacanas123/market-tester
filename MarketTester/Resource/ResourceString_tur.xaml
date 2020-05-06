@@ -185,7 +185,9 @@
     <system:String x:Key="StringInvalidJsonFormat">Konfigürasyon dosyasında geçersiz json formatı(config.json).</system:String>
     <system:String x:Key="StringFileNotFound">Dosya bulunamadı.</system:String>
     <system:String x:Key="StringPreEvaluateQuantities">Miktarları önceden hesapla.</system:String>
-    <system:String x:Key="StringPreEvaluateQuantitiesExplanation">If you check this box a matcher will be in operation. It will assume the whole market consists of your schedule and calculate execution quantities in order to prepare replace messages to leave open quantities equal to the numbers that you enter</system:String>
+    <system:String x:Key="StringPreEvaluateQuantitiesExplanation">Eğer işaretlerseniz bir planı çalıştırmadan önce bir eşleştirici devreye girecek. 
+        Bütün piyasanın plana girilen emirlerden oluştuğunu varsayarak eğer varsa gerçekleşme miktarlarını hesaba katarak düzeltme emirlerindeki
+    miktarlar ile oynayacaktır. Böylece ekrana girdiğiniz miktarlar son açık kalan miktar olacaktır.</system:String>
     <system:String x:Key="StringToolTipSchedulerDelay">Planlayıcı başlatıldığında her mesaj öncesinde belirtilen milisaniye kadar bekler.</system:String>
     <system:String x:Key="StringToolTipComboBoxChannels">Bağlı kanallar. Bir kanalın en az bir bağlantısı aktif ise o kanal bağlı sayılır.</system:String>    
     <system:String x:Key="StringToolTipTextBoxPriceOffset">Fiyat makası uygulamak için girilen değer her mesajın fiyatını belirtilen miktarda değiiştirir. 

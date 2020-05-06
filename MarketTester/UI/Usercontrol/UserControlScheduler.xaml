@@ -281,7 +281,9 @@
                       VerticalAlignment="Center"
                       Margin="10 0 0 0"
                       IsChecked="{Binding PreEvaluateQuantities}"
-                      ToolTip="{DynamicResource StringPreEvaluateQuantitiesExplanation}"/>
+                      ToolTip="{DynamicResource StringPreEvaluateQuantitiesExplanation}"
+                      HorizontalAlignment="Left"
+                      Width="120"/>
             <Button Grid.Column="4" Grid.Row="5" Content="{DynamicResource StringSend}" 
                 Command="{Binding CommandSendMessage}"/>
             <TextBlock Text="{Binding InfoText}" Grid.Row="11" Grid.Column="0"
