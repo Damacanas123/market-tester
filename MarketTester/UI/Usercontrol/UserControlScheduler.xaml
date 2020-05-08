@@ -133,7 +133,7 @@
                   Grid.Row="0" 
                   Grid.RowSpan="12"
                   Margin="0,40,0,0"
-                      IsEnabled="{Binding ScheduleNotRunning}"/>
+                      IsEnabled="{Binding ScheduleNotRunning}" AutoGeneratingColumn="DataGridSchedule_AutoGeneratingColumn"/>
 
 
 
@@ -290,9 +290,7 @@
                        Grid.ColumnSpan="6"
                        VerticalAlignment="Center"
                        ToolTip="{DynamicResource StringToolTipInfoText}"/>
-            <CheckBox IsChecked="{Binding OverrideSessionTags}" Content="{DynamicResource StringOverrideSessionTags}" 
-                      Grid.Column="5" Grid.Row="9" VerticalAlignment="Center"
-                      ToolTip="{DynamicResource StringToolTipCheckBoxOverrideSession}"/>
+            
             <Grid Grid.Column="1" Grid.Row="6">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="2*"/>

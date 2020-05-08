@@ -28,7 +28,7 @@
     <InstallUrl>\\192.168.108.42\c%24\MATRIKS_OMS\MarketTesterSetup\</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>37</ApplicationRevision>
+    <ApplicationRevision>39</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -126,9 +126,6 @@
     <Reference Include="PcapDotNet.Packets, Version=1.0.4.25028, Culture=neutral, PublicKeyToken=06a20bc2fabb1931, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\MATRIKS_OMS\.NET dependencies\pcap\PcapDotNet.Packets.dll</HintPath>
-    </Reference>
-    <Reference Include="QuickFix">
-      <HintPath>..\..\RDSymbolSessionController\RDSymbolSessionController\external lib\QuickFix.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -422,6 +419,42 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\quickfixn-1.9.0\Messages\FIX40\QuickFix.FIX40.csproj">
+      <Project>{816aa4b2-ff85-42bc-925c-79246942513b}</Project>
+      <Name>QuickFix.FIX40</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\quickfixn-1.9.0\Messages\FIX41\QuickFix.FIX41.csproj">
+      <Project>{795689cd-1c25-4f40-b1ba-c06a0ee3a484}</Project>
+      <Name>QuickFix.FIX41</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\quickfixn-1.9.0\Messages\FIX42\QuickFix.FIX42.csproj">
+      <Project>{b0fab338-cb6a-493e-a11b-cfbec2b096ec}</Project>
+      <Name>QuickFix.FIX42</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\quickfixn-1.9.0\Messages\FIX43\QuickFix.FIX43.csproj">
+      <Project>{6764360c-0bfe-4fd9-add7-9e9b28be510a}</Project>
+      <Name>QuickFix.FIX43</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\quickfixn-1.9.0\Messages\FIX44\QuickFix.FIX44.csproj">
+      <Project>{0475c1d5-52cc-4d56-9f29-cc98624d51ab}</Project>
+      <Name>QuickFix.FIX44</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\quickfixn-1.9.0\Messages\FIX50SP1\QuickFix.FIX50SP1.csproj">
+      <Project>{937338fe-238b-4d28-810d-4fa8352dea05}</Project>
+      <Name>QuickFix.FIX50SP1</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\quickfixn-1.9.0\Messages\FIX50SP2\QuickFix.FIX50SP2.csproj">
+      <Project>{8908339e-79cc-4e88-807d-19d796556dce}</Project>
+      <Name>QuickFix.FIX50SP2</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\quickfixn-1.9.0\Messages\FIX50\QuickFix.FIX50.csproj">
+      <Project>{1e691abd-2b6f-41b6-a4af-cd9d56269f52}</Project>
+      <Name>QuickFix.FIX50</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\quickfixn-1.9.0\QuickFIXn\QuickFix.csproj">
+      <Project>{ccdebd5f-de10-4006-82eb-472438174a9a}</Project>
+      <Name>QuickFix</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BackOfficeEngine\BackOfficeEngine.csproj">
       <Project>{549e570d-dca5-4529-b011-ad981a07a6a2}</Project>
       <Name>BackOfficeEngine</Name>

@@ -27,11 +27,14 @@ namespace MarketTester.Model.Sniffer
     {
         private static string Tag8 = "8=";
         private static string Tag10 = "\u000110=";
+        public static Encoding DefaultEncoding { get; private set; } = Encoding.GetEncoding("iso-8859-1");
         private string lastMessage { get; set; }
         private bool IsRunning { get; set; }
         private bool TagFound8 { get; set; }
         private bool TagFound10 { get; set; }
         private FixSniffer sniffer { get; set; }
+
+
         
 
         private string textAverageDelay;
@@ -144,7 +147,7 @@ namespace MarketTester.Model.Sniffer
                 {
                     if(sniffer.MessageQueue.TryDequeue(out (byte[],DateTime) messageTuple))
                     {
-                        string nextString = Encoding.UTF8.GetString(messageTuple.Item1);
+                        string nextString = DefaultEncoding.GetString(messageTuple.Item1);
                         if (string.IsNullOrWhiteSpace(nextString))
                         {
                             continue;
@@ -232,6 +235,21 @@ namespace MarketTester.Model.Sniffer
                     DiffItems.Add(item);
                 });
             }
+            //means that a new acknowledgement arrived
+            //discard the previous acknowledgement
+            if (item.Request != null && item.Response != null)
+            {
+                if(TotalPairs == 1)
+                {
+                    AverageDelay = 0;
+                    TotalPairs = 0;
+                }
+                else
+                {
+                    AverageDelay = (AverageDelay * TotalPairs - item.Delay.GetTotalMicroSeconds()) / (--TotalPairs);
+                }
+                
+            }
             if (FixHelper.FixValues.MsgTypesOrderEntryOutbound.ContainsKey(msgType))
             {
                 item.Request = message;
@@ -262,7 +280,6 @@ namespace MarketTester.Model.Sniffer
             if(item.Request != null && item.Response != null)
             {
                 AverageDelay = (AverageDelay * TotalPairs + item.Delay.GetTotalMicroSeconds()) / (++TotalPairs);
-                MarketTesterUtil.ConsoleDebug("Average delay : " + AverageDelay);
             }
             
         }

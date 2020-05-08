@@ -69,11 +69,11 @@ namespace BackOfficeEngine.Connection
                                     continue;
                             }
                             //in order not to enqueue messages that lack CLordId and OrigClOrdID that may be sent from free format scheduler
+                            IMessage msg = new QuickFixMessage(m);
+                            msg.SendTime = m.GetSendTime();
+                            msg.ReceiveTime = m.GetReceiveTime();
                             foreach (IConnectorSubscriber subscriber in subscribers)
-                            {
-                                IMessage msg = new QuickFixMessage(m);
-                                msg.SendTime = m.GetSendTime();
-                                msg.ReceiveTime = m.GetReceiveTime();
+                            {                                
                                 subscriber.EnqueueMessageThatContainsClOrdID(this, msg);
                                 if (msg.GetMsgType() == MessageEnums.MsgType.Reject)
                                 {
@@ -157,13 +157,11 @@ namespace BackOfficeEngine.Connection
         {
             message.SetReceiveTime(DateTime.Now);            
             m_messageQueue.Enqueue((message,sessionID));
-            if (sessionID.SessionQualifier == SessionQualifierRD)
+            if (message.Header.GetField(Tags.MsgType) == MsgType.SECURITYDEFINITION)
             {
-                if (message.Header.GetField(Tags.MsgType) == MsgType.SECURITYDEFINITION)
-                {
-                    m_symbolMap[message.GetField(Tags.Symbol)] = message.GetField(FixHelper.GeniumExtensionTags.PartitionId) == "1" ? primarySession : secondarySession;                    
-                }
+                m_symbolMap[message.GetField(Tags.Symbol)] = message.GetField(FixHelper.GeniumExtensionTags.PartitionId) == "1" ? primarySession : secondarySession;                    
             }
+            
         }
 
         
@@ -253,7 +251,6 @@ namespace BackOfficeEngine.Connection
         public void SendMsgOrderEntry(IMessage msg)
         {
             Message quickFixMsg = new Message(msg.ToString());
-            msg.SendTime = DateTime.Now;
             if (m_symbolMap.TryGetValue(msg.GetSymbol(),out Session session))
             { 
                 session?.Send(quickFixMsg);
@@ -292,12 +289,13 @@ namespace BackOfficeEngine.Connection
         {
             if (m_symbolMap.TryGetValue(Fix.GetTag(msg,"55"), out Session session))
             {
-                session?.Send(msg);
+                
             }
             else
             {
-                primarySession?.Send(msg);
+                session = primarySession;
             }
+            session?.SendWithCorrectSequenceNum(msg);
         }
 
         public void SendMsgOrderEntry(string msg,bool overrideSessionTags)
@@ -320,6 +318,20 @@ namespace BackOfficeEngine.Connection
             {
                 session?.Send(msg);
             }
+        }
+
+        public string PrepareMessage(IMessage msg)
+        {
+            Message m = new Message(msg.ToString());
+            if (m.IsSetField(Tags.Symbol) && m_symbolMap.TryGetValue(m.GetField(Tags.Symbol), out Session session))
+            {
+
+            }
+            else
+            {
+                session = primarySession;
+            }
+            return session.PrepareMessage(m);
         }
 
         public void SendApplicationMessageRequest(Session session)

@@ -29,6 +29,11 @@
     <sys:Int32 x:Key="ToolTipDuration">100000</sys:Int32>
     
     
+    <!-- GridSplitter-->
+    <Style TargetType="GridSplitter">
+        <Setter Property="Background" Value="{DynamicResource BackgroundTernary}"/>
+    </Style>
+    
     <!--Tool tip -->
     <Style TargetType="ToolTip">
         <Setter Property="Background" Value="{DynamicResource BackgroundSecondary}"/>

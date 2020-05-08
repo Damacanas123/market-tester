@@ -20,6 +20,7 @@ namespace BackOfficeEngine.Connection
         void SendMsgOrderEntry(IMessage msg,bool overrideSessionTags);
         void SendMsgOrderEntry(string msg);
         void SendMsgOrderEntry(string msg,bool overrideSessionTags);
+        string PrepareMessage(IMessage msg);
 
 
     }

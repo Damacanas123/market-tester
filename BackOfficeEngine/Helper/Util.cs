@@ -572,7 +572,7 @@ namespace BackOfficeEngine.Helper
         }
 
         public delegate void ThreadParameterlessFunction();
-        public static Thread ThreadStart(ThreadParameterlessFunction func)
+        public static void ThreadStart(ThreadParameterlessFunction func)
         {
             Thread t = new Thread(() =>
             {
@@ -580,8 +580,6 @@ namespace BackOfficeEngine.Helper
                 func();
             });
             t.Start();
-            return t;
-
         }
 
 

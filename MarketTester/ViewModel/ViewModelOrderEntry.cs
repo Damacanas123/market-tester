@@ -214,9 +214,9 @@ namespace MarketTester.ViewModel
 
         private void SetDefault()
         {
-            PriceText = "10";
-            AccountText = "DE-1";
-            SymbolText = "F_GARAN1220";
+            PriceText = "17";
+            AccountText = "1";
+            SymbolText = "ARCLK.E";
             QuantityText = "10";
             OrdType = OrdType.Limit;
         }

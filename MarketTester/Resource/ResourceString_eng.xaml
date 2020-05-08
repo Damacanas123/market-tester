@@ -208,6 +208,7 @@
     <system:String x:Key="StringToolTipButtonRemoveItem">Remove selected item from schedule.</system:String>
     <system:String x:Key="StringAutoScroll">Auto scroll.</system:String>
     <system:String x:Key="StringClearLog">Clear log.</system:String>
-    
-    
+    <system:String x:Key="StringClose">Close</system:String>
+    <system:String x:Key="StringStartedExporting">Started exporting.</system:String>
+
 </ResourceDictionary>

@@ -111,11 +111,23 @@ namespace MarketTester.Connection
 
         public void Connect(Channel channel)
         {
-            new Thread(() =>
+            Util.ThreadStart(() =>
             {
-                channel.IsConnectingDisconnecting = true;
-                engine.Connect(channel.ConnectorName);
-            }).Start();
+                try
+                {
+
+                    channel.IsConnectingDisconnecting = true;
+                    engine.Connect(channel.ConnectorName);
+                }
+                catch(Exception ex)
+                {
+                    Util.LogError(ex);
+                    App.Invoke(() =>
+                    {
+                        PopupManager.OpenErrorPopup(new UserControlErrorPopup(ex.ToString()));
+                    });                    
+                }
+            });
         }
 
         

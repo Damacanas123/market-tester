@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-
-
+using BackOfficeEngine.Helper;
 using BackOfficeEngine.Model;
 using MarketTester.Base;
 using MarketTester.Helper;
@@ -30,15 +29,50 @@ namespace MarketTester.ViewModel
             }
         }
 
+        private string infoText;
+
+        public string InfoText
+        {
+            get { return infoText; }
+            set
+            {
+                infoText = value;
+                NotifyPropertyChanged(nameof(InfoText));
+            }
+        }
+
+        private string infoTextResourceKey;
+
+        public string InfoTextResourceKey
+        {
+            get { return infoTextResourceKey; }
+            set
+            {
+                if (App.Current.Resources.Contains(value))
+                {
+                    infoTextResourceKey = value;
+                    InfoText = App.Current.Resources[value].ToString();
+                    NotifyPropertyChanged(nameof(InfoTextResourceKey));
+                }
+            }
+        }
+
+
+
         #region commands 
         public BaseCommand CommandOkayClick { get; set; }
 
         public void CommandOkayClickExecute(object param)
         {
-            new Thread(() =>
+            InfoTextResourceKey = ResourceKeys.StringStartedExporting;
+            Util.ThreadStart(() =>
             {
                 Order.ExportOrders(OutFilePath);
-            }).Start();
+                App.Invoke(() =>
+                {
+                    InfoTextResourceKey = ResourceKeys.StringFinishedExporting;
+                });
+            });
         }
 
         public bool CommandOkayClickCanExecute()

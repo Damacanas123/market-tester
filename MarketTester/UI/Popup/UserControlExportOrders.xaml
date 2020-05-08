@@ -24,6 +24,7 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"
                Content="{DynamicResource StringDestinationFilePath}"
@@ -32,8 +33,11 @@
                  Text="{Binding OutFilePath}"
                   VerticalContentAlignment="Center"/>
         <Button Grid.Column="0" Grid.Row="2" Content="{DynamicResource StringOkay}" Command="{Binding CommandOkayClick}"/>
-        <Button Grid.Column="1" Grid.Row="2" Content="{DynamicResource StringCancel}" Click="Button_Click"/>
-
+        <Button Grid.Column="1" Grid.Row="2" Content="{DynamicResource StringClose}" Click="Button_Click"/>
+        <TextBlock Text="{Binding InfoText}"
+                   Grid.Row="3"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="2"/>
 
     </Grid>
 </UserControl>

@@ -56,5 +56,14 @@ namespace MarketTester.UI.Usercontrol
             DataGridTagValues.UnselectAll();
             DataGridSchedule.UnselectAll();
         }
+
+        private void DataGridSchedule_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            if (e.Column.Header.ToString() == "SchedulerOrderID")
+            {
+                // e.Cancel = true;   // For not to include 
+                e.Column.IsReadOnly = true; // Makes the column as read only
+            }
+        }
     }
 }

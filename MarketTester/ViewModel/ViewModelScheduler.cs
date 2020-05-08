@@ -371,17 +371,7 @@ namespace MarketTester.ViewModel
             }
         }
 
-        private bool overrideSessionTags;
-
-        public bool OverrideSessionTags
-        {
-            get { return overrideSessionTags; }
-            set
-            {
-                overrideSessionTags = value;
-                NotifyPropertyChanged(nameof(OverrideSessionTags));
-            }
-        }
+        
 
         private bool scheduleNotRunning = true;
 
@@ -583,7 +573,9 @@ namespace MarketTester.ViewModel
         public BaseCommand CommandAddSchedule { get; set; }
         public void CommandAddScheduleExecute(object param)
         {
-            Schedules.Add(new Scheduler("Schedule" + (Schedules.Count + 1).ToString(CultureInfo.InvariantCulture)));
+            Scheduler scheduler = new Scheduler("Schedule" + (Schedules.Count + 1).ToString(CultureInfo.InvariantCulture));
+            Schedules.Add(scheduler);
+            SelectedSchedule = scheduler;
         }
         public bool CommandAddScheduleCanExecute()
         {
@@ -647,7 +639,7 @@ namespace MarketTester.ViewModel
                     {
                         InfoTextResourceKey = ResourceKeys.StringStartedSchedule;
                     });
-                    SelectedSchedule.StartSchedule(!OverrideSessionTags);
+                    SelectedSchedule.StartSchedule();
                     App.Current.Dispatcher.Invoke(() =>
                     {
                         ScheduleNotRunning = true;

@@ -160,6 +160,14 @@ namespace BackOfficeEngine
             return m_nonProtocolPseudoIDMap[prms.nonProtocolID].PrepareCancelMessage();
         }
 
+        public string PrepareMessage(IMessage msg,string connectorName)
+        {
+            if(m_connectors.TryGetValue(connectorName,out IConnector connector))
+            {
+                return connector.PrepareMessage(msg);
+            }
+            throw new ConnectorNotPresentException("Connector is disconnected or not even connected once");
+        }
 
 
         public void SendMessageNew(NewMessageParameters prms,string connectorName)
@@ -193,6 +201,11 @@ namespace BackOfficeEngine
                 m_connectors[connectorName].SendMsgOrderEntry(cancelMessage);                
             }
             
+        }
+
+        public void SendMessage(string msg,string connectorName)
+        {
+            m_connectors[connectorName].SendMsgOrderEntry(msg);
         }
 
         public void SendMessage(IMessage msg,string connectorName)
