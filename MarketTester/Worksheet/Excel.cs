@@ -213,28 +213,6 @@ namespace MarketTester.Worksheet
             }
         }
 
-        public static string GetFixLogFromSheet(ExcelN._Worksheet xlWorksheet)
-        {
-            try
-            {
-                ExcelN.Range xlRange = xlWorksheet.UsedRange;
-                int fixLogRowIndex = 1;
-                for(int i = 1; i <= xlRange.Rows.Count; i++)
-                {
-                    string value = Convert.ToString(xlRange.Cells[i, 1].Value2);
-                    if (value == "FIX Logs")
-                    {
-                        fixLogRowIndex = i + 1;
-                        break;
-                    }
-                }
-                return Convert.ToString(xlRange.Cells[fixLogRowIndex, 1].Value2);
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return "";
-            }
-        }
+        
     }
 }

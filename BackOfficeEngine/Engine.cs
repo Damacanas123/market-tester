@@ -262,7 +262,6 @@ namespace BackOfficeEngine
                     if (m_messageQueue.TryDequeue(out var tuple))
                     {                        
                         msg = tuple.Item1;
-                        Console.WriteLine("Dequeued message : " + msg.ToString());
                         Order order;
                         void ReplaceOrCancel()
                         {

@@ -152,7 +152,6 @@ namespace MarketTester.Model.Sniffer
                         {
                             continue;
                         }
-                        MarketTesterUtil.ConsoleDebug("Dequeued a packet : " + nextString);
                         int index8 = nextString.IndexOf(Tag8);
                         int index10 = nextString.IndexOf(Tag10);
                         if (index8 != -1 && index10 != -1)
@@ -398,11 +397,9 @@ namespace MarketTester.Model.Sniffer
             {                
                 foreach(IPAddress address in Dns.GetHostAddresses(Dns.GetHostName()).ToList())
                 {
-                    MarketTesterUtil.ConsoleDebug(address.ToString());
                     if (IpV4Address.TryParse(address.ToString(), out IpV4Address ip4address))
                     {
                         LocalHostIpAddresses.Add(ip4address);
-                        MarketTesterUtil.ConsoleDebug("--------" + ip4address.ToString());
                     }
                 }
             }
@@ -414,7 +411,6 @@ namespace MarketTester.Model.Sniffer
                 foreach (ushort port in ports)
                 {
                     Ports.Add(port);
-                    MarketTesterUtil.ConsoleDebug(port.ToString());
                 }
             }
 
@@ -430,7 +426,6 @@ namespace MarketTester.Model.Sniffer
                     //    Communicator.SetFilter(filter);
                         
                     //}
-                    MarketTesterUtil.ConsoleDebug("Instantiated communicator : " + Communicator.ToString());
                 }
 
             }
@@ -450,7 +445,6 @@ namespace MarketTester.Model.Sniffer
                     {
                         new Thread(() =>
                         {
-                            MarketTesterUtil.ConsoleDebug("Started sniffer");
                             while (IsRunning)
                             {
                                 Communicator.ReceivePacket(out Packet packet);
@@ -470,7 +464,6 @@ namespace MarketTester.Model.Sniffer
                 {
                     ports += port.ToString(CultureInfo.InvariantCulture) + ", ";
                 }
-                MarketTesterUtil.ConsoleDebug("Stopped Sniffing on ports : " + ports);
                 IsRunning = false;
             }
 

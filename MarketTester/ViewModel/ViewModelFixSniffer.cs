@@ -142,7 +142,6 @@ namespace MarketTester.ViewModel
             set
             {
                 selectedDevice = value;
-                MarketTesterUtil.ConsoleDebug("Set selected device " + selectedDevice.Description);
                 NotifyPropertyChanged(nameof(SelectedDevice));
             }
         }
