@@ -16,6 +16,7 @@ using BackOfficeEngine.Events;
 using BackOfficeEngine.Bootstrap;
 using BackOfficeEngine.Helper;
 using BackOfficeEngine.Exceptions;
+using QuickFix;
 
 namespace BackOfficeEngine
 {
@@ -160,11 +161,11 @@ namespace BackOfficeEngine
             return m_nonProtocolPseudoIDMap[prms.nonProtocolID].PrepareCancelMessage();
         }
 
-        public string PrepareMessage(IMessage msg,string connectorName)
+        public Message PrepareMessage(IMessage msg,string connectorName)
         {
             if(m_connectors.TryGetValue(connectorName,out IConnector connector))
             {
-                return connector.PrepareMessage(msg);
+                return new Message(msg.ToString());
             }
             throw new ConnectorNotPresentException("Connector is disconnected or not even connected once");
         }
@@ -203,7 +204,9 @@ namespace BackOfficeEngine
             
         }
 
-        public void SendMessage(string msg,string connectorName)
+        
+
+        public void SendMessage(Message msg, string connectorName)
         {
             m_connectors[connectorName].SendMsgOrderEntry(msg);
         }
@@ -254,10 +257,12 @@ namespace BackOfficeEngine
                 int dequeuedMsgCount = 0;
                 while(dequeuedMsgCount < dequeueAmountPerUpdate && m_messageQueue.Count != 0)
                 {
+                    
                     IMessage msg;
                     if (m_messageQueue.TryDequeue(out var tuple))
-                    {
+                    {                        
                         msg = tuple.Item1;
+                        Console.WriteLine("Dequeued message : " + msg.ToString());
                         Order order;
                         void ReplaceOrCancel()
                         {

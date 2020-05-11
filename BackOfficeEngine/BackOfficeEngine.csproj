@@ -93,7 +93,6 @@
     <Compile Include="Events\UnknownClOrdIDReceivedEvent.cs" />
     <Compile Include="Exceptions\ConnectorNotPresentException.cs" />
     <Compile Include="Exceptions\UnSupportedMessageType.cs" />
-    <Compile Include="Extensions\QuickFixMessageExtension.cs" />
     <Compile Include="GeneralBase\BaseNotifier.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helper\Fix.cs" />
@@ -145,42 +144,45 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\quickfixn-1.9.0\Messages\FIX40\QuickFix.FIX40.csproj">
-      <Project>{816aa4b2-ff85-42bc-925c-79246942513b}</Project>
+    <ProjectReference Include="..\FIX40\QuickFix.FIX40.csproj">
+      <Project>{0a7bbe79-06e4-4450-9332-10f7d3588ca5}</Project>
       <Name>QuickFix.FIX40</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\quickfixn-1.9.0\Messages\FIX41\QuickFix.FIX41.csproj">
-      <Project>{795689cd-1c25-4f40-b1ba-c06a0ee3a484}</Project>
+    <ProjectReference Include="..\FIX41\QuickFix.FIX41.csproj">
+      <Project>{05855968-f89a-4dc6-b09e-b8124a9e1ffd}</Project>
       <Name>QuickFix.FIX41</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\quickfixn-1.9.0\Messages\FIX42\QuickFix.FIX42.csproj">
-      <Project>{b0fab338-cb6a-493e-a11b-cfbec2b096ec}</Project>
+    <ProjectReference Include="..\FIX42\QuickFix.FIX42.csproj">
+      <Project>{feecf686-489a-4ed1-9065-3d3192a05733}</Project>
       <Name>QuickFix.FIX42</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\quickfixn-1.9.0\Messages\FIX43\QuickFix.FIX43.csproj">
-      <Project>{6764360c-0bfe-4fd9-add7-9e9b28be510a}</Project>
+    <ProjectReference Include="..\FIX43\QuickFix.FIX43.csproj">
+      <Project>{565fc411-5c6e-4fae-94b0-2c94abd1b908}</Project>
       <Name>QuickFix.FIX43</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\quickfixn-1.9.0\Messages\FIX44\QuickFix.FIX44.csproj">
-      <Project>{0475c1d5-52cc-4d56-9f29-cc98624d51ab}</Project>
+    <ProjectReference Include="..\FIX44\QuickFix.FIX44.csproj">
+      <Project>{86a8313d-4755-436e-a511-a87cdf19df25}</Project>
       <Name>QuickFix.FIX44</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\quickfixn-1.9.0\Messages\FIX50SP1\QuickFix.FIX50SP1.csproj">
-      <Project>{937338fe-238b-4d28-810d-4fa8352dea05}</Project>
+    <ProjectReference Include="..\FIX50SP1\QuickFix.FIX50SP1.csproj">
+      <Project>{4ebcb154-d2fe-4222-9a87-7d82057dbc12}</Project>
       <Name>QuickFix.FIX50SP1</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\quickfixn-1.9.0\Messages\FIX50SP2\QuickFix.FIX50SP2.csproj">
-      <Project>{8908339e-79cc-4e88-807d-19d796556dce}</Project>
+    <ProjectReference Include="..\FIX50SP2\QuickFix.FIX50SP2.csproj">
+      <Project>{2a4d33e6-6f0b-41e0-adaf-e8be1c92b0bc}</Project>
       <Name>QuickFix.FIX50SP2</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\quickfixn-1.9.0\Messages\FIX50\QuickFix.FIX50.csproj">
-      <Project>{1e691abd-2b6f-41b6-a4af-cd9d56269f52}</Project>
+    <ProjectReference Include="..\FIX50\QuickFix.FIX50.csproj">
+      <Project>{4c23eba5-04da-4293-b696-21230f4b83cf}</Project>
       <Name>QuickFix.FIX50</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\quickfixn-1.9.0\QuickFIXn\QuickFix.csproj">
-      <Project>{ccdebd5f-de10-4006-82eb-472438174a9a}</Project>
+    <ProjectReference Include="..\QuickFIXn\QuickFix.csproj">
+      <Project>{77fda7bf-22af-4a74-acd0-dfe1b96cb363}</Project>
       <Name>QuickFix</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Extensions\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

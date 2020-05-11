@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BackOfficeEngine.Model;
 using BackOfficeEngine.ParamPacker;
+using QuickFix;
 namespace BackOfficeEngine.Connection
 {
     internal interface IConnector
@@ -17,10 +18,9 @@ namespace BackOfficeEngine.Connection
         void Connect();
         void Disconnect();
         void SendMsgOrderEntry(IMessage msg);
+        void SendMsgOrderEntry(Message msg);
         void SendMsgOrderEntry(IMessage msg,bool overrideSessionTags);
-        void SendMsgOrderEntry(string msg);
         void SendMsgOrderEntry(string msg,bool overrideSessionTags);
-        string PrepareMessage(IMessage msg);
 
 
     }

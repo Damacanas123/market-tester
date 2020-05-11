@@ -5,15 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\quickfixn-1.9.0\Messages\FIX40\QuickFix.FIX40.csproj" />
-    <ProjectReference Include="..\..\quickfixn-1.9.0\Messages\FIX41\QuickFix.FIX41.csproj" />
-    <ProjectReference Include="..\..\quickfixn-1.9.0\Messages\FIX42\QuickFix.FIX42.csproj" />
-    <ProjectReference Include="..\..\quickfixn-1.9.0\Messages\FIX43\QuickFix.FIX43.csproj" />
-    <ProjectReference Include="..\..\quickfixn-1.9.0\Messages\FIX44\QuickFix.FIX44.csproj" />
-    <ProjectReference Include="..\..\quickfixn-1.9.0\Messages\FIX50SP1\QuickFix.FIX50SP1.csproj" />
-    <ProjectReference Include="..\..\quickfixn-1.9.0\Messages\FIX50SP2\QuickFix.FIX50SP2.csproj" />
-    <ProjectReference Include="..\..\quickfixn-1.9.0\Messages\FIX50\QuickFix.FIX50.csproj" />
-    <ProjectReference Include="..\..\quickfixn-1.9.0\QuickFIXn\QuickFix.csproj" />
+    <ProjectReference Include="..\FIX40\QuickFix.FIX40.csproj" />
+    <ProjectReference Include="..\FIX41\QuickFix.FIX41.csproj" />
+    <ProjectReference Include="..\FIX42\QuickFix.FIX42.csproj" />
+    <ProjectReference Include="..\FIX43\QuickFix.FIX43.csproj" />
+    <ProjectReference Include="..\FIX44\QuickFix.FIX44.csproj" />
+    <ProjectReference Include="..\FIX50SP1\QuickFix.FIX50SP1.csproj" />
+    <ProjectReference Include="..\FIX50SP2\QuickFix.FIX50SP2.csproj" />
+    <ProjectReference Include="..\FIX50\QuickFix.FIX50.csproj" />
+    <ProjectReference Include="..\QuickFIXn\QuickFix.csproj" />
   </ItemGroup>
 
 </Project>

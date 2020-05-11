@@ -10,7 +10,6 @@ using BackOfficeEngine.Helper;
 using QuickFix;
 using QuickFix.Fields;
 using System.Threading;
-using BackOfficeEngine.Extensions;
 
 namespace BackOfficeEngine.Connection
 {
@@ -29,7 +28,7 @@ namespace BackOfficeEngine.Connection
         private const string SessionQualifierRD = "RD";
         private const string SessionQualifierDC1 = "DC1";
         private const string SessionQualifierDC2 = "DC2";
-        private ConcurrentQueue<(Message,SessionID)> m_messageQueue = new ConcurrentQueue<(Message, SessionID)>();
+        private ConcurrentQueue<(string,SessionID)> m_messageQueue = new ConcurrentQueue<(string, SessionID)>();
         private BISTCredentialParams CredentialParams { get; set; }
 
         public List<IConnectorSubscriber> subscribers { get; }
@@ -46,32 +45,29 @@ namespace BackOfficeEngine.Connection
                     
                     while(m_messageQueue.TryDequeue(out var pair))
                     {
-                        Message m = pair.Item1;
+                        string m = pair.Item1;
                         SessionID sessionID = pair.Item2;
                         foreach(IConnectorSubscriber subscriber in subscribers)
                         {
-                            subscriber.OnMessage(m.ToString(),this.Name, sessionID.ToString());
+                            subscriber.OnMessage(m,this.Name, sessionID.ToString());
                         }
-                        if (m.IsSetField(Tags.ClOrdID))
+                        if (Fix.IsSetTag(m,Tags.ClOrdID))
                         {
                             //in order not to enqueue messages that lack CLordId and OrigClOrdID that may be sent from free format scheduler
-                            if (!m.Header.IsSetField(Tags.MsgType))
+                            if (!Fix.IsSetTag(m, Tags.MsgType))
                                 continue;
-                            string msgType = m.Header.GetField(Tags.MsgType);
-                            if (msgType == MsgType.NEWORDERSINGLE)
+                            string msgType = Fix.GetTag(m,Tags.MsgType);
+                            if (msgType == MsgType.ORDERCANCELREPLACEREQUEST || msgType == MsgType.ORDER_CANCEL_REQUEST)
                             {
-                                if (!m.IsSetField(Tags.ClOrdID))
+                                if (!(Fix.IsSetTag(m, Tags.ClOrdID) && Fix.IsSetTag(m, Tags.OrigClOrdID)))
                                     continue;
                             }
-                            else if (msgType == MsgType.ORDERCANCELREPLACEREQUEST || msgType == MsgType.ORDER_CANCEL_REQUEST)
-                            {
-                                if (!(m.IsSetField(Tags.ClOrdID) && m.IsSetField(Tags.OrigClOrdID)))
-                                    continue;
-                            }
-                            //in order not to enqueue messages that lack CLordId and OrigClOrdID that may be sent from free format scheduler
                             IMessage msg = new QuickFixMessage(m);
-                            msg.SendTime = m.GetSendTime();
-                            msg.ReceiveTime = m.GetReceiveTime();
+                            //commented out because string messages are now being used in result of a performance improvement
+                            //if you ever want to use send time and receive times you have to think of a workaround
+                            //this feature haven't been used anyway
+                            //msg.SendTime = m.GetSendTime();
+                            //msg.ReceiveTime = m.GetReceiveTime();
                             foreach (IConnectorSubscriber subscriber in subscribers)
                             {                                
                                 subscriber.EnqueueMessageThatContainsClOrdID(this, msg);
@@ -141,8 +137,8 @@ namespace BackOfficeEngine.Connection
 
         void IApplication.FromAdmin(Message message, SessionID sessionID)
         {
-            message.SetReceiveTime(DateTime.Now);
-            m_messageQueue.Enqueue((message, sessionID));
+            message.ReceiveTime = DateTime.Now;
+            m_messageQueue.Enqueue((message.ToString(), sessionID));
             if (message.Header.GetField(Tags.MsgType) == MsgType.REJECT)
             {
                 IMessage msg = new QuickFixMessage(message);
@@ -155,8 +151,8 @@ namespace BackOfficeEngine.Connection
 
         void IApplication.FromApp(Message message, SessionID sessionID)
         {
-            message.SetReceiveTime(DateTime.Now);            
-            m_messageQueue.Enqueue((message,sessionID));
+            message.ReceiveTime = DateTime.Now;            
+            m_messageQueue.Enqueue((message.ToString(),sessionID));
             if (message.Header.GetField(Tags.MsgType) == MsgType.SECURITYDEFINITION)
             {
                 m_symbolMap[message.GetField(Tags.Symbol)] = message.GetField(FixHelper.GeniumExtensionTags.PartitionId) == "1" ? primarySession : secondarySession;                    
@@ -212,7 +208,7 @@ namespace BackOfficeEngine.Connection
 
         void IApplication.ToAdmin(Message message, SessionID sessionID)
         {
-            m_messageQueue.Enqueue((message, sessionID));
+            m_messageQueue.Enqueue((message.ToString(), sessionID));
             if(message.Header.GetField(Tags.MsgType) == MsgType.LOGON && CredentialParams != null)
             {
                 message.SetField(new Username(CredentialParams.Username));
@@ -229,12 +225,12 @@ namespace BackOfficeEngine.Connection
                     }
                 }
             }
-            message.SetSendTime(DateTime.Now);
+            message.SendTime = DateTime.Now;
         }
 
         void IApplication.ToApp(Message message, SessionID sessionId)
         {
-            m_messageQueue.Enqueue((message,sessionId));
+            m_messageQueue.Enqueue((message.ToString(),sessionId));
             //comment ou for performance reasons for scheduler
             //IMessage msg = new QuickFixMessage(message);
             //if (msg.GetMsgType() == MessageEnums.MsgType.Reject)
@@ -244,7 +240,7 @@ namespace BackOfficeEngine.Connection
             //        subscriber.OnApplicationMessageReject(this, msg, MessageEnums.MessageOrigin.Inbound);
             //    }
             //}
-            message.SetSendTime(DateTime.Now);
+            message.SendTime = DateTime.Now;
         }
 
 
@@ -260,6 +256,19 @@ namespace BackOfficeEngine.Connection
                 primarySession?.Send(quickFixMsg);
             }
             
+        }
+        public void SendMsgOrderEntry(Message msg)
+        {
+            if (msg.IsSetField(Tags.Symbol) && m_symbolMap.TryGetValue(msg.GetString(Tags.Symbol), out Session session))
+            {
+
+            }            
+            else
+            {
+                session = primarySession;                
+            }
+            session?.Send(msg);
+
         }
 
         public void SendMsgOrderEntry(IMessage msg,bool overrideSessionTags)
@@ -285,18 +294,7 @@ namespace BackOfficeEngine.Connection
 
         }
 
-        public void SendMsgOrderEntry(string msg)
-        {
-            if (m_symbolMap.TryGetValue(Fix.GetTag(msg,"55"), out Session session))
-            {
-                
-            }
-            else
-            {
-                session = primarySession;
-            }
-            session?.SendWithCorrectSequenceNum(msg);
-        }
+        
 
         public void SendMsgOrderEntry(string msg,bool overrideSessionTags)
         {
@@ -317,22 +315,12 @@ namespace BackOfficeEngine.Connection
             else
             {
                 session?.Send(msg);
+                //if you are sending string directly they do not fall into ToApp callback.That's why you need to enqueue manually
+                m_messageQueue.Enqueue((msg, session.SessionID));
             }
         }
 
-        public string PrepareMessage(IMessage msg)
-        {
-            Message m = new Message(msg.ToString());
-            if (m.IsSetField(Tags.Symbol) && m_symbolMap.TryGetValue(m.GetField(Tags.Symbol), out Session session))
-            {
-
-            }
-            else
-            {
-                session = primarySession;
-            }
-            return session.PrepareMessage(m);
-        }
+        
 
         public void SendApplicationMessageRequest(Session session)
         {

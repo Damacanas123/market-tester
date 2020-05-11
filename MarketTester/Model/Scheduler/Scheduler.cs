@@ -17,6 +17,7 @@ using MarketTester.Model.FixFreeFormat;
 using System.Reflection;
 using BackOfficeEngine.Helper;
 using MarketTester.Exceptions;
+using QuickFix;
 
 namespace MarketTester.Model.Scheduler
 {
@@ -26,7 +27,7 @@ namespace MarketTester.Model.Scheduler
         //do not modify this collection from outside of this class. it is made public in order for use with bindings on xaml.
         public ObservableCollection<SchedulerRawItem> scheduleRaw { get; set; } = new ObservableCollection<SchedulerRawItem>();
         //(message,connector name,delay)
-        private List<(string,string,int)> schedulePrepared = new List<(string, string, int)>();
+        private List<(Message,string,int)> schedulePrepared = new List<(Message, string, int)>();
         //map between scheduler order id and backoffice order id
         private Dictionary<string, string> OrderIdMap { get; set; }
         private int schedulerOrderId = 1;
@@ -182,9 +183,9 @@ namespace MarketTester.Model.Scheduler
         public void StartSchedule()
         {
             Engine engine = Engine.GetInstance();
-            foreach ((string,string,int) item in schedulePrepared)
+            foreach ((Message,string,int) item in schedulePrepared)
             {
-                string m; string connectorName;int delay;
+                Message m; string connectorName;int delay;
                 (m, connectorName, delay) = item;
                 Thread.Sleep(delay);
                 engine.SendMessage(m,connectorName);
@@ -266,7 +267,7 @@ namespace MarketTester.Model.Scheduler
                 {
                     m.SetGenericField(int.Parse(pair.Tag, CultureInfo.InvariantCulture), pair.Value);
                 }
-                string msgString = engine.PrepareMessage(m,item.ConnectorName);
+                Message msgString = engine.PrepareMessage(m,item.ConnectorName);
                 schedulePrepared.Add((msgString, item.ConnectorName,item.Delay));
                 item.Price = item.Price - priceOffset;
                 item.OrderQty = item.OrderQty / quantityMultiplier;

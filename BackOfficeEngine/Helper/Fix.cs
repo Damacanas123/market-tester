@@ -111,7 +111,6 @@ namespace BackOfficeEngine.Helper
                 return false;
             }
             int calculatedChecksum = 0;
-            string body = message.Substring(0, bodyEndIndex);
             for (int i = 0; i < bodyEndIndex; calculatedChecksum += message[i++]) ;
             calculatedChecksum %= 256;
             int checksumStartIndex = bodyEndIndex + 3;
@@ -140,6 +139,16 @@ namespace BackOfficeEngine.Helper
         public static string GetTag(string msg, int tag)
         {
             return GetTag(msg, tag.ToString(CultureInfo.InvariantCulture));
+        }
+
+        public static bool IsSetTag(string msg,string tag)
+        {
+            return -1 != msg.IndexOf(FixDelimiter + tag + "=",StringComparison.InvariantCulture);
+        }
+
+        public static bool IsSetTag(string msg, int tag)
+        {
+            return IsSetTag(msg,tag.ToString(CultureInfo.InvariantCulture));
         }
 
     }
