@@ -5,12 +5,38 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BackOfficeEngine.Exceptions;
+using System.Text.RegularExpressions;
+using System.IO;
 
 namespace BackOfficeEngine.Helper
 {
     public class Fix
     {
-        
+#if ITXR
+        public static Dictionary<string, string> ISINCodeMap { get; set; } = new Dictionary<string, string>();
+        public static void ITXRBootStrap()
+        {
+            string isin_path = Util.APPLICATION_STATIC_DIR + "ISINSymbolMap.csv";
+            if (!File.Exists(isin_path))
+            {
+                return;
+            }
+            foreach(string line in File.ReadLines(isin_path))
+            {
+                try
+                {
+
+                    string[] values = line.Split(',');
+                    ISINCodeMap[values[0]] = values[1];
+                }
+                catch
+                {
+                    
+                }
+            }
+        }
+#endif
         public static HashSet<string> FixProtocolStrings { get; } = new HashSet<string>()
         {
             "FIXT.1.1","FIX.4.0","FIX.4.1","FIX.4.2","FIX.4.3","FIX.4.4"
@@ -151,5 +177,41 @@ namespace BackOfficeEngine.Helper
             return IsSetTag(msg,tag.ToString(CultureInfo.InvariantCulture));
         }
 
+        public static string ExtractFixMessageFromALine(string line)
+        {
+            Regex rgx = new Regex($"8=.*{Fix.FixDelimiter}");
+            try
+            {
+                Match match = rgx.Match(line);
+                int startIndex = match.Value.IndexOf("=") + 1;
+                int messageStartIndex = match.Index;
+                if (messageStartIndex == -1)
+                {
+                    return null;
+                }
+                string beginString = match.Value.Substring(startIndex, match.Value.Length - startIndex);
+                if (!Fix.FixProtocolStrings.Contains(beginString))
+                {
+                    throw new InvalidFixBeginString();
+                }
+                Regex rgxEnd = new Regex($"{FixDelimiter}10=.*{FixDelimiter}");
+                Match endMatch = rgxEnd.Match(line);
+                if (endMatch.Index == -1)
+                {
+                    return null;
+                }
+                int messageEndIndex = endMatch.Index + endMatch.Value.Length;
+                return line.Substring(messageStartIndex, messageEndIndex);
+            }
+            catch (RegexMatchTimeoutException)
+            {
+                return null;
+            }
+            catch (InvalidFixBeginString)
+            {
+                return null;
+            }
+
+        }
     }
 }

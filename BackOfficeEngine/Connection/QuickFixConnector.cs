@@ -242,10 +242,28 @@ namespace BackOfficeEngine.Connection
             //}
             message.SendTime = DateTime.Now;
         }
+#if ITXR
+        private void SetISINCode(IMessage msg)
+        {
+            if (Fix.ISINCodeMap.TryGetValue(msg.GetSymbol(),out string isinCode))
+            {
+                msg.SetGenericField(Tags.SecurityID, isinCode);
+            }
+        }
 
-
+        private void SetISINCode(Message msg)
+        {
+            if (Fix.ISINCodeMap.TryGetValue(msg.GetField(Tags.Symbol), out string isinCode))
+            {
+                msg.SetField(new SecurityID(isinCode));
+            }
+        }
+#endif
         public void SendMsgOrderEntry(IMessage msg)
         {
+#if ITXR
+            SetISINCode(msg);
+#endif
             Message quickFixMsg = new Message(msg.ToString());
             if (m_symbolMap.TryGetValue(msg.GetSymbol(),out Session session))
             { 
@@ -259,6 +277,9 @@ namespace BackOfficeEngine.Connection
         }
         public void SendMsgOrderEntry(Message msg)
         {
+#if ITXR
+            SetISINCode(msg);
+#endif
             if (msg.IsSetField(Tags.Symbol) && m_symbolMap.TryGetValue(msg.GetString(Tags.Symbol), out Session session))
             {
 
@@ -272,7 +293,10 @@ namespace BackOfficeEngine.Connection
         }
 
         public void SendMsgOrderEntry(IMessage msg,bool overrideSessionTags)
-        {            
+        {
+#if ITXR
+            SetISINCode(msg);
+#endif
             if (m_symbolMap.TryGetValue(msg.GetSymbol(), out Session session))
             {
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BackOfficeEngine.Helper;
+using MarketTester.Helper;
 
 namespace UnitTest
 {
@@ -18,6 +19,8 @@ namespace UnitTest
                     Assert.AreEqual(true, Fix.CheckMessageValidity(msg.Substring(startIndex, msg.Length - startIndex)));
             }            
         }
+
+        
 
 
     }

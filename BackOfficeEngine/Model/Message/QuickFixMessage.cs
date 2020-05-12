@@ -9,6 +9,7 @@ using QuickFix.Fields;
 using BackOfficeEngine.MessageEnums;
 using BackOfficeEngine.Exceptions;
 using FixHelper;
+using BackOfficeEngine.Helper;
 
 namespace BackOfficeEngine.Model
 {
@@ -129,7 +130,29 @@ namespace BackOfficeEngine.Model
             {
                 throw new UnSupportedMessageType("Unsupported message type");
             }
+#if ITXR
+            SetField(msg, 100, "XIST");
+            SetField(msg, 47, "A");
+            SetField(msg, 21, "1");
+            SetField(msg, 22, "4");
+            SetField(msg, 15, "TRY");
+            SetField(msg, 120, "TRY");
+            SetField(msg, 109, "FIDESSA");
+            SetField(msg, 50, "JPM02");
+#endif
             return new QuickFixMessage(msg);
+        }
+
+        private static void SetField(Message msg,int tag,string value)
+        {
+            if (AllFixTags.GetInstance().headerTagToObjectMap.ContainsKey(tag))
+            {
+                msg.Header.SetField(new StringField(tag,value));
+            }
+            else
+            {
+                msg.SetField(new StringField(tag, value));
+            }
         }
 
         

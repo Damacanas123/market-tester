@@ -25,7 +25,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;ITXR</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -33,7 +33,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;ITXR</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -92,6 +92,7 @@
     <Compile Include="Events\OnSessionMessageRejectEventHandler.cs" />
     <Compile Include="Events\UnknownClOrdIDReceivedEvent.cs" />
     <Compile Include="Exceptions\ConnectorNotPresentException.cs" />
+    <Compile Include="Exceptions\InvalidFixBeginString.cs" />
     <Compile Include="Exceptions\UnSupportedMessageType.cs" />
     <Compile Include="GeneralBase\BaseNotifier.cs" />
     <Compile Include="GlobalSuppressions.cs" />

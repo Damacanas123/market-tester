@@ -28,7 +28,7 @@
     <InstallUrl>\\192.168.108.42\c%24\MATRIKS_OMS\MarketTesterSetup\</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>41</ApplicationRevision>
+    <ApplicationRevision>43</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -77,10 +77,10 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>8FF83D8D4C968DA1411E87E362213F2DE962056D</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>4C8CBC2BB748E900269635C6EB51D2AF7CB7410E</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>MarketTester_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>Matriks_Certs.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -255,6 +255,7 @@
     <Compile Include="ViewModel\ViewModelFixSniffer.cs" />
     <Compile Include="ViewModel\ViewModelInfoBox.cs" />
     <Compile Include="ViewModel\Singleton\ViewModelLogAnalyzer.cs" />
+    <Compile Include="ViewModel\ViewModelLogVisualizer.cs" />
     <Compile Include="ViewModel\ViewModelMainWindowUpperBar.cs" />
     <Compile Include="ViewModel\ViewModelOrderEntry.cs" />
     <Compile Include="ViewModel\ViewModelOrderHistoryFix.cs" />
@@ -405,6 +406,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="MarketTester_TemporaryKey.pfx" />
+    <None Include="Matriks_Certs.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

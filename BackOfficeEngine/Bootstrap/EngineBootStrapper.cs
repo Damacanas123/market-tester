@@ -7,6 +7,7 @@ using System.IO;
 using BackOfficeEngine.AppConstants;
 using BackOfficeEngine.Model;
 using BackOfficeEngine.DB.SQLite;
+using BackOfficeEngine.Helper;
 
 namespace BackOfficeEngine.Bootstrap
 {
@@ -14,6 +15,7 @@ namespace BackOfficeEngine.Bootstrap
     {
         internal static List<Order> Bootstrap()
         {
+            Fix.ITXRBootStrap();
             CreateDirectories();
             CreateFiles();
             CreateFilesSeqNum();

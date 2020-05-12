@@ -328,22 +328,7 @@ namespace MarketTester.ViewModel
             }
         }
 
-        private string infoTextResourceKey;
-
-        public string InfoTextResourceKey
-        {
-            get { return infoTextResourceKey; }
-            set
-            {
-                if (App.Current.Resources.Contains(value))
-                {
-
-                    infoTextResourceKey = value;
-                    InfoText = App.Current.Resources[value].ToString();
-                    NotifyPropertyChanged(nameof(InfoTextResourceKey));
-                }
-            }
-        }
+        
 
         private SchedulerRawItem selectedScheduleItem;
 
@@ -371,7 +356,24 @@ namespace MarketTester.ViewModel
             }
         }
 
-        
+        private string infoTextResourceKey;
+
+        public string InfoTextResourceKey
+        {
+            get { return infoTextResourceKey; }
+            set
+            {
+                if (App.Current.Resources.Contains(value))
+                {
+
+                    infoTextResourceKey = value;
+                    InfoText = App.Current.Resources[value].ToString();
+                    NotifyPropertyChanged(nameof(InfoTextResourceKey));
+                }
+            }
+        }
+
+
 
         private bool scheduleNotRunning = true;
 
