@@ -89,7 +89,7 @@ namespace BackOfficeEngine.Model
         public decimal CumulativeQty
         {
             get { return cumulativeQty; }
-            private set { cumulativeQty = value; NotifyPropertyChanged(nameof(CumulativeQty)); LeavesQty = OrderQty - value; }
+            private set { cumulativeQty = value; NotifyPropertyChanged(nameof(CumulativeQty)); }
         }
         private decimal leavesQty;
 
@@ -196,7 +196,8 @@ namespace BackOfficeEngine.Model
             {nameof(OrdStatus), new TableField(nameof(OrdStatus),typeof(string),"",30) },
             {nameof(Date), new TableField(nameof(Date),typeof(string),"",8) },
             {nameof(IsImported), new TableField(nameof(IsImported),typeof(bool),"",0) },
-            {nameof(ConnectorName), new TableField(nameof(ConnectorName),typeof(string),"",60) }
+            {nameof(ConnectorName), new TableField(nameof(ConnectorName),typeof(string),"",60) },
+            {nameof(LeavesQty), new TableField(nameof(LeavesQty),typeof(string),"",30,"0") }
                 };
 
         public Dictionary<string,TableField> Fields
@@ -232,7 +233,8 @@ namespace BackOfficeEngine.Model
                     {nameof(OrdStatus),OrdStatus },
                     {nameof(Date),Date },
                     {nameof(IsImported),IsImported },
-                    {nameof(ConnectorName),ConnectorName }
+                    {nameof(ConnectorName),ConnectorName },
+                    {nameof(LeavesQty),LeavesQty},
                 };
             }
         }
@@ -376,21 +378,24 @@ namespace BackOfficeEngine.Model
                 case MsgType.Trade:
                     decimal lastShares = msg.GetLastQty();
                     decimal lastPx = msg.GetLastPx();
-                    if (msg.IsSetLastPx())
-                        LastPx = msg.GetLastPx();
-                    if (msg.IsSetLastQty())
-                        LastQty = msg.GetLastQty();
-                    if (msg.IsSetOrdStatus())
-                        OrdStatus = msg.GetOrdStatus();
-                    if (msg.IsSetGenericField(QuickFix.Fields.Tags.CumQty))
-                        CumulativeQty = decimal.Parse(msg.GetGenericField(QuickFix.Fields.Tags.CumQty),CultureInfo.InvariantCulture);
-                    if (msg.IsSetAvgPx())
-                        AvgPx = msg.GetAvgPx();
+                    
                     Account.AddTrade(new TradeParameters(Side, lastShares, lastPx, Symbol));
                     break;
             }
-            if(msg.IsSetOrdStatus())
+            if (msg.IsSetLastPx())
+                LastPx = msg.GetLastPx();
+            if (msg.IsSetLastQty())
+                LastQty = msg.GetLastQty();
+            if (msg.IsSetOrdStatus())
                 OrdStatus = msg.GetOrdStatus();
+            if (msg.IsSetGenericField(QuickFix.Fields.Tags.CumQty))
+                CumulativeQty = decimal.Parse(msg.GetGenericField(QuickFix.Fields.Tags.CumQty), CultureInfo.InvariantCulture);
+            if (msg.IsSetAvgPx())
+                AvgPx = msg.GetAvgPx();
+            if (msg.IsSetOrdStatus())
+                OrdStatus = msg.GetOrdStatus();
+            if (msg.IsSetGenericField(QuickFix.Fields.Tags.LeavesQty))
+                LeavesQty = decimal.Parse(msg.GetGenericField(QuickFix.Fields.Tags.LeavesQty),CultureInfo.InvariantCulture);
             using(SQLiteHandler handler = new SQLiteHandler())
             {
                 handler.Update(this);

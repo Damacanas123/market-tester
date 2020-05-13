@@ -10,6 +10,7 @@ using BackOfficeEngine.Model;
 using BackOfficeEngine.Helper;
 using System.Collections.Concurrent;
 using System.Threading;
+using System.Globalization;
 
 namespace BackOfficeEngine.DB.SQLite
 {
@@ -35,7 +36,7 @@ namespace BackOfficeEngine.DB.SQLite
             }         
         }
 
-        internal bool CreateTable(IDataBaseWritable writable)
+        internal void CreateTable(IDataBaseWritable writable)
         {
             string query = "CREATE TABLE IF NOT EXISTS " + writable.TableName + " (";
             foreach(TableField field in writable.Fields.Values)
@@ -44,7 +45,58 @@ namespace BackOfficeEngine.DB.SQLite
                     (field.Length == 0 ? "(" + field.Length + ")" : "") + " " + field.Constraints + " ,";
             }
             query = query.Substring(0, query.Length - 1) + ");";
-            return ExecuteNonQuery(query);
+            ExecuteNonQuery(query);
+            foreach (TableField field in writable.Fields.Values)
+            {
+                AddColumnToTableIfNotExists(field.Name, writable.TableName, field.DefaultValue, TypeConvert(field.Type), field.Length.ToString(CultureInfo.InvariantCulture));
+            }
+        }
+
+        public bool FieldExists(string tableName, string columnName)
+        {
+            bool exists = false;
+            try
+            {
+                SQLiteCommand command = new SQLiteCommand("SELECT * FROM " + tableName + " LIMIT 1", this.conn);
+                var reader = command.ExecuteReader();
+                for (var i = 0; i < reader.FieldCount && !exists; i++)
+                {
+                    if (reader.GetName(i).Equals(columnName))
+                    {
+                        exists = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Problem fetching column names from " + tableName + "." + ex.ToString() + "\n\n");
+                throw new Exception();
+            }
+            return exists;
+        }
+
+        public void AddColumnToTableIfNotExists(string columnName,string tableName, string defaultValue, string parameterType, string length = null)
+        {
+            string localType = length != null ? parameterType + "(" + length + ")" : parameterType;
+            string valueEncloser = parameterType.Contains("CHAR") ? "'" : "";
+            string sql = "ALTER TABLE " + tableName + " ADD " + columnName +
+                            " " + localType + " NOT NULL DEFAULT " + valueEncloser +
+                            defaultValue + valueEncloser + ";";
+
+            try
+            {
+                if (!FieldExists(tableName, columnName))
+                {
+                    SQLiteCommand command = new SQLiteCommand(sql, this.conn);
+                    command.ExecuteNonQuery();
+                    Console.WriteLine(sql);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(sql);
+                Console.WriteLine("Problem executing add column query to orders table.\n" + ex.ToString() + "\n\n");
+            }
         }
 
         internal void Insert(IDataBaseWritable writable)

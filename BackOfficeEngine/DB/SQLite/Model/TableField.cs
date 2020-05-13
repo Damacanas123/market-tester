@@ -12,6 +12,7 @@ namespace BackOfficeEngine.DB.SQLite
         internal Type Type { get; }
         internal string Constraints { get; }
         internal int Length { get; }
+        internal string DefaultValue { get; }
 
         internal TableField(string name,Type type,string constraints,int length)
         {
@@ -19,6 +20,15 @@ namespace BackOfficeEngine.DB.SQLite
             Type = type;
             Constraints = constraints;
             Length = length;
+        }
+
+        internal TableField(string name, Type type, string constraints, int length,string defaultValue)
+        {
+            Name = name;
+            Type = type;
+            Constraints = constraints;
+            Length = length;
+            DefaultValue = defaultValue;
         }
     }
 
