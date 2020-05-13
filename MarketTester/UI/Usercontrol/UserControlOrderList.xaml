@@ -94,6 +94,11 @@
                         <TextBlock Text="{DynamicResource StringAvgPx}"/>
                     </DataGridTextColumn.Header>
                 </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding LeavesQty}">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource StringLeavesQty}"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding LastQty}">
                     <DataGridTextColumn.Header>
                         <TextBlock Text="{DynamicResource StringLastQty}"/>

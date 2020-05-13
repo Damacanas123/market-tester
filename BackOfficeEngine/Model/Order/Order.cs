@@ -89,8 +89,20 @@ namespace BackOfficeEngine.Model
         public decimal CumulativeQty
         {
             get { return cumulativeQty; }
-            private set { cumulativeQty = value; NotifyPropertyChanged(nameof(CumulativeQty)); }
+            private set { cumulativeQty = value; NotifyPropertyChanged(nameof(CumulativeQty)); LeavesQty = OrderQty - value; }
         }
+        private decimal leavesQty;
+
+        public decimal LeavesQty
+        {
+            get { return leavesQty; }
+            private set
+            {
+                leavesQty = value;
+                NotifyPropertyChanged(nameof(LeavesQty));
+            }
+        }
+
         private decimal lastQty = 0;
         public decimal LastQty
         {
