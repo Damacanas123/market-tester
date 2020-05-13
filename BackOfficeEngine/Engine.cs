@@ -93,12 +93,10 @@ namespace BackOfficeEngine
         {
             foreach(Order order in Order.Orders)
             {
-                if (order.OrdStatus == OrdStatus.New ||
-                    order.OrdStatus == OrdStatus.PartialFilled)
+                if (order.LeavesQty > 0)
                 {
                     if (m_connectors.ContainsKey(order.ConnectorName))
                     {
-
                         IMessage msg = order.PrepareCancelMessage();
                         SendMessage(msg, order.ConnectorName);
                     }
