@@ -18,6 +18,7 @@ using System.Reflection;
 using BackOfficeEngine.Helper;
 using MarketTester.Exceptions;
 using QuickFix;
+using BackOfficeEngine.Exceptions;
 
 namespace MarketTester.Model.Scheduler
 {
@@ -214,6 +215,10 @@ namespace MarketTester.Model.Scheduler
                 item.OrderQty = item.OrderQty * quantityMultiplier;
                 IMessage m;string nonProtocolOrderId;
                 Channel channel = Connector.ActiveChannels.FirstOrDefault((o) => o.Name == item.ConnectorName);
+                if(channel == null)
+                {
+                    throw new ConnectorNotPresentException();
+                }
                 if (item.MsgType == MsgType.New)
                 {
                     if(item.Price != -1)
