@@ -221,7 +221,9 @@ namespace MarketTester
         public const string StringToolTipButtonRemoveItem = "StringToolTipButtonRemoveItem";
         public const string StringClose = "StringClose";
         public const string StringStartedExporting = "StringStartedExporting";
+        public const string StringSessionID = "StringSessionID";
         
+
 
 
 

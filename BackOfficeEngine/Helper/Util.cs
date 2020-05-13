@@ -13,6 +13,7 @@ using System.Data;
 using System.Deployment.Application;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Collections.Concurrent;
 
 [assembly: InternalsVisibleTo("UnitTest")]
 namespace BackOfficeEngine.Helper
@@ -53,66 +54,9 @@ namespace BackOfficeEngine.Helper
         {
             AppendStringToFile(DEBUG_EXCEPTIONLOG_FILE_PATH, $"Appl version({APP_VERSION}) - {DateTime.Now} {Environment.NewLine}Type : {ex.GetType().ToString()} {Environment.NewLine}Exception : {ex.ToString()}{Environment.NewLine}");
         }
-        public static int ReadSeqNum(string filePath)
-        {
-            try
-            {
-                int lastIndex = filePath.LastIndexOf(FILE_PATH_DELIMITER);
-                string directory = filePath.Substring(0, lastIndex);
-                if (!Directory.Exists(directory))
-                {
-                    Directory.CreateDirectory(directory);
-                    FileStream fs = File.Create(filePath);
-                    fs.Close();
-                    using (StreamWriter outputFile = new StreamWriter(filePath))
-                    {
-                        outputFile.Write("1");
-                    }
-                    return 1;//seq num is going to be 1 in this case. no need to do further read on the same file.
-                }
-                if (!File.Exists(filePath))
-                {
-                    using (StreamWriter outputFile = new StreamWriter(filePath))
-                    {
-                        outputFile.Write("1");
-                    }
-                    return 1;//seq num is going to be 1 in this case. no need to do further read on the same file.
-                }
+        
 
-
-                int seqNum = -1;
-                using (FileStream fs = File.OpenRead(filePath))
-                {
-                    byte[] byteArray = new byte[20];
-
-                    UTF8Encoding fileContent = new UTF8Encoding(true);
-                    while (fs.Read(byteArray, 0, byteArray.Length) > 0)
-                    {
-                        seqNum = Int32.Parse(fileContent.GetString(byteArray), CultureInfo.CurrentCulture);
-                    }
-                }
-                if (seqNum == -1)
-                {
-                    throw new Exception("Sequence num couldn't be read");
-                }
-                return seqNum;
-            }
-            catch (Exception ex)
-            {
-                return -1;
-            }
-
-        }
-
-        public static int IncrementSequenceNumber(string filePath)
-        {
-            int seqNum = ReadSeqNum(filePath) + 1;
-            using (StreamWriter sw = new StreamWriter(filePath))
-            {
-                sw.WriteLine(seqNum);
-            }
-            return seqNum;
-        }
+        
         public static string RemoveNonNumericKeepDot(string s)
         {
             string temp = "";
@@ -182,42 +126,7 @@ namespace BackOfficeEngine.Helper
 
 
 
-        public static void ChangeConfigFixLogPath(string configPath)
-        {
-            string fileContent = "";
-            using (StreamReader reader = new StreamReader(configPath))
-            {
-                string session = null;
-                string line;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    if (!(line.Contains("FileStorePath") || line.Contains("FileLogPath")))
-                    {
-                        fileContent += line + Environment.NewLine;
-                    }
-                    if (line.Contains("SessionQualifier"))
-                    {
-                        int startIndex = line.IndexOf("=") + 1;
-                        session = line.Substring(startIndex, line.Length - startIndex);
-                        if (line.Contains("#"))
-                        {
-                            fileContent += "#FileStorePath=" + APPLICATION_COMMON_DIR + "FIXLog\\" + session + Environment.NewLine;
-                            fileContent += "#FileLogPath=" + APPLICATION_COMMON_DIR + "FIXLog\\" + session + Environment.NewLine;
-                        }
-                        else
-                        {
-                            fileContent += "FileStorePath=" + APPLICATION_COMMON_DIR + "FIXLog\\" + session + Environment.NewLine;
-                            fileContent += "FileLogPath=" + APPLICATION_COMMON_DIR + "FIXLog\\" + session + Environment.NewLine;
-                        }
-                    }
-                }
-            }
-            using (StreamWriter outputFile = new StreamWriter(configPath))
-            {
-                outputFile.Write(fileContent);
-            }
-
-        }
+        
 
 
         public static string RemoveNonNumeric(string s)
@@ -291,16 +200,7 @@ namespace BackOfficeEngine.Helper
         }
 
 
-        public static void AppendStringToFile(string filePath, string content, object fileLock)
-        {
-            lock (fileLock)
-            {
-                using (StreamWriter sw = File.AppendText(filePath))
-                {
-                    sw.WriteLine(content);
-                }
-            }
-        }
+        
 
         private static object fileLocksLock {get;set;} = new object();
         private static Dictionary<string, object> fileLocks { get; set; } = new Dictionary<string, object>();
@@ -323,14 +223,7 @@ namespace BackOfficeEngine.Helper
         }
         public static void AppendStringToFile(string filePath, string content)
         {
-            lock (GetReferenceToLock(filePath))
-            {
-                using (StreamWriter sw = File.AppendText(filePath))
-                {
-                    sw.WriteLine(content);
-                }
-            }
-            
+            FileWriteQueue.Enqueue((filePath, content));
         }
 
         public static void DeleteFile(string filePath)
@@ -582,7 +475,38 @@ namespace BackOfficeEngine.Helper
             t.Start();
         }
 
-
+        static ConcurrentQueue<(string, string)> FileWriteQueue { get; set; } = new ConcurrentQueue<(string, string)>();
+        static bool FileWriteThreadStarted = false;
+        public static void StartFileWriteThread()
+        {
+            if (FileWriteThreadStarted)
+            {
+                return;
+            }
+            FileWriteThreadStarted = true;
+            ThreadStart(() =>
+            {
+                while (true)
+                {
+                    if (FileWriteQueue.TryDequeue(out var item))
+                    {
+                        string filePath = item.Item1;
+                        string content = item.Item2;
+                        lock (GetReferenceToLock(filePath))
+                        {
+                            using (StreamWriter sw = File.AppendText(filePath))
+                            {
+                                sw.WriteLine(content);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Thread.Sleep(2000);
+                    }
+                }
+            });
+        }
 
 
     }

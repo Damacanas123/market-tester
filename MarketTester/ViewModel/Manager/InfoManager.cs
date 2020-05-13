@@ -3,8 +3,9 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using BackOfficeEngine.Helper;
 using MarketTester.Enumeration;
+using MarketTester.Helper;
 
 namespace MarketTester.ViewModel.Manager
 {
@@ -17,7 +18,7 @@ namespace MarketTester.ViewModel.Manager
             foreach(ViewModelInfoBox vm in InfoViewModels)
             {
                 if(vm.InfoPriority == infoType)
-                    vm.InfoText += "--> " + message + Environment.NewLine;
+                    vm.InfoText += DateTime.Now.ToString(MarketTesterUtil.UTCTimestampFormat) + "--> " + Environment.NewLine + message + Environment.NewLine;
             }
         }
     }

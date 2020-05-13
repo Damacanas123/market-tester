@@ -29,6 +29,8 @@ namespace MarketTester.Model.Sniffer
             {
                 request = value;
                 RequestTagValueMap = MarketTesterUtil.GetTagValuePairs(request);
+                SessionID = Fix.GetTag(value, "49");
+                SessionID += "----" + Fix.GetTag(value, "56");
                 NotifyPropertyChanged(nameof(RequestMsgType));
                 NotifyPropertyChanged(nameof(Symbol));
                 NotifyPropertyChanged(nameof(TextOrderQty));
@@ -44,6 +46,8 @@ namespace MarketTester.Model.Sniffer
             {
                 response = value;
                 ResponseTagValueMap = MarketTesterUtil.GetTagValuePairs(response);
+                SessionID = Fix.GetTag(value, "49");
+                SessionID += "----" + Fix.GetTag(value, "56");
                 NotifyPropertyChanged(nameof(ResponseMsgType));
             }
         }
@@ -163,8 +167,21 @@ namespace MarketTester.Model.Sniffer
                     return new TimeSpan(0);
             }
         }
-        
 
-       
+
+        private string sessionID;
+
+        public string SessionID
+        {
+            get { return sessionID; }
+            set
+            {
+                sessionID = value;
+                NotifyPropertyChanged(nameof(SessionID));
+            }
+        }
+
+
+
     }
 }

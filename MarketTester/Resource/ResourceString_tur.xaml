@@ -214,4 +214,5 @@
     <system:String x:Key="StringClearLog">Logu temizle.</system:String>
     <system:String x:Key="StringClose">Kapat</system:String>
     <system:String x:Key="StringStartedExporting">Dışa aktarılmaya başlandı.</system:String>
+    <system:String x:Key="StringSessionID">Bağlantı ID.</system:String>
 </ResourceDictionary>

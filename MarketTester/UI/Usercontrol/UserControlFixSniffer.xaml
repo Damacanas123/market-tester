@@ -162,6 +162,12 @@
                       AutoGenerateColumns="False"
                       IsReadOnly="True">
                 <DataGrid.Columns>
+
+                    <DataGridTextColumn Binding="{Binding SessionID}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringSessionID}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding RequestMsgType}">
                         <DataGridTextColumn.Header>
                             <TextBlock Text="{DynamicResource StringRequestMsgType}"/>

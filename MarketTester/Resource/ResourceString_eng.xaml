@@ -210,5 +210,6 @@
     <system:String x:Key="StringClearLog">Clear log.</system:String>
     <system:String x:Key="StringClose">Close</system:String>
     <system:String x:Key="StringStartedExporting">Started exporting.</system:String>
+    <system:String x:Key="StringSessionID">Session ID.</system:String>
 
 </ResourceDictionary>
