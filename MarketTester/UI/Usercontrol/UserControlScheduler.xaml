@@ -11,7 +11,11 @@
     <UserControl.DataContext>
         <viewmodel:ViewModelScheduler/>
     </UserControl.DataContext>
-    
+    <UserControl.Resources>
+        <Style TargetType="StackPanel">
+            <Setter Property="Margin" Value="5 0 5 0"/>
+        </Style>
+    </UserControl.Resources>
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -102,6 +106,14 @@
                       x:Name="ComboBoxOrdType"
                       SelectedItem="{Binding SelectedOrdType}"/>
                 <TextBlock VerticalAlignment="Center" Text="{DynamicResource StringChannels}" Grid.Column="4" Grid.Row="4" Grid.ColumnSpan="2"/>
+                
+                <CheckBox Content="{DynamicResource StringUseDefaultChannel}"
+                          Grid.Row="5"
+                          Grid.Column="4"
+                          Grid.ColumnSpan="2"
+                          Margin="5 -10 5 0"
+                          ToolTip="{DynamicResource StringToolTipCheckBoxUseDefaultSession}"
+                          IsChecked="{Binding UseSelectedChannelAsDefault}"/>
                 <ComboBox Grid.ColumnSpan="2" 
                           Grid.Row="5" Grid.Column="4" 
                           ItemsSource="{Binding Channels}" 
@@ -121,17 +133,84 @@
                 <TextBlock VerticalAlignment="Center" Text="{DynamicResource StringAllocID}" Grid.Column="6" Grid.Row="4" Grid.ColumnSpan="2"/>
                 <TextBox Grid.ColumnSpan="2" Grid.Row="5" Grid.Column="6" Text="{Binding TextAllocID}" />
             </Grid>
-            <TextBlock Grid.Row="0" Grid.Column="6" Text="{DynamicResource StringSchedule}"/>
-            <TextBlock Grid.Row="0" Grid.Column="6" Margin="60,0,0,0" Text=" : "/>
-            <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Grid.Column="6" Margin="70,0,0,0" Text="{Binding SelectedSchedule.Name}"/>
+            <WrapPanel Grid.Row="0"
+                  Grid.Column="6"
+                  Grid.ColumnSpan="6">
+                
+                <StackPanel Orientation="Vertical"
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Grid.RowSpan="2">
+                    <TextBlock Text="{DynamicResource StringSymbol}"/>
+                    <TextBlock Text="{Binding FirstOrder.Symbol}"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical"
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            Grid.RowSpan="2">
+                    <TextBlock Text="{DynamicResource StringOrderQty}"/>
+                    <TextBlock Text="{Binding FirstOrder.OrderQty}"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical"
+                            Grid.Row="0"
+                            Grid.Column="3"
+                            Grid.RowSpan="2">
+                    <TextBlock Text="{DynamicResource StringCumulativeQty}"/>
+                    <TextBlock Text="{Binding FirstOrder.CumulativeQty}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical"
+                            Grid.Row="0"
+                            Grid.Column="4"
+                            Grid.RowSpan="2">
+                    <TextBlock Text="{DynamicResource StringPrice}"/>
+                    <TextBlock Text="{Binding FirstOrder.Price}"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical"
+                            Grid.Row="0"
+                            Grid.Column="5"
+                            Grid.RowSpan="2">
+                    <TextBlock Text="{DynamicResource StringLeavesQty}"/>
+                    <TextBlock Text="{Binding FirstOrder.LeavesQty}"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical"
+                            Grid.Row="0"
+                            Grid.Column="9"
+                            Grid.RowSpan="2">
+                    <TextBlock Text="{DynamicResource StringLastPx}"/>
+                    <TextBlock Text="{Binding FirstOrder.LastPx}"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical"
+                            Grid.Row="0"
+                            Grid.Column="6"
+                            Grid.RowSpan="2">
+                    <TextBlock Text="{DynamicResource StringAvgPx}"/>
+                    <TextBlock Text="{Binding FirstOrder.AvgPx}"/>
+                </StackPanel>
+                
+                <StackPanel Orientation="Vertical"
+                            Grid.Row="0"
+                            Grid.Column="9"
+                            Grid.RowSpan="2">
+                    <TextBlock Text="{DynamicResource StringOrdStatus}"/>
+                    <TextBlock Text="{Binding FirstOrder.OrdStatus}"/>
+                </StackPanel>
+
+
+
+            </WrapPanel>
+            
+            <TextBlock Grid.Row="1" Grid.Column="6" Text="{DynamicResource StringSchedule}"/>
+            <TextBlock Grid.Row="1" Grid.Column="6" Margin="60,0,0,0" Text=" : "/>
+            <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="6" Margin="70,0,0,0" Text="{Binding SelectedSchedule.Name}"/>
             <DataGrid x:Name="DataGridSchedule" 
                   ItemsSource="{Binding SelectedSchedule.scheduleRaw}" 
                   SelectedItem="{Binding SelectedScheduleItem}"
                   SelectedIndex="{Binding SelectedScheduleItemIndex}"
                   Grid.Column="6" 
                   Grid.ColumnSpan="6" 
-                  Grid.Row="0" 
-                  Grid.RowSpan="12"
+                  Grid.Row="1" 
+                  Grid.RowSpan="11"
                   Margin="0,40,0,0"
                       IsEnabled="{Binding ScheduleNotRunning}" AutoGeneratingColumn="DataGridSchedule_AutoGeneratingColumn"/>
 

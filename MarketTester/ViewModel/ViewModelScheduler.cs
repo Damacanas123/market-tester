@@ -130,6 +130,19 @@ namespace MarketTester.ViewModel
             }
         }
 
+        private Order firstOrder;
+
+        public Order FirstOrder
+        {
+            get { return firstOrder; }
+            set
+            {
+                firstOrder = value;
+                NotifyPropertyChanged(nameof(FirstOrder));
+            }
+        }
+
+
 
         private string textTag;
         public string TextTag
@@ -411,6 +424,18 @@ namespace MarketTester.ViewModel
             }
         }
 
+        private bool useSelectedChannelAsDefault;
+
+        public bool UseSelectedChannelAsDefault
+        {
+            get { return useSelectedChannelAsDefault; }
+            set
+            {
+                useSelectedChannelAsDefault = value;
+                NotifyPropertyChanged(nameof(UseSelectedChannelAsDefault));
+            }
+        }
+
 
 
         public ObservableCollection<Scheduler> Schedules { get; set; } = new ObservableCollection<Scheduler>();
@@ -635,8 +660,17 @@ namespace MarketTester.ViewModel
             {                
                 try
                 {
-                    SelectedSchedule.PrepareSchedule(decimal.Parse(TextPriceOffset, CultureInfo.InvariantCulture),
-                    decimal.Parse(TextQuantityMultiplier, CultureInfo.InvariantCulture), TagValuePairs.ToList());
+                    string nonProtocolId;
+                    if(!UseSelectedChannelAsDefault)
+                        nonProtocolId = SelectedSchedule.PrepareSchedule(decimal.Parse(TextPriceOffset, CultureInfo.InvariantCulture),
+                        decimal.Parse(TextQuantityMultiplier, CultureInfo.InvariantCulture), TagValuePairs.ToList());
+                    else
+                        nonProtocolId = SelectedSchedule.PrepareSchedule(decimal.Parse(TextPriceOffset, CultureInfo.InvariantCulture),
+                        decimal.Parse(TextQuantityMultiplier, CultureInfo.InvariantCulture), TagValuePairs.ToList(),SelectedChannel);
+                    if (!string.IsNullOrWhiteSpace(nonProtocolId))
+                    {
+                        FirstOrder = Order.GetOrder(nonProtocolId);
+                    }
                     App.Invoke(() =>
                     {
                         InfoTextResourceKey = ResourceKeys.StringStartedSchedule;

@@ -79,7 +79,11 @@ namespace BackOfficeEngine.Model
             }
         }
 
-        
+        public static Order GetOrder(string nonProtocolID)
+        {
+            NonProtocolIDMap.TryGetValue(nonProtocolID, out Order order);
+            return order;
+        }
 
         #endregion
 

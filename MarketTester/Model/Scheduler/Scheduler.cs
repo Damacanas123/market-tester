@@ -193,12 +193,23 @@ namespace MarketTester.Model.Scheduler
             }
             selectedIndices = new int[0];
         }
-        public void PrepareSchedule(decimal priceOffset, decimal quantityMultiplier,List<TagValuePair> extraTagValuePairs)
+        /// <summary>
+        /// Prepares the schedule and returns the first New Message's associated order's NonProtocolId(basically returns the id of the order)
+        /// </summary>
+        /// <param name="priceOffset"></param>
+        /// <param name="quantityMultiplier"></param>
+        /// <param name="extraTagValuePairs"></param>
+        /// <returns></returns>
+        public string PrepareSchedule(decimal priceOffset, decimal quantityMultiplier,List<TagValuePair> extraTagValuePairs,Channel defaultChannel = null)
         {
             //note that replace requests and cancel requests have to be based on ClOrdId and OrigClOrdId in case of preprocessing
             //and schedule is always preproccesed
             schedulePrepared.Clear();
 
+            
+            
+            string firstNewMessageNonProtocolId = null;
+            Channel channel = defaultChannel;
             Matcher matcher = new Matcher();
             Engine engine = Engine.GetInstance();
             foreach (SchedulerRawItem item in scheduleRaw)
@@ -214,7 +225,8 @@ namespace MarketTester.Model.Scheduler
                 item.Price = item.Price + priceOffset;
                 item.OrderQty = item.OrderQty * quantityMultiplier;
                 IMessage m;string nonProtocolOrderId;
-                Channel channel = Connector.ActiveChannels.FirstOrDefault((o) => o.Name == item.ConnectorName);
+                if (channel == null)
+                    channel = Connector.ActiveChannels.FirstOrDefault((o) => o.Name == item.ConnectorName);
                 if(channel == null)
                 {
                     throw new ConnectorNotPresentException();
@@ -224,12 +236,16 @@ namespace MarketTester.Model.Scheduler
                     if(item.Price != -1)
                     {
                         (m,nonProtocolOrderId) = engine.PrepareMessageNew(new NewMessageParameters(channel.ProtocolType, item.Account, item.Symbol,
-                                                                       item.OrderQty, item.Side, item.TimeInForce, item.OrdType, item.Price),item.ConnectorName);
+                                                                       item.OrderQty, item.Side, item.TimeInForce, item.OrdType, item.Price),channel.Name);
                     }                    
                     else
                     {
                         (m,nonProtocolOrderId) = engine.PrepareMessageNew(new NewMessageParameters(channel.ProtocolType, item.Account, item.Symbol,
-                                                                       item.OrderQty, item.Side, item.TimeInForce, item.OrdType),item.ConnectorName);
+                                                                       item.OrderQty, item.Side, item.TimeInForce, item.OrdType),channel.Name);
+                    }
+                    if(firstNewMessageNonProtocolId == null)
+                    {
+                        firstNewMessageNonProtocolId = nonProtocolOrderId;
                     }
                     if(item.ExpireDate != DateTime.MinValue)
                     {
@@ -272,11 +288,12 @@ namespace MarketTester.Model.Scheduler
                 {
                     m.SetGenericField(int.Parse(pair.Tag, CultureInfo.InvariantCulture), pair.Value);
                 }
-                Message msgString = engine.PrepareMessage(m,item.ConnectorName);
-                schedulePrepared.Add((msgString, item.ConnectorName,item.Delay));
+                Message msgString = engine.PrepareMessage(m,channel.Name);
+                schedulePrepared.Add((msgString, channel.Name,item.Delay));
                 item.Price = item.Price - priceOffset;
                 item.OrderQty = item.OrderQty / quantityMultiplier;
             }
+            return firstNewMessageNonProtocolId;
         }
 
 

@@ -215,4 +215,6 @@
     <system:String x:Key="StringClose">Kapat</system:String>
     <system:String x:Key="StringStartedExporting">Dışa aktarılmaya başlandı.</system:String>
     <system:String x:Key="StringSessionID">Bağlantı ID.</system:String>
+    <system:String x:Key="StringUseDefaultChannel">Kanalı varsayılan olarak kullan</system:String>
+    <system:String x:Key="StringToolTipCheckBoxUseDefaultSession">Bunu seçerseniz plandaki bütün mesajlar seçili kanaldan iletilecek.</system:String>
 </ResourceDictionary>

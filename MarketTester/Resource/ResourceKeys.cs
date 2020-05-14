@@ -222,10 +222,7 @@ namespace MarketTester
         public const string StringClose = "StringClose";
         public const string StringStartedExporting = "StringStartedExporting";
         public const string StringSessionID = "StringSessionID";
-        
-
-
-
-
+        public const string StringUseDefaultChannel = "StringUseDefaultChannel";
+        public const string StringToolTipCheckBoxUseDefaultSession = "StringToolTipCheckBoxUseDefaultSession";
     }
 }

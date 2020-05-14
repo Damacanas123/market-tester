@@ -211,5 +211,8 @@
     <system:String x:Key="StringClose">Close</system:String>
     <system:String x:Key="StringStartedExporting">Started exporting.</system:String>
     <system:String x:Key="StringSessionID">Session ID.</system:String>
+    <system:String x:Key="StringUseDefaultChannel">Use channel as default</system:String>
+    <system:String x:Key="StringToolTipCheckBoxUseDefaultSession">If you check this all messages in schedule will be delivered through selected channel.</system:String>
+    
 
 </ResourceDictionary>
