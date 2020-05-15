@@ -28,7 +28,7 @@
     <InstallUrl>\\192.168.108.42\c%24\MATRIKS_OMS\MarketTesterSetup\</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>48</ApplicationRevision>
+    <ApplicationRevision>49</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -167,6 +167,8 @@
     <Compile Include="Events\LanguageChangedEvent.cs" />
     <Compile Include="Events\OnCloseEvent.cs" />
     <Compile Include="Exceptions\DeviceCantBeNull.cs" />
+    <Compile Include="Exceptions\UnmatchingTagException.cs" />
+    <Compile Include="Exceptions\UnmatchingValueException.cs" />
     <Compile Include="Exceptions\NotSupportedProtocolType.cs" />
     <Compile Include="Exceptions\ParallelRunException.cs" />
     <Compile Include="Exceptions\ShouldNotHappenException.cs" />
@@ -186,6 +188,9 @@
     <Compile Include="Model\FixFreeFormat\SavedMessage.cs" />
     <Compile Include="Model\FixFreeFormat\TagValuePair.cs" />
     <Compile Include="Model\LogAnalyzer\LineFormat.cs" />
+    <Compile Include="Model\LogLoader\LogMessage.cs" />
+    <Compile Include="Model\LogLoader\RequestResponses.cs" />
+    <Compile Include="Model\LogLoader\MsgTypeTree.cs" />
     <Compile Include="Model\OrderHistoryFix\HistoryItem.cs" />
     <Compile Include="Model\OrderHistoryFix\TagValueDescription.cs" />
     <Compile Include="Model\Scheduler\Matcher.cs" />
@@ -255,7 +260,7 @@
     <Compile Include="ViewModel\ViewModelFixSniffer.cs" />
     <Compile Include="ViewModel\ViewModelInfoBox.cs" />
     <Compile Include="ViewModel\Singleton\ViewModelLogAnalyzer.cs" />
-    <Compile Include="ViewModel\ViewModelLogVisualizer.cs" />
+    <Compile Include="ViewModel\ViewModelLogLoader.cs" />
     <Compile Include="ViewModel\ViewModelMainWindowUpperBar.cs" />
     <Compile Include="ViewModel\ViewModelOrderEntry.cs" />
     <Compile Include="ViewModel\ViewModelOrderHistoryFix.cs" />

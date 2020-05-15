@@ -6,25 +6,27 @@ using System.Text;
 using System.Threading.Tasks;
 using BackOfficeEngine.Helper;
 using BackOfficeEngine.Model;
+using FixLogAnalyzer;
 using MarketTester.Base;
 using MarketTester.Helper;
+using MarketTester.Model.LogLoader;
 using QuickFix;
 
 namespace MarketTester.ViewModel
 {
-    public class ViewModelLogVisualizer : BaseNotifier
+    public class ViewModelLogLoader : BaseNotifier
     {
         private IEnumerable<string> Lines { get; set; }
 
         public ObservableCollectionEx<string> MsgTypes { get; set; } = new ObservableCollectionEx<string>();
-        public ObservableCollectionEx<string> Tags { get; set; } = new ObservableCollectionEx<string>();
+        public ObservableCollectionEx<string> TagsCollection { get; set; } = new ObservableCollectionEx<string>();
         public ObservableCollectionEx<string> Values { get; set; } = new ObservableCollectionEx<string>();
         //collection of lines which contains current selected tag-value
         public ObservableCollectionEx<string> UsedLines { get; set; } = new ObservableCollectionEx<string>();
 
-        private Dictionary<string, List<int>> MsgTypeToTag { get; set; } = new Dictionary<string, List<int>>();
-        private Dictionary<int, string> TagToValue { get; set; } = new Dictionary<int, string>();
-        private Dictionary<string, string> ValueToUsedLine { get; set; } = new Dictionary<string, string>();
+        private Dictionary<string, MsgTypeTree> MsgTypeTrees { get; set; } = new Dictionary<string, MsgTypeTree>();
+
+        private Dictionary<string, RequestResponses> ClOrdIDMap { get; set; } = new Dictionary<string, RequestResponses>();
         private string infoText;
 
         public string InfoText
@@ -68,23 +70,42 @@ namespace MarketTester.ViewModel
                     return;
                 }
                 Lines = File.ReadLines(filePath);
+                int count = 0;
                 foreach(string line in Lines)
                 {
-                    string msg = Fix.ExtractFixMessageFromALine(line);
-                    if (string.IsNullOrWhiteSpace(msg))
+                    count += 1;
+                    try
+                    {
+                        ExtendedLogMessage logMessage = new ExtendedLogMessage(line,count);
+                        string msgType = logMessage.GetField(QuickFix.Fields.Tags.MsgType);
+                        if (string.IsNullOrWhiteSpace(msgType))
+                        {
+                            continue;
+                        }
+                        if(!MsgTypeTrees.TryGetValue(msgType,out MsgTypeTree msgTypeTree))
+                        {
+                            msgTypeTree = new MsgTypeTree();
+                            MsgTypeTrees[msgType] = msgTypeTree;
+                        }
+                        msgTypeTree.AddMessage(logMessage);
+                    }
+                    catch (InvalidMessage)
                     {
                         continue;
                     }
-                    Dictionary<int,string> tagValuePairs = MarketTesterUtil.GetTagValuePairs(msg);
-                    if(!tagValuePairs.TryGetValue(QuickFix.Fields.Tags.MsgType,out string msgType))
+                    catch(Exception ex)
                     {
+                        Util.LogDebugError(ex);
                         continue;
                     }
-                    //if(MsgTypeToTag.TryGetValue(msgType))
+                    
+                    
                 }
                 
             }
         }
+
+        
         public bool CommandLoadFileCanExecute()
         {
             return true;

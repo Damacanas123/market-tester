@@ -184,6 +184,7 @@ namespace MarketTester.Model.Sniffer
                             }
                             else
                             {
+                                Util.Log($"Should not happen case in FixDelayHandler inside dequeue Thread. {messageTuple.Item2.ToString(MarketTesterUtil.UTCTimestampFormat)} {lastMessage} ");
                                 throw new ShouldNotHappenException("A message that involves 10 arrived when there is no message in dump that contains 8 tag");
                             }
                         }

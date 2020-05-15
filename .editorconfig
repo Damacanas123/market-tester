@@ -5,3 +5,6 @@ dotnet_diagnostic.CA1819.severity = none
 
 # CA1815: Override equals and operator equals on value types
 dotnet_diagnostic.CA1815.severity = none
+
+# CA2211: Non-constant fields should not be visible
+dotnet_diagnostic.CA2211.severity = none
