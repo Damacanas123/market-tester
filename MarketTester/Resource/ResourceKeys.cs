@@ -224,5 +224,20 @@ namespace MarketTester
         public const string StringSessionID = "StringSessionID";
         public const string StringUseDefaultChannel = "StringUseDefaultChannel";
         public const string StringToolTipCheckBoxUseDefaultSession = "StringToolTipCheckBoxUseDefaultSession";
+        public const string StringAllTags = "StringAllTags";
+        public const string StringEchoBackTags = "StringEchoBackTags";
+        public const string StringTags = "StringTags";
+        public const string StringMessageTypes = "StringMessageTypes";
+        public const string StringTagValuePairs = "StringTagValuePairs";
+        public const string StringStartedReadingFixLog = "StringStartedReadingFixLog";
+        public const string StringLogConfiguration = "StringLogConfiguration";
+        public const string StringPutQInTheBeginning = "StringPutQInTheBeginning";
+        public const string StringLoadFixLog = "StringLoadFixLog";
+        public const string StringMessageLines = "StringMessageLines";
+        
+
+
+
+
     }
 }

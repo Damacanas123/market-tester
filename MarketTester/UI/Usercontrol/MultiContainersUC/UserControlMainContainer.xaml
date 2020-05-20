@@ -5,8 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MarketTester.UI.Usercontrol.MultiContainersUC"
              xmlns:usercontrol="clr-namespace:MarketTester.UI.Usercontrol"
+             xmlns:viewmodel="clr-namespace:MarketTester.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" >
+    <UserControl.DataContext>
+        <viewmodel:ViewModelMainWindow/>
+    </UserControl.DataContext>
     <Grid MouseDown="UserControl_MouseDown">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -55,6 +59,10 @@
                                                   Grid.Column="0"
                                                   Grid.ColumnSpan="4"
                                                   />
-        
+        <CheckBox IsChecked="{Binding UseQAtTheBeginning}" Grid.Row="0"
+                  Content="{DynamicResource StringPutQInTheBeginning}"
+                  Grid.Column="4"
+                  Grid.ColumnSpan="2"/>
+
     </Grid>
 </UserControl>

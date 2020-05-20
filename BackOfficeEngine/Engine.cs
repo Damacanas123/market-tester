@@ -319,5 +319,10 @@ namespace BackOfficeEngine
         {
             OnMessageEvent?.Invoke(this, new OnMessageEventArgs(message,connectionName, sessionID));
         }
+
+        public void SetPutQInTheBeginning(bool value)
+        {
+            ClOrdIdGenerator.Instance.PutQInTheBeginning = value;
+        }
     }
 }

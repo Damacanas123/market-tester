@@ -1,0 +1,251 @@
+﻿<UserControl x:Class="MarketTester.UI.Usercontrol.UserControlLogLoader"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MarketTester.UI.Usercontrol"
+             xmlns:viewmodel="clr-namespace:MarketTester.ViewModel"
+             xmlns:converter="clr-namespace:MarketTester.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <viewmodel:ViewModelLogLoader/>
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <converter:FixStringConverter x:Key="FixStringConverter"/>
+        <converter:MessageTypeColorConverter x:Key="MessageTypeColorConverter"/>
+        <Style BasedOn="{StaticResource {x:Type GridSplitter}}" TargetType="GridSplitter">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/><!-- Row for menu -->
+            <RowDefinition Height="10*"/><!-- Row for actual content -->
+            <RowDefinition Height="Auto"/>
+            <!-- Row for Grid splitter-->
+            <RowDefinition Height="3*"/><!-- Row for message inspection -->
+            <RowDefinition Height="Auto"/><!-- Row for info text -->
+            
+        </Grid.RowDefinitions>
+        <Menu Background="Transparent">
+            <MenuItem Header="{DynamicResource StringFile}">
+                <MenuItem Header="{DynamicResource StringLoadFixLog}" Command="{Binding CommandLoadFile}"/>
+
+            </MenuItem>
+
+        </Menu>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="{DynamicResource StringMessageTypes}"/>
+                <ListView Grid.Row="1" ItemsSource="{Binding MsgTypes}" SelectedItem="{Binding SelectedMsgType}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Text="{Binding MsgType}"
+                                       Grid.Column="0"/>
+                                <TextBlock Text="{Binding Explanation}"
+                                       Grid.Column="1"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+            <GridSplitter Grid.Column="1"
+                          Width="5"
+                          VerticalAlignment="Stretch"
+                          HorizontalAlignment="Center"/>
+            <TabControl Grid.Column="2" SelectedIndex="{Binding TabControlSelectedIndex}">
+                <TabItem Header="{DynamicResource StringAllTags}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="{DynamicResource StringTags}"/>
+                            <ListView Grid.Row="1" ItemsSource="{Binding AllTagsTags}"
+                                      SelectedItem="{Binding SelectedAllTagsTag}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1*"/>
+                                                <ColumnDefinition Width="5*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="{Binding Tag}"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding Explanation}"/>
+                                            <TextBlock Grid.Column="2" Text="{Binding OccurenceNum}"/>
+                                        </Grid>
+                                        
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Grid>
+                        <GridSplitter VerticalAlignment="Stretch"
+                                      Width="5"
+                                      Grid.Column="1"/>
+                        <Grid Grid.Column="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="{DynamicResource StringValues}"/>
+                            <ListView Grid.Row="1" ItemsSource="{Binding AllTagsValues}"
+                                      SelectedItem="{Binding SelectedAllTagsValue}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1*"/>
+                                                <ColumnDefinition Width="5*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding Value}" Grid.Column="0"/>
+                                            <TextBlock Text="{Binding Explanation}" Grid.Column="1"/>
+                                            <TextBlock Text="{Binding OccurenceNum}" Grid.Column="2"/>
+                                        </Grid>
+                                        
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Grid>
+                        <GridSplitter VerticalAlignment="Stretch"
+                                      Width="5"
+                                      Grid.Column="3"/>
+                        <Grid Grid.Column="4">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="{DynamicResource StringMessageLines}"/>
+                            <ListView Grid.Row="1" ItemsSource="{Binding AllTagsUsedLines}"
+                                      SelectedItem="{Binding SelectedAllTagsUsedLine}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding .}"/>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Grid>
+                        
+                    </Grid>
+                </TabItem>
+                <TabItem Header="{DynamicResource StringEchoBackTags}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="{DynamicResource StringResponseMsgType}"/>
+                            <ListView Grid.Row="1" ItemsSource="{Binding EchoBackResponseMsgTypes}"
+                                      SelectedItem="{Binding SelectedEchoBackResponseMsgType}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding .}"/>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Grid>
+                        <GridSplitter Grid.Column="1"
+                                      Width="5"
+                                      VerticalAlignment="Stretch"/>
+                        <Grid Grid.Column="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="{DynamicResource StringTagValuePairs}"/>
+                            <ListView Grid.Row="1" ItemsSource="{Binding EchoBackTagValuePairs}"
+                                      SelectedItem="{Binding SelectedEchoBackTagValuePair}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1*"/>
+                                                <ColumnDefinition Width="5*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding Tag}"
+                                                       Grid.Column="0"/>
+                                            <TextBlock Text="{Binding Value}"
+                                                       Grid.Column="1"/>
+                                            <TextBlock Text="{Binding OccurrenceNum}"
+                                                       Grid.Column="2"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Grid>
+                        <GridSplitter Grid.Column="3"
+                                      Width="5"
+                                      VerticalAlignment="Stretch"/>
+                        <Grid Grid.Column="4">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="{DynamicResource StringMessageLines}"/>
+                            <ListView Grid.Row="1" ItemsSource="{Binding EchoBackUsedLines}" SelectedItem="{Binding SelectedEchoBackUsedLine}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding .}"/>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+            
+
+        </Grid>
+        <GridSplitter Height="5" HorizontalAlignment="Stretch"
+                          Grid.Row="2"/>
+        <ListView Grid.Row="2"
+                                  Grid.Column="0"
+                                  Grid.ColumnSpan="7"
+                                  Grid.RowSpan="10"
+                                  ItemsSource="{Binding LogMessages}"
+                                  x:Name="ListViewLog"
+                                  >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding .,Converter={StaticResource FixStringConverter}}" Margin="2"
+                                               Background="{Binding .,Converter={StaticResource MessageTypeColorConverter}}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+    
+</UserControl>

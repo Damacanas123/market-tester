@@ -217,4 +217,16 @@
     <system:String x:Key="StringSessionID">Bağlantı ID.</system:String>
     <system:String x:Key="StringUseDefaultChannel">Kanalı varsayılan olarak kullan</system:String>
     <system:String x:Key="StringToolTipCheckBoxUseDefaultSession">Bunu seçerseniz plandaki bütün mesajlar seçili kanaldan iletilecek.</system:String>
+    <system:String x:Key="StringAllTags">Bütün etiketler</system:String>
+    <system:String x:Key="StringEchoBackTags">Yankı etiketler</system:String>
+    <system:String x:Key="StringTags">Etiketler</system:String>
+    <system:String x:Key="StringValues">Değerler</system:String>
+    <system:String x:Key="StringMessages">Mesajlar</system:String>
+    <system:String x:Key="StringMessageTypes">Mesaj Tipleri</system:String>
+    <system:String x:Key="StringTagValuePairs">Etiket-Değer ikilileri</system:String>
+    <system:String x:Key="StringStartedReadingFixLog">Fix logu okunmaya başlandı.</system:String>
+    <system:String x:Key="StringLogConfiguration">Log Konfigürasyon Görselleştirme</system:String>
+    <system:String x:Key="StringPutQInTheBeginning">ClOrdIDlerin başına Q- koy</system:String>
+    <system:String x:Key="StringLoadFixLog">Fix logu yükle</system:String>
+    <system:String x:Key="StringMessageLines">Mesaj Satırları</system:String>
 </ResourceDictionary>

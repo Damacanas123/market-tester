@@ -26,62 +26,97 @@ namespace MarketTester.Model.LogLoader
 
         public void AddMessage(ExtendedLogMessage msg)
         {
-            if(msg.GetField(Tags.MsgType) != MsgType)
+            string msgType = msg.GetField(Tags.MsgType);
+            if(MsgType != null && msgType != MsgType)
             {
                 throw new InvalidMessageType();
+            }
+            else if (MsgType == null)
+            {
+                MsgType = msgType;
             }
             OccurrenceNum++;
             foreach(KeyValuePair<int,string> pair in msg.TagValuePairs)
             {
                 if(!TagTrees.TryGetValue(pair.Key,out TagTree tagTree))
                 {
-                    tagTree = new TagTree();
+                    tagTree = new TagTree(pair.Key);
                     TagTrees[pair.Key] = tagTree;
                 }
                 tagTree.Add(pair.Key, pair.Value, msg.LineNum);
             }
         }
 
-
-
-        public class TagTree
+        public List<(int,int)> GetTagsAndOccurenceNums()
         {
-            public int Tag { get; set; }
-            public int OccurrenceNum { get; set; }
-            public Dictionary<string, ValueTree> ValueTrees { get; set; } = new Dictionary<string, ValueTree>();
-
-            public void Add(int tag, string value,int lineNum)
+            List<(int, int)> l = new List<(int, int)>();
+            foreach(TagTree tree in TagTrees.Values.ToList())
             {
-                if(tag != Tag)
-                {
-                    throw new UnmatchingTagException();
-                }
-                OccurrenceNum++;
-                if(!ValueTrees.TryGetValue(value,out ValueTree valueTree)) 
-                {
-                    valueTree = new ValueTree();
-                    ValueTrees[value] = valueTree;
-                }
-                valueTree.Add(value, lineNum);
+                l.Add((tree.Tag, tree.OccurrenceNum));
             }
+            return l;
         }
 
-        public class ValueTree
-        {
-            public string Value { get; set; }
-            public int OccurrenceNum { get; set; }
-            public List<int> LineNumbers { get; set; } = new List<int>();
 
-            public void Add(string value,int lineNum)
+
+        
+    }
+
+    public class TagTree
+    {
+        public int Tag { get; set; }
+        public int OccurrenceNum { get; set; }
+        public Dictionary<string, ValueTree> ValueTrees { get; set; } = new Dictionary<string, ValueTree>();
+
+        public TagTree(int tag)
+        {
+            Tag = tag;
+        }
+        public void Add(int tag, string value, int lineNum)
+        {
+            if (tag != Tag)
             {
-                if(value != Value)
-                {
-                    throw new UnmatchingValueException();
-                }
-                OccurrenceNum++;
-                LineNumbers.Add(lineNum);
+                throw new UnmatchingTagException();
             }
+            OccurrenceNum++;
+            if (!ValueTrees.TryGetValue(value, out ValueTree valueTree))
+            {
+                valueTree = new ValueTree(value);
+                ValueTrees[value] = valueTree;
+            }
+            valueTree.Add(value, lineNum);
+        }
+        public List<(string, int)> GetValuesAndOccurenceNums()
+        {
+            List<(string, int)> l = new List<(string, int)>();
+            foreach (ValueTree tree in ValueTrees.Values.ToList())
+            {
+                l.Add((tree.Value, tree.OccurrenceNum));
+            }
+            return l;
         }
     }
 
+    public class ValueTree
+    {
+        public string Value { get; set; }
+        public int OccurrenceNum { get; set; }
+        public List<int> LineNumbers { get; set; } = new List<int>();
+
+        public ValueTree(string value)
+        {
+            Value = value;
+        }
+        public void Add(string value, int lineNum)
+        {
+            if (value != Value)
+            {
+                throw new UnmatchingValueException();
+            }
+            OccurrenceNum++;
+            LineNumbers.Add(lineNum);
+        }
+
+       
+    }
 }

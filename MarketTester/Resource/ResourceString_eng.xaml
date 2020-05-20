@@ -213,6 +213,21 @@
     <system:String x:Key="StringSessionID">Session ID.</system:String>
     <system:String x:Key="StringUseDefaultChannel">Use channel as default</system:String>
     <system:String x:Key="StringToolTipCheckBoxUseDefaultSession">If you check this all messages in schedule will be delivered through selected channel.</system:String>
+    <system:String x:Key="StringAllTags">All Tags</system:String>
+    <system:String x:Key="StringEchoBackTags">Echo-back Tags</system:String>
+    <system:String x:Key="StringTags">Tags</system:String>
+    <system:String x:Key="StringValues">Values</system:String>
+    <system:String x:Key="StringMessages">Messages</system:String>
+    <system:String x:Key="StringMessageTypes">Message Types</system:String>
+    <system:String x:Key="StringTagValuePairs">Tag Value Pairs</system:String>
+    <system:String x:Key="StringStartedReadingFixLog">Started reading fix log.</system:String>
+    <system:String x:Key="StringLogConfiguration">Log Configuration Visualizer</system:String>
+    <system:String x:Key="StringPutQInTheBeginning">Put Q- in the beginning of ClOrdIDs</system:String>
+    <system:String x:Key="StringLoadFixLog">Load Fix Log</system:String>
+    <system:String x:Key="StringMessageLines">Message Lines</system:String>
+    
+    
+    
     
 
 </ResourceDictionary>

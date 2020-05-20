@@ -33,6 +33,7 @@ namespace MarketTester.ViewModel
             CommandFixFreeFormat = new BaseCommand(CommandFixFreeFormatExecute, CommandFixFreeFormatCanExecute);
             CommandScheduler = new BaseCommand(CommandSchedulerExecute, CommandSchedulerCanExecute);
             CommandFixSniffer = new BaseCommand(CommandFixSnifferExecute, CommandFixSnifferCanExecute);
+            CommandLogConfiguration = new BaseCommand(CommandLogConfigurationExecute, CommandLogConfigurationCanExecute);
 
         }
         #region commands
@@ -177,6 +178,21 @@ namespace MarketTester.ViewModel
             
         }
         public bool CommandFixSnifferCanExecute()
+        {
+            return true;            
+        }
+        #endregion
+
+
+
+        #region CommandLogConfiguration
+        public BaseCommand CommandLogConfiguration { get; set; }
+        public void CommandLogConfigurationExecute(object param)
+        {
+            UserControlLogLoader userControlFixSniffer = new UserControlLogLoader();
+            MainWindowStarter.AddTab(userControlFixSniffer, ResourceKeys.StringSniffer, true);
+        }
+        public bool CommandLogConfigurationCanExecute()
         {
             return true;
         }

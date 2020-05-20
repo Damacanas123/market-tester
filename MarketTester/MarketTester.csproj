@@ -188,9 +188,10 @@
     <Compile Include="Model\FixFreeFormat\SavedMessage.cs" />
     <Compile Include="Model\FixFreeFormat\TagValuePair.cs" />
     <Compile Include="Model\LogAnalyzer\LineFormat.cs" />
-    <Compile Include="Model\LogLoader\LogMessage.cs" />
+    <Compile Include="Model\LogLoader\ExtendedLogMessage.cs" />
     <Compile Include="Model\LogLoader\RequestResponses.cs" />
     <Compile Include="Model\LogLoader\MsgTypeTree.cs" />
+    <Compile Include="Model\LogLoader\UIModels.cs" />
     <Compile Include="Model\OrderHistoryFix\HistoryItem.cs" />
     <Compile Include="Model\OrderHistoryFix\TagValueDescription.cs" />
     <Compile Include="Model\Scheduler\Matcher.cs" />
@@ -237,6 +238,9 @@
     <Compile Include="UI\Usercontrol\UserControlInfoBox.xaml.cs">
       <DependentUpon>UserControlInfoBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Usercontrol\UserControlLogLoader.xaml.cs">
+      <DependentUpon>UserControlLogLoader.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Usercontrol\UserControlOrderHistoryFix.xaml.cs">
       <DependentUpon>UserControlOrderHistoryFix.xaml</DependentUpon>
     </Compile>
@@ -261,6 +265,7 @@
     <Compile Include="ViewModel\ViewModelInfoBox.cs" />
     <Compile Include="ViewModel\Singleton\ViewModelLogAnalyzer.cs" />
     <Compile Include="ViewModel\ViewModelLogLoader.cs" />
+    <Compile Include="ViewModel\ViewModelMainWindow.cs" />
     <Compile Include="ViewModel\ViewModelMainWindowUpperBar.cs" />
     <Compile Include="ViewModel\ViewModelOrderEntry.cs" />
     <Compile Include="ViewModel\ViewModelOrderHistoryFix.cs" />
@@ -330,6 +335,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Usercontrol\UserControlInfoBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Usercontrol\UserControlLogLoader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

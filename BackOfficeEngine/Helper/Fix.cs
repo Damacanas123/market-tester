@@ -179,7 +179,7 @@ namespace BackOfficeEngine.Helper
 
         public static string ExtractFixMessageFromALine(string line)
         {
-            Regex rgx = new Regex($"8=.*{Fix.FixDelimiter}");
+            Regex rgx = new Regex($"8=.*?{Fix.FixDelimiter}");
             try
             {
                 Match match = rgx.Match(line);
@@ -189,7 +189,7 @@ namespace BackOfficeEngine.Helper
                 {
                     return null;
                 }
-                string beginString = match.Value.Substring(startIndex, match.Value.Length - startIndex);
+                string beginString = match.Value.Substring(startIndex, match.Value.Length - startIndex - 1);
                 if (!Fix.FixProtocolStrings.Contains(beginString))
                 {
                     throw new InvalidFixBeginString();
@@ -201,7 +201,7 @@ namespace BackOfficeEngine.Helper
                     return null;
                 }
                 int messageEndIndex = endMatch.Index + endMatch.Value.Length;
-                return line.Substring(messageStartIndex, messageEndIndex);
+                return line.Substring(messageStartIndex, messageEndIndex - messageStartIndex);
             }
             catch (RegexMatchTimeoutException)
             {
