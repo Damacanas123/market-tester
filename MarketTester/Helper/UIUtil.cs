@@ -32,29 +32,9 @@ namespace MarketTester.Helper
             }
         }
 
-        public static string SaveFileDialog(string [] filters)
-        {
-            SaveFileDialog dialog = new SaveFileDialog();
-            foreach(string filter in filters)
-            {
-                dialog.Filter += filter + " file|*." + filter;
-            }            
-            dialog.InitialDirectory = MarketTesterUtil.APPLICATION_FREEFORMATSCHEDULE_DIR;
-            dialog.ShowDialog();
-            return dialog.FileName;
-        }
+        
 
-        public static string OpenFileDialog(string[] filters)
-        {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.InitialDirectory = MarketTesterUtil.APPLICATION_FREEFORMATSCHEDULE_DIR;
-            foreach (string filter in filters)
-            {
-                dialog.Filter += filter + " file|*." + filter;
-            }
-            dialog.ShowDialog();
-            return dialog.FileName;
-        }
+        
 
         public static string SaveFileDialog(string[] filters,string initialDirectory)
         {

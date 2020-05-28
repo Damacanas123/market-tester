@@ -159,13 +159,9 @@ namespace BackOfficeEngine
             return m_nonProtocolPseudoIDMap[prms.nonProtocolID].PrepareCancelMessage();
         }
 
-        public Message PrepareMessage(IMessage msg,string connectorName)
+        public Message PrepareMessage(IMessage msg)
         {
-            if(m_connectors.TryGetValue(connectorName,out IConnector connector))
-            {
-                return new Message(msg.ToString());
-            }
-            throw new ConnectorNotPresentException("Connector is disconnected or not even connected once");
+            return new Message(msg.ToString());
         }
 
 
@@ -315,9 +311,9 @@ namespace BackOfficeEngine
             ApplicationMessageRejectEvent?.Invoke(this, new OnApplicationMessageRejectEventArgs(msg, messageOrigin));
         }
 
-        public void OnMessage(string message, string connectionName,string sessionID)
+        public void OnMessage(string message, string connectionName,string sessionID,DateTime timeStamp)
         {
-            OnMessageEvent?.Invoke(this, new OnMessageEventArgs(message,connectionName, sessionID));
+            OnMessageEvent?.Invoke(this, new OnMessageEventArgs(message,connectionName, sessionID,timeStamp));
         }
 
         public void SetPutQInTheBeginning(bool value)

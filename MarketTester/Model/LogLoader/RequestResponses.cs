@@ -1,4 +1,5 @@
 ﻿using ControlzEx.Standard;
+using FixHelper;
 using FixLogAnalyzer;
 using MarketTester.Base;
 using System;
@@ -42,7 +43,7 @@ namespace MarketTester.Model.LogLoader
                     if (Request.TagValuePairs.TryGetValue(pair.Key, out string value) && value == pair.Value)
                     {
                         EchoBackTagValuePair echoPair = new EchoBackTagValuePair(pair.Key, pair.Value,Request.LineNum,msg.LineNum);
-                        EchoBackTagValuePair inList = responseMsgMap[msgType].FirstOrDefault((o) => o == echoPair);
+                        EchoBackTagValuePair inList = responseMsgMap[msgType].FirstOrDefault((o) => o.Tag == echoPair.Tag && o.Value == echoPair.Value);
                         if (inList == null)
                         {
                             responseMsgMap[msgType].Add(echoPair);
@@ -87,9 +88,23 @@ namespace MarketTester.Model.LogLoader
             set
             {
                 tag = value;
+                TagDescription = AllFixTags.GetInstance().GetTagExplanation(tag);
                 NotifyPropertyChanged(nameof(Tag));
             }
         }
+
+        private string tagDescription;
+
+        public string TagDescription
+        {
+            get { return tagDescription; }
+            set
+            {
+                tagDescription = value;
+                NotifyPropertyChanged(nameof(TagDescription));
+            }
+        }
+
 
         private string value;
 
@@ -99,9 +114,23 @@ namespace MarketTester.Model.LogLoader
             set
             {
                 this.value = value;
+                ValueDescription = AllFixTags.GetInstance().GetValueExplanation(Tag, this.value);
                 NotifyPropertyChanged(nameof(Value));
             }
         }
+
+        private string  valueDescription;
+
+        public string  ValueDescription
+        {
+            get { return valueDescription; }
+            set
+            {
+                valueDescription = value;
+                NotifyPropertyChanged(nameof(ValueDescription));
+            }
+        }
+
 
         private int occurrenceNum = 1;
 

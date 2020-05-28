@@ -34,11 +34,10 @@ namespace BackOfficeEngine.Helper
         public static string APPLICATION_SEQ_NUM_DIR = APPLICATION_COMMON_DIR + "sequence_nums\\";
         public static string STATIC_DIR_PATH = "static" + FILE_PATH_DELIMITER;
         public static string APPLICATION_STATIC_DIR = APPLICATION_COMMON_DIR + STATIC_DIR_PATH;
-        public static string EXCEPTIONLOG_FILE_PATH = APPLICATION_STATIC_DIR + "exception.log";
-        public static string DEBUG_EXCEPTIONLOG_FILE_PATH = APPLICATION_STATIC_DIR + "debug_exception.log";
-        public static string APPLICATIONLOG_FILE_PATH = APPLICATION_STATIC_DIR + "application.log";
-        public static string USERNAME = System.Security.Principal.WindowsIdentity.GetCurrent().Name.Replace(Util.FILE_PATH_DELIMITER, "");
-        public static string SCHEDULESAVE_DIR_PATH = APPLICATION_STATIC_DIR + "schedule_save" + FILE_PATH_DELIMITER;
+        public static string EXCEPTIONLOG_FILE_PATH = APPLICATION_COMMON_DIR + "exception.log";
+        public static string DEBUG_EXCEPTIONLOG_FILE_PATH = APPLICATION_COMMON_DIR + "debug_exception.log";
+        public static string APPLICATIONLOG_FILE_PATH = APPLICATION_COMMON_DIR + "application.log";
+        public static string DateFormatMicrosecondPrecision = "yyyyMMdd-HH:mm:ss.ffffff";
 
         public static void LogError(Exception ex)
         {

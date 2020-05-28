@@ -225,6 +225,10 @@
     <system:String x:Key="StringPutQInTheBeginning">Put Q- in the beginning of ClOrdIDs</system:String>
     <system:String x:Key="StringLoadFixLog">Load Fix Log</system:String>
     <system:String x:Key="StringMessageLines">Message Lines</system:String>
+    <system:String x:Key="StringConsolidateScheduleOrders">Consolidate Schedule Orders</system:String>
+    <system:String x:Key="StringBackToNormalView">Back to normal view</system:String>
+    <system:String x:Key="StringNormalizedTimeStamp">Normalized Time Stamp</system:String>
+    <system:String x:Key="StringView">View</system:String>
     
     
     

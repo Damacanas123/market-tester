@@ -234,7 +234,13 @@ namespace MarketTester
         public const string StringPutQInTheBeginning = "StringPutQInTheBeginning";
         public const string StringLoadFixLog = "StringLoadFixLog";
         public const string StringMessageLines = "StringMessageLines";
+        public const string StringConsolidateScheduleOrders = "StringConsolidateScheduleOrders";
+        public const string StringNormalizedTimeStamp = "StringNormalizedTimeStamp";
+        public const string StringBackToNormalView = "StringBackToNormalView";
         
+
+
+
 
 
 

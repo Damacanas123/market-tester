@@ -229,4 +229,8 @@
     <system:String x:Key="StringPutQInTheBeginning">ClOrdIDlerin başına Q- koy</system:String>
     <system:String x:Key="StringLoadFixLog">Fix logu yükle</system:String>
     <system:String x:Key="StringMessageLines">Mesaj Satırları</system:String>
+    <system:String x:Key="StringConsolidateScheduleOrders">Planlayıcı emirlerini birleştir</system:String>
+    <system:String x:Key="StringBackToNormalView">Normal Görünüme dön</system:String>
+    <system:String x:Key="StringNormalizedTimeStamp">Normalize zaman damgası</system:String>
+    <system:String x:Key="StringView">Görünüm</system:String>
 </ResourceDictionary>

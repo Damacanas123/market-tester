@@ -66,8 +66,7 @@ namespace QuickFix
         public Trailer Trailer { get; private set; }
 
         //extra properties
-        public DateTime SendTime { get; set; }
-        public DateTime ReceiveTime { get; set; }
+        public DateTime TimeStamp { get; set; }
 
         #endregion
 

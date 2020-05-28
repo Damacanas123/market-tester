@@ -266,7 +266,7 @@ namespace MarketTester.ViewModel
         public BaseCommand CommandLoadFile { get; set; }
         public void CommandLoadFileExecute(object param)
         {
-            string filePath = UIUtil.OpenFileDialog(new string[] { });
+            string filePath = UIUtil.OpenFileDialog(new string[] { }, Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
             if (!string.IsNullOrWhiteSpace(filePath))
             {
                 if (!File.Exists(filePath))
@@ -321,10 +321,10 @@ namespace MarketTester.ViewModel
                         {
                             AllFixTags allFixTags = AllFixTags.GetInstance();
                             MsgTypes.Clear();
-                            foreach(string msgType in MsgTypeTrees.Keys)
+                            foreach(MsgTypeTree msgTypeTree in MsgTypeTrees.Values)
                             {
-                                string explanation = allFixTags.GetValueExplanation(Tags.MsgType, msgType);
-                                MsgTypes.Add(new MsgTypeUI(msgType));
+                                string explanation = allFixTags.GetValueExplanation(Tags.MsgType, msgTypeTree.MsgType);
+                                MsgTypes.Add(new MsgTypeUI(msgTypeTree.MsgType,msgTypeTree.OccurrenceNum));
                             }
                             InfoTextResourceKey = ResourceKeys.StringFinishedAnalysis;
 

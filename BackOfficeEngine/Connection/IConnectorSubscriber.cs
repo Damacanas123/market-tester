@@ -23,6 +23,6 @@ namespace BackOfficeEngine.Connection
 
         void OnApplicationMessageReject(IConnector connector, IMessage msg, MessageOrigin messageOrigin);
 
-        void OnMessage(string message, string connectionName,string sessionID);
+        void OnMessage(string message, string connectionName,string sessionID,DateTime timeStamp);
     }
 }

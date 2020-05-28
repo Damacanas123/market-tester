@@ -13,11 +13,24 @@ namespace MarketTester.Model.LogLoader
     public class MsgTypeUI :BaseNotifier
     {
 
-        public MsgTypeUI(string msgType)
+        public MsgTypeUI(string msgType,int occurrenceNum)
         {
+            OccurrenceNum = occurrenceNum;
             MsgType = msgType;
             Explanation = AllFixTags.GetInstance().GetValueExplanation(Tags.MsgType, msgType);
         }
+        private int occurrenceNum;
+
+        public int OccurrenceNum
+        {
+            get { return occurrenceNum; }
+            set
+            {
+                occurrenceNum = value;
+                NotifyPropertyChanged(nameof(OccurrenceNum));
+            }
+        }
+
         private string msgType;
 
         public string MsgType

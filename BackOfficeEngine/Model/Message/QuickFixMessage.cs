@@ -17,8 +17,7 @@ namespace BackOfficeEngine.Model
     {
         private const string UTCTimestampFormat = "yyyyMMdd-HH:mm:ss.fff";
         public ProtocolType protocolType { get; set; }
-        public DateTime SendTime { get; set; }
-        public DateTime ReceiveTime { get; set; }
+        public DateTime TimeStamp { get; set; }
         
 
         private void PreConstructorCommonWork()

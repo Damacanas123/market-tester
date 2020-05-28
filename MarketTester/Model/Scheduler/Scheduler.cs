@@ -19,13 +19,15 @@ using BackOfficeEngine.Helper;
 using MarketTester.Exceptions;
 using QuickFix;
 using BackOfficeEngine.Exceptions;
+using FixLogAnalyzer;
 
 namespace MarketTester.Model.Scheduler
 {
     public class Scheduler : BaseNotifier
     {
-
-        //do not modify this collection from outside of this class. it is made public in order for use with bindings on xaml.
+        public static Dictionary<string, List<IMessage>> ScheduleGroupedMapMessages { get; set; } = new Dictionary<string, List<IMessage>>();
+        public static Dictionary<string, HashSet<string>> ScheduleGroupedMapNonProtocolIDs { get; set; } = new Dictionary<string, HashSet<string>>();
+        //do not modify the following collection from outside of this class. it is made public in order for use with bindings on xaml.
         public ObservableCollection<SchedulerRawItem> scheduleRaw { get; set; } = new ObservableCollection<SchedulerRawItem>();
         //(message,connector name,delay)
         private List<(Message,string,int)> schedulePrepared = new List<(Message, string, int)>();
@@ -53,13 +55,34 @@ namespace MarketTester.Model.Scheduler
         {
             OrderIdMap = new Dictionary<string, string>();
             this.Name = name;
-
+            Engine.GetInstance().OnMessageEvent += Scheduler_OnMessageEvent;
+        }
+        //ClOrdID of the first order
+        private string MainNonProtocolOrderId{ get; set; }
+        private HashSet<string> CurrentScheduleClOrdIDs { get; set; } = new HashSet<string>();
+        /// <summary>
+        /// in order to consolidate schedule messages these event is triggered by Engine
+        /// </summary>
+        private void Scheduler_OnMessageEvent(object sender, BackOfficeEngine.Events.OnMessageEventArgs args)
+        {
+            string clOrdID = Fix.GetTag(args.msg, Tags.ClOrdID);
+            if (CurrentScheduleClOrdIDs.Contains(clOrdID))
+            {
+                if(!ScheduleGroupedMapMessages.TryGetValue(MainNonProtocolOrderId,out List<IMessage> msgs))
+                {
+                    msgs = new List<IMessage>();
+                    ScheduleGroupedMapMessages[MainNonProtocolOrderId] = msgs;
+                }
+                IMessage msg = new QuickFixMessage(args.msg);
+                msg.TimeStamp = args.timeStamp;
+                msgs.Add(msg);
+            }
         }
 
         public SchedulerRawItem PrepareScheduleItem(
             MsgType msgType,
             string account,
-            Side side,
+            BackOfficeEngine.MessageEnums.Side side,
             OrdType orderType,
             TimeInForce timeInForce,
             string orderQty,
@@ -212,6 +235,7 @@ namespace MarketTester.Model.Scheduler
             Channel channel = defaultChannel;
             Matcher matcher = new Matcher();
             Engine engine = Engine.GetInstance();
+            CurrentScheduleClOrdIDs.Clear();
             foreach (SchedulerRawItem item in scheduleRaw)
             {
                 if (!item.IsSelected)
@@ -246,6 +270,8 @@ namespace MarketTester.Model.Scheduler
                     if(firstNewMessageNonProtocolId == null)
                     {
                         firstNewMessageNonProtocolId = nonProtocolOrderId;
+                        MainNonProtocolOrderId = firstNewMessageNonProtocolId;
+                        ScheduleGroupedMapNonProtocolIDs[MainNonProtocolOrderId] = new HashSet<string>();
                     }
                     if(item.ExpireDate != DateTime.MinValue)
                     {
@@ -288,7 +314,11 @@ namespace MarketTester.Model.Scheduler
                 {
                     m.SetGenericField(int.Parse(pair.Tag, CultureInfo.InvariantCulture), pair.Value);
                 }
-                Message msgString = engine.PrepareMessage(m,channel.Name);
+                Message msgString = engine.PrepareMessage(m);
+                CurrentScheduleClOrdIDs.Add(m.GetClOrdID());
+                //add non protocol order ids to current ones exclude main order
+                if (OrderIdMap[item.SchedulerOrderID] != MainNonProtocolOrderId)
+                    ScheduleGroupedMapNonProtocolIDs[MainNonProtocolOrderId].Add(OrderIdMap[item.SchedulerOrderID]);
                 schedulePrepared.Add((msgString, channel.Name,item.Delay));
                 item.Price = item.Price - priceOffset;
                 item.OrderQty = item.OrderQty / quantityMultiplier;

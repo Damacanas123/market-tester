@@ -12,11 +12,13 @@ namespace BackOfficeEngine.Events
         public string msg { get; set; }
         public string connectionName { get; set; }
         public string sessionID { get; set; }
-        public OnMessageEventArgs(string msg,string connectionName,string sessionID)
+        public DateTime timeStamp{ get; set; }
+        public OnMessageEventArgs(string msg,string connectionName,string sessionID,DateTime timeStamp)
         {
             this.msg = msg;
             this.connectionName = connectionName;
             this.sessionID = sessionID;
+            this.timeStamp = timeStamp;
         }
     }
     public delegate void OnMessageEventHandler(object sender, OnMessageEventArgs args);

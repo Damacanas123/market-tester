@@ -28,7 +28,7 @@ namespace BackOfficeEngine.Connection
         private const string SessionQualifierRD = "RD";
         private const string SessionQualifierDC1 = "DC1";
         private const string SessionQualifierDC2 = "DC2";
-        private ConcurrentQueue<(string,SessionID)> m_messageQueue = new ConcurrentQueue<(string, SessionID)>();
+        private ConcurrentQueue<(string,SessionID,DateTime)> m_messageQueue = new ConcurrentQueue<(string, SessionID, DateTime)>();
         private BISTCredentialParams CredentialParams { get; set; }
 
         public List<IConnectorSubscriber> subscribers { get; }
@@ -43,13 +43,14 @@ namespace BackOfficeEngine.Connection
                 while (true)
                 {
                     
-                    while(m_messageQueue.TryDequeue(out var pair))
+                    while(m_messageQueue.TryDequeue(out var triplet))
                     {
-                        string m = pair.Item1;
-                        SessionID sessionID = pair.Item2;
+                        string m = triplet.Item1;
+                        SessionID sessionID = triplet.Item2;
+                        DateTime timeStamp = triplet.Item3;
                         foreach(IConnectorSubscriber subscriber in subscribers)
                         {
-                            subscriber.OnMessage(m,this.Name, sessionID.ToString());
+                            subscriber.OnMessage(m,this.Name, sessionID.ToString(),timeStamp);
                         }
                         if (Fix.IsSetTag(m,Tags.ClOrdID))
                         {
@@ -63,6 +64,7 @@ namespace BackOfficeEngine.Connection
                                     continue;
                             }
                             IMessage msg = new QuickFixMessage(m);
+                            msg.TimeStamp = timeStamp;
                             //commented out because string messages are now being used in result of a performance improvement
                             //if you ever want to use send time and receive times you have to think of a workaround
                             //this feature haven't been used anyway
@@ -137,8 +139,8 @@ namespace BackOfficeEngine.Connection
 
         void IApplication.FromAdmin(Message message, SessionID sessionID)
         {
-            message.ReceiveTime = DateTime.Now;
-            m_messageQueue.Enqueue((message.ToString(), sessionID));
+            message.TimeStamp = DateTime.Now;
+            m_messageQueue.Enqueue((message.ToString(), sessionID,message.TimeStamp));
             if (message.Header.GetField(Tags.MsgType) == MsgType.REJECT)
             {
                 IMessage msg = new QuickFixMessage(message);
@@ -151,8 +153,8 @@ namespace BackOfficeEngine.Connection
 
         void IApplication.FromApp(Message message, SessionID sessionID)
         {
-            message.ReceiveTime = DateTime.Now;            
-            m_messageQueue.Enqueue((message.ToString(),sessionID));
+            message.TimeStamp = DateTime.Now;            
+            m_messageQueue.Enqueue((message.ToString(),sessionID,message.TimeStamp));
             if (message.Header.GetField(Tags.MsgType) == MsgType.SECURITYDEFINITION)
             {
                 m_symbolMap[message.GetField(Tags.Symbol)] = message.GetField(FixHelper.GeniumExtensionTags.PartitionId) == "1" ? primarySession : secondarySession;                    
@@ -208,7 +210,7 @@ namespace BackOfficeEngine.Connection
 
         void IApplication.ToAdmin(Message message, SessionID sessionID)
         {
-            m_messageQueue.Enqueue((message.ToString(), sessionID));
+            
             if(message.Header.GetField(Tags.MsgType) == MsgType.LOGON && CredentialParams != null)
             {
                 message.SetField(new Username(CredentialParams.Username));
@@ -225,12 +227,13 @@ namespace BackOfficeEngine.Connection
                     }
                 }
             }
-            message.SendTime = DateTime.Now;
+            message.TimeStamp = DateTime.Now;
+            m_messageQueue.Enqueue((message.ToString(), sessionID,message.TimeStamp));
         }
 
         void IApplication.ToApp(Message message, SessionID sessionId)
         {
-            m_messageQueue.Enqueue((message.ToString(),sessionId));
+            
             //comment ou for performance reasons for scheduler
             //IMessage msg = new QuickFixMessage(message);
             //if (msg.GetMsgType() == MessageEnums.MsgType.Reject)
@@ -240,7 +243,8 @@ namespace BackOfficeEngine.Connection
             //        subscriber.OnApplicationMessageReject(this, msg, MessageEnums.MessageOrigin.Inbound);
             //    }
             //}
-            message.SendTime = DateTime.Now;
+            message.TimeStamp = DateTime.Now;
+            m_messageQueue.Enqueue((message.ToString(), sessionId,message.TimeStamp));
         }
 #if ITXR
         private void SetISINCode(IMessage msg)
@@ -305,7 +309,6 @@ namespace BackOfficeEngine.Connection
             {
                 session = primarySession;
             }
-            msg.SendTime = DateTime.Now;
             if (overrideSessionTags)
             {
                 Message quickFixMsg = new Message(msg.ToString());
@@ -340,7 +343,7 @@ namespace BackOfficeEngine.Connection
             {
                 session?.Send(msg);
                 //if you are sending string directly they do not fall into ToApp callback.That's why you need to enqueue manually
-                m_messageQueue.Enqueue((msg, session.SessionID));
+                m_messageQueue.Enqueue((msg, session.SessionID,DateTime.Now));
             }
         }
 

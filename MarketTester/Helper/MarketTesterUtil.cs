@@ -43,12 +43,14 @@ namespace MarketTester.Helper
         public static string APPLICATION_STATIC_DIR = APPLICATION_COMMON_DIR + STATIC_DIR_PATH;
         public static string APPLICATION_EXPORT_DIR = APPLICATION_COMMON_DIR + "exports" + FILE_PATH_DELIMITER;
         public static string APPLICATION_RESULTS_DIR = APPLICATION_COMMON_DIR + "results" + FILE_PATH_DELIMITER;
-        public static string APPLICATION_SAVE_DIR = APPLICATION_STATIC_DIR + "save" + FILE_PATH_DELIMITER;
+        public static string APPLICATION_SAVE_DIR = APPLICATION_COMMON_DIR + "save" + FILE_PATH_DELIMITER;
         public static string APPLICATION_SCHEDULESAVE_DIR = APPLICATION_SAVE_DIR + "schedule" + FILE_PATH_DELIMITER;
         public static string APPLICATION_FREEFORMATSCHEDULE_DIR = APPLICATION_SCHEDULESAVE_DIR + "freeformat" + FILE_PATH_DELIMITER;
         public static string APPLICATION_NONFREEFORMATSCHEDULE_DIR = APPLICATION_SCHEDULESAVE_DIR + "nonfreeformat" + FILE_PATH_DELIMITER;
         public static string APPLICATION_SAVEDMESSAGES_DIR = APPLICATION_SAVE_DIR + "saved_messages" + FILE_PATH_DELIMITER;
-        
+        public static string APPLICATION_CSV_DIR = APPLICATION_SAVE_DIR + "csv" + FILE_PATH_DELIMITER;
+        public static string APPLICATION_XLSX_DIR = APPLICATION_SAVE_DIR + "xlsx" + FILE_PATH_DELIMITER;
+
         public static string USERNAME = System.Security.Principal.WindowsIdentity.GetCurrent().Name.Replace(MarketTesterUtil.FILE_PATH_DELIMITER, "");
         public static string SCHEDULESAVE_DIR_PATH = APPLICATION_STATIC_DIR + "schedule_save" + FILE_PATH_DELIMITER;
 
@@ -70,6 +72,8 @@ namespace MarketTester.Helper
             Directory.CreateDirectory(APPLICATION_FREEFORMATSCHEDULE_DIR);
             Directory.CreateDirectory(APPLICATION_NONFREEFORMATSCHEDULE_DIR);
             Directory.CreateDirectory(APPLICATION_SAVEDMESSAGES_DIR);
+            Directory.CreateDirectory(APPLICATION_XLSX_DIR);
+            Directory.CreateDirectory(APPLICATION_CSV_DIR);
             CopyDirectoryAndSubDirectoriesToApplicationCommonPath(STATIC_DIR_PATH);
             Connection.Connector.GetInstance();
         }

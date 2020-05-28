@@ -329,7 +329,7 @@ namespace BackOfficeEngine.Model
             {
                 Messages.Add(msg);
             }            
-            Util.AppendStringToFile(MessagesFilePath, msg.ToString());
+            Util.AppendStringToFile(MessagesFilePath, GetLineRepr(msg));
             switch (msg.GetMsgType())
             {
                 case MsgType.PendingNew:
@@ -432,13 +432,36 @@ namespace BackOfficeEngine.Model
                             case ProtocolType.Fix50sp2:
                                 lock (MessagesLock)
                                 {
-                                    Messages.Add(new QuickFixMessage(line));
+                                    Messages.Add(ParseLineRepr(line));
                                 }
                                 break;
                         }
                     }
                 }
             }            
+        }
+
+        private string GetLineRepr(IMessage msg)
+        {
+            return msg.ToString() + "|" + msg.TimeStamp.ToString(Util.DateFormatMicrosecondPrecision,CultureInfo.InvariantCulture);
+        }
+
+        private IMessage ParseLineRepr(string line)
+        {
+            int pipeIndex = line.IndexOf("|");
+            IMessage imsg;
+            if(pipeIndex != -1)
+            {
+                string msg = line.Substring(0, pipeIndex);
+                string date = line.Substring(pipeIndex + 1, line.Length - (pipeIndex + 1));
+                imsg = new QuickFixMessage(msg);
+                imsg.TimeStamp = DateTime.ParseExact(date, Util.DateFormatMicrosecondPrecision, CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                imsg = new QuickFixMessage(line);
+            }
+            return imsg;
         }
 
         public string GetExportRepr()
@@ -527,7 +550,17 @@ namespace BackOfficeEngine.Model
             }
         }
 
-
+        public static Order GetOrderByNonProtocolId(string nonProtocolID)
+        {
+            if(NonProtocolIDMap.TryGetValue(nonProtocolID,out Order order))
+            {
+                return order;
+            }
+            else
+            {
+                return null;
+            }
+        }
 
 
     }

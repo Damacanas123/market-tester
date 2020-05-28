@@ -13,6 +13,7 @@
     </UserControl.DataContext>
     <UserControl.Resources>
         <converter:FixStringConverter x:Key="FixConverter"/>
+        <converter:TimeSpanMicroSecondConverter x:Key="TimeSpanMicroSecondConverter"/>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -28,10 +29,16 @@
                     <MenuItem Header="{DynamicResource StringExportToXLSX}" Command="{Binding CommandExportToXLSX}"/>
                     <MenuItem Header="{DynamicResource StringAppendToXLSX}" Command="{Binding CommandAppendToXLSX}"/>
                 </MenuItem>
+                <MenuItem Header="{DynamicResource StringView}">
+                    <MenuItem Width="200" Command="{Binding CommandScheduleConsolidate}" 
+                              IsEnabled="{Binding ScheduleConsolidateEnabled}"
+                            Header="{Binding ConsolidateClickString}"/>
+                </MenuItem>
 
             </Menu>
             <TextBlock Margin="20,0,0,0" Text="{DynamicResource StringSheetName}" VerticalAlignment="Center"/>
             <TextBox Margin="20,5,0,5" Text="{Binding SheetName,UpdateSourceTrigger=PropertyChanged}" Height="20" Width="150"/>
+            
         </StackPanel>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -59,6 +66,11 @@
                     <DataGridTextColumn Binding="{Binding OrigClOrdID}">
                         <DataGridTextColumn.Header>
                             <TextBlock Text="{DynamicResource StringOrigClOrdID}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding NormalizedTimeStamp}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringNormalizedTimeStamp}"/>
                         </DataGridTextColumn.Header>
                     </DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding MessageType}">

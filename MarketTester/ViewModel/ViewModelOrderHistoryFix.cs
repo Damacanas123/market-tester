@@ -18,6 +18,8 @@ using MarketTester.Base;
 using System.Threading;
 using System.IO;
 using FixHelper;
+using System.Windows;
+using MarketTester.Model.Scheduler;
 
 namespace MarketTester.ViewModel
 {
@@ -29,7 +31,9 @@ namespace MarketTester.ViewModel
             CommandAppendToCsv = new BaseCommand(CommandAppendToCsvExecute, CommandAppendToCsvCanExecute);
             CommandExportToXLSX = new BaseCommand(CommandExportToXLSXExecute, CommandExportToXLSXCanExecute);
             CommandAppendToXLSX = new BaseCommand(CommandAppendToXLSXExecute, CommandAppendToXLSXCanExecute);
+            CommandScheduleConsolidate = new BaseCommand(CommandScheduleConsolidateExecute, CommandScheduleConsolidateCanExecute);
             Settings.GetInstance().LanguageChangedEventHandler += OnLanguageChanged;
+            IsConsolidateOpen = false;
         }
 
         public void OnLanguageChanged()
@@ -43,7 +47,9 @@ namespace MarketTester.ViewModel
         private Dictionary<string, int> clOrdIdMap = new Dictionary<string, int>();
         private int clOrdIdCounter = 0;
         private Order order;
-
+        /// <summary>
+        /// for use with single order history
+        /// </summary>
         public Order Order
         {
             get { return order; }
@@ -62,9 +68,47 @@ namespace MarketTester.ViewModel
                             AddMessage(order.Messages[i]);                            
                         }
                     }
-                    
+                    ScheduleConsolidateEnabled = Scheduler.ScheduleGroupedMapMessages.ContainsKey(order.NonProtocolID);
                     NotifyPropertyChanged(nameof(Order));
                 }                
+            }
+        }
+
+        private bool scheduleConsolidateEnabled;
+
+        public bool ScheduleConsolidateEnabled
+        {
+            get { return scheduleConsolidateEnabled; }
+            set
+            {
+                scheduleConsolidateEnabled = value;
+                NotifyPropertyChanged(nameof(ScheduleConsolidateEnabled));
+            }
+        }
+
+
+
+        private List<Order> Orders { get; set; } = new List<Order>();
+        /// <summary>
+        /// for use with schedule grouped orders
+        /// </summary>
+        /// <param name="order"></param>
+        public void AddOrder(Order order)
+        {
+            Orders.Add(order);
+            order.Messages.CollectionChanged += MessageCollectionChanged;
+        }
+
+        /// <summary>
+        /// onlye for use with schedule grouped orders
+        /// </summary>
+        /// <param name="msgs"></param>
+        public void SetMessages(List<IMessage> msgs)
+        {
+            HistoryItems.Clear();
+            foreach(IMessage msg in msgs)
+            {
+                AddMessage(msg);
             }
         }
 
@@ -77,6 +121,40 @@ namespace MarketTester.ViewModel
             {
                 sheetName = value;
                 NotifyPropertyChanged(nameof(SheetName));
+            }
+        }
+
+        private string consoliDateClickString;
+
+        public string ConsolidateClickString
+        {
+            get { return consoliDateClickString; }
+            set
+            {
+                consoliDateClickString = value;
+                NotifyPropertyChanged(nameof(ConsolidateClickString));
+            }
+        }
+
+
+        private bool isConsolidateOpen;
+        private bool IsConsolidateOpen
+        {
+            get
+            {
+                return isConsolidateOpen;
+            }
+            set
+            {
+                isConsolidateOpen = value;
+                if (!value)
+                {
+                    ConsolidateClickString = App.Current.Resources[ResourceKeys.StringConsolidateScheduleOrders].ToString();
+                }
+                else
+                {
+                    ConsolidateClickString = App.Current.Resources[ResourceKeys.StringBackToNormalView].ToString();
+                }
             }
         }
 
@@ -117,6 +195,10 @@ namespace MarketTester.ViewModel
             {
                 selectedHistoryItem = value;
                 NotifyPropertyChanged(nameof(SelectedHistoryItem));
+                if(selectedHistoryItem == null)
+                {
+                    return;
+                }
                 Dictionary<int,string> tagValuePairs = MarketTesterUtil.GetTagValuePairs(selectedHistoryItem.MessageString);
                 TagValues.Clear();
                 foreach(KeyValuePair<int,string> pair in tagValuePairs)
@@ -160,7 +242,7 @@ namespace MarketTester.ViewModel
         public BaseCommand CommandExportToCsv { get; set; }
         public void CommandExportToCsvExecute(object param)
         {
-            string filePath = UIUtil.SaveFileDialog(new string[] { "csv" });
+            string filePath = UIUtil.SaveFileDialog(new string[] { "csv" }, MarketTesterUtil.APPLICATION_CSV_DIR);
             if (!string.IsNullOrWhiteSpace(filePath))
             {
                 new Thread(() =>
@@ -198,7 +280,7 @@ namespace MarketTester.ViewModel
         public BaseCommand CommandAppendToCsv { get; set; }
         public void CommandAppendToCsvExecute(object param)
         {
-            string filePath = UIUtil.OpenFileDialog(new string[] { "csv" });
+            string filePath = UIUtil.OpenFileDialog(new string[] { "csv" }, MarketTesterUtil.APPLICATION_CSV_DIR);
             if (!string.IsNullOrWhiteSpace(filePath))
             {
                 new Thread(() =>
@@ -241,7 +323,7 @@ namespace MarketTester.ViewModel
                 InfoTextResourceKey = ResourceKeys.StringEnterASheetName;
                 return;
             }
-            string filePath = UIUtil.SaveFileDialog(new string[] { "xlsx" });
+            string filePath = UIUtil.SaveFileDialog(new string[] { "xlsx" }, MarketTesterUtil.APPLICATION_XLSX_DIR);
             if (!string.IsNullOrWhiteSpace(filePath))
             {
                 string fixHistory = "";
@@ -278,7 +360,7 @@ namespace MarketTester.ViewModel
                 InfoTextResourceKey = ResourceKeys.StringEnterASheetName;
                 return;
             }
-            string filePath = UIUtil.OpenFileDialog(new string[] { "xlsx" });
+            string filePath = UIUtil.OpenFileDialog(new string[] { "xlsx" }, MarketTesterUtil.APPLICATION_XLSX_DIR);
             if (!String.IsNullOrWhiteSpace(filePath))
             {
                 InfoTextResourceKey = ResourceKeys.StringStartingToWriteToXLSXFile;
@@ -304,6 +386,43 @@ namespace MarketTester.ViewModel
             return true;
         }
         #endregion
+
+
+        #region CommandScheduleConsolidate
+        public BaseCommand CommandScheduleConsolidate { get; set; }
+        public void CommandScheduleConsolidateExecute(object param)
+        {
+            if (!IsConsolidateOpen)
+            {
+                List<IMessage> msgs = Scheduler.ScheduleGroupedMapMessages[Order.NonProtocolID];
+                SetMessages(msgs);
+                HashSet<string> NonProtocolIDs = Scheduler.ScheduleGroupedMapNonProtocolIDs[Order.NonProtocolID];
+                foreach(string nonProtocolId in NonProtocolIDs)
+                {
+                    Order order = Order.GetOrderByNonProtocolId(nonProtocolId);
+                    if (order != null)
+                    {
+                        AddOrder(order);
+                    }
+                }
+                IsConsolidateOpen = true;
+            }
+            else
+            {
+                List<IMessage> msgs = Order.Messages.ToList();
+                SetMessages(msgs);
+                foreach(Order order in Orders)
+                {
+                    order.Messages.CollectionChanged -= MessageCollectionChanged;
+                }
+                IsConsolidateOpen = false;
+            }
+        }
+        public bool CommandScheduleConsolidateCanExecute()
+        {
+            return true;
+        }
+        #endregion
         #endregion
 
 
@@ -320,7 +439,7 @@ namespace MarketTester.ViewModel
             });
         }
 
-
+        private object HistoryItemLock { get; set; } = new object();
         private void AddMessage(IMessage msg)
         {
             string oldClOrdId = MarketTesterUtil.GetField(msg, Tags.ClOrdID);
@@ -364,7 +483,19 @@ namespace MarketTester.ViewModel
                 rejectedClOrdIDs.Add(newClOrdId);
                 item.IsPreGenerated = true;
             }
-            HistoryItems.Add(item);
+            item.TimeStamp = msg.TimeStamp;
+            if(HistoryItems.Count == 0)
+            {
+                item.NormalizedTimeStamp = new TimeSpan(0);
+            }
+            else
+            {
+                item.NormalizedTimeStamp = msg.TimeStamp - HistoryItems[0].TimeStamp;
+            }
+            lock (HistoryItemLock)
+            {
+                HistoryItems.Add(item);
+            }            
         }
 
         

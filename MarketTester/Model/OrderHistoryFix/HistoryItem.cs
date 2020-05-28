@@ -27,6 +27,21 @@ namespace MarketTester.Model.OrderHistoryFix
             get { return backingMsg.ToString(); }
         }
 
+        private TimeSpan normalizedTimeStamp;
+
+        public TimeSpan NormalizedTimeStamp
+        {
+            get { return normalizedTimeStamp; }
+            set
+            {
+                normalizedTimeStamp = value;
+                NotifyPropertyChanged(nameof(NormalizedTimeStamp));
+            }
+        }
+
+        public DateTime TimeStamp { get; set; }
+
+
         public override string ToString()
         {
             return MessageString;
