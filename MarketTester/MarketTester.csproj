@@ -157,7 +157,6 @@
     <Compile Include="Connection\Connector.cs" />
     <Compile Include="Const\Const.cs" />
     <Compile Include="Converters\BoolInveter.cs" />
-    <Compile Include="Converters\TimeSpanMicroSecondConverter.cs" />
     <Compile Include="Converters\DoubleConverter.cs" />
     <Compile Include="Converters\FixStringConverter.cs" />
     <Compile Include="Converters\MessageTypeColorConverter.cs" />

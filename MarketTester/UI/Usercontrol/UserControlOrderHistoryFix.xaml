@@ -13,7 +13,6 @@
     </UserControl.DataContext>
     <UserControl.Resources>
         <converter:FixStringConverter x:Key="FixConverter"/>
-        <converter:TimeSpanMicroSecondConverter x:Key="TimeSpanMicroSecondConverter"/>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
