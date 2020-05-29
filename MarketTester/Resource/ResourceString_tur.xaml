@@ -233,4 +233,5 @@
     <system:String x:Key="StringBackToNormalView">Normal Görünüme dön</system:String>
     <system:String x:Key="StringNormalizedTimeStamp">Normalize zaman damgası</system:String>
     <system:String x:Key="StringView">Görünüm</system:String>
+    <system:String x:Key="StringTimeDiff">Zaman Farkı</system:String>
 </ResourceDictionary>

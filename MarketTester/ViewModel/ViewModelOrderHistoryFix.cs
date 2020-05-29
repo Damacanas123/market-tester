@@ -487,10 +487,12 @@ namespace MarketTester.ViewModel
             if(HistoryItems.Count == 0)
             {
                 item.NormalizedTimeStamp = new TimeSpan(0);
+                item.NormalizedTimeDiff = new TimeSpan(0);
             }
             else
             {
                 item.NormalizedTimeStamp = msg.TimeStamp - HistoryItems[0].TimeStamp;
+                item.NormalizedTimeDiff = msg.TimeStamp - HistoryItems[HistoryItems.Count - 1].TimeStamp;
             }
             lock (HistoryItemLock)
             {

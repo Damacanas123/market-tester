@@ -229,6 +229,8 @@
     <system:String x:Key="StringBackToNormalView">Back to normal view</system:String>
     <system:String x:Key="StringNormalizedTimeStamp">Normalized Time Stamp</system:String>
     <system:String x:Key="StringView">View</system:String>
+    <system:String x:Key="StringTimeDiff">Time Difference</system:String>
+    
     
     
     

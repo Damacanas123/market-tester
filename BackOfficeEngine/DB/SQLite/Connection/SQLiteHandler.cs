@@ -69,8 +69,7 @@ namespace BackOfficeEngine.DB.SQLite
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Problem fetching column names from " + tableName + "." + ex.ToString() + "\n\n");
-                throw new Exception();
+                Util.LogError(ex);
             }
             return exists;
         }
@@ -89,13 +88,11 @@ namespace BackOfficeEngine.DB.SQLite
                 {
                     SQLiteCommand command = new SQLiteCommand(sql, this.conn);
                     command.ExecuteNonQuery();
-                    Console.WriteLine(sql);
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(sql);
-                Console.WriteLine("Problem executing add column query to orders table.\n" + ex.ToString() + "\n\n");
+                Util.LogError(ex);
             }
         }
 

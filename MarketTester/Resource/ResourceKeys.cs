@@ -237,7 +237,9 @@ namespace MarketTester
         public const string StringConsolidateScheduleOrders = "StringConsolidateScheduleOrders";
         public const string StringNormalizedTimeStamp = "StringNormalizedTimeStamp";
         public const string StringBackToNormalView = "StringBackToNormalView";
+        public const string StringTimeDiff = "StringTimeDiff";
         
+
 
 
 

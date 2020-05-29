@@ -72,6 +72,11 @@
                             <TextBlock Text="{DynamicResource StringNormalizedTimeStamp}"/>
                         </DataGridTextColumn.Header>
                     </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding NormalizedTimeDiff}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringTimeDiff}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding MessageType}">
                         <DataGridTextColumn.Header>
                             <TextBlock Text="{DynamicResource StringMessageType}"/>

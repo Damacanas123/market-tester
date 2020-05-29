@@ -39,6 +39,19 @@ namespace MarketTester.Model.OrderHistoryFix
             }
         }
 
+        private TimeSpan normalizedTimeDiff;
+
+        public TimeSpan NormalizedTimeDiff
+        {
+            get { return normalizedTimeDiff; }
+            set
+            {
+                normalizedTimeDiff = value;
+                NotifyPropertyChanged(nameof(NormalizedTimeDiff));
+            }
+        }
+
+
         public DateTime TimeStamp { get; set; }
 
 
