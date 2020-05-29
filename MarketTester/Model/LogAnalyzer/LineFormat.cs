@@ -27,7 +27,7 @@ namespace MarketTester.Model
         public const string MessageCard = "{message}";
         private const string SaveDelimiter = "dfbdfbdbd";
 
-        public static string SaveFilePath = MarketTesterUtil.APPLICATION_STATIC_DIR + "lineformats.save";
+        public static string SaveFilePath = MarketTesterUtil.APPLICATION_SAVE_DIR + "lineformats.save";
         public static ObservableCollection<LineFormat> Formats { get; set; } = new ObservableCollection<LineFormat>();
         public static void LoadLineFormats()
         {

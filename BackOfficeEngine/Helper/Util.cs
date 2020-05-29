@@ -14,6 +14,7 @@ using System.Deployment.Application;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Collections.Concurrent;
+using BackOfficeEngine.Model;
 
 [assembly: InternalsVisibleTo("UnitTest")]
 namespace BackOfficeEngine.Helper
@@ -49,9 +50,9 @@ namespace BackOfficeEngine.Helper
             AppendStringToFile(APPLICATIONLOG_FILE_PATH, $"Appl version({APP_VERSION}) - {DateTime.Now} {Environment.NewLine}{s}{Environment.NewLine}");
         }
 
-        public static void LogDebugError(Exception ex)
+        public static void LogDebugError(Exception ex,string s = null)
         {
-            AppendStringToFile(DEBUG_EXCEPTIONLOG_FILE_PATH, $"Appl version({APP_VERSION}) - {DateTime.Now} {Environment.NewLine}Type : {ex.GetType().ToString()} {Environment.NewLine}Exception : {ex.ToString()}{Environment.NewLine}");
+            AppendStringToFile(DEBUG_EXCEPTIONLOG_FILE_PATH, (s != null ? s + Environment.NewLine : "") + $"Appl version({APP_VERSION}) - {DateTime.Now} {Environment.NewLine}Type : {ex.GetType().ToString()} {Environment.NewLine}Exception : {ex.ToString()}{Environment.NewLine}");
         }
         
 
@@ -507,6 +508,29 @@ namespace BackOfficeEngine.Helper
             });
         }
 
+
+        public static string GetLineRepr(IMessage msg)
+        {
+            return msg.ToString() + "|" + msg.TimeStamp.ToString(Util.DateFormatMicrosecondPrecision, CultureInfo.InvariantCulture);
+        }
+
+        public static IMessage ParseLineRepr(string line)
+        {
+            int pipeIndex = line.IndexOf("|");
+            IMessage imsg;
+            if (pipeIndex != -1)
+            {
+                string msg = line.Substring(0, pipeIndex);
+                string date = line.Substring(pipeIndex + 1, line.Length - (pipeIndex + 1));
+                imsg = new QuickFixMessage(msg);
+                imsg.TimeStamp = DateTime.ParseExact(date, Util.DateFormatMicrosecondPrecision, CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                imsg = new QuickFixMessage(line);
+            }
+            return imsg;
+        }
 
     }
 }

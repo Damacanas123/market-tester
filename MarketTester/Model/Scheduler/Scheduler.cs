@@ -20,11 +20,89 @@ using MarketTester.Exceptions;
 using QuickFix;
 using BackOfficeEngine.Exceptions;
 using FixLogAnalyzer;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace MarketTester.Model.Scheduler
 {
     public class Scheduler : BaseNotifier
     {
+        private const string MapMessages = "map_messages";
+        private const string MapNonProtocolID = "map_non_protocol_id";
+        private static string ScheduleGroupsSavePath { get; set; } = MarketTesterUtil.APPLICATION_SAVE_DIR + "schedule_group_orders.json";
+        public static void ClearMaps()
+        {
+            ScheduleGroupedMapMessages.Clear();
+            ScheduleGroupedMapNonProtocolIDs.Clear();
+            SaveScheduleGroups();
+        }
+        public static void LoadScheduleGroups()
+        {
+            try
+            {
+                string json = MarketTesterUtil.ReadFile(ScheduleGroupsSavePath);
+                JObject topLevelObject = (JObject)JsonConvert.DeserializeObject(json);
+                JObject mapMessages = (JObject)topLevelObject[MapMessages];
+                foreach (var item in mapMessages)
+                {
+                    List<IMessage> list = new List<IMessage>();
+                    ScheduleGroupedMapMessages[item.Key] = list;
+                    JArray array = (JArray)item.Value;
+                    foreach (string s in array)
+                    {
+                        IMessage msg = Util.ParseLineRepr(s);
+                        list.Add(msg);
+                    }
+                }
+                JObject mapNonProtocolID = (JObject)topLevelObject[MapNonProtocolID];
+                foreach (var item in mapNonProtocolID)
+                {
+                    HashSet<string> set = new HashSet<string>();
+                    ScheduleGroupedMapNonProtocolIDs[item.Key] = set;
+                    JArray array = (JArray)item.Value;
+                    foreach (string s in array)
+                    {
+                        set.Add(s);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Util.LogDebugError(ex, "Couldn't parse scheduler maps");
+            }
+
+            Util.ThreadStart(() =>
+            {
+                while (true)
+                {
+                    SaveScheduleGroups();
+                    Thread.Sleep(5000);
+                }                    
+            });
+        }
+        private static object saveLock { get; set; } = new object();
+        private static void SaveScheduleGroups()
+        {
+            lock (saveLock)
+            {
+                Dictionary<string, object> dic = new Dictionary<string, object>();
+                dic[MapNonProtocolID] = ScheduleGroupedMapNonProtocolIDs;
+
+                Dictionary<string, List<string>> protocolIDCopy = new Dictionary<string, List<string>>();
+                foreach (KeyValuePair<string, List<IMessage>> pair in ScheduleGroupedMapMessages)
+                {
+                    List<string> heyo = new List<string>();
+                    protocolIDCopy[pair.Key] = heyo;
+                    foreach (IMessage msg in pair.Value)
+                    {
+                        heyo.Add(Util.GetLineRepr(msg));
+                    }
+                }
+                dic[MapMessages] = protocolIDCopy;
+                string serialized = JsonConvert.SerializeObject(dic);
+                MarketTesterUtil.OverwriteToFile(ScheduleGroupsSavePath, serialized);
+            }            
+        }
         public static Dictionary<string, List<IMessage>> ScheduleGroupedMapMessages { get; set; } = new Dictionary<string, List<IMessage>>();
         public static Dictionary<string, HashSet<string>> ScheduleGroupedMapNonProtocolIDs { get; set; } = new Dictionary<string, HashSet<string>>();
         //do not modify the following collection from outside of this class. it is made public in order for use with bindings on xaml.

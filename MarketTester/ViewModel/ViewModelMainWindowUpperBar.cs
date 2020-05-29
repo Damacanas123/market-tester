@@ -17,6 +17,7 @@ using MarketTester.Enumeration;
 using Microsoft.Office.Interop.Excel;
 using BackOfficeEngine.Helper;
 using System.Windows.Markup;
+using MarketTester.Model.Scheduler;
 
 namespace MarketTester.ViewModel
 {
@@ -56,6 +57,7 @@ namespace MarketTester.ViewModel
         public void CommandClearOrdersExecute(object param)
         {
             Order.ClearOrders();
+            Scheduler.ClearMaps();
         }
 
         public bool CommandClearOrdersCanExecute()

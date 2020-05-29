@@ -13,6 +13,7 @@ using FixHelper;
 using System.Data;
 using System.Windows.Navigation;
 using BackOfficeEngine.Model;
+using MarketTester.Model.Scheduler;
 
 namespace MarketTester.Helper
 {
@@ -76,6 +77,7 @@ namespace MarketTester.Helper
             Directory.CreateDirectory(APPLICATION_CSV_DIR);
             CopyDirectoryAndSubDirectoriesToApplicationCommonPath(STATIC_DIR_PATH);
             Connection.Connector.GetInstance();
+            Scheduler.LoadScheduleGroups();
         }
         
 
