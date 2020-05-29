@@ -1935,7 +1935,7 @@ msgValueMap[141] = new Dictionary<string, string>()
 	};
 msgValueMap[150] = new Dictionary<string, string>()
         {
-            {"0","New"},{"3","Done for day"},{"4","Canceled"},{"5","Replaced"},{"6","Pending Cancel (e.g. result of Order Cancel Request <F>"},{"7","Stopped"},{"8","Rejected"},{"9","Suspended"},{"A","Pending New"},{"B","Calculated"},{"C","Expired"},{"D","Restated ("},{"E","Pending Replace (e.g. result of Order Cancel/Replace Request <G>"},{"F","Trade (partial fill or fill)"},{"G","Trade Correct"},{"H","Trade Cancel"},{"I","Order Status"},{"J","Trade in a Clearing Hold"},{"K","Trade has been released to Clearing"},{"L","Triggered or Activated by System"},
+            {"0","New"},{"1","Partial Fill" },{"2","Fill" },{"3","Done for day"},{"4","Canceled"},{"5","Replaced"},{"6","Pending Cancel (e.g. result of Order Cancel Request <F>"},{"7","Stopped"},{"8","Rejected"},{"9","Suspended"},{"A","Pending New"},{"B","Calculated"},{"C","Expired"},{"D","Restated ("},{"E","Pending Replace (e.g. result of Order Cancel/Replace Request <G>"},{"F","Trade (partial fill or fill)"},{"G","Trade Correct"},{"H","Trade Cancel"},{"I","Order Status"},{"J","Trade in a Clearing Hold"},{"K","Trade has been released to Clearing"},{"L","Triggered or Activated by System"},
 	};
 
 msgValueMap[156] = new Dictionary<string, string>()

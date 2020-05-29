@@ -400,6 +400,8 @@ namespace BackOfficeEngine.Model
                 OrdStatus = msg.GetOrdStatus();
             if (msg.IsSetGenericField(QuickFix.Fields.Tags.LeavesQty))
                 LeavesQty = decimal.Parse(msg.GetGenericField(QuickFix.Fields.Tags.LeavesQty),CultureInfo.InvariantCulture);
+            if (msg.IsSetPrice())
+                Price = msg.GetPrice();
             using(SQLiteHandler handler = new SQLiteHandler())
             {
                 handler.Update(this);

@@ -17,7 +17,7 @@ namespace BackOfficeEngine.MessageEnums
     }
     public enum OrdType
     {
-        UNKNOWN, Limit,Market,MarketToLimit
+        UNKNOWN, Limit,Market,MarketToLimit,MarketOnClose
     }
     public enum Side
     {
@@ -25,7 +25,7 @@ namespace BackOfficeEngine.MessageEnums
     }
     public enum MsgType
     {
-        UNKNOWN, New, Replace, Cancel, AckNew,AckReplace,AckCancel, Reject, Trade,PendingNew,PendingReplace,PendingCancel
+        UNKNOWN, New, Replace, Cancel, AckNew,AckReplace,AckCancel, Reject, Trade,PendingNew,PendingReplace,PendingCancel,PartialFill,Fill
     }
     public enum OrdStatus
     {
@@ -97,6 +97,8 @@ namespace BackOfficeEngine.MessageEnums
                     return OrdType.Market;
                 case QuickFix.Fields.OrdType.MARKET_WITH_LEFTOVER_AS_LIMIT:
                     return OrdType.MarketToLimit;
+                case QuickFix.Fields.OrdType.MARKET_ON_CLOSE:
+                    return OrdType.MarketOnClose;
                 default:
                     return OrdType.UNKNOWN;
             }
@@ -111,6 +113,8 @@ namespace BackOfficeEngine.MessageEnums
                     return QuickFix.Fields.OrdType.MARKET;
                 case OrdType.MarketToLimit:
                     return QuickFix.Fields.OrdType.MARKET_WITH_LEFTOVER_AS_LIMIT;
+                case OrdType.MarketOnClose:
+                    return QuickFix.Fields.OrdType.MARKET_ON_CLOSE;
                 default:
                     return 'U'; // U for OrdType.UNKNOWN
             }
@@ -176,6 +180,10 @@ namespace BackOfficeEngine.MessageEnums
                             return MsgType.PendingReplace;
                         case ExecType.PENDING_CANCEL:
                             return MsgType.PendingCancel;
+                        case ExecType.PARTIAL_FILL:
+                            return MsgType.PartialFill;
+                        case ExecType.FILL:
+                            return MsgType.Fill;
                         default:
                             return MsgType.UNKNOWN;
                     }
