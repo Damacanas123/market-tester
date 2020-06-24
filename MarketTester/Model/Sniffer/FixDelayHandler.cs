@@ -20,6 +20,7 @@ using BackOfficeEngine.Model;
 using MarketTester.Base;
 using System.Globalization;
 using System.Net.Sockets;
+using QuickFix;
 
 namespace MarketTester.Model.Sniffer
 {
@@ -147,6 +148,27 @@ namespace MarketTester.Model.Sniffer
                 {
                     if(sniffer.MessageQueue.TryDequeue(out (byte[],DateTime) messageTuple))
                     {
+                        //lastMessage += DefaultEncoding.GetString(messageTuple.Item1);
+                        //int index10 = lastMessage.IndexOf(Tag10);
+                        //int messageEnd = lastMessage.IndexOf(Fix.FixDelimiter, index10 + 1);
+                        //if(messageEnd != -1)
+                        //{
+                        //    string message = lastMessage.Substring(0, messageEnd + 1);
+                        //    if (Fix.CheckMessageValidity(message))
+                        //    {
+                        //        string msgType = Fix.GetTag(message, Tags.MsgType);
+                        //        if (FixValues.MsgTypesOrderEntry.ContainsKey(msgType))
+                        //        {
+                        //            AddItem(message, messageTuple.Item2);
+                        //            lastMessage = lastMessage.Substring(messageEnd + 1, lastMessage.Length - (messageEnd + 1));
+                        //        }
+                        //    }
+                        //}
+
+
+
+
+
                         string nextString = DefaultEncoding.GetString(messageTuple.Item1);
                         if (string.IsNullOrWhiteSpace(nextString))
                         {
@@ -159,13 +181,13 @@ namespace MarketTester.Model.Sniffer
                             if (Fix.CheckMessageValidity(nextString))
                             {
                                 string msgType = Fix.GetTag(nextString, Tags.MsgType);
-                                if(FixValues.MsgTypesOrderEntry.ContainsKey(msgType))
+                                if (FixValues.MsgTypesOrderEntry.ContainsKey(msgType))
                                 {
                                     AddItem(nextString, messageTuple.Item2);
                                 }
                             }
                         }
-                        else if(index8 == -1 && index10 != -1)
+                        else if (index8 == -1 && index10 != -1)
                         {
                             if (TagFound8)
                             {
@@ -188,15 +210,15 @@ namespace MarketTester.Model.Sniffer
                                 throw new ShouldNotHappenException("A message that involves 10 arrived when there is no message in dump that contains 8 tag");
                             }
                         }
-                        else if(index8 != -1 && index10 == -1)
+                        else if (index8 != -1 && index10 == -1)
                         {
                             lastMessage = nextString;
                         }
-                        else if(index8 == -1 && index10 == -1)
+                        else if (index8 == -1 && index10 == -1)
                         {
                             lastMessage += nextString;
                         }
-                        
+
                     }
                     else
                     {
@@ -474,6 +496,7 @@ namespace MarketTester.Model.Sniffer
                 TcpDatagram tcp = ip.Tcp;
                 void HandlePacket()
                 {
+                    
                     byte[] tcpData = tcp.ToArray().SubArray(tcp.HeaderLength, tcp.Length - tcp.HeaderLength);
                     MessageQueue.Enqueue((tcpData, packet.Timestamp));
                 }

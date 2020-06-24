@@ -22,6 +22,7 @@ using BackOfficeEngine.Exceptions;
 using FixLogAnalyzer;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace MarketTester.Model.Scheduler
 {
@@ -40,6 +41,10 @@ namespace MarketTester.Model.Scheduler
         {
             try
             {
+                if (!File.Exists(ScheduleGroupsSavePath))
+                {
+                    return;
+                }
                 string json = MarketTesterUtil.ReadFile(ScheduleGroupsSavePath);
                 JObject topLevelObject = (JObject)JsonConvert.DeserializeObject(json);
                 JObject mapMessages = (JObject)topLevelObject[MapMessages];
