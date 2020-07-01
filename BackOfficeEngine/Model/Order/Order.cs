@@ -274,6 +274,7 @@ namespace BackOfficeEngine.Model
                 Date = reader[nameof(Date)].ToString();
                 IsImported = reader[nameof(IsImported)].ToString() == "0" ? false : true;
                 ConnectorName = reader[nameof(ConnectorName)].ToString();
+                LeavesQty = decimal.Parse(reader[nameof(LeavesQty)].ToString(),CultureInfo.InvariantCulture);
                 LoadMessages();
                 ConstructorCommonWork();
             }
@@ -333,36 +334,24 @@ namespace BackOfficeEngine.Model
             switch (msg.GetMsgType())
             {
                 case MsgType.PendingNew:
-                    OrdStatus = OrdStatus.PendingNew;
                     break;
                 case MsgType.PendingReplace:
-                    OrdStatus = OrdStatus.PendingReplace;
                     break;
                 case MsgType.PendingCancel:
-                    OrdStatus = OrdStatus.PendingCancel;
                     break;
                 case MsgType.AckNew:
-                    OrdStatus = OrdStatus.New;
-                    ClOrdID = msg.GetClOrdID();
+                    if(msg.IsSetClOrdID())
+                        ClOrdID = msg.GetClOrdID();
                     break;
                 case MsgType.AckReplace:
-                    switch (cumulativeQty)
-                    {
-                        case 0:
-                            ordStatus = OrdStatus.New;
-                            break;
-                        default:
-                            ordStatus = OrdStatus.PartialFilled;
-                            break;
-                    }
-                    OrderQty = msg.GetOrderQty();
-                    Price = msg.GetPrice();
-                    OrigClOrdID = msg.GetOrigClOrdID();
-                    ClOrdID = msg.GetClOrdID();
+                    if(msg.IsSetOrigClOrdID())
+                        OrigClOrdID = msg.GetOrigClOrdID();
+                    if(msg.IsSetClOrdID())
+                        ClOrdID = msg.GetClOrdID();
                     break;
                 case MsgType.AckCancel:
-                    OrdStatus = OrdStatus.Canceled;
-                    ClOrdID = msg.GetClOrdID();
+                    if(msg.IsSetClOrdID())
+                        ClOrdID = msg.GetClOrdID();
                     break;
                 case MsgType.New:
                     break;
@@ -371,19 +360,14 @@ namespace BackOfficeEngine.Model
                 case MsgType.Cancel:
                     break;
                 case MsgType.Reject:
-                    IMessage requestMsg = FindRequestOfReject(msg);
-                    switch (requestMsg.GetMsgType())
-                    {
-                        case MsgType.New:
-                            OrdStatus = OrdStatus.Rejected;
-                            break;
-                    }
                     break;
                 case MsgType.Trade:
-                    decimal lastShares = msg.GetLastQty();
-                    decimal lastPx = msg.GetLastPx();
-                    
-                    Account.AddTrade(new TradeParameters(Side, lastShares, lastPx, Symbol));
+                    if (msg.IsSetLastQty() && msg.IsSetLastPx())
+                    {
+                        decimal lastShares = msg.GetLastQty();
+                        decimal lastPx = msg.GetLastPx();
+                        Account.AddTrade(new TradeParameters(Side, lastShares, lastPx, Symbol));
+                    }
                     break;
             }
             if (msg.IsSetLastPx())
@@ -402,22 +386,26 @@ namespace BackOfficeEngine.Model
                 LeavesQty = decimal.Parse(msg.GetGenericField(QuickFix.Fields.Tags.LeavesQty),CultureInfo.InvariantCulture);
             if (msg.IsSetPrice())
                 Price = msg.GetPrice();
-            using(SQLiteHandler handler = new SQLiteHandler())
+            if(msg.IsSetOrderQty())
+                OrderQty = msg.GetOrderQty();
+            
+            
+            using (SQLiteHandler handler = new SQLiteHandler())
             {
                 handler.Update(this);
             }
         }
 
-        private IMessage FindRequestOfReject(IMessage rejectMsg)
-        {
-            string rejectClOrdID = rejectMsg.GetClOrdID();
-            IMessage rejectMessage;
-            lock (MessagesLock)
-            {
-                rejectMessage = Messages.First((o) => o.GetClOrdID() == rejectClOrdID);
-            }
-            return rejectMessage;
-        }
+        //private IMessage FindRequestOfReject(IMessage rejectMsg)
+        //{
+        //    string rejectClOrdID = rejectMsg.GetClOrdID();
+        //    IMessage rejectMessage;
+        //    lock (MessagesLock)
+        //    {
+        //        rejectMessage = Messages.First((o) => o.GetClOrdID() == rejectClOrdID);
+        //    }
+        //    return rejectMessage;
+        //}
 
 
         private void LoadMessages()

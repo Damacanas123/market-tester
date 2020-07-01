@@ -1,0 +1,3 @@
+﻿itxr a bağlanırken ISIN kodlarıyla emir atılır. Bu nedenle ITXR özelinde kodların çalışması gerekiyor ve bu kodların diğer genel amaçta çalışmaması gerekli.
+Bunun sorunu preprocess ile çözdüm. ITXR a bağlanacak export alınacağı zaman BackOfficeEngine projesine Conditional Compilation Symbols a "ITXR"
+(tırnaklar dahil olmayacak şekilde) eklenmelidir.

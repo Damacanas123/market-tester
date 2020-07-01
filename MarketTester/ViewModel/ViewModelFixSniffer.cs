@@ -201,6 +201,7 @@ namespace MarketTester.ViewModel
         {
             CommandStartStop = new BaseCommand(CommandStartStopExecute, CommandStartStopCanExecute);
             CommandRemoteStartStop = new BaseCommand(CommandRemoteStartStopExecute, CommandRemoteStartStopCanExecute);
+            CommandClearSniffGrid = new BaseCommand(CommandClearSniffGridExecute, CommandClearSniffGridCanExecute);
             Devices = LivePacketDevice.AllLocalMachine.ToList();
             DeviceNames = Devices.Select(item => item.Description).ToList();
             SelectedDeviceIndex = 0;
@@ -208,7 +209,17 @@ namespace MarketTester.ViewModel
             TextStartStop = App.Current.Resources[ResourceKeys.StringStart].ToString();
             TextRemoteSnifferHost = "192.168.108.42";
             TextRemoteSnifferPort = "15003";
+            FixDelayHandler.OnFailureEventHandler += OnFailure;
         }
+
+        private void OnFailure(string resourceKey)
+        {
+            if (App.Current.Resources.Contains(resourceKey))
+            {
+                InfoTextResourceKey = resourceKey;
+            }
+        }
+
         #region commands
         #region CommandStartStop
         public BaseCommand CommandStartStop { get; set; }
@@ -340,6 +351,19 @@ namespace MarketTester.ViewModel
 
         }
         public bool CommandRemoteStartStopCanExecute()
+        {
+            return true;
+        }
+        #endregion
+
+
+        #region CommandClearSniffGrid
+        public BaseCommand CommandClearSniffGrid { get; set; }
+        public void CommandClearSniffGridExecute(object param)
+        {
+            FixDelayHandler.DiffItems.Clear();
+        }
+        public bool CommandClearSniffGridCanExecute()
         {
             return true;
         }

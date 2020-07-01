@@ -173,6 +173,7 @@
     <Compile Include="Exceptions\ParallelRunException.cs" />
     <Compile Include="Exceptions\ShouldNotHappenException.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
+    <Compile Include="Extensions\PacketExtensions.cs" />
     <Compile Include="Extensions\SocketExtension.cs" />
     <Compile Include="Extensions\TimeSpanExtension.cs" />
     <Compile Include="Helper\JsonConfig.cs" />
@@ -389,6 +390,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="misc_notes\notes.txt" />
     <Content Include="static\fixstore\fix50sp2.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

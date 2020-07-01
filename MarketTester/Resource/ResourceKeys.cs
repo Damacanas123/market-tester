@@ -8,6 +8,11 @@ namespace MarketTester
 {
     public class ResourceKeys
     {
+        
+        public const string StringRow = "StringRow";
+        public const string StringInfoSnifferStopped = "StringInfoSnifferStopped";
+        public const string StringToolTipIsInitiator = "StringToolTipIsInitiator";
+        public const string StringIsInitiator = "StringIsInitiator";
         public const string StringAppName = "StringAppName";
         public const string StringID = "StringID";
         public const string StringClOrdID = "StringClOrdID";

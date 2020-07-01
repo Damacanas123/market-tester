@@ -318,17 +318,7 @@ namespace MarketTester.Helper
             }
             return Lock;
         }
-        public static void AppendStringToFile(string filePath, string content)
-        {
-            lock (GetReferenceToLock(filePath))
-            {
-                using (StreamWriter sw = File.AppendText(filePath))
-                {
-                    sw.WriteLine(content);
-                }
-            }
-            
-        }
+        
 
         public static string GetNowString()
         {
@@ -584,6 +574,8 @@ namespace MarketTester.Helper
             }
             return true;
         }
+
+
 
     }
 }

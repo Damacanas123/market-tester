@@ -128,7 +128,9 @@
                               Background="Transparent"
                   AutoGenerateColumns="False"
                       Margin="3">
+                        
                         <DataGrid.Columns>
+
                             <DataGridTemplateColumn>
                                 <DataGridTemplateColumn.Header>
                                     <TextBlock Text="{DynamicResource StringSelect}"/>

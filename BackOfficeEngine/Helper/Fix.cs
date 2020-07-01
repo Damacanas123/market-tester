@@ -101,6 +101,10 @@ namespace BackOfficeEngine.Helper
         /// <returns></returns>
         public static bool CheckMessageValidity(string message)
         {
+            if (string.IsNullOrWhiteSpace(message))
+            {
+                return false;
+            }
             if(message[0] != '8')
             {
                 return false;
@@ -179,6 +183,26 @@ namespace BackOfficeEngine.Helper
 
         public static string ExtractFixMessageFromALine(string line)
         {
+            int index, length;
+            (index, length) = ExtractFixMessageIndexFromBuffer(line);
+            if(index == -1 || length == 0)
+            {
+                return null;
+            }
+            else
+            {
+                return line.Substring(index, length);
+            }
+
+        }
+        /// <summary>
+        /// Searchs and finds the first eligible fix string and returns the starting index and the length of the message respectively.
+        /// Does not control body length and checksum fields in the given string
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns></returns>
+        public static (int,int) ExtractFixMessageIndexFromBuffer(string line)
+        {
             Regex rgx = new Regex($"8=.*?{Fix.FixDelimiter}");
             try
             {
@@ -187,29 +211,34 @@ namespace BackOfficeEngine.Helper
                 int messageStartIndex = match.Index;
                 if (messageStartIndex == -1)
                 {
-                    return null;
+                    return (-1, 0);
                 }
                 string beginString = match.Value.Substring(startIndex, match.Value.Length - startIndex - 1);
                 if (!Fix.FixProtocolStrings.Contains(beginString))
                 {
                     throw new InvalidFixBeginString();
                 }
-                Regex rgxEnd = new Regex($"{FixDelimiter}10=.*{FixDelimiter}");
+                Regex rgxEnd = new Regex($"{FixDelimiter}10=.*?{FixDelimiter}");
                 Match endMatch = rgxEnd.Match(line);
                 if (endMatch.Index == -1)
                 {
-                    return null;
+                    return (messageStartIndex, 0);
                 }
                 int messageEndIndex = endMatch.Index + endMatch.Value.Length;
-                return line.Substring(messageStartIndex, messageEndIndex - messageStartIndex);
+                return (messageStartIndex, messageEndIndex - messageStartIndex);
             }
             catch (RegexMatchTimeoutException)
             {
-                return null;
+                return (-1,0);
             }
             catch (InvalidFixBeginString)
             {
-                return null;
+                return (-1, 0);
+            }
+            catch (Exception ex)
+            {
+                Util.LogDebugError(ex);
+                return (-1, 0);
             }
 
         }

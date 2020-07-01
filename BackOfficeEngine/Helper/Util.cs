@@ -400,6 +400,24 @@ namespace BackOfficeEngine.Helper
             return year + month + day;
         }
 
+        public static string GetDirFromFullPath(string fullPath)
+        {
+            if(fullPath == null)
+            {
+                return null;
+            }
+            int lastIndex = fullPath.LastIndexOf(FILE_PATH_DELIMITER);
+            if(lastIndex == -1)
+            {
+                return null;
+            }
+            else
+            {
+                return fullPath.Substring(0, lastIndex);
+            }
+
+        }
+
         public static string GetFileNameWithoutExtensionFromFullPath(string fullPath)
         {
             int lastDelimiterIndex = fullPath.LastIndexOf(Util.FILE_PATH_DELIMITER) + 1;
@@ -494,6 +512,12 @@ namespace BackOfficeEngine.Helper
                         string content = item.Item2;
                         lock (GetReferenceToLock(filePath))
                         {
+                            string dirPath = GetDirFromFullPath(filePath);
+                            Console.WriteLine(dirPath);
+                            if(dirPath != null)
+                            {
+                                Directory.CreateDirectory(dirPath);                        
+                            }
                             using (StreamWriter sw = File.AppendText(filePath))
                             {
                                 sw.WriteLine(content);

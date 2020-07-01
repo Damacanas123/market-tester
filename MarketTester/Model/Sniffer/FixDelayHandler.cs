@@ -21,6 +21,9 @@ using MarketTester.Base;
 using System.Globalization;
 using System.Net.Sockets;
 using QuickFix;
+using System.Runtime.Remoting.Messaging;
+using System.Runtime.CompilerServices;
+using Microsoft.Office.Interop.Excel;
 
 namespace MarketTester.Model.Sniffer
 {
@@ -29,11 +32,14 @@ namespace MarketTester.Model.Sniffer
         private static string Tag8 = "8=";
         private static string Tag10 = "\u000110=";
         public static Encoding DefaultEncoding { get; private set; } = Encoding.GetEncoding("iso-8859-1");
-        private string lastMessage { get; set; }
+        private string messageStringBuffer { get; set; }
         private bool IsRunning { get; set; }
         private bool TagFound8 { get; set; }
         private bool TagFound10 { get; set; }
         private FixSniffer sniffer { get; set; }
+
+        public delegate void OnFailureEvent(string resourceKey);
+        public OnFailureEvent OnFailureEventHandler;
 
 
         
@@ -113,10 +119,30 @@ namespace MarketTester.Model.Sniffer
             }
         }
 
+        private bool isInitiator;
+
+        public bool IsInitiator
+        {
+            get { return isInitiator; }
+            set
+            {
+                isInitiator = value;
+                sniffer.IsInitiator = value;
+                NotifyPropertyChanged(nameof(IsInitiator));
+            }
+        }
+
+
 
         public FixDelayHandler()
         {
             sniffer = new FixSniffer();
+            sniffer.onFailure += OnFailure;
+        }
+
+        private void OnFailure(string resourceKey)
+        {
+            OnFailureEventHandler.Invoke(resourceKey);
         }
         
 
@@ -129,7 +155,12 @@ namespace MarketTester.Model.Sniffer
         {
             sniffer.SetDevice(device);
         }
-        
+
+        private static string BASE_PATH { get; } = MarketTesterUtil.APPLICATION_SAVE_DIR + MarketTesterUtil.FILE_PATH_DELIMITER + "sniffer" +
+            MarketTesterUtil.FILE_PATH_DELIMITER;
+        private static string MESSAGE_LOG_FILE_PATH { get; } = BASE_PATH + "message.log";
+
+        private static string PACKET_LOG_FILE_PATH { get; } = BASE_PATH + "packet.log";
         public void Start()
         {
             if (IsRemoteRunning)
@@ -144,80 +175,38 @@ namespace MarketTester.Model.Sniffer
                     return;
                 }
                 IsRunning = true;
-                while (IsRunning)
+                while (IsRunning && sniffer.IsRunning)
                 {
                     if(sniffer.MessageQueue.TryDequeue(out (byte[],DateTime) messageTuple))
                     {
-                        //lastMessage += DefaultEncoding.GetString(messageTuple.Item1);
-                        //int index10 = lastMessage.IndexOf(Tag10);
-                        //int messageEnd = lastMessage.IndexOf(Fix.FixDelimiter, index10 + 1);
-                        //if(messageEnd != -1)
-                        //{
-                        //    string message = lastMessage.Substring(0, messageEnd + 1);
-                        //    if (Fix.CheckMessageValidity(message))
-                        //    {
-                        //        string msgType = Fix.GetTag(message, Tags.MsgType);
-                        //        if (FixValues.MsgTypesOrderEntry.ContainsKey(msgType))
-                        //        {
-                        //            AddItem(message, messageTuple.Item2);
-                        //            lastMessage = lastMessage.Substring(messageEnd + 1, lastMessage.Length - (messageEnd + 1));
-                        //        }
-                        //    }
-                        //}
-
-
-
-
-
-                        string nextString = DefaultEncoding.GetString(messageTuple.Item1);
-                        if (string.IsNullOrWhiteSpace(nextString))
+                        string packet = DefaultEncoding.GetString(messageTuple.Item1);
+                        messageStringBuffer += packet;
+                        string timestampString = messageTuple.Item2.ToString(Util.DateFormatMicrosecondPrecision);
+                        Util.AppendStringToFile(PACKET_LOG_FILE_PATH, timestampString + " : " + packet);
+                        int messageStartIndex, messageLength;
+                        
+                        while(true)
                         {
-                            continue;
-                        }
-                        int index8 = nextString.IndexOf(Tag8);
-                        int index10 = nextString.IndexOf(Tag10);
-                        if (index8 != -1 && index10 != -1)
-                        {
-                            if (Fix.CheckMessageValidity(nextString))
+                            (messageStartIndex, messageLength) = Fix.ExtractFixMessageIndexFromBuffer(messageStringBuffer);
+                            if (messageStartIndex == -1 || messageLength == 0)
                             {
-                                string msgType = Fix.GetTag(nextString, Tags.MsgType);
-                                if (FixValues.MsgTypesOrderEntry.ContainsKey(msgType))
-                                {
-                                    AddItem(nextString, messageTuple.Item2);
-                                }
+                                break;
                             }
-                        }
-                        else if (index8 == -1 && index10 != -1)
-                        {
-                            if (TagFound8)
+                            string message = messageStringBuffer.Substring(messageStartIndex, messageLength);
+                            Util.AppendStringToFile(MESSAGE_LOG_FILE_PATH,
+                                timestampString + " : " + message);
+                            messageStringBuffer = messageStringBuffer.Substring(messageStartIndex + messageLength,
+                                messageStringBuffer.Length - (messageStartIndex + messageLength));
+                            string msgType = Fix.GetTag(message, Tags.MsgType);
+                            if (FixValues.MsgTypesOrderEntry.ContainsKey(msgType))
                             {
-                                lastMessage += nextString;
-                                if (Fix.CheckMessageValidity(nextString))
-                                {
-                                    string msgType = Fix.GetTag(nextString, Tags.MsgType);
-                                    if (FixValues.MsgTypesOrderEntry.ContainsKey(msgType))
-                                    {
-                                        AddItem(lastMessage, messageTuple.Item2);
-                                    }
-                                }
-                                lastMessage = "";
-                                TagFound8 = false;
+                                AddItem(message, messageTuple.Item2);
+                                Util.AppendStringToFile(MESSAGE_LOG_FILE_PATH,"Added preceding message to list");
+                            }
+                            
+                        }
 
-                            }
-                            else
-                            {
-                                Util.Log($"Should not happen case in FixDelayHandler inside dequeue Thread. {messageTuple.Item2.ToString(MarketTesterUtil.UTCTimestampFormat)} {lastMessage} ");
-                                throw new ShouldNotHappenException("A message that involves 10 arrived when there is no message in dump that contains 8 tag");
-                            }
-                        }
-                        else if (index8 != -1 && index10 == -1)
-                        {
-                            lastMessage = nextString;
-                        }
-                        else if (index8 == -1 && index10 == -1)
-                        {
-                            lastMessage += nextString;
-                        }
+
 
                     }
                     else
@@ -250,12 +239,21 @@ namespace MarketTester.Model.Sniffer
             }
             else
             {
-                item = new DiffItem();
-                ClOrdIdMap[clOrdID] = item;
-                App.Invoke(() =>
+                if (FixValues.MsgTypesOrderEntryOutbound.ContainsKey(msgType))
                 {
-                    DiffItems.Add(item);
-                });
+                    item = new DiffItem();
+                    item.RowIndex = DiffItems.Count + 1;
+                    ClOrdIdMap[clOrdID] = item;
+                    App.Invoke(() =>
+                    {
+                        DiffItems.Add(item);
+                    });
+                }
+                else
+                {
+                    return;
+                }
+                
             }
             //means that a new acknowledgement arrived
             //discard the previous acknowledgement
@@ -414,11 +412,16 @@ namespace MarketTester.Model.Sniffer
             private PacketCommunicator Communicator { get; set; }
             private HashSet<ushort> Ports { get; set; } = new HashSet<ushort>();
             private List<IpV4Address> LocalHostIpAddresses { get; set; } = new List<IpV4Address>();
-            private bool IsRunning { get; set; }
+            public bool IsRunning { get; set; }
             public ConcurrentQueue<(byte[], DateTime)> MessageQueue { get; set; } = new ConcurrentQueue<(byte[], DateTime)>();
-            public FixSniffer() 
-            {                
-                foreach(IPAddress address in Dns.GetHostAddresses(Dns.GetHostName()).ToList())
+            public bool IsInitiator { get; set; }
+            
+
+            public delegate void OnFailure(string message);
+            public OnFailure onFailure;
+            public FixSniffer()
+            {
+                foreach (IPAddress address in Dns.GetHostAddresses(Dns.GetHostName()).ToList())
                 {
                     if (IpV4Address.TryParse(address.ToString(), out IpV4Address ip4address))
                     {
@@ -426,7 +429,7 @@ namespace MarketTester.Model.Sniffer
                     }
                 }
             }
-           
+
 
             public void SetPorts(List<ushort> ports)
             {
@@ -447,7 +450,7 @@ namespace MarketTester.Model.Sniffer
                     //{
                     //    // Set the filter
                     //    Communicator.SetFilter(filter);
-                        
+
                     //}
                 }
 
@@ -468,13 +471,22 @@ namespace MarketTester.Model.Sniffer
                     {
                         new Thread(() =>
                         {
-                            while (IsRunning)
+                            try
                             {
-                                Communicator.ReceivePacket(out Packet packet);
-                                if(packet != null)
-                                    PacketHandler(packet);
+                                while (IsRunning)
+                                {
+                                    Communicator.ReceivePacket(out Packet packet);
+                                    if (packet != null)
+                                        PacketHandler(packet);
+                                }
+                                //If code reaches here Stop function has been called
                             }
-                            //If code reaches here Stop function has been called
+                            catch(Exception)
+                            {
+                                IsRunning = false;
+                                onFailure.Invoke(ResourceKeys.StringInfoSnifferStopped);
+                            }
+
                         }).Start();
                     }
                 }
@@ -482,42 +494,138 @@ namespace MarketTester.Model.Sniffer
 
             public void Stop()
             {
-                string ports = "";
-                foreach(ushort port in Ports)
-                {
-                    ports += port.ToString(CultureInfo.InvariantCulture) + ", ";
-                }
                 IsRunning = false;
             }
 
+            private bool IsSynchronized { get; set; } = false;
+            private uint NextExpectedSeqNum {get;set;}
+            //buffer for incoming out of order packets
+            private List<Packet> PendingBuffer { get; set; } = new List<Packet>();
+            private static string BASE_PATH { get; } = MarketTesterUtil.APPLICATION_SAVE_DIR + MarketTesterUtil.FILE_PATH_DELIMITER + "sniffer" +
+            MarketTesterUtil.FILE_PATH_DELIMITER;
+            private static string PACKET_DETAILED_LOG_FILE_PATH { get; } = BASE_PATH + "packet_detailed.log";
+
             private void PacketHandler(Packet packet)
-            {
-                IpV4Datagram ip = packet.Ethernet.IpV4;
+            {                
+                IpV4Datagram ip = packet.Ethernet.IpV4;                
                 TcpDatagram tcp = ip.Tcp;
-                void HandlePacket()
+                if(tcp == null)
                 {
+                    return;
+                }
+                void HandlePacketOutgoing()
+                {
+                    if(tcp.PayloadLength > 0)
+                    {
+                        byte[] tcpData = tcp.ToArray().SubArray(tcp.HeaderLength, tcp.Length - tcp.HeaderLength);
+                        MessageQueue.Enqueue((tcpData, packet.Timestamp));
+                    }
                     
-                    byte[] tcpData = tcp.ToArray().SubArray(tcp.HeaderLength, tcp.Length - tcp.HeaderLength);
-                    MessageQueue.Enqueue((tcpData, packet.Timestamp));
                 }
-                if (Ports.Contains(tcp.DestinationPort) || Ports.Contains(tcp.SourcePort))
+                void HandlePendingBuffer()
                 {
-                    HandlePacket();
+                    //reverse sort in order to reduce remove cost
+                    PendingBuffer.Sort((o1, o2) => o2.TcpSeqCompare(o1));
+                    while(PendingBuffer.Count > 0)
+                    {
+                        Packet pendingPacket = PendingBuffer[PendingBuffer.Count - 1];
+                        IpV4Datagram ipBuffer = pendingPacket.Ethernet.IpV4;
+                        TcpDatagram tcpBuffer = ip.Tcp;
+                        if (tcpBuffer.SequenceNumber == NextExpectedSeqNum)
+                        {
+                            if(tcpBuffer.PayloadLength > 0)
+                            {
+                                byte[] tcpData = tcpBuffer.ToArray().SubArray(tcpBuffer.HeaderLength, tcpBuffer.Length - tcpBuffer.HeaderLength);
+                                MessageQueue.Enqueue((tcpData, pendingPacket.Timestamp));
+                            }                            
+                            PendingBuffer.RemoveAt(PendingBuffer.Count - 1);
+                            NextExpectedSeqNum = (uint)tcpBuffer.SequenceNumber + (uint)tcpBuffer.PayloadLength;
+                        }
+                        else if(tcpBuffer.SequenceNumber < NextExpectedSeqNum)
+                        {
+                            PendingBuffer.RemoveAt(PendingBuffer.Count - 1);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
                 }
-                //if (LocalHostIpAddresses.Contains(ip.Source))
-                //{
-                //    if (Ports.Contains(tcp.SourcePort))
-                //    {
-                //        HandlePacket();
-                //    }
-                //}
-                //else
-                //{
-                //    if (Ports.Contains(tcp.DestinationPort))
-                //    {
-                //        HandlePacket();
-                //    }
-                //}
+
+                void HandlePacketIncoming()
+                {
+                    if (IsSynchronized && tcp.SequenceNumber != NextExpectedSeqNum)
+                    {
+                        if(tcp.SequenceNumber > NextExpectedSeqNum)
+                        {
+                            
+                            PendingBuffer.Add(packet);
+                        }                        
+                        return;                        
+                    }
+                    if (tcp.IsSynchronize)
+                    {
+                        NextExpectedSeqNum = (uint)tcp.SequenceNumber + 1;
+                        IsSynchronized = true;
+                    }
+                    else
+                    {
+                        NextExpectedSeqNum = (uint)tcp.SequenceNumber + (uint)tcp.PayloadLength;
+                        IsSynchronized = true;
+                    }
+                    if (tcp.IsReset)
+                    {
+                        IsSynchronized = false;
+                    }
+                    
+                    
+                    if (tcp.PayloadLength > 0)
+                    {                        
+                        byte[] tcpData = tcp.ToArray().SubArray(tcp.HeaderLength, tcp.Length - tcp.HeaderLength);
+                        MessageQueue.Enqueue((tcpData, packet.Timestamp));                        
+                    }
+                    HandlePendingBuffer();
+                }
+                
+                if (IsInitiator)
+                {
+                    if (LocalHostIpAddresses.Contains(ip.Source))
+                    {
+
+                        if (Ports.Contains(tcp.DestinationPort))
+                        {
+                            HandlePacketOutgoing();
+                        }
+                    }
+                    else
+                    {
+                        if (Ports.Contains(tcp.SourcePort))
+                        {
+                            HandlePacketIncoming();
+                        }
+                    }
+                }
+                else
+                {
+                    if (LocalHostIpAddresses.Contains(ip.Source))
+                    {
+
+                        if (Ports.Contains(tcp.SourcePort))
+                        {
+                            HandlePacketOutgoing();
+                        }
+                    }
+                    else
+                    {
+                        if (Ports.Contains(tcp.DestinationPort))
+                        {
+                            HandlePacketIncoming();
+                        }
+                    }
+                }
+                
+                
+                
 
             }
             public void Dispose()

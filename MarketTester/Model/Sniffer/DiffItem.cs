@@ -18,6 +18,19 @@ namespace MarketTester.Model.Sniffer
     {
         private Dictionary<int, string> RequestTagValueMap { get; set; } = new Dictionary<int, string>();
         private Dictionary<int, string> ResponseTagValueMap { get; set; } = new Dictionary<int, string>();
+
+        private int rowIndex;
+
+        public int RowIndex
+        {
+            get { return rowIndex; }
+            set
+            {
+                rowIndex = value;
+                NotifyPropertyChanged(nameof(RowIndex));
+            }
+        }
+
         private string request;
         public string Request
         {
@@ -31,6 +44,7 @@ namespace MarketTester.Model.Sniffer
                 RequestTagValueMap = MarketTesterUtil.GetTagValuePairs(request);
                 SessionID = Fix.GetTag(value, "49");
                 SessionID += "----" + Fix.GetTag(value, "56");
+                ClOrdID = Fix.GetTag(value, "11");
                 NotifyPropertyChanged(nameof(RequestMsgType));
                 NotifyPropertyChanged(nameof(Symbol));
                 NotifyPropertyChanged(nameof(TextOrderQty));
@@ -52,7 +66,19 @@ namespace MarketTester.Model.Sniffer
             }
         }
 
-        
+        private string clOrdID;
+
+        public string ClOrdID
+        {
+            get { return clOrdID; }
+            set
+            {
+                clOrdID = value;
+                NotifyPropertyChanged(nameof(ClOrdID));
+            }
+        }
+
+
 
         public string Symbol
         {

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data;
 using MarketTester.Model.OrderHistoryFix;
 using MarketTester.Helper;
+using BackOfficeEngine.Helper;
 
 namespace MarketTester.Worksheet
 {
@@ -41,7 +42,7 @@ namespace MarketTester.Worksheet
                 }
                 csv = csv.Substring(0, csv.Length - 1) + Environment.NewLine;
             }
-            MarketTesterUtil.AppendStringToFile(filePath, csv);
+            Util.AppendStringToFile(filePath, csv);
         }
     }
 }

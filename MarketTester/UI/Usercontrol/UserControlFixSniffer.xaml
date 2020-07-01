@@ -103,7 +103,14 @@
                     Grid.Row="2"
                     Grid.Column="0"
                     Command="{Binding CommandStartStop}"/>
-                        
+                        <CheckBox Grid.Column="1"
+                                  Grid.Row="2"
+                                  Content="{DynamicResource StringIsInitiator}"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  ToolTip="{DynamicResource StringToolTipIsInitiator}"
+                                  IsChecked="{Binding FixDelayHandler.IsInitiator}"/>
+
                     </Grid>
                 </TabItem>
                 <TabItem Header="{DynamicResource StringRemoteSniff}" IsEnabled="{Binding IsLocalActive,Converter={StaticResource BoolInverter}}">
@@ -161,11 +168,25 @@
                       ItemsSource="{Binding FixDelayHandler.DiffItems}"
                       AutoGenerateColumns="False"
                       IsReadOnly="True">
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="{DynamicResource StringClear}" Command="{Binding CommandClearSniffGrid}" />
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
                 <DataGrid.Columns>
-
+                    <DataGridTextColumn Binding="{Binding RowIndex}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringRow}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding SessionID}">
                         <DataGridTextColumn.Header>
                             <TextBlock Text="{DynamicResource StringSessionID}"/>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding ClOrdID}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock Text="{DynamicResource StringClOrdID}"/>
                         </DataGridTextColumn.Header>
                     </DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding RequestMsgType}">

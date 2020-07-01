@@ -2,6 +2,12 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
+
+    <system:String x:Key="StringRow">Satır</system:String>
+    <system:String x:Key="StringInfoSnifferStopped">Koklayıcı ağ bağlantısı koptuğu için durdu. Bağlantınızı kontrol edin.</system:String>
+    <system:String x:Key="StringToolTipIsInitiator">Eğer bir initiator dinlemek istiyorsanız seçin. Acceptor portlarını girmeniz yeterlidir. Eğer bir acceptor
+    dinleyecekseniz bu kutucuğu seçmeyin. Her iki durumda da girilen portlar acceptor portları olmak zorundadır.</system:String>
+    <system:String x:Key="StringIsInitiator">Bağlanan taraf dinleme</system:String>
     <system:String x:Key="StringAccount">Hesap</system:String>
     <system:String x:Key="StringAccountAbbrvtd">Hsp</system:String>
     <system:String x:Key="StringPrice">Fiyat</system:String>

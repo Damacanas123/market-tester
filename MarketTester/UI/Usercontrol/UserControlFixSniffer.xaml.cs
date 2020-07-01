@@ -31,5 +31,7 @@ namespace MarketTester.UI.Usercontrol
         {
             ((ViewModelFixSniffer)this.DataContext).OnClose();
         }
+
+        
     }
 }

@@ -3,6 +3,12 @@
                     xmlns:local="clr-namespace:MarketTester.Resource"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
+
+    <system:String x:Key="StringRow">Row</system:String>
+    <system:String x:Key="StringInfoSnifferStopped">Sinffer has stopped due to a network issue. Check your connection.</system:String>
+    <system:String x:Key="StringToolTipIsInitiator">Check this if you want to listen an initiator on the machine. Specify the acceptor's ports
+    and check this box. If you want to listen an acceptor don't check this box. In both situations ports you write have to be acceptor ports.</system:String>    
+    <system:String x:Key="StringIsInitiator">Is Initiator</system:String>
     <system:String x:Key="StringAccount">Account</system:String>
     <system:String x:Key="StringAccountAbbrvtd">Acc</system:String>
     <system:String x:Key="StringPrice">Price</system:String>
