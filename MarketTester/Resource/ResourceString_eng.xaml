@@ -4,6 +4,9 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
 
+    <system:String x:Key="StringToolTipThrottlingMessages">Write the message types that will be included in throttling analysis. Message type "i" 
+    will have a weight of different than 1. It will count total quotes in that MassQuote. Example input "D-G-F-i".</system:String>    
+    <system:String x:Key="StringThrottlingMessages">Throttling Messages</system:String>
     <system:String x:Key="StringRow">Row</system:String>
     <system:String x:Key="StringInfoSnifferStopped">Sinffer has stopped due to a network issue. Check your connection.</system:String>
     <system:String x:Key="StringToolTipIsInitiator">Check this if you want to listen an initiator on the machine. Specify the acceptor's ports

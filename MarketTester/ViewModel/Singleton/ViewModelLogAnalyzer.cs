@@ -175,6 +175,18 @@ namespace MarketTester.ViewModel
             }
         }
 
+        private string textThrottlingMessages;
+
+        public string TextThrottlingMessages
+        {
+            get { return textThrottlingMessages; }
+            set
+            {
+                textThrottlingMessages = value;
+                NotifyPropertyChanged(nameof(TextThrottlingMessages));
+            }
+        }
+
         private Visibility secondFilePathVisibility;
         public Visibility SecondFilePathVisibility
         {
@@ -334,6 +346,11 @@ namespace MarketTester.ViewModel
                 }
                 ThrottlingAnalyzer analyzer = (ThrottlingAnalyzer)SelectedAnalyzer;
                 analyzer.SetExpectedThrottling(expectedThrottling);
+                if (!string.IsNullOrWhiteSpace(TextThrottlingMessages))
+                {
+                    analyzer.SetMessageTypes(TextThrottlingMessages);
+                }
+                
             }
             SelectedAnalyzer.SetOutFilePath(OutFilePath);
             LineFormat format = new LineFormat(Name, Format);

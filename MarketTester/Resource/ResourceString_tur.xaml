@@ -3,6 +3,9 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
 
+    <system:String x:Key="StringToolTipThrottlingMessages">Throttling analizine dahil etmek istediğiniz mesajları girin. Örnek "D-G-F-i". 35=i (MassQoute)
+    mesajı içerdiği toplam kotasyon sayısı kadar ağırlık verecektir. Tek bir mesaj olarak sayılmayacaktır.</system:String>
+    <system:String x:Key="StringThrottlingMessages">Throttling Mesajları</system:String>
     <system:String x:Key="StringRow">Satır</system:String>
     <system:String x:Key="StringInfoSnifferStopped">Koklayıcı ağ bağlantısı koptuğu için durdu. Bağlantınızı kontrol edin.</system:String>
     <system:String x:Key="StringToolTipIsInitiator">Eğer bir initiator dinlemek istiyorsanız seçin. Acceptor portlarını girmeniz yeterlidir. Eğer bir acceptor
