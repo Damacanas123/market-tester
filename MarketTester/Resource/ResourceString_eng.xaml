@@ -4,6 +4,8 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
 
+    <system:String x:Key="StringToolTipLogAnalyzerNameTextBox">Enter the name for the format</system:String>
+    
     <system:String x:Key="StringToolTipThrottlingMessages">Write the message types that will be included in throttling analysis. Message type "i" 
     will have a weight of different than 1. It will count total quotes in that MassQuote. Example input "D-G-F-i".</system:String>    
     <system:String x:Key="StringThrottlingMessages">Throttling Messages</system:String>

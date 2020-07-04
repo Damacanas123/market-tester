@@ -9,6 +9,9 @@ namespace MarketTester
     public class ResourceKeys
     {
         
+        public const string StringToolTipLogAnalyzerNameTextBox = "StringToolTipLogAnalyzerNameTextBox";
+        public const string StringToolTipThrottlingMessages = "StringToolTipThrottlingMessages";
+        public const string StringThrottlingMessages = "StringThrottlingMessages";
         public const string StringRow = "StringRow";
         public const string StringInfoSnifferStopped = "StringInfoSnifferStopped";
         public const string StringToolTipIsInitiator = "StringToolTipIsInitiator";

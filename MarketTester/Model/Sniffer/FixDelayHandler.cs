@@ -503,7 +503,9 @@ namespace MarketTester.Model.Sniffer
             private List<Packet> PendingBuffer { get; set; } = new List<Packet>();
             private static string BASE_PATH { get; } = MarketTesterUtil.APPLICATION_SAVE_DIR + MarketTesterUtil.FILE_PATH_DELIMITER + "sniffer" +
             MarketTesterUtil.FILE_PATH_DELIMITER;
-            private static string PACKET_DETAILED_LOG_FILE_PATH { get; } = BASE_PATH + "packet_detailed.log";
+            private static string PACKET_DETAILED_LOG_FILE_PATH { get; } = BASE_PATH + "packet_all.log";
+
+            
 
             private void PacketHandler(Packet packet)
             {                
@@ -513,11 +515,19 @@ namespace MarketTester.Model.Sniffer
                 {
                     return;
                 }
+
+                
+
+
                 void HandlePacketOutgoing()
                 {
-                    if(tcp.PayloadLength > 0)
-                    {
-                        byte[] tcpData = tcp.ToArray().SubArray(tcp.HeaderLength, tcp.Length - tcp.HeaderLength);
+                    byte[] tcpData = tcp.ToArray().SubArray(tcp.HeaderLength, tcp.Length - tcp.HeaderLength);
+                    //log whole packet
+                    Util.AppendStringToFile(PACKET_DETAILED_LOG_FILE_PATH,
+                        $"Source {ip.Source}:{tcp.SourcePort} -> {ip.Destination}:{tcp.DestinationPort} TCP SEQ({tcp.SequenceNumber}) ACK({tcp.AcknowledgmentNumber}) Data Length({tcp.PayloadLength})"
+                        + Environment.NewLine + DefaultEncoding.GetString(tcpData));
+                    if (tcp.PayloadLength > 0)
+                    {                        
                         MessageQueue.Enqueue((tcpData, packet.Timestamp));
                     }
                     
@@ -554,6 +564,11 @@ namespace MarketTester.Model.Sniffer
 
                 void HandlePacketIncoming()
                 {
+                    byte[] tcpData = tcp.ToArray().SubArray(tcp.HeaderLength, tcp.Length - tcp.HeaderLength);
+                    //log whole packet
+                    Util.AppendStringToFile(PACKET_DETAILED_LOG_FILE_PATH,
+                        $"Source {ip.Source}:{tcp.SourcePort} -> {ip.Destination}:{tcp.DestinationPort} TCP SEQ({tcp.SequenceNumber}) ACK({tcp.AcknowledgmentNumber}) Data Length({tcp.PayloadLength})"
+                        + Environment.NewLine + DefaultEncoding.GetString(tcpData));
                     if (IsSynchronized && tcp.SequenceNumber != NextExpectedSeqNum)
                     {
                         if(tcp.SequenceNumber > NextExpectedSeqNum)
@@ -581,7 +596,6 @@ namespace MarketTester.Model.Sniffer
                     
                     if (tcp.PayloadLength > 0)
                     {                        
-                        byte[] tcpData = tcp.ToArray().SubArray(tcp.HeaderLength, tcp.Length - tcp.HeaderLength);
                         MessageQueue.Enqueue((tcpData, packet.Timestamp));                        
                     }
                     HandlePendingBuffer();

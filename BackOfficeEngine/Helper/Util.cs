@@ -226,6 +226,7 @@ namespace BackOfficeEngine.Helper
             FileWriteQueue.Enqueue((filePath, content));
         }
 
+
         public static void DeleteFile(string filePath)
         {
             lock (GetReferenceToLock(filePath))
