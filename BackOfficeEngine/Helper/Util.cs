@@ -514,7 +514,6 @@ namespace BackOfficeEngine.Helper
                         lock (GetReferenceToLock(filePath))
                         {
                             string dirPath = GetDirFromFullPath(filePath);
-                            Console.WriteLine(dirPath);
                             if(dirPath != null)
                             {
                                 Directory.CreateDirectory(dirPath);                        

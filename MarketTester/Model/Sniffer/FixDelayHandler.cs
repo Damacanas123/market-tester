@@ -182,7 +182,8 @@ namespace MarketTester.Model.Sniffer
                         string packet = DefaultEncoding.GetString(messageTuple.Item1);
                         messageStringBuffer += packet;
                         string timestampString = messageTuple.Item2.ToString(Util.DateFormatMicrosecondPrecision);
-                        Util.AppendStringToFile(PACKET_LOG_FILE_PATH, timestampString + " : " + packet);
+                        Util.AppendStringToFile(PACKET_LOG_FILE_PATH,$"{DateTime.Now.ToString(Util.DateFormatMicrosecondPrecision)}({timestampString})" +
+                             " : " + packet);
                         int messageStartIndex, messageLength;
                         
                         while(true)
@@ -193,8 +194,8 @@ namespace MarketTester.Model.Sniffer
                                 break;
                             }
                             string message = messageStringBuffer.Substring(messageStartIndex, messageLength);
-                            Util.AppendStringToFile(MESSAGE_LOG_FILE_PATH,
-                                timestampString + " : " + message);
+                            Util.AppendStringToFile(MESSAGE_LOG_FILE_PATH, $"{DateTime.Now.ToString(Util.DateFormatMicrosecondPrecision)}({timestampString})" +
+                            " : " + message);
                             messageStringBuffer = messageStringBuffer.Substring(messageStartIndex + messageLength,
                                 messageStringBuffer.Length - (messageStartIndex + messageLength));
                             string msgType = Fix.GetTag(message, Tags.MsgType);
@@ -524,7 +525,9 @@ namespace MarketTester.Model.Sniffer
                     byte[] tcpData = tcp.ToArray().SubArray(tcp.HeaderLength, tcp.Length - tcp.HeaderLength);
                     //log whole packet
                     Util.AppendStringToFile(PACKET_DETAILED_LOG_FILE_PATH,
-                        $"Source {ip.Source}:{tcp.SourcePort} -> {ip.Destination}:{tcp.DestinationPort} TCP SEQ({tcp.SequenceNumber}) ACK({tcp.AcknowledgmentNumber}) Data Length({tcp.PayloadLength})"
+                        $"{DateTime.Now.ToString(Util.DateFormatMicrosecondPrecision)}({packet.Timestamp.ToString(Util.DateFormatMicrosecondPrecision)})" +
+                        $" {ip.Source}:{tcp.SourcePort} -> {ip.Destination}:{tcp.DestinationPort} TCP SEQ({tcp.SequenceNumber})" +
+                        $" ACK({tcp.AcknowledgmentNumber}) Data Length({tcp.PayloadLength})"
                         + Environment.NewLine + DefaultEncoding.GetString(tcpData));
                     if (tcp.PayloadLength > 0)
                     {                        
@@ -567,7 +570,9 @@ namespace MarketTester.Model.Sniffer
                     byte[] tcpData = tcp.ToArray().SubArray(tcp.HeaderLength, tcp.Length - tcp.HeaderLength);
                     //log whole packet
                     Util.AppendStringToFile(PACKET_DETAILED_LOG_FILE_PATH,
-                        $"Source {ip.Source}:{tcp.SourcePort} -> {ip.Destination}:{tcp.DestinationPort} TCP SEQ({tcp.SequenceNumber}) ACK({tcp.AcknowledgmentNumber}) Data Length({tcp.PayloadLength})"
+                        $"{DateTime.Now.ToString(Util.DateFormatMicrosecondPrecision)}({packet.Timestamp.ToString(Util.DateFormatMicrosecondPrecision)})" +
+                        $" {ip.Source}:{tcp.SourcePort} -> {ip.Destination}:{tcp.DestinationPort} TCP SEQ({tcp.SequenceNumber})" +
+                        $" ACK({tcp.AcknowledgmentNumber}) Data Length({tcp.PayloadLength})"
                         + Environment.NewLine + DefaultEncoding.GetString(tcpData));
                     if (IsSynchronized && tcp.SequenceNumber != NextExpectedSeqNum)
                     {
