@@ -167,7 +167,7 @@ namespace MarketTester.ViewModel
             try
             {
                 UserControlFixSniffer userControlFixSniffer = new UserControlFixSniffer();
-                MainWindowStarter.AddTab(userControlFixSniffer, ResourceKeys.StringSniffer, true, userControlFixSniffer.OnClose);
+                MainWindowStarter.AddTab(userControlFixSniffer, ResourceKeys.StringSniffer, false, userControlFixSniffer.OnClose);
             }
             catch(XamlParseException ex)
             {

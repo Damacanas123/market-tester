@@ -8,7 +8,7 @@ namespace MarketTester
 {
     public class ResourceKeys
     {
-        
+        public const string StringRefresh = "StringRefresh";        
         public const string StringToolTipLogAnalyzerNameTextBox = "StringToolTipLogAnalyzerNameTextBox";
         public const string StringToolTipThrottlingMessages = "StringToolTipThrottlingMessages";
         public const string StringThrottlingMessages = "StringThrottlingMessages";
@@ -25,7 +25,6 @@ namespace MarketTester
         public const string NameRadioButtonMarketToLimit = "NameRadioButtonMarketToLimit";
         public const string StringEnglish = "StringEnglish";
         public const string StringTurkish = "StringTurkish";
-
         public const string StringAccount = "StringAccount";
         public const string StringAccountAbbrvtd = "StringAccountAbbrvtd";
         public const string StringPrice = "StringPrice";

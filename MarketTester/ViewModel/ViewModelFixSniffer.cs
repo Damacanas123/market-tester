@@ -27,6 +27,14 @@ namespace MarketTester.ViewModel
             set
             {
                 isLocalActive = value;
+                if (value)
+                {
+                    TextStartStop = App.Current.Resources[ResourceKeys.StringStop].ToString();
+                }
+                else
+                {
+                    TextStartStop = App.Current.Resources[ResourceKeys.StringStart].ToString();
+                }
                 NotifyPropertyChanged(nameof(IsLocalActive));
             }
         }
@@ -39,6 +47,14 @@ namespace MarketTester.ViewModel
             set
             {
                 isRemoteActive = value;
+                if (value)
+                {
+                    TextStartStop = App.Current.Resources[ResourceKeys.StringStop].ToString();
+                }
+                else
+                {
+                    TextStartStop = App.Current.Resources[ResourceKeys.StringStart].ToString();
+                }
                 NotifyPropertyChanged(nameof(IsRemoteActive));
             }
         }
@@ -202,6 +218,8 @@ namespace MarketTester.ViewModel
             CommandStartStop = new BaseCommand(CommandStartStopExecute, CommandStartStopCanExecute);
             CommandRemoteStartStop = new BaseCommand(CommandRemoteStartStopExecute, CommandRemoteStartStopCanExecute);
             CommandClearSniffGrid = new BaseCommand(CommandClearSniffGridExecute, CommandClearSniffGridCanExecute);
+            CommandRefreshNetworkDevices = new BaseCommand(CommandRefreshNetworkDevicesExecute, CommandRefreshNetworkDevicesCanExecute);
+
             Devices = LivePacketDevice.AllLocalMachine.ToList();
             DeviceNames = Devices.Select(item => item.Description).ToList();
             SelectedDeviceIndex = 0;
@@ -214,6 +232,7 @@ namespace MarketTester.ViewModel
 
         private void OnFailure(string resourceKey)
         {
+            IsLocalActive = false;
             if (App.Current.Resources.Contains(resourceKey))
             {
                 InfoTextResourceKey = resourceKey;
@@ -227,6 +246,7 @@ namespace MarketTester.ViewModel
         {
             if (!IsLocalActive)
             {
+                Console.WriteLine("Inside start viewmodel");
                 IsLocalActive = true;
                 if (SelectedDevice == null)
                 {
@@ -255,17 +275,15 @@ namespace MarketTester.ViewModel
                         portsUshort.Add(portUshort);
                     }
                 }
-                FixDelayHandler.SetDevice(SelectedDevice);
-                FixDelayHandler.SetPorts(portsUshort);
-                FixDelayHandler.Start();
+                Console.WriteLine("Viewmodel before start");
+                FixDelayHandler.Start(SelectedDevice, portsUshort);
                 InfoTextResourceKey = ResourceKeys.StringStartedSniffing;
-                TextStartStop = App.Current.Resources[ResourceKeys.StringStop].ToString();
             }
             else
             {
+                Console.WriteLine("Inside stop viewmodel");
                 IsLocalActive = false;
                 FixDelayHandler.Stop();
-                TextStartStop = App.Current.Resources[ResourceKeys.StringStart].ToString();
             }
             
         }
@@ -289,6 +307,21 @@ namespace MarketTester.ViewModel
 
         #region remote sniffer commands
 
+
+
+        #region CommandRefreshNetworkDevices
+        public BaseCommand CommandRefreshNetworkDevices { get; set; }
+        public void CommandRefreshNetworkDevicesExecute(object param)
+        {
+            Devices = LivePacketDevice.AllLocalMachine.ToList();
+            DeviceNames = Devices.Select(item => item.Description).ToList();
+            NotifyPropertyChanged(nameof(DeviceNames));
+        }
+        public bool CommandRefreshNetworkDevicesCanExecute()
+        {
+            return true;
+        }
+        #endregion
         #region CommandRemoteStartStop
         public BaseCommand CommandRemoteStartStop { get; set; }
         public void CommandRemoteStartStopExecute(object param)

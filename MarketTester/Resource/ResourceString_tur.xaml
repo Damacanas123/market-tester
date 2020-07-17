@@ -3,12 +3,16 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
 
+    <system:String x:Key="StringToolTipComboBoxNetworkAdapters">Fiziksel ve yapay ağ adaptörlerinin listesi. Doğru adaptörü, ismini 
+        ipucu olarak kullanıp seçebilirsiniz. Bir ağ dinleyicisi sadece bir adaptörü dinleyebilir. Eğer birden fazla adaptörü dinlemek istiyorsanız birden fazla dinleyici kullanın.
+    Daha fazla seçenek için sağ tıklayın.</system:String>
+    <system:String x:Key="StringRefresh">Yenile</system:String>
     <system:String x:Key="StringToolTipLogAnalyzerNameTextBox">Format için isim girin</system:String>
     <system:String x:Key="StringToolTipThrottlingMessages">Throttling analizine dahil etmek istediğiniz mesajları girin. Örnek "D-G-F-i". 35=i (MassQoute)
     mesajı içerdiği toplam kotasyon sayısı kadar ağırlık verecektir. Tek bir mesaj olarak sayılmayacaktır.</system:String>
     <system:String x:Key="StringThrottlingMessages">Throttling Mesajları</system:String>
     <system:String x:Key="StringRow">Satır</system:String>
-    <system:String x:Key="StringInfoSnifferStopped">Koklayıcı ağ bağlantısı koptuğu için durdu. Bağlantınızı kontrol edin.</system:String>
+    <system:String x:Key="StringInfoSnifferStopped">Dinleyici ağ bağlantısı koptuğu için durdu. Bağlantınızı kontrol edin.</system:String>
     <system:String x:Key="StringToolTipIsInitiator">Eğer bir initiator dinlemek istiyorsanız seçin. Acceptor portlarını girmeniz yeterlidir. Eğer bir acceptor
     dinleyecekseniz bu kutucuğu seçmeyin. Her iki durumda da girilen portlar acceptor portları olmak zorundadır.</system:String>
     <system:String x:Key="StringIsInitiator">Bağlanan taraf dinleme</system:String>
@@ -146,13 +150,13 @@
     <system:String x:Key="StringAverageDelay">Ortalama gecikme(Milisaniye)</system:String>
     <system:String x:Key="StringTotalRequests">Toplam istek(DGF)</system:String>
     <system:String x:Key="StringTotalAcknowledgements">Toplam cevap(8,9)</system:String>
-    <system:String x:Key="StringSniffer">Fix Koklayıcısı</system:String>
+    <system:String x:Key="StringSniffer">Fix Dinleyicisi</system:String>
     <system:String x:Key="StringPorts">Portlar(Örn : 10056;10011)</system:String>
     <system:String x:Key="StringPleaseEnterPort">Lütfen en az bir tane geçerli port girin. Geçerli portlar 0 ile 65535 arasındadır.Çoklu portlar için portların arasına ; koyun..</system:String>
     <system:String x:Key="StringPleaseSelectANetworkAdapter">Lütfen bir ağ bağdaştırıcısı seçin.</system:String>
     <system:String x:Key="StringInvalidPort">Geçersiz port :</system:String>
-    <system:String x:Key="StringStartedSniffing">Koklamaya başlandı</system:String>
-    <system:String x:Key="StringStoppedSniffing">Koklama sonlandı</system:String>
+    <system:String x:Key="StringStartedSniffing">Dinlemeye başlandı</system:String>
+    <system:String x:Key="StringStoppedSniffing">Dinleme sonlandı</system:String>
     <system:String x:Key="StringRequestMsgType">İstek tipi</system:String>
     <system:String x:Key="StringResponseMsgType">Cevap tipi</system:String>
     <system:String x:Key="StringRequestTime">İstek zamanı</system:String>
@@ -167,14 +171,14 @@
     <system:String x:Key="StringConfigPasswordNotSetWarning">Konfigurasyonda "Password" belirtilmedi</system:String>
     <system:String x:Key="StringCannotParseDelayFromFile">Gecikme dosyadan ayrıştırılamadı.</system:String>
     <system:String x:Key="StringCantFindConfigFile">Belirtilen konfigürasyon dosyası bulunamıyor. Dosyanın varlığından emin olun ve dosya yolunu doğru json konfigürasyon dosyası içine doğru yazdığınızdan emin olun.</system:String>
-    <system:String x:Key="StringLocalSniff">Yerel Koklayıcı</system:String>
-    <system:String x:Key="StringRemoteSniff">Uzak koklayıcı</system:String>
-    <system:String x:Key="StringRemoteSnifferPort">Uzak koklayıcı port</system:String>
-    <system:String x:Key="StringRemoteSnifferHost">Uzak koklayıcı host</system:String>
+    <system:String x:Key="StringLocalSniff">Yerel Dinleyici</system:String>
+    <system:String x:Key="StringRemoteSniff">Uzak Dinleyici</system:String>
+    <system:String x:Key="StringRemoteSnifferPort">Uzak dinleyici port</system:String>
+    <system:String x:Key="StringRemoteSnifferHost">Uzak dinleyici host</system:String>
     <system:String x:Key="StringCantConnectToRemoteServer">Cant connect to remote server.</system:String>
     <system:String x:Key="StringHostAddressInvalid">Host adresi geçerli değil.</system:String>
-    <system:String x:Key="StringStartedRemoteSniffing">Uzaktan koklanmaya başlandı.</system:String>
-    <system:String x:Key="StringRemoteSnifferHasStopped">Uzak koklayıcı çalışmayı durdurdu.</system:String>
+    <system:String x:Key="StringStartedRemoteSniffing">Uzaktan dinlemeye başlandı.</system:String>
+    <system:String x:Key="StringRemoteSnifferHasStopped">Uzak dinleyici çalışmayı durdurdu.</system:String>
     <system:String x:Key="StringConfigurationError">Konfigürasyon hatası.</system:String>
     <system:String x:Key="StringCantConnect">Bağlanılamadı.</system:String>
     <system:String x:Key="StringAccountCantBeEmpty">Hesap boş olamaz. Eğer hesap göndermek istemiyorsanız serbest format planlyıcıyı kullanın.</system:String>

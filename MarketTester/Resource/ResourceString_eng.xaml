@@ -4,6 +4,10 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
 
+    <system:String x:Key="StringToolTipComboBoxNetworkAdapters">List of physical and virtual network adapters. You can choose the appropriate adapter
+    using its name as a hint. One sniffer can only listen from an adapter. If you need to listen more than one adapters utilize multiple sniffers.
+    Right click for more options. </system:String>
+    <system:String x:Key="StringRefresh">Refresh</system:String>
     <system:String x:Key="StringToolTipLogAnalyzerNameTextBox">Enter the name for the format</system:String>
     
     <system:String x:Key="StringToolTipThrottlingMessages">Write the message types that will be included in throttling analysis. Message type "i" 

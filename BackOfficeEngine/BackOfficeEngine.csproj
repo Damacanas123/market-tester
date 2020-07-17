@@ -107,7 +107,6 @@
     <Compile Include="Model\Account\Position.cs" />
     <Compile Include="DB\SQLite\Interface\IDataBaseWritable.cs" />
     <Compile Include="Model\Collection\ObservableCollectionEx.cs" />
-    <Compile Include="Model\DelayProfiler\DelayItem.cs" />
     <Compile Include="Model\Message\MessageManager.cs" />
     <Compile Include="Model\Order\BaseOrder.cs" />
     <Compile Include="Model\Order\PseudoOrder.cs" />

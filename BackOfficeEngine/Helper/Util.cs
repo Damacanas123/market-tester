@@ -15,6 +15,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Collections.Concurrent;
 using BackOfficeEngine.Model;
+using System.CodeDom.Compiler;
 
 [assembly: InternalsVisibleTo("UnitTest")]
 namespace BackOfficeEngine.Helper
@@ -554,6 +555,33 @@ namespace BackOfficeEngine.Helper
                 imsg = new QuickFixMessage(line);
             }
             return imsg;
+        }
+
+        public static string RemovePathInvalidChars(string filePath)
+        {
+            string temp = "";
+            char [] invalidChars = Path.GetInvalidPathChars();
+            foreach(char c in filePath)
+            {
+                if (!invalidChars.Contains(c))
+                {
+                    temp += c;
+                }
+            }
+            return temp;
+        }
+        public static string RemoveFileNameInvalidChars(string filePath)
+        {
+            string temp = "";
+            char[] invalidChars = Path.GetInvalidFileNameChars();
+            foreach (char c in filePath)
+            {
+                if (!invalidChars.Contains(c))
+                {
+                    temp += c;
+                }
+            }
+            return temp;
         }
 
     }

@@ -195,6 +195,9 @@ namespace BackOfficeEngine.Helper
             }
 
         }
+
+        static Regex beginStringRegex = new Regex($"8=.*?{Fix.FixDelimiter}");
+        static Regex rgxEnd = new Regex($"{FixDelimiter}10=.*?{FixDelimiter}");
         /// <summary>
         /// Searchs and finds the first eligible fix string and returns the starting index and the length of the message respectively.
         /// Does not control body length and checksum fields in the given string
@@ -203,22 +206,25 @@ namespace BackOfficeEngine.Helper
         /// <returns></returns>
         public static (int,int) ExtractFixMessageIndexFromBuffer(string line)
         {
-            Regex rgx = new Regex($"8=.*?{Fix.FixDelimiter}");
+            
             try
             {
-                Match match = rgx.Match(line);
-                int startIndex = match.Value.IndexOf("=") + 1;
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    return (-1, 0);
+                }
+                Match match = beginStringRegex.Match(line);
                 int messageStartIndex = match.Index;
                 if (messageStartIndex == -1)
                 {
                     return (-1, 0);
                 }
-                string beginString = match.Value.Substring(startIndex, match.Value.Length - startIndex - 1);
+                string beginString = line.Substring(messageStartIndex + 2, match.Value.Length - 3);
                 if (!Fix.FixProtocolStrings.Contains(beginString))
                 {
                     throw new InvalidFixBeginString();
                 }
-                Regex rgxEnd = new Regex($"{FixDelimiter}10=.*?{FixDelimiter}");
+                
                 Match endMatch = rgxEnd.Match(line);
                 if (endMatch.Index == -1)
                 {
