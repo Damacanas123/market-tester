@@ -159,18 +159,28 @@ namespace MarketTester.Model.Sniffer
         
         
 
-        private void Subscribe(PacketDevice device,List<ushort> ports)
+        private (bool,string) Subscribe(PacketDevice device,List<ushort> ports)
         {
             Console.WriteLine("Inside Handler subscribe");
             if (UsedDevice == null)
             {
                 FixSniffer sniffer = FixSniffer.GetInstance(device);
                 this.sniffer = sniffer;
-                sniffer.Subscribe(this, ports, IsInitiator);
+                (bool result,string message) = sniffer.Subscribe(this, ports, IsInitiator);
+                if (!result)
+                {
+                    return (result, message);
+                }
                 sniffer.onFailure += OnFailure;
                 UsedDevice = device;
                 MESSAGE_LOG_FILE_PATH = BASE_PATH + $"{GetShortDeviceName(device)}_message.log";
                 PACKET_LOG_FILE_PATH = BASE_PATH + $"{GetShortDeviceName(device)}_packet_ordered.log";
+                return (true, "");
+            }
+            else
+            {
+                Util.Debug("UsedDevice is not null when initiating sniffer. This is a bug that should not happen");
+                return (false, App.Current.Resources[ResourceKeys.StringUnknownErrorOccured].ToString());
             }
         }
 
@@ -185,17 +195,21 @@ namespace MarketTester.Model.Sniffer
         private string MESSAGE_LOG_FILE_PATH { get; set; }
 
         private string PACKET_LOG_FILE_PATH { get; set; }
-        public void Start(PacketDevice device, List<ushort> ports)
+        public (bool,string) Start(PacketDevice device, List<ushort> ports)
         {
             Console.WriteLine("Inside Handler start");
-            Subscribe(device, ports);
+            (bool result,string errorMessage) = Subscribe(device, ports);
+            if (!result)
+            {
+                return (result, errorMessage);
+            }
             if (UsedDevice == null)
             {
-                return;
+                return (false,App.Current.Resources[ResourceKeys.StringUnknownErrorOccured].ToString());
             }
             if (IsRunning)
             {
-                return;
+                return (false, App.Current.Resources[ResourceKeys.StringSnifferAlreadyRunning].ToString());
             }
             
             if (IsRemoteRunning)
@@ -253,6 +267,7 @@ namespace MarketTester.Model.Sniffer
                     }
                 }
             }).Start();
+            return (true, "");
         }
 
         public void Stop()
@@ -457,6 +472,8 @@ namespace MarketTester.Model.Sniffer
             private List<IpV4Address> LocalHostIpAddresses { get; set; } = new List<IpV4Address>();
             public bool IsRunning { get; set; }
             private static ConcurrentDictionary<string, FixSniffer> Instances = new ConcurrentDictionary<string, FixSniffer>();
+            private HashSet<ushort> ActiveInitiatorPorts = new HashSet<ushort>();
+            private HashSet<ushort> ActiveAcceptorPorts = new HashSet<ushort>();
 
             private class Subscriber
             {
@@ -469,9 +486,54 @@ namespace MarketTester.Model.Sniffer
             }
             private List<Subscriber> Subscribers { get; set; } = new List<Subscriber>();
 
-            public void Subscribe(FixDelayHandler handler,List<ushort> ports,bool isInitiator)
+            public (bool,string) Subscribe(FixDelayHandler handler,List<ushort> ports,bool isInitiator)
             {
                 Subscriber subscriber = new Subscriber();
+                
+                string usedPortMessage = App.Current.Resources[ResourceKeys.StringPortIsAlreadyListened].ToString();
+                bool duplicatePort = false;
+                if (isInitiator)
+                {
+                    lock (ActiveInitiatorPorts)
+                    {
+                        foreach (ushort port in ports)
+                        {
+                            if (ActiveInitiatorPorts.Contains(port))
+                            {
+                                usedPortMessage += port + ",";
+                                duplicatePort = true;
+                            }
+                            else
+                            {
+                                if (!duplicatePort)
+                                    ActiveInitiatorPorts.Add(port);
+                            }
+                        }                    
+                    }
+                }
+                else
+                {
+                    lock (ActiveAcceptorPorts)
+                    {
+                        foreach(ushort port in ports) 
+                        {
+                            if (ActiveAcceptorPorts.Contains(port))
+                            {
+                                usedPortMessage += port + ",";
+                                duplicatePort = true;
+                            }
+                            else
+                            {
+                                if(!duplicatePort)
+                                    ActiveAcceptorPorts.Add(port);
+                            }
+                        }
+                    }
+                }
+                if (duplicatePort)
+                {
+                    return (false, usedPortMessage.Substring(0, usedPortMessage.Length - 1));
+                }
                 foreach (ushort port in ports)
                 {
                     subscriber.Ports.Add(port);
@@ -480,6 +542,7 @@ namespace MarketTester.Model.Sniffer
                 subscriber.Handler = handler;
                 lock (Subscribers)
                 {
+                    
                     Subscribers.Add(subscriber);
                     Console.WriteLine("Handler subscribed");
                     if (Subscribers.Count == 1)
@@ -488,6 +551,7 @@ namespace MarketTester.Model.Sniffer
                         Console.WriteLine("Started sniffer");
                     }
                 }
+                return (true, "");
             }
 
             public void Unsubscribe(FixDelayHandler handler)
@@ -499,6 +563,23 @@ namespace MarketTester.Model.Sniffer
                         int index = Subscribers.FindIndex((o) => o.Handler == handler);
                         if (index >= 0 && index < Subscribers.Count)
                         {
+                            Subscriber subscriber = Subscribers[index];
+                            if (subscriber.IsInitiator)
+                            {
+                                foreach(ushort port in subscriber.Ports)
+                                {
+                                    ActiveInitiatorPorts.Remove(port);
+                                    Console.WriteLine("removed port : " + port);
+                                }                                
+                            }
+                            else
+                            {
+                                foreach (ushort port in subscriber.Ports)
+                                {
+                                    ActiveAcceptorPorts.Remove(port);
+                                    Console.WriteLine("removed port : " + port);
+                                }
+                            }
                             Subscribers.RemoveAt(index);
                             Console.WriteLine("Handler unsubscribed");
                             if (Subscribers.Count == 0)
@@ -544,9 +625,9 @@ namespace MarketTester.Model.Sniffer
             }
 
             /// <summary>
-            /// method for starting packet capturing for given ports on the local machine. Dont forget to call Stop() method when you are done with sniffer.
+            /// method for starting packet capturing for given ports on the local machine. This is called automatically when first subscriber subscribes to sniffer
             /// </summary>
-            public void Start()
+            private void Start()
             {
                 if (IsRunning)
                 {
@@ -586,6 +667,8 @@ namespace MarketTester.Model.Sniffer
                                 lock (Subscribers)
                                 {
                                     Subscribers.Clear();
+                                    ActiveAcceptorPorts.Clear();
+                                    ActiveInitiatorPorts.Clear();
                                 }
                                 onFailure?.Invoke(ResourceKeys.StringInfoSnifferStopped);
                             }
@@ -595,7 +678,7 @@ namespace MarketTester.Model.Sniffer
                 }
             }
 
-            public void Stop()
+            private void Stop()
             {
                 IsRunning = false;
             }

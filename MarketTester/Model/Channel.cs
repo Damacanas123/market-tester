@@ -59,6 +59,12 @@ namespace MarketTester.Model
 
             BindingOperations.EnableCollectionSynchronization(ActiveSessions, activeSessionsLock);
             BindingOperations.EnableCollectionSynchronization(InactiveSessions, inactiveSessionsLock);
+            Settings.GetInstance().LanguageChangedEventHandler += OnLanguageChange;
+        }
+
+        private void OnLanguageChange()
+        {
+            NotifyPropertyChanged(nameof(IsConnected));
         }
 
         public void AddActive(string sessionID)

@@ -247,7 +247,7 @@ namespace MarketTester.ViewModel
             if (!IsLocalActive)
             {
                 Console.WriteLine("Inside start viewmodel");
-                IsLocalActive = true;
+                
                 if (SelectedDevice == null)
                 {
                     InfoTextResourceKey = ResourceKeys.StringPleaseSelectANetworkAdapter;
@@ -276,14 +276,21 @@ namespace MarketTester.ViewModel
                     }
                 }
                 Console.WriteLine("Viewmodel before start");
-                FixDelayHandler.Start(SelectedDevice, portsUshort);
+                (bool result,string errorMessage) = FixDelayHandler.Start(SelectedDevice, portsUshort);
+                if (!result)
+                {
+                    InfoText = errorMessage;
+                    return;
+                }
                 InfoTextResourceKey = ResourceKeys.StringStartedSniffing;
+                IsLocalActive = true;
             }
             else
             {
                 Console.WriteLine("Inside stop viewmodel");
                 IsLocalActive = false;
                 FixDelayHandler.Stop();
+                InfoTextResourceKey = ResourceKeys.StringStoppedSniffing;
             }
             
         }
@@ -370,15 +377,18 @@ namespace MarketTester.ViewModel
                 {
 
                 }
-                IsRemoteActive = true;
+                
                 InfoTextResourceKey = ResourceKeys.StringStartedSniffing;
                 TextStartStop = App.Current.Resources[ResourceKeys.StringStop].ToString();
+                IsRemoteActive = true;
             }
             else
             {
-                IsRemoteActive = false;
+                
                 FixDelayHandler.StopRemote();
                 TextStartStop = App.Current.Resources[ResourceKeys.StringStart].ToString();
+                IsRemoteActive = false;
+                InfoTextResourceKey = ResourceKeys.StringStoppedSniffing;
             }
             
 

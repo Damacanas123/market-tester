@@ -28,7 +28,7 @@
     <InstallUrl>\\192.168.108.42\c%24\MATRIKS_OMS\MarketTesterSetup\</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>62</ApplicationRevision>
+    <ApplicationRevision>63</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -159,6 +159,7 @@
     <Compile Include="Converters\BoolInveter.cs" />
     <Compile Include="Converters\DoubleConverter.cs" />
     <Compile Include="Converters\FixStringConverter.cs" />
+    <Compile Include="Converters\IsConnectedConverter.cs" />
     <Compile Include="Converters\MessageTypeColorConverter.cs" />
     <Compile Include="Converters\RadioButtonOrdTypeConverter.cs" />
     <Compile Include="Converters\SideConverter.cs" />

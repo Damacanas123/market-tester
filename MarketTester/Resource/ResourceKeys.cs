@@ -8,6 +8,13 @@ namespace MarketTester
 {
     public class ResourceKeys
     {
+
+        public const string StringToolTipActiveInactiveSessions = "StringToolTipActiveInactiveSessions";        
+        public const string StringToolTipChannelSelector = "StringToolTipChannelSelector";
+        public const string StringIsDisconnected = "StringIsDisconnected";
+        public const string StringIsConnected = "StringIsConnected";
+        public const string StringSnifferAlreadyRunning = "StringSnifferAlreadyRunning";
+        public const string StringPortIsAlreadyListened = "StringPortIsAlreadyListened";        
         public const string StringRefresh = "StringRefresh";        
         public const string StringToolTipLogAnalyzerNameTextBox = "StringToolTipLogAnalyzerNameTextBox";
         public const string StringToolTipThrottlingMessages = "StringToolTipThrottlingMessages";

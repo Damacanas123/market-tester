@@ -4,6 +4,13 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
 
+    <system:String x:Key="StringToolTipActiveInactiveSessions">You can see which sessions are active/inactive from here.</system:String>
+    
+    <system:String x:Key="StringToolTipChannelSelector">You can see the channels here which you have configured in the json config file. You can click on the name in order to see the active/inactive sessions below.</system:String>
+    <system:String x:Key="StringIsDisconnected">Disconnected</system:String>
+    <system:String x:Key="StringIsConnected">Connceted</system:String>
+    <system:String x:Key="StringSnifferAlreadyRunning">Sniffer is already running.</system:String>
+    <system:String x:Key="StringPortIsAlreadyListened">Following ports are being already listened : </system:String>
     <system:String x:Key="StringToolTipComboBoxNetworkAdapters">List of physical and virtual network adapters. You can choose the appropriate adapter
     using its name as a hint. One sniffer can only listen from an adapter. If you need to listen more than one adapters utilize multiple sniffers.
     Right click for more options. </system:String>
