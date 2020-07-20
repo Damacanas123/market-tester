@@ -2,6 +2,58 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
+    <system:String x:Key="StringToolTipComboBoxAnalyzers">4 tane log analiz aracı vardır. İsimleriyle Zaman Fark Analizi, Throttling Analizi, Açık Emir Analizi ve ürün özelinde Fix Gateway Dma Stock Log Birleştirici.
+    Zaman Fark Analizi : Bu analizde istekler ve cevapları arasındaki gecikme rapor edilir. İstekler D-G-F mesaj tipleridir. 
+    Throttling Analizi: Kayan pencereler içerisindeki mesaj sayılarını raporlar. 
+    Open Order Analyzer : Verilen log dosyası içerisinde açık kalan emirleri raporlar. Satış tarafında oluşan bir hata sonucunda açık kalan emir varsa anlamak için kullanışlıdır.
+    Fix Gateway Dma Stock Log Birleştirici : Dma ve Stock loglarını Dma tarafında ClOrdID ve Stock tarafında AllocID kullanarak birleştirir. Bir emrin cevabı gelene kadar geçirdiği süreleri raporlar.
+    Daha fazla bilgi için bu uygulama ile birlikte gelen kullanım kılavuzuna bakın.</system:String>
+    <system:String x:Key="StringExampleLineFormat">Örnek satır formatı :</system:String>
+    <system:String x:Key="StringExampleLine">Örnek satır :</system:String>
+    <system:String x:Key="StringToolTipLineFormat">Analiz etmek istediğiniz log dosyasının satır formatı. Format iki bölümden oluşuyor. İlk kısım zaman damgası, ikinci kısım FIX mesajının kendisi için. Bu iki kısmın arasında muhtemelen "%" işaretlerinden oluşan joker karakteri olacaktır. Zaman damgası format kuralları programlama dillerindeki tarih kurallarına benzer. Kurallar şu şekildedir:     
+    yyyy : 4 basamak yıl,
+    MM : 2 basamak ay(Ocak için 01,Aralık için 12),
+    dd : 2 basamak ayın günü,
+    HH : 2 basamak saat(24 saat formatında),
+    mm : 2 basamak dakika,
+    ss : 2 basamak saniye,
+    ffffff : 6 basamağa kadar saniye altı hassasiyet(eğer 3 tane "f" koyarsanız bu milisaniye hassasiyeti olur)
+    % : joker karakteri(bu koyduğunuz pozisyondaki karakteri es geçecektir),
+    {message} : FIX mesajı için işaret. Bu işaret FIX mesajının başladığı pozisyona koyulmalıdır.
+    Notlar: Zaman damgasının ve FIX mesajının içinde joker karakteri bulunamaz. Zaman damgası FIX mesajından önce gelmek zorundadır ve FIX mesajından sonra başka bir karakter gelmemelidir. Yani satır FIX mesajı ile bitmelidir. Zaman damgası kısmına yukarıda belirtilen karakterler dışında koyduğunuz karakterler olduğu gibi işlenir.
+    Eğer böyle bir karakter log dosyasındaki karakterlerle eşleşmez ise, program log dosyasını işleyemeyecektir.
+    Örnek satır formatını inceleyebilirsiniz.</system:String>
+    <system:String x:Key="StringToolTipInfoBox">Bağlantı ile ilgili bilgilendirme mesajlarını burada görebilirsiniz. Gelen veya giden bir mesaj reddedildiğinde bilgilendirilirsiniz.</system:String>
+    <system:String x:Key="StringToolTipFixSnifferGrid">Her bir saturda istek cevap ikililerini görebilirsiniz. Burada D-G-F mesajlarını görebilirsiniz. Daha fazla seçenek için sağ tıklayın.</system:String>
+    <system:String x:Key="StringToolTipLogAutoScroll">Log bölgesinin aşağıya otomatik kayması için bunu seçin.</system:String>
+    <system:String x:Key="StringToolTipFreeFormatLogActiveSessions">Takip etmek istediğiniz bağlantıyı seçin.</system:String>
+    <system:String x:Key="StringToolTipFreeFormatLogChannels">Log ekranında takip edilmek istenen kanal.</system:String>
+    <system:String x:Key="StringToolTipScheduleTab">Planlayıcı tabı.</system:String>
+    <system:String x:Key="StringToolTipRemoveItemFromSchedule">Plandan seçili olan mesajı çıkarın.</system:String>
+    <system:String x:Key="StringToolTipFreeFormatDelayTextBox">Sıradaki mesajı göndermeden önce uygulanacak gecikme(milisaniye).</system:String>
+    <system:String x:Key="StringToolTipFreeFormatSelectMessageFromSchedule">Planda seçili mesajın etiket-değer ikililerini düzenleme bölgesine taşıyın.</system:String>
+    <system:String x:Key="StringToolTipAddMessageToSchedule">Plana mesajı ekleyin.</system:String>
+    <system:String x:Key="StringToolTipMoveScheduleItemDown">Planda seçili öğeyi bir adım aşağı indirin.</system:String>
+    <system:String x:Key="StringToolTipMoveScheduleItemUp">Planda seçili öğeyi bir adım yukarı çıkarın.</system:String>
+    <system:String x:Key="StringToolTipScheduleList">Bütün planları burada görün. İsimlerini çift tıklayarak değiştirebilirsiniz.</system:String>
+    <system:String x:Key="StringToolTipAddANewSchedule">Yeni bir plan yaratın.</system:String>
+    <system:String x:Key="StringToolTipClearSchedule">Seçili plandan bütün mesajları silin.</system:String>
+    <system:String x:Key="StringToolTipDeleteSchedule">Seçili planı silin.</system:String>
+    <system:String x:Key="StringToolTipStartSchedule">Planı başlatın.</system:String>
+    <system:String x:Key="StringToolTipDeleteFreeFormatMessage">Seçili mesajı listeden silin.</system:String>
+    <system:String x:Key="StringToolTipSaveFreeFormatMessage">Mesajınızı kaydedin. Kaydedilen mesajlar yeni mesaj olarak kaydedilir.</system:String>
+    <system:String x:Key="StringToolTipMessageName">Kaydetmeden önce mesaj ismini girin.</system:String>
+    <system:String x:Key="StringToolTipSavedMessages">Kaydedilmiş mesajlarınızı buradan yönetebilirsiniz.</system:String>
+    <system:String x:Key="StringToolTipMessageTagValueGrid">Etiket-değer ikililerini burada görebilir ve değiştirebilirsiniz.</system:String>
+    <system:String x:Key="StringToolTipOverrideSession">Eğer bunu işaretlerseniz bağlantı ile alakalı etiketler otomatik olarak eklenmeyecektir ve bu etiketleri kendiniz girebilirsiniz.Eğer bunu işaretlemezseniz bağlantı ile ilgili etiketler siz girseniz bile FIX motoru tarafından ezilecektir.</system:String>
+    <system:String x:Key="StringToolTipTagInput">Mesaja eklemek istediğiniz etiketi yazın.</system:String>
+    <system:String x:Key="StringToolTipValueInput">Mesaja eklemek istediğiniz değeri yazın.</system:String>
+    <system:String x:Key="StringToolTipDeleteAllTags">Bütün etiket değer ikililerini mesajdan silin.</system:String>
+    <system:String x:Key="StringToolTipDeleteTagValuePair">Seçili etiket-değer ikilisini mesajdan silin.</system:String>
+    <system:String x:Key="StringToolTipAddTagValuePair">Etiket-değer ikilisini oluşturduğunuz mesaja ekleyin.</system:String>
+    <system:String x:Key="StringToolTipChooseChannel">Kanal seçin.</system:String>
+    <system:String x:Key="StringToolTipSendMessageDirectly">Plana eklemeksizin mesajı direk gönder.</system:String>
+    <system:String x:Key="StringToolTipProtocolType">FIX protokolünü buradan seçin.</system:String>
     <system:String x:Key="StringToolTipActiveInactiveSessions">Hangi bağlantıların aktif/inaktif olduğunu buradan görebilirsiniz.</system:String>
     <system:String x:Key="StringToolTipChannelSelector">Json konfigürasyon dosyasında belirttiğiniz kanalları burada görebilirsiniz. Aktif/inaktif bağlantıları görmek için kanalın ismine tıklayabilirsiniz.</system:String>
     <system:String x:Key="StringIsDisconnected">Bağlantı yok</system:String>

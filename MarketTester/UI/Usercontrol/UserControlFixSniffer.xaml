@@ -174,7 +174,8 @@
                       Grid.RowSpan="11"
                       ItemsSource="{Binding FixDelayHandler.DiffItems}"
                       AutoGenerateColumns="False"
-                      IsReadOnly="True">
+                      IsReadOnly="True"
+                      ToolTip="{DynamicResource StringToolTipFixSnifferGrid}">
                 <DataGrid.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="{DynamicResource StringClear}" Command="{Binding CommandClearSniffGrid}" />

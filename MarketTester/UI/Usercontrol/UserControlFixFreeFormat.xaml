@@ -79,27 +79,36 @@
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="2*"/>
                     </Grid.RowDefinitions>
-                    <CheckBox IsChecked="{Binding OverrideSessionTags}" Content="{DynamicResource StringOverrideSessionTags}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center"/>
+                    <CheckBox IsChecked="{Binding OverrideSessionTags}" Content="{DynamicResource StringOverrideSessionTags}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center"
+                              ToolTip="{DynamicResource StringToolTipOverrideSession}"/>
                     <TextBlock Grid.Column="0" Grid.Row="0" Text="{DynamicResource StringProtocolType}" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                    <ComboBox Grid.Column="0" Grid.Row="1" SelectedItem="{Binding ProtocolType}" ItemsSource="{Binding Source={x:Static local:Const.AvailableProtocols}}" Margin="10,5,10,5" Height="30"/>
+                    <ComboBox Grid.Column="0" Grid.Row="1" SelectedItem="{Binding ProtocolType}" ItemsSource="{Binding Source={x:Static local:Const.AvailableProtocols}}" Margin="10,5,10,5" Height="30"
+                              ToolTip="{DynamicResource StringToolTipProtocolType}"/>
                     <TextBlock Grid.Column="1" Grid.Row="0" Text="{DynamicResource StringChannel}" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                    <ComboBox Grid.Column="1" Grid.Row="1" SelectedItem="{Binding SelectedChannel}" ItemsSource="{Binding Channels}" Margin="10,5,10,5" Height="30"/>
+                    <ComboBox Grid.Column="1" Grid.Row="1" SelectedItem="{Binding SelectedChannel}" ItemsSource="{Binding Channels}" Margin="10,5,10,5" Height="30"
+                              ToolTip="{DynamicResource StringToolTipChooseChannel}"/>
                     <TextBlock Grid.Column="0" Grid.Row="2" Text="{DynamicResource StringTag}" VerticalAlignment="Center" Margin="10,0,0,0"/>
                     <TextBlock Grid.Column="1" Grid.Row="2" Text="{DynamicResource StringValue}" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                    <TextBox Grid.Column="0" Grid.Row="3" Text="{Binding TextTag,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="10"/>
-                    <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding TextValue}" VerticalAlignment="Center" Margin="10"/>
+                    <TextBox Grid.Column="0" Grid.Row="3" Text="{Binding TextTag,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="10"
+                             ToolTip="{DynamicResource StringToolTipTagInput}"/>
+                    <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding TextValue}" VerticalAlignment="Center" Margin="10"
+                             ToolTip="{DynamicResource StringToolTipValueInput}"/>
                     
                     <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
                         <Button VerticalAlignment="Center"
                                 HorizontalAlignment="Left"
+                                ToolTip="{DynamicResource StringToolTipSendMessageDirectly}"
                             Width="60" Height="30" Command="{Binding CommandSendMessage}" Content="{DynamicResource StringSend}" Margin="0 0 5 0" />
                         <Button HorizontalAlignment="Right"
+                                ToolTip="{DynamicResource StringToolTipAddTagValuePair}"
                              Width="60" Height="30" Command="{Binding CommandAddTagValuePair}" Content="{DynamicResource StringAdd}" Margin="0"/>
                     </StackPanel>
                     <StackPanel Grid.Column="2" Grid.Row="3"
                                 Orientation="Horizontal">
-                        <Button Width="60" Content="{DynamicResource StringDelete}" Command="{Binding CommandDeleteTagValuePair}"  Margin="0 0 5 0" />
-                        <Button Width="60" Content="{DynamicResource StringClear}" Command="{Binding CommandClearTagValuePairs}" />
+                        <Button Width="60" Content="{DynamicResource StringDelete}" Command="{Binding CommandDeleteTagValuePair}"  Margin="0 0 5 0" 
+                                ToolTip="{DynamicResource StringToolTipDeleteTagValuePair}"/>
+                        <Button Width="60" Content="{DynamicResource StringClear}" Command="{Binding CommandClearTagValuePairs}" 
+                                ToolTip="{DynamicResource StringToolTipDeleteAllTags}"/>
                     </StackPanel>
                 </Grid>
                 <TextBlock Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding InfoText}" VerticalAlignment="Center"/>
@@ -121,13 +130,14 @@
                                Grid.Row="0"
                                Grid.Column="1"/>
                     <DataGrid Grid.Column="0" Grid.Row="1"
-                        x:Name="DataGridTagValues" 
+                              x:Name="DataGridTagValues" 
                               ItemsSource="{Binding TagValuePairs}" 
                               BorderBrush="{DynamicResource BackgroundTernary}"
                               SelectedIndex="{Binding SelectedTagValuePairIndex}"
                               Background="Transparent"
-                  AutoGenerateColumns="False"
-                      Margin="3">
+                              AutoGenerateColumns="False"
+                              Margin="3"
+                              ToolTip="{DynamicResource StringToolTipMessageTagValueGrid}">
                         
                         <DataGrid.Columns>
 
@@ -169,7 +179,8 @@
                             Margin="5,0,0,0" Height="20" 
                             Grid.Row="3"
                             Grid.Column="0"
-                            HorizontalAlignment="Left">
+                            HorizontalAlignment="Left"
+                            ToolTip="{DynamicResource StringToolTipSaveFreeFormatMessage}">
                         <Image Source="/Resource/Image/up_arrow.png">
                             <Image.RenderTransform>
                                 <RotateTransform Angle="90" CenterX="8" CenterY="8"/>
@@ -179,13 +190,15 @@
                     <TextBox Text="{Binding SavedMessageName}"
                              Grid.Row="3"
                              Grid.Column="0"
-                             Margin="100,0,10,0"/>
+                             Margin="100,0,10,0"
+                             ToolTip="{DynamicResource StringToolTipMessageName}"/>
                     <DataGrid Grid.Column="1" Grid.Row="1"
                               x:Name="DataGridSavedMessages"
                               AutoGenerateColumns="False"
                               ItemsSource="{Binding Source={x:Static modelfixfreeformat:SavedMessage.SavedMessages}}"
                               SelectedItem="{Binding SelectedSavedMessage}"
-                              SelectionMode="Single">
+                              SelectionMode="Single"
+                              ToolTip="{DynamicResource StringToolTipSavedMessages}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Name}">
                                 <DataGridTextColumn.Header>
@@ -200,25 +213,30 @@
                             Grid.Row="3"
                             Width="170"
                             HorizontalAlignment="Left"
-                            Command="{Binding CommandDeleteSavedMessage}"/>
+                            Command="{Binding CommandDeleteSavedMessage}"
+                            ToolTip="{DynamicResource StringToolTipDeleteFreeFormatMessage}"/>
                 </Grid>
                 
                 <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical"
                             Grid.RowSpan="2">
-                    <Button  Width="30" Height="40" Command="{Binding CommandMoveMessageUp}" Margin="0 0 0 10">
+                    <Button  Width="30" Height="40" Command="{Binding CommandMoveMessageUp}" Margin="0 0 0 10"
+                             ToolTip="{DynamicResource StringToolTipMoveScheduleItemUp}">
                         <Image Source="/Resource/Image/up_arrow.png" Stretch="Fill"/>
                     </Button>
-                    <Button Grid.Column="1" Grid.Row="10" Width="30" Height="30" Command="{Binding CommandMoveMessageDown}">
+                    <Button Grid.Column="1" Grid.Row="10" Width="30" Height="30" Command="{Binding CommandMoveMessageDown}"
+                            ToolTip="{DynamicResource StringToolTipMoveScheduleItemDown}">
                         <Image Source="/Resource/Image/down_arrow.png" Stretch="Fill"/>
                     </Button>
-                    <Button Width="30" Command="{Binding CommandAddMessageToSchedule}" Margin="0,10,0,0" Height="40">
+                    <Button Width="30" Command="{Binding CommandAddMessageToSchedule}" Margin="0,10,0,0" Height="40"
+                            ToolTip="{DynamicResource StringToolTipAddMessageToSchedule}">
                         <Image Source="/Resource/Image/up_arrow.png">
                             <Image.RenderTransform>
                                 <RotateTransform Angle="90" CenterX="13" CenterY="13"/>
                             </Image.RenderTransform>
                         </Image>
                     </Button>
-                    <Button Width="30" Command="{Binding CommandSelectMessageFromSchedule}" Margin="0,10,0,0" Height="40">
+                    <Button Width="30" Command="{Binding CommandSelectMessageFromSchedule}" Margin="0,10,0,0" Height="40"
+                            ToolTip="{DynamicResource StringToolTipFreeFormatSelectMessageFromSchedule}">
                         <Image Source="/Resource/Image/up_arrow.png">
                             <Image.RenderTransform>
                                 <RotateTransform Angle="270" CenterX="13" CenterY="13"/>
@@ -226,11 +244,13 @@
                         </Image>
                     </Button>
                     <TextBlock Margin="5,10,0,0" Text="{DynamicResource StringDelayMilliSecond}" VerticalAlignment="Center"/>
-                    <TextBox Margin="5,10,5,0" Text="{Binding TextDelay,UpdateSourceTrigger=PropertyChanged}" Width="80"/>
+                    <TextBox Margin="5,10,5,0" Text="{Binding TextDelay,UpdateSourceTrigger=PropertyChanged}" Width="80"
+                             ToolTip="{DynamicResource StringToolTipFreeFormatDelayTextBox}"/>
                     <Button Grid.Column="0" Grid.Row="10" 
                             Margin="0 5 0 0"
                             Content="{DynamicResource StringRemoveFromSchedule}" 
-                            Command="{Binding CommandRemoveItemFromSchedule}"/>
+                            Command="{Binding CommandRemoveItemFromSchedule}"
+                            ToolTip="{DynamicResource StringToolTipRemoveItemFromSchedule}"/>
                 </StackPanel>
 
             </Grid>
@@ -238,7 +258,8 @@
                   Grid.Row="0"
                   Grid.ColumnSpan="7"
                   Grid.RowSpan="12">
-                <TabItem Header="{DynamicResource StringSchedule}">
+                <TabItem Header="{DynamicResource StringSchedule}" 
+                         ToolTip="{DynamicResource StringToolTipScheduleTab}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*"/>
@@ -267,6 +288,7 @@
                         <TextBlock Grid.Row="0" Grid.Column="0" Margin="60,0,0,0" Text=" : "/>
                         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="70,0,0,0" Text="{Binding SelectedSchedule.Name}"/>
                         <DataGrid x:Name="DataGridScheduleItems" Grid.Column="0" Grid.Row="0" Grid.RowSpan="12" Margin="0,30,0,0" Grid.ColumnSpan="7" ItemsSource="{Binding SelectedSchedule.Items}"
+                                  
                   SelectedItem="{Binding SelectedScheduleItem}"
                   SelectedIndex="{Binding SelectedScheduleItemIndex}"
                       AutoGenerateColumns="False">
@@ -286,7 +308,7 @@
                                         <TextBlock Text="{DynamicResource StringChannel}"/>
                                     </DataGridTextColumn.Header>
                                 </DataGridTextColumn>
-                                <DataGridTextColumn Binding="{Binding Message,Converter={StaticResource FixStringConverter}}">
+                                <DataGridTextColumn IsReadOnly="True" Binding="{Binding Message,Converter={StaticResource FixStringConverter}}">
                                     <DataGridTextColumn.Header>
                                         <TextBlock Text="{DynamicResource StringMessage}"/>
                                     </DataGridTextColumn.Header>
@@ -341,7 +363,8 @@
                             <ComboBox Grid.Column="0"
                                   Grid.Row="1"
                                       ItemsSource="{Binding LogChannels}"
-                                      SelectedItem="{Binding SelectedLogChannel}"/>
+                                      SelectedItem="{Binding SelectedLogChannel}"
+                                      ToolTip="{DynamicResource StringToolTipFreeFormatLogChannels}"/>
                             <TextBlock Text="{DynamicResource StringActiveSessions}"
                                    Grid.Column="1"
                                    Grid.Row="0"
@@ -351,7 +374,8 @@
                                       Grid.RowSpan="2"
                                       Height="Auto" 
                                       ItemsSource="{Binding ActiveSessions}"
-                                      AutoGenerateColumns="False">
+                                      AutoGenerateColumns="False"
+                                      ToolTip="{DynamicResource StringToolTipFreeFormatLogActiveSessions}">
                                 <DataGrid.Columns>
                                     <DataGridCheckBoxColumn Binding="{Binding IsChecked}">
                                         <DataGridCheckBoxColumn.Header>
@@ -369,7 +393,8 @@
                                       Grid.Column="2"
                                       Grid.Row="0"
                                       VerticalAlignment="Bottom"
-                                      IsChecked="{Binding IsAutoScroll}"/>
+                                      IsChecked="{Binding IsAutoScroll}"
+                                      ToolTip="{DynamicResource StringToolTipLogAutoScroll}"/>
                             <Button Grid.Row="1"
                                     Grid.Column="2"
                                     Content="{DynamicResource StringClearLog}"
@@ -397,14 +422,18 @@
             <Separator Grid.ColumnSpan="4" Grid.Column="0" Grid.Row="8" VerticalAlignment="Top" Margin="0,-1,0,0"/>
             <TextBlock FontSize="24" VerticalAlignment="Center" Margin="13,0,0,0" Text="{DynamicResource StringScheduler}" Grid.Row="8" Grid.Column="0"/>
             
-            <Button Grid.Column="0" Grid.Row="10" Content="{DynamicResource StringClearSchedule}" Command="{Binding CommandClearSchedule}"/>
-            <Button Grid.Column="0" Grid.Row="9" Content="{DynamicResource StringStartSchedule}" Command="{Binding CommandStartSchedule}"/>
-            <Button Grid.Column="1" Grid.Row="9" Content="{DynamicResource StringDeleteSchedule}" Command="{Binding CommandDeleteSchedule}"/>
+            <Button Grid.Column="0" Grid.Row="10" Content="{DynamicResource StringClearSchedule}" Command="{Binding CommandClearSchedule}"
+                    ToolTip="{DynamicResource StringToolTipClearSchedule}"/>
+            <Button Grid.Column="0" Grid.Row="9" Content="{DynamicResource StringStartSchedule}" Command="{Binding CommandStartSchedule}"
+                    ToolTip="{DynamicResource StringToolTipStartSchedule}"/>
+            <Button Grid.Column="1" Grid.Row="9" Content="{DynamicResource StringDeleteSchedule}" Command="{Binding CommandDeleteSchedule}"
+                    ToolTip="{DynamicResource StringToolTipDeleteSchedule}"/>
             
             <TextBlock Grid.Row="8" Grid.Column="2" Text="{DynamicResource StringSchedules}" Margin="0,5,0,0"/>
             <DataGrid x:Name="DataGridSchedules" Margin="0,30,0,0" ItemsSource="{Binding Schedules}" SelectedItem="{Binding SelectedSchedule}"
                       AutoGenerateColumns="False"
-                      Grid.Column="2" Grid.Row="8" Grid.ColumnSpan="2" Grid.RowSpan="4">
+                      Grid.Column="2" Grid.Row="8" Grid.ColumnSpan="2" Grid.RowSpan="4"
+                      ToolTip="{DynamicResource StringToolTipScheduleList}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Name}">
                         <DataGridTextColumn.Header>
@@ -414,7 +443,8 @@
                 </DataGrid.Columns>
                 
             </DataGrid>
-            <Button Grid.Column="1" Grid.Row="10" Padding="7" Width="30" Height="30" Command="{Binding CommandAddSchedule}">
+            <Button Grid.Column="1" Grid.Row="10" Padding="7" Width="30" Height="30" Command="{Binding CommandAddSchedule}"
+                    ToolTip="{DynamicResource StringToolTipAddANewSchedule}">
                 <Path Fill="{DynamicResource ActiveYellow}" Stretch="Fill"
                       Data="M 0,0 L 5,0 5,5 7,5 7,0 12,0 12,-2 7,-2 7,-7 5,-7 5,-2 0,-2">
                     

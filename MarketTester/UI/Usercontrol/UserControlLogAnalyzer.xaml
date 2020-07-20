@@ -8,7 +8,7 @@
              xmlns:viewmodel="clr-namespace:MarketTester.ViewModel"
              xmlns:converter="clr-namespace:MarketTester.Converters"
              mc:Ignorable="d" 
-             Width="1000" Height="500" 
+             Width="1100" Height="700" 
              Margin="0,0,0,0">
     
     <UserControl.Resources>
@@ -17,133 +17,162 @@
         </Style>
         <converter:DoubleConverter x:Key="DoubleConverter"/>
     </UserControl.Resources>
-    <Grid >
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
-        </Grid.ColumnDefinitions>
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="6*"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="{DynamicResource StringName}"/>
-        <TextBlock Text="{DynamicResource StringLineFormats}" Grid.Column="7"/>
-        <TextBox Text="{Binding Name,UpdateSourceTrigger=PropertyChanged}"
-                 ToolTip="{DynamicResource StringToolTipLogAnalyzerNameTextBox}"
-                 Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" Margin="0,0,5,0" />
-        <TextBlock Text="{DynamicResource StringLineFormat}" Grid.Row="1" Grid.ColumnSpan="3"/>
-        <TextBox Text="{Binding Format,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.ColumnSpan="5" Grid.RowSpan="1" TextWrapping="WrapWithOverflow" Margin="0,0,5,0"/>
-        <TextBlock Text="{DynamicResource StringOutFilePath}" Grid.ColumnSpan="3" Grid.Row="3"/>
-        <TextBox Text="{Binding OutFilePath,UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.ColumnSpan="5" Grid.RowSpan="1" TextWrapping="WrapWithOverflow" Margin="0,0,5,0"/>
-        <TextBlock Text="{DynamicResource StringAnalyzers}" Grid.ColumnSpan="6" Grid.Row="5"/>
-        <ComboBox ItemsSource="{Binding Analyzers}" SelectedItem="{Binding SelectedAnalyzer}" Grid.Row="6" Grid.ColumnSpan="5" Width="400" Height="30" HorizontalAlignment="Left"/>
-        <Button Content="{DynamicResource StringPickFile}" Grid.Row="7" Grid.ColumnSpan="3" Command="{Binding CommandPickFile}" CommandParameter="1" Width="100" Height="30" HorizontalAlignment="Left"/>
-        <Button Content="{DynamicResource StringPickFile}" Grid.Row="9" Grid.ColumnSpan="3" Command="{Binding CommandPickFile}" 
-                Visibility="{Binding SecondFilePathVisibility}"
-                CommandParameter="2" Width="100" Height="30" HorizontalAlignment="Left"/>
-        <TextBlock Text="{DynamicResource StringInputFile1}" Grid.Row="8" Grid.ColumnSpan="1" Grid.Column="0" Grid.RowSpan="1" TextWrapping="WrapWithOverflow"/>
-        <TextBlock Text="{DynamicResource StringInputFile2}" Grid.Row="10" Grid.ColumnSpan="1" Grid.Column="0" Grid.RowSpan="2" TextWrapping="WrapWithOverflow" 
-                   Visibility="{Binding SecondFilePathVisibility}"/>
-        <Grid   Grid.Column="0" Grid.Row="10"
-                Grid.RowSpan="2"
-                Grid.ColumnSpan="3"
-                Visibility="{Binding ThrottlingVisibility}">
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="6*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="{DynamicResource StringExampleLineFormat}"
+                       Grid.Row="0" Grid.Column="0"/>
+            <TextBlock Text="{DynamicResource StringExampleLine}"
+                       Grid.Row="1" Grid.Column="0"/>
+            <TextBlock Text="yyyyMMdd-HH:mm:ss.ffffff%%%%%%{message}"
+                       Grid.Row="0" Grid.Column="1"/>
+            <TextBlock Text="20200410-12:00:58.288000000 : 8=FIXT.1.1|9=150|35=D|34=2|49=SENDER|52=20200410-12:00:58.287|56=RECEIVER|1=DE-1|11=20200410864|38=10|40=2|44=16|54=2|55=ARCLK.E|59=0|60=20200410-15:00:58.268|10=185|"
+                       Grid.Row="1" Grid.Column="1"/>
+        </Grid>
+        <Separator Grid.Row="1" Grid.ColumnSpan="1"/>
+        <Grid  Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <TextBlock Text="{DynamicResource StringExpectedThrottling}"
+            <TextBlock Text="{DynamicResource StringName}"/>
+            <TextBlock Text="{DynamicResource StringLineFormats}" Grid.Column="7"/>
+            <TextBox Text="{Binding Name,UpdateSourceTrigger=PropertyChanged}"
+                 ToolTip="{DynamicResource StringToolTipLogAnalyzerNameTextBox}"
+                 Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" Margin="0,0,5,0" />
+            <TextBlock Text="{DynamicResource StringLineFormat}" Grid.Row="1" Grid.ColumnSpan="3"/>
+            <TextBox Text="{Binding Format,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.ColumnSpan="5" Grid.RowSpan="1" TextWrapping="WrapWithOverflow" Margin="0,0,5,0"
+                 ToolTip="{DynamicResource StringToolTipLineFormat}"/>
+            <TextBlock Text="{DynamicResource StringOutFilePath}" Grid.ColumnSpan="3" Grid.Row="3"/>
+            <TextBox Text="{Binding OutFilePath,UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.ColumnSpan="5" Grid.RowSpan="1" TextWrapping="WrapWithOverflow" Margin="0,0,5,0"/>
+            <TextBlock Text="{DynamicResource StringAnalyzers}" Grid.ColumnSpan="6" Grid.Row="5"/>
+            <ComboBox ItemsSource="{Binding Analyzers}" SelectedItem="{Binding SelectedAnalyzer}" Grid.Row="6" Grid.ColumnSpan="5" Width="400" Height="30" HorizontalAlignment="Left"
+                      ToolTip="{DynamicResource StringToolTipComboBoxAnalyzers}"/>
+            <Button Content="{DynamicResource StringPickFile}" Grid.Row="7" Grid.ColumnSpan="3" Command="{Binding CommandPickFile}" CommandParameter="1" Width="100" Height="30" HorizontalAlignment="Left"/>
+            <Button Content="{DynamicResource StringPickFile}" Grid.Row="9" Grid.ColumnSpan="3" Command="{Binding CommandPickFile}" 
+                Visibility="{Binding SecondFilePathVisibility}"
+                CommandParameter="2" Width="100" Height="30" HorizontalAlignment="Left"/>
+            <TextBlock Text="{DynamicResource StringInputFile1}" Grid.Row="8" Grid.ColumnSpan="1" Grid.Column="0" Grid.RowSpan="1" TextWrapping="WrapWithOverflow"/>
+            <TextBlock Text="{DynamicResource StringInputFile2}" Grid.Row="10" Grid.ColumnSpan="1" Grid.Column="0" Grid.RowSpan="2" TextWrapping="WrapWithOverflow" 
+                   Visibility="{Binding SecondFilePathVisibility}"/>
+            <Grid   Grid.Column="0" Grid.Row="10"
+                Grid.RowSpan="2"
+                Grid.ColumnSpan="3"
+                Visibility="{Binding ThrottlingVisibility}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="{DynamicResource StringExpectedThrottling}"
                        Grid.Column="0"
                        Grid.Row="0"
                    />
-            <TextBox Text="{Binding TextExpectedThrottling}" Width="60"
+                <TextBox Text="{Binding TextExpectedThrottling}" Width="60"
                      HorizontalAlignment="Left"
                      Grid.Column="0"
                      Grid.Row="1"
                  />
-            <TextBlock Text="{DynamicResource StringThrottlingMessages}"
+                <TextBlock Text="{DynamicResource StringThrottlingMessages}"
                        Grid.Column="1"
                        Grid.Row="0"
                    />
-            <TextBox Text="{Binding TextThrottlingMessages}" Width="60"
+                <TextBox Text="{Binding TextThrottlingMessages}" Width="60"
                      HorizontalAlignment="Left"
                      Grid.Column="1"
                      Grid.Row="1"
                      ToolTip="{DynamicResource StringToolTipThrottlingMessages}"
                  />
-            
 
-        </Grid>
-        
-        <TextBlock Text="{Binding InputFilePath1}" Grid.Row="8" Grid.ColumnSpan="5" Grid.Column="1" Grid.RowSpan="1" TextWrapping="WrapWithOverflow"/>
-        <TextBlock Text="{Binding InputFilePath2}" Grid.Row="10" Grid.ColumnSpan="5" Grid.Column="1" Grid.RowSpan="2" TextWrapping="WrapWithOverflow"
+
+            </Grid>
+
+            <TextBlock Text="{Binding InputFilePath1}" Grid.Row="8" Grid.ColumnSpan="5" Grid.Column="1" Grid.RowSpan="1" TextWrapping="WrapWithOverflow"/>
+            <TextBlock Text="{Binding InputFilePath2}" Grid.Row="10" Grid.ColumnSpan="5" Grid.Column="1" Grid.RowSpan="2" TextWrapping="WrapWithOverflow"
                    Visibility="{Binding SecondFilePathVisibility}"/>
 
-        <Button Grid.Column="5" Grid.Row="2" Grid.RowSpan="1" Grid.ColumnSpan="2" Command="{Binding CommandSaveFormats}"
+            <Button Grid.Column="5" Grid.Row="2" Grid.RowSpan="1" Grid.ColumnSpan="2" Command="{Binding CommandSaveFormats}"
                 HorizontalAlignment="Left"
                 Content="{DynamicResource StringSave}"/>
-        <Path  Stroke="{DynamicResource BackgroundSecondary}" Fill="{DynamicResource BackgroundTernary}" Grid.Column="6"  Grid.Row="2"  Width="30"
+            <Path  Stroke="{DynamicResource BackgroundSecondary}" Fill="{DynamicResource BackgroundTernary}" Grid.Column="6"  Grid.Row="2"  Width="30"
                               Stretch="Fill" Margin="10,5,15,5">
-            <Path.Data>
-                <GeometryGroup>
-                    <PathGeometry Figures="M 0,0 L 50,50 0,100 0,90 40,50 0,10 0,0" />
-                    <PathGeometry Figures="M 20,0 L 70,50 20,100 20,90 60,50 20,10 20,0" />
-                </GeometryGroup>
-            </Path.Data>
-        </Path>
+                <Path.Data>
+                    <GeometryGroup>
+                        <PathGeometry Figures="M 0,0 L 50,50 0,100 0,90 40,50 0,10 0,0" />
+                        <PathGeometry Figures="M 20,0 L 70,50 20,100 20,90 60,50 20,10 20,0" />
+                    </GeometryGroup>
+                </Path.Data>
+            </Path>
 
-        <ListView Grid.Row="1" Grid.Column="7" Grid.ColumnSpan="5" Grid.RowSpan="5" ItemsSource="{Binding Source={x:Static model:LineFormat.Formats}}" 
+            <ListView Grid.Row="1" Grid.Column="7" Grid.ColumnSpan="5" Grid.RowSpan="5" ItemsSource="{Binding Source={x:Static model:LineFormat.Formats}}" 
                   SelectedItem="{Binding SelectedFormat}"
                   SelectedIndex="{Binding SelectedIndexFormat}"
                   Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Width,Converter={StaticResource DoubleConverter},ConverterParameter=2.4}"
                   Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Height,Converter={StaticResource DoubleConverter},ConverterParameter=2.4}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Name}" Margin="5,0,5,0" Width="100">
-                            <TextBlock.InputBindings>
-                                <MouseBinding MouseAction="LeftDoubleClick"
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Name}" Margin="5,0,5,0" Width="100">
+                                <TextBlock.InputBindings>
+                                    <MouseBinding MouseAction="LeftDoubleClick"
                                               Command="{Binding CommandPickFormat}"/>
-                            </TextBlock.InputBindings>
-                        </TextBlock>
-                        <TextBlock Text="{Binding Format}">
-                            <TextBlock.InputBindings>
-                                <MouseBinding MouseAction="LeftDoubleClick"
+                                </TextBlock.InputBindings>
+                            </TextBlock>
+                            <TextBlock Text="{Binding Format}">
+                                <TextBlock.InputBindings>
+                                    <MouseBinding MouseAction="LeftDoubleClick"
                                               Command="{Binding CommandPickFormat}"/>
-                            </TextBlock.InputBindings>
-                        </TextBlock>
-                    </StackPanel>
-                    
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <Button Command="{Binding CommandDeleteFormat}" Grid.ColumnSpan="2" Grid.Column="7" Grid.Row="6" Content="{DynamicResource StringDelete}" Height="30" Width="100" HorizontalAlignment="Left"/>
-        
-        <Button Command="{Binding CommandStartAnalysis}" Grid.ColumnSpan="2" Grid.Column="7" Grid.Row="8" Content="{DynamicResource StringStartAnalysis}" Height="30" Width="150" HorizontalAlignment="Left"/>
-        <TextBlock Text="{Binding InfoText}" Grid.Column="6" Grid.ColumnSpan="6" Grid.Row="11" HorizontalAlignment="Left"/>
+                                </TextBlock.InputBindings>
+                            </TextBlock>
+                        </StackPanel>
+
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button Command="{Binding CommandDeleteFormat}" Grid.ColumnSpan="2" Grid.Column="7" Grid.Row="6" Content="{DynamicResource StringDelete}" Height="30" Width="100" HorizontalAlignment="Left"/>
+
+            <Button Command="{Binding CommandStartAnalysis}" Grid.ColumnSpan="2" Grid.Column="7" Grid.Row="8" Content="{DynamicResource StringStartAnalysis}" Height="30" Width="150" HorizontalAlignment="Left"/>
+            <TextBlock Text="{Binding InfoText}" Grid.Column="6" Grid.ColumnSpan="6" Grid.Row="11" HorizontalAlignment="Left"/>
+        </Grid>
     </Grid>
+    
 </UserControl>

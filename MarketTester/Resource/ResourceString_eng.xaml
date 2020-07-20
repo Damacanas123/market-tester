@@ -3,9 +3,59 @@
                     xmlns:local="clr-namespace:MarketTester.Resource"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-
-    <system:String x:Key="StringToolTipActiveInactiveSessions">You can see which sessions are active/inactive from here.</system:String>
-    
+    <system:String x:Key="StringToolTipComboBoxAnalyzers">There are currently 4 log analyzers. Namely Time Diff Analyzer, Throttling Analyzer, Open Order Analyzer and product specific FixGatewayDmaStockLogMerger.
+    Time Diff Analyzer : This analyzer reports time between requests and their responses. Requests are D-G-F message types. 
+    Throttling analyzer : Reports message counts in sliding frames. 
+    Open Order Analyzer : Reports the orders that are left open in the given log file. This is useful in case of failure of sell side to understand which orders are open.
+    Fix Gateway Dma Stock Log Merger : Merges Dma and Stock logs of Fix Gateway based on ClOrdID on Dma and AllocID on Stock and reports time spent on different phases in a lifetime of a message and its response.
+    For more information refer to to Guide that is shipped with application.</system:String>
+    <system:String x:Key="StringExampleLineFormat">Example line format : </system:String>
+    <system:String x:Key="StringExampleLine">Example line : </system:String>
+    <system:String x:Key="StringToolTipLineFormat">This is the line format of the log file you want to analyze. Format consists of two parts. First part is for date(timestamp) and second part is the FIX message itself denoted by {message} possibly preceded by wildcard "%" tokens.Date format rules resemble to those of programming languages. Rules are the following    
+    yyyy : 4 digit year,
+    MM : 2 digit month(01 for January,12 for December),
+    dd : 2 digit day of month,
+    HH : two digit hour in 24 hours format,
+    mm : two digit minute of hour,
+    ss : two digit second of minute,
+    ffffff : up to 6 decimal of subsecond precision(if you put 3 f's then it is millisecond)
+    % : wildcard(this will skip the character at this position),
+    {message} : token for FIX message. This token should be put at the position of the start of the FIX message.
+    Notes: No wildcards inside timestamp and FIX message. Date must precede the FIX message and no other character should follow FIX message. In toher words line should end with ending of the FIX message. Any character, other than the specified characters above, you put in the date part is interpreted as it is.
+    If such a character does not match the characters in the log file, program will not be able to parse the log file.
+    You can inspect the example line format.</system:String>
+    <system:String x:Key="StringToolTipInfoBox">You can see session related info messages here. You are informed when an inbound or outbound message is rejected</system:String>
+    <system:String x:Key="StringToolTipFixSnifferGrid">You can see request and response pairs in each row. You can see D-G-F messages here. Right click for more options.</system:String>
+    <system:String x:Key="StringToolTipLogAutoScroll">Check this if you want log area to auto-scroll to bottom.</system:String>
+    <system:String x:Key="StringToolTipFreeFormatLogActiveSessions">Select the session you want to track.</system:String>
+    <system:String x:Key="StringToolTipFreeFormatLogChannels">Channel to be tracked in the log view.</system:String>
+    <system:String x:Key="StringToolTipScheduleTab">Schedule tab.</system:String>
+    <system:String x:Key="StringToolTipRemoveItemFromSchedule">Remove selected message from schedule.</system:String>
+    <system:String x:Key="StringToolTipFreeFormatDelayTextBox">Amount of delay(in milliseconds) applied before sending the current message.</system:String>
+    <system:String x:Key="StringToolTipFreeFormatSelectMessageFromSchedule">Copy tag-value pairs of selected message from schedule to editing area.</system:String>
+    <system:String x:Key="StringToolTipAddMessageToSchedule">Add message to schedule.</system:String>
+    <system:String x:Key="StringToolTipMoveScheduleItemDown">Move selected item down in the schedule.</system:String>
+    <system:String x:Key="StringToolTipMoveScheduleItemUp">Move selected item up in the schedule.</system:String>
+    <system:String x:Key="StringToolTipScheduleList">See all the schedules here. You can change their name from here by double clicking on the name.</system:String>
+    <system:String x:Key="StringToolTipAddANewSchedule">Create a new schedule.</system:String>
+    <system:String x:Key="StringToolTipClearSchedule">Delete all messages from selected schedule.</system:String>
+    <system:String x:Key="StringToolTipDeleteSchedule">Delete selected schedule.</system:String>
+    <system:String x:Key="StringToolTipStartSchedule">Run your schedule.</system:String>
+    <system:String x:Key="StringToolTipDeleteFreeFormatMessage">Delete selected message from list.</system:String>
+    <system:String x:Key="StringToolTipSaveFreeFormatMessage">Save your message. A saved message will always create a new message instance in message list.</system:String>
+    <system:String x:Key="StringToolTipMessageName">Type message name here before saving the message.</system:String>
+    <system:String x:Key="StringToolTipSavedMessages">You can manage your saved messages here.</system:String>
+    <system:String x:Key="StringToolTipMessageTagValueGrid">You can see and edit tag-value pairs here.</system:String>
+    <system:String x:Key="StringToolTipOverrideSession">If you check this, session related tags will not be automaticaly added to the message and you can manually add them. If you uncheck this your input session tags will be overriden by the engine.</system:String>
+    <system:String x:Key="StringToolTipTagInput">Write the tag you want to add to message.</system:String>
+    <system:String x:Key="StringToolTipValueInput">Write the value you want to add to message.</system:String>
+    <system:String x:Key="StringToolTipDeleteAllTags">Delete all tag-value pairs from message.</system:String>
+    <system:String x:Key="StringToolTipDeleteTagValuePair">Delete selected tag-value pair from message.</system:String>    
+    <system:String x:Key="StringToolTipAddTagValuePair">Add tag-value pair to your constructed message.</system:String>
+    <system:String x:Key="StringToolTipChooseChannel">Choose the channel.</system:String>
+    <system:String x:Key="StringToolTipSendMessageDirectly">Send your fix message directly without adding it to the schedule.</system:String>    
+    <system:String x:Key="StringToolTipProtocolType">Choose FIX protocol here.</system:String>
+    <system:String x:Key="StringToolTipActiveInactiveSessions">You can see which sessions are active/inactive from here.</system:String>    
     <system:String x:Key="StringToolTipChannelSelector">You can see the channels here which you have configured in the json config file. You can click on the name in order to see the active/inactive sessions below.</system:String>
     <system:String x:Key="StringIsDisconnected">Disconnected</system:String>
     <system:String x:Key="StringIsConnected">Connceted</system:String>

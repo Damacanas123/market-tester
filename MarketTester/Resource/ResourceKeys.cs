@@ -8,7 +8,33 @@ namespace MarketTester
 {
     public class ResourceKeys
     {
-
+        public const string StringToolTipComboBoxAnalyzers = "StringToolTipComboBoxAnalyzers";
+        public const string StringExampleLineFormat = "StringExampleLineFormat";
+        public const string StringToolTipLineFormat = "StringToolTipLineFormat";
+        public const string StringToolTipInfoBox = "StringToolTipInfoBox";
+        public const string StringToolTipFixSnifferGrid = "StringToolTipFixSnifferGrid";
+        public const string StringToolTipLogAutoScroll = "StringToolTipLogAutoScroll";
+        public const string StringToolTipFreeFormatLogActiveSessions = "StringToolTipFreeFormatLogActiveSessions";
+        public const string StringToolTipFreeFormatLogChannels = "StringToolTipFreeFormatLogChannels";
+        public const string StringToolTipScheduleTab = "StringToolTipScheduleTab";
+        public const string StringToolTipFreeFormatDelayTextBox = "StringToolTipFreeFormatDelayTextBox";
+        public const string StringToolTipFreeFormatSelectMessageFromSchedule = "StringToolTipFreeFormatSelectMessageFromSchedule";
+        public const string StringToolTipAddMessageToSchedule = "StringToolTipAddMessageToSchedule";
+        public const string StringToolTipMoveScheduleItemDown = "StringToolTipMoveScheduleItemDown";
+        public const string StringToolTipMoveScheduleItemUp = "StringToolTipMoveScheduleItemUp";
+        public const string StringToolTipScheduleList = "StringToolTipScheduleList";
+        public const string StringToolTipAddANewSchedule = "StringToolTipAddANewSchedule";
+        public const string StringToolTipClearSchedule = "StringToolTipClearSchedule";
+        public const string StringToolTipDeleteSchedule = "StringToolTipDeleteSchedule";
+        public const string StringToolTipStartSchedule = "StringToolTipStartSchedule";
+        public const string StringToolTipDeleteFreeFormatMessage = "StringToolTipDeleteFreeFormatMessage";
+        public const string StringToolTipSaveFreeFormatMessage = "StringToolTipSaveFreeFormatMessage";
+        public const string StringToolTipMessageName = "StringToolTipMessageName";        
+        public const string StringToolTipSavedMessages = "StringToolTipSavedMessages";
+        public const string StringToolTipMessageTagValueGrid = "StringToolTipMessageTagValueGrid";
+        public const string StringToolTipOverrideSession = "StringToolTipOverrideSession";
+        public const string StringToolTipTagInput = "StringToolTipTagInput";
+        public const string StringToolTipValueInput = "StringToolTipValueInput";
         public const string StringToolTipActiveInactiveSessions = "StringToolTipActiveInactiveSessions";        
         public const string StringToolTipChannelSelector = "StringToolTipChannelSelector";
         public const string StringIsDisconnected = "StringIsDisconnected";
