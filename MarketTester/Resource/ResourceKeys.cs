@@ -8,6 +8,13 @@ namespace MarketTester
 {
     public class ResourceKeys
     {
+        public const string StringEnableDisableToolTips = "StringEnableDisableToolTips";
+        public const string StringToolTipSchedulerMainOrderPanel = "StringToolTipSchedulerMainOrderPanel";
+        public const string StringToolTipMainGridOrderList = "StringToolTipMainGridOrderList";
+        public const string StringToolTipFixHistoryMessageDetail = "StringToolTipFixHistoryMessageDetail";
+        public const string StringToolTipMessageHistoryOfAnOrder = "StringToolTipMessageHistoryOfAnOrder";
+        public const string StringToolTipDeleteLineFormat = "StringToolTipDeleteLineFormat";
+        public const string StringToolTipExpectedThrottling = "StringToolTipExpectedThrottling";
         public const string StringToolTipComboBoxAnalyzers = "StringToolTipComboBoxAnalyzers";
         public const string StringExampleLineFormat = "StringExampleLineFormat";
         public const string StringToolTipLineFormat = "StringToolTipLineFormat";
@@ -241,7 +248,6 @@ namespace MarketTester
         public const string StringFileNotFound = "StringFileNotFound";
         public const string StringPreEvaluateQuantities = "StringPreEvaluateQuantities";
         public const string StringPreEvaluateQuantitiesExplanation = "StringPreEvaluateQuantitiesExplanation";
-
         public const string StringToolTipSchedulerDelay = "StringToolTipSchedulerDelay";
         public const string StringToolTipComboBoxChannels = "StringToolTipComboBoxChannels";
         public const string StringToolTipTextBoxPriceOffset = "StringToolTipTextBoxPriceOffset";

@@ -480,7 +480,16 @@ namespace BackOfficeEngine.Model
 
         public decimal GetAvgPx()
         {
-            return decimal.Parse(GetField(Tags.AvgPx),CultureInfo.InvariantCulture);
+            try
+            {
+                return decimal.Parse(GetField(Tags.AvgPx), CultureInfo.InvariantCulture);
+            }
+            catch
+            {
+                return 0;
+            }
+            
+            
         }
 
         public void SetAvgPx(decimal value)

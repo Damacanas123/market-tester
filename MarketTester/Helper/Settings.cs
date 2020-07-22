@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-
+using System.Windows.Controls;
 using MarketTester.Enumeration;
 using MarketTester.Events;
 
@@ -58,6 +58,41 @@ namespace MarketTester.Helper
                     LanguageChangedEventHandler?.Invoke();
                 }
             }
+        }
+
+        private bool toolTipEnabled;
+
+        public bool ToolTipEnabled
+        {
+            get { return toolTipEnabled; }
+            set
+            {
+                toolTipEnabled = value;
+                Style style = new Style(typeof(ToolTip));
+                style.Setters.Add(new Setter(UIElement.VisibilityProperty, Visibility.Collapsed));
+                style.Seal();
+
+                foreach (Window window in Application.Current.Windows)
+                {
+                    if (value)
+                    {
+                        window.Resources.Add(typeof(ToolTip), style); //hide
+                    }
+                    else
+                    {
+                        window.Resources.Remove(typeof(ToolTip)); //show
+                    }
+                }
+
+            }
+        }
+
+        #endregion
+
+        #region helpers
+        private void SetToolTipService(Style style,bool value)
+        {
+            style.Setters.Add(new Setter(ToolTipService.IsEnabledProperty, value));
         }
         #endregion
     }

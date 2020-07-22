@@ -24,7 +24,8 @@
                   IsReadOnly="True"
                   SelectedItem="{Binding SelectedOrder}"
                   AutoGenerateColumns="False"
-                  RowHeight="30">
+                  RowHeight="30"
+                  ToolTip="{DynamicResource StringToolTipMainGridOrderList}">
             <DataGrid.InputBindings>
                 <MouseBinding Gesture="LeftDoubleClick" Command="{Binding CommandOrderReplace}"/>
             </DataGrid.InputBindings>

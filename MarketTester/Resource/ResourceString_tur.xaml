@@ -2,6 +2,17 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
+    <system:String x:Key="StringEnableDisableToolTips">İpuçlarını aktive/deaktive et</system:String>
+    <system:String x:Key="StringToolTipSchedulerMainOrderPanel">Planlayıcıdaki ilk emrin aktif durumunu buradan izleyin.</system:String>
+    <system:String x:Key="StringToolTipMainGridOrderList">Emir girişten veya serbest format olmayan planlayıcıdan gönderilen emirleri burada görebilirsiniz. Bir emrri dğeiştirmek için çift tıklayın, iptal etmek için çarpı işaretine çift tıklayın, emirle ilgili detayları görmek için kağıda çift tıklayın.</system:String>
+    <system:String x:Key="StringToolTipFixHistoryMessageDetail">Seçili mesajın etiket-değer ikilileri.</system:String>
+    <system:String x:Key="StringToolTipMessageHistoryOfAnOrder">Bir emrin mesaj geçmişini burada görebilirsiniz. 
+        Eğer emir bir plandaki ilk emirse o plandaki bütün emirlerin mesajlarını burada görüntüleyebilirsiniz.
+        Görünüm -> Planlayıcı Emirlerini Birleştir. Eğer geri dönmek isterseniz Görünüm -> Normal Görünüme Dön.
+        Mesajları xlsx veya csv formatında dışa aktarabilirsiniz. Mesajları Excel kitaplık sayfaları olarak varolan xlsx dosyalarına ekleyebilirsiniz. Dışa aktar'a tıklayıp deneyebilirsiniz.
+    </system:String>
+    <system:String x:Key="StringToolTipDeleteLineFormat">Seçili satır formatını silin.</system:String>
+    <system:String x:Key="StringToolTipExpectedThrottling">Satış tarafının throttling limitini girin.</system:String>
     <system:String x:Key="StringToolTipComboBoxAnalyzers">4 tane log analiz aracı vardır. İsimleriyle Zaman Fark Analizi, Throttling Analizi, Açık Emir Analizi ve ürün özelinde Fix Gateway Dma Stock Log Birleştirici.
     Zaman Fark Analizi : Bu analizde istekler ve cevapları arasındaki gecikme rapor edilir. İstekler D-G-F mesaj tipleridir. 
     Throttling Analizi: Kayan pencereler içerisindeki mesaj sayılarını raporlar. 

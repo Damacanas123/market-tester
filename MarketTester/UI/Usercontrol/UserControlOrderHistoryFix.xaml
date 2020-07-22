@@ -55,7 +55,8 @@
                       AutoGenerateColumns="False"
                       Margin="10 10 0 0"
                       SelectedItem="{Binding SelectedHistoryItem}"
-                      IsReadOnly="True">
+                      IsReadOnly="True"
+                      ToolTip="{DynamicResource StringToolTipMessageHistoryOfAnOrder}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding ClOrdID}">
                         <DataGridTextColumn.Header>
@@ -154,7 +155,8 @@
                       Margin="0 10 10 0"
                       ItemsSource="{Binding TagValues}"
                       IsReadOnly="True"
-                      AutoGenerateColumns="False">
+                      AutoGenerateColumns="False"
+                      ToolTip="{DynamicResource StringToolTipFixHistoryMessageDetail}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Tag}">
                         <DataGridTextColumn.Header>

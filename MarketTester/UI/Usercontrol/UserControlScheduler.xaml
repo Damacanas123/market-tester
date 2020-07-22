@@ -135,7 +135,8 @@
             </Grid>
             <WrapPanel Grid.Row="0"
                   Grid.Column="6"
-                  Grid.ColumnSpan="6">
+                  Grid.ColumnSpan="6"
+                  ToolTip="{DynamicResource StringToolTipSchedulerMainOrderPanel}">
                 
                 <StackPanel Orientation="Vertical"
                             Grid.Row="0"
@@ -364,7 +365,8 @@
                       HorizontalAlignment="Left"
                       Width="120"/>
             <Button Grid.Column="4" Grid.Row="5" Content="{DynamicResource StringSend}" 
-                Command="{Binding CommandSendMessage}"/>
+                Command="{Binding CommandSendMessage}"
+                    ToolTip="{DynamicResource StringToolTipSendMessageDirectly}"/>
             <TextBlock Text="{Binding InfoText}" Grid.Row="11" Grid.Column="0"
                        Grid.ColumnSpan="6"
                        VerticalAlignment="Center"

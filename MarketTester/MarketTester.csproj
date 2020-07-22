@@ -28,7 +28,7 @@
     <InstallUrl>\\192.168.108.42\c%24\MATRIKS_OMS\MarketTesterSetup\</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>63</ApplicationRevision>
+    <ApplicationRevision>65</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -273,6 +273,7 @@
     <Compile Include="ViewModel\ViewModelOrderHistoryFix.cs" />
     <Compile Include="ViewModel\ViewModelOrderList.cs" />
     <Compile Include="ViewModel\ViewModelScheduler.cs" />
+    <Compile Include="ViewModel\ViewModelToolTipEnabled.cs" />
     <Compile Include="Worksheet\Csv.cs" />
     <Compile Include="Worksheet\Excel.cs" />
     <Compile Include="Worksheet\ExcelConstants.cs" />
@@ -485,6 +486,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Enumeration\Fix\" />
+    <Folder Include="static\guide\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">

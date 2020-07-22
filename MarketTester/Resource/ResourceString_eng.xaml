@@ -3,6 +3,17 @@
                     xmlns:local="clr-namespace:MarketTester.Resource"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
+    <system:String x:Key="StringEnableDisableToolTips">Enable/Disable Tool tips</system:String>
+    <system:String x:Key="StringToolTipSchedulerMainOrderPanel">Follow current situation of the first order in schedule.</system:String>
+    <system:String x:Key="StringToolTipMainGridOrderList">View the orders sent from order entry or from non free format scheduler. Double click an order to replace it, double click on the cross sign to cancel it double, click on the paper to see details about the order.</system:String>
+    <system:String x:Key="StringToolTipFixHistoryMessageDetail">Tag-value pairs of the selected message.</system:String>
+    <system:String x:Key="StringToolTipMessageHistoryOfAnOrder">You can see the message history of an order here. 
+        If the order is a first order in a schedule then you can view all messages related to that schedule here.
+        Just click View -> Consolidate Schedule Orders. If you want to go back to normal view click View -> Back to Normal View.
+        You can export the messages to xlsx or csv format. Append new exports as sheets in xlsx format. Click Export and experiment with it.
+    </system:String>
+    <system:String x:Key="StringToolTipDeleteLineFormat">Delete selected line format.</system:String>
+    <system:String x:Key="StringToolTipExpectedThrottling">Type throttling limit of your sell side.</system:String>
     <system:String x:Key="StringToolTipComboBoxAnalyzers">There are currently 4 log analyzers. Namely Time Diff Analyzer, Throttling Analyzer, Open Order Analyzer and product specific FixGatewayDmaStockLogMerger.
     Time Diff Analyzer : This analyzer reports time between requests and their responses. Requests are D-G-F message types. 
     Throttling analyzer : Reports message counts in sliding frames. 

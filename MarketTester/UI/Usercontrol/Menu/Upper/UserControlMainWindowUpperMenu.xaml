@@ -27,6 +27,8 @@
                 <MenuItem Header="{DynamicResource StringEnglish}" Command="{Binding CommandChangeLanguage}" CommandParameter="{x:Static enum:ELanguage.English}"/>
                 <MenuItem Header="{DynamicResource StringTurkish}" Command="{Binding CommandChangeLanguage}" CommandParameter="{x:Static enum:ELanguage.Turkish}"/>
             </MenuItem>
+            <MenuItem Header="{DynamicResource StringEnableDisableToolTips}"
+                      Command="{Binding CommandEnableDisableToolTip}"/>
         </MenuItem>
         <MenuItem Header="{DynamicResource StringTools}">
             <MenuItem Header="{DynamicResource StringLogAnalyzers}" Command="{Binding CommandLogAnalyzers}"/>

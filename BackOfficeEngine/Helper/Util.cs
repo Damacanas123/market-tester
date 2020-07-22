@@ -302,9 +302,17 @@ namespace BackOfficeEngine.Helper
             string pattern = @"(?<=\x01).*?(?==)";
             Regex rgx = new Regex(pattern);
             List<int> tags = new List<int>();
+            string msgS = m.ToString();
             foreach (Match match in rgx.Matches(m.ToString()))
             {
-                tags.Add(Int32.Parse(match.Value, CultureInfo.CurrentCulture));
+                try
+                {
+                    tags.Add(Int32.Parse(match.Value, CultureInfo.CurrentCulture));
+                }
+                catch
+                {
+                    Util.Debug($"Couldn't parse tag {match.Value} in {Environment.NewLine}{msgS}");
+                }
             }
             return tags;
         }

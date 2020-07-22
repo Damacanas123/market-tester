@@ -111,6 +111,7 @@
                      HorizontalAlignment="Left"
                      Grid.Column="0"
                      Grid.Row="1"
+                     ToolTip="{DynamicResource StringToolTipExpectedThrottling}"
                  />
                 <TextBlock Text="{DynamicResource StringThrottlingMessages}"
                        Grid.Column="1"
@@ -168,7 +169,8 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Command="{Binding CommandDeleteFormat}" Grid.ColumnSpan="2" Grid.Column="7" Grid.Row="6" Content="{DynamicResource StringDelete}" Height="30" Width="100" HorizontalAlignment="Left"/>
+            <Button Command="{Binding CommandDeleteFormat}" Grid.ColumnSpan="2" Grid.Column="7" Grid.Row="6" Content="{DynamicResource StringDelete}" Height="30" Width="100" HorizontalAlignment="Left"
+                    ToolTip="{DynamicResource StringToolTipDeleteLineFormat}"/>
 
             <Button Command="{Binding CommandStartAnalysis}" Grid.ColumnSpan="2" Grid.Column="7" Grid.Row="8" Content="{DynamicResource StringStartAnalysis}" Height="30" Width="150" HorizontalAlignment="Left"/>
             <TextBlock Text="{Binding InfoText}" Grid.Column="6" Grid.ColumnSpan="6" Grid.Row="11" HorizontalAlignment="Left"/>
