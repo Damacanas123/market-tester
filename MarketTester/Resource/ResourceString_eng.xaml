@@ -3,6 +3,10 @@
                     xmlns:local="clr-namespace:MarketTester.Resource"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
+    <system:String x:Key="StringSkipHeartbeats">Skip heartbeats</system:String>
+    <system:String x:Key="StringAddExtraTagValuesToSingleMessage">Add to single message</system:String>
+    <system:String x:Key="StringTooltipAddExtraTagValuesToSingleMessage">Check this to add extra tag value pairs to single item. Uncheck this to enable extra tag values global overriding.</system:String>
+    <system:String x:Key="StringCopyMessage">Copy message</system:String>
     <system:String x:Key="StringEnableDisableToolTips">Enable/Disable Tool tips</system:String>
     <system:String x:Key="StringToolTipSchedulerMainOrderPanel">Follow current situation of the first order in schedule.</system:String>
     <system:String x:Key="StringToolTipMainGridOrderList">View the orders sent from order entry or from non free format scheduler. Double click an order to replace it, double click on the cross sign to cancel it double, click on the paper to see details about the order.</system:String>
@@ -69,7 +73,7 @@
     <system:String x:Key="StringToolTipActiveInactiveSessions">You can see which sessions are active/inactive from here.</system:String>    
     <system:String x:Key="StringToolTipChannelSelector">You can see the channels here which you have configured in the json config file. You can click on the name in order to see the active/inactive sessions below.</system:String>
     <system:String x:Key="StringIsDisconnected">Disconnected</system:String>
-    <system:String x:Key="StringIsConnected">Connceted</system:String>
+    <system:String x:Key="StringIsConnected">Connected</system:String>
     <system:String x:Key="StringSnifferAlreadyRunning">Sniffer is already running.</system:String>
     <system:String x:Key="StringPortIsAlreadyListened">Following ports are being already listened : </system:String>
     <system:String x:Key="StringToolTipComboBoxNetworkAdapters">List of physical and virtual network adapters. You can choose the appropriate adapter
@@ -304,7 +308,7 @@
     <system:String x:Key="StringMessageTypes">Message Types</system:String>
     <system:String x:Key="StringTagValuePairs">Tag Value Pairs</system:String>
     <system:String x:Key="StringStartedReadingFixLog">Started reading fix log.</system:String>
-    <system:String x:Key="StringLogConfiguration">Log Configuration Visualizer</system:String>
+    <system:String x:Key="StringLogVisualizer">Log Visualizer</system:String>
     <system:String x:Key="StringPutQInTheBeginning">Put Q- in the beginning of ClOrdIDs</system:String>
     <system:String x:Key="StringLoadFixLog">Load Fix Log</system:String>
     <system:String x:Key="StringMessageLines">Message Lines</system:String>

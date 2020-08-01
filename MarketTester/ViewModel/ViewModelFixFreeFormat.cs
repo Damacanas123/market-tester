@@ -85,7 +85,11 @@ namespace MarketTester.ViewModel
                         {
                             foreach (string msg in LogMessagesBacking)
                             {
-                                LogMessages.Add(msg);
+                                if(!BlockHeartBeats || (Fix.GetTag(msg,35) != "0"))
+                                {
+                                    LogMessages.Add(msg);
+                                }
+                                
                             }
                             LogMessagesBacking.Clear();
                         }                        
@@ -128,6 +132,19 @@ namespace MarketTester.ViewModel
         public ObservableCollection<LogSession> ActiveSessions { get; set; } = new ObservableCollection<LogSession>();
         public List<string> LogMessagesBacking { get; set; } = new List<string>();
         public ObservableCollectionEx<string> LogMessages { get; set; } = new ObservableCollectionEx<string>();
+
+        private bool blockHeartBeats;
+
+        public bool BlockHeartBeats
+        {
+            get { return blockHeartBeats; }
+            set
+            {
+                blockHeartBeats = value;
+                NotifyPropertyChanged(nameof(BlockHeartBeats));
+            }
+        }
+
 
 
         private bool isAutoScroll;

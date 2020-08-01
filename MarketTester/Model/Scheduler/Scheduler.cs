@@ -392,11 +392,16 @@ namespace MarketTester.Model.Scheduler
                 if (PreEvaluateReplaceQuantities)
                 {
                     matcher.AddMessage(item);
-                }                
-                foreach(TagValuePair pair in extraTagValuePairs)
+                }
+                foreach (KeyValuePair<string, string> itemPair in item.GetExtraTagValuePairsDic())
+                {
+                    m.SetGenericField(int.Parse(itemPair.Key, CultureInfo.InvariantCulture), itemPair.Value);
+                }
+                foreach (TagValuePair pair in extraTagValuePairs)
                 {
                     m.SetGenericField(int.Parse(pair.Tag, CultureInfo.InvariantCulture), pair.Value);
                 }
+                
                 Message msgString = engine.PrepareMessage(m);
                 CurrentScheduleClOrdIDs.Add(m.GetClOrdID());
                 //add non protocol order ids to current ones exclude main order

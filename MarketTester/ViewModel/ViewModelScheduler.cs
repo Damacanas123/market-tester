@@ -436,6 +436,17 @@ namespace MarketTester.ViewModel
             }
         }
 
+        private bool extraTagValuesOnSingleMessage;
+
+        public bool ExtraTagValuesOnSingleMessage
+        {
+            get { return extraTagValuesOnSingleMessage; }
+            set
+            {
+                extraTagValuesOnSingleMessage = value;
+                NotifyPropertyChanged(nameof(ExtraTagValuesOnSingleMessage));
+            }
+        }
 
 
         public ObservableCollection<Scheduler> Schedules { get; set; } = new ObservableCollection<Scheduler>();
@@ -526,6 +537,13 @@ namespace MarketTester.ViewModel
                 SelectedChannel.Name,
                 TextDelay
                 );
+            if (ExtraTagValuesOnSingleMessage)
+            {
+                foreach(TagValuePair pair in TagValuePairs)
+                {
+                    item.AddTagValuePair(pair.Tag, pair.Value);
+                }
+            }
             SelectedSchedule.AddItem(item);
         }
 
@@ -660,13 +678,14 @@ namespace MarketTester.ViewModel
             {                
                 try
                 {
+                    List<TagValuePair> tempPairs = (ExtraTagValuesOnSingleMessage ? new List<TagValuePair>() : TagValuePairs.ToList());
                     string nonProtocolId;
                     if(!UseSelectedChannelAsDefault)
                         nonProtocolId = SelectedSchedule.PrepareSchedule(decimal.Parse(TextPriceOffset, CultureInfo.InvariantCulture),
-                        decimal.Parse(TextQuantityMultiplier, CultureInfo.InvariantCulture), TagValuePairs.ToList());
+                        decimal.Parse(TextQuantityMultiplier, CultureInfo.InvariantCulture), tempPairs.ToList());
                     else
                         nonProtocolId = SelectedSchedule.PrepareSchedule(decimal.Parse(TextPriceOffset, CultureInfo.InvariantCulture),
-                        decimal.Parse(TextQuantityMultiplier, CultureInfo.InvariantCulture), TagValuePairs.ToList(),SelectedChannel);
+                        decimal.Parse(TextQuantityMultiplier, CultureInfo.InvariantCulture), tempPairs.ToList(),SelectedChannel);
                     if (!string.IsNullOrWhiteSpace(nonProtocolId))
                     {
                         FirstOrder = Order.GetOrder(nonProtocolId);

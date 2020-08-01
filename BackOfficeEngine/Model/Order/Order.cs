@@ -331,6 +331,8 @@ namespace BackOfficeEngine.Model
                 Messages.Add(msg);
             }            
             Util.AppendStringToFile(MessagesFilePath, Util.GetLineRepr(msg));
+            // only set order state in incoming messages
+            bool isIncomingOrNew = true;
             switch (msg.GetMsgType())
             {
                 case MsgType.PendingNew:
@@ -356,8 +358,10 @@ namespace BackOfficeEngine.Model
                 case MsgType.New:
                     break;
                 case MsgType.Replace:
+                    isIncomingOrNew = false;
                     break;
                 case MsgType.Cancel:
+                    isIncomingOrNew = false;
                     break;
                 case MsgType.Reject:
                     break;
@@ -370,24 +374,28 @@ namespace BackOfficeEngine.Model
                     }
                     break;
             }
-            if (msg.IsSetLastPx())
-                LastPx = msg.GetLastPx();
-            if (msg.IsSetLastQty())
-                LastQty = msg.GetLastQty();
-            if (msg.IsSetOrdStatus())
-                OrdStatus = msg.GetOrdStatus();
-            if (msg.IsSetGenericField(QuickFix.Fields.Tags.CumQty))
-                CumulativeQty = decimal.Parse(msg.GetGenericField(QuickFix.Fields.Tags.CumQty), CultureInfo.InvariantCulture);
-            if (msg.IsSetAvgPx())
-                AvgPx = msg.GetAvgPx();
-            if (msg.IsSetOrdStatus())
-                OrdStatus = msg.GetOrdStatus();
-            if (msg.IsSetGenericField(QuickFix.Fields.Tags.LeavesQty))
-                LeavesQty = decimal.Parse(msg.GetGenericField(QuickFix.Fields.Tags.LeavesQty),CultureInfo.InvariantCulture);
-            if (msg.IsSetPrice())
-                Price = msg.GetPrice();
-            if(msg.IsSetOrderQty())
-                OrderQty = msg.GetOrderQty();
+            if (isIncomingOrNew)
+            {
+                if (msg.IsSetLastPx())
+                    LastPx = msg.GetLastPx();
+                if (msg.IsSetLastQty())
+                    LastQty = msg.GetLastQty();
+                if (msg.IsSetOrdStatus())
+                    OrdStatus = msg.GetOrdStatus();
+                if (msg.IsSetGenericField(QuickFix.Fields.Tags.CumQty))
+                    CumulativeQty = decimal.Parse(msg.GetGenericField(QuickFix.Fields.Tags.CumQty), CultureInfo.InvariantCulture);
+                if (msg.IsSetAvgPx())
+                    AvgPx = msg.GetAvgPx();
+                if (msg.IsSetOrdStatus())
+                    OrdStatus = msg.GetOrdStatus();
+                if (msg.IsSetGenericField(QuickFix.Fields.Tags.LeavesQty))
+                    LeavesQty = decimal.Parse(msg.GetGenericField(QuickFix.Fields.Tags.LeavesQty), CultureInfo.InvariantCulture);
+                if (msg.IsSetPrice())
+                    Price = msg.GetPrice();
+                if (msg.IsSetOrderQty())
+                    OrderQty = msg.GetOrderQty();
+            }
+            
             
             
             using (SQLiteHandler handler = new SQLiteHandler())

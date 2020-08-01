@@ -345,9 +345,11 @@
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="0"
                               Grid.Column="0"
-                              Grid.ColumnSpan="4"
+                              Grid.ColumnSpan="7"
                               Grid.RowSpan="2">
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
@@ -399,6 +401,11 @@
                                     Grid.Column="2"
                                     Content="{DynamicResource StringClearLog}"
                                     Command="{Binding CommandClearLog}"/>
+                            <CheckBox Grid.Row="0"
+                                      Grid.Column="2"
+                                      VerticalAlignment="Top"
+                                      IsChecked="{Binding BlockHeartBeats}"
+                                      Content="{DynamicResource StringSkipHeartbeats}"/>
                         </Grid>
                         <ListView Grid.Row="2"
                                   Grid.Column="0"

@@ -37,7 +37,7 @@
             <MenuItem Header="{DynamicResource StringSchedule}" Command="{Binding CommandScheduler}"/>
             <Separator></Separator>
             <MenuItem Header="{DynamicResource StringSniffer}" Command="{Binding CommandFixSniffer}"/>
-            <MenuItem Header="{DynamicResource StringLogConfiguration}" Command="{Binding CommandLogConfiguration}"/>
+            <MenuItem Header="{DynamicResource StringLogVisualizer}" Command="{Binding CommandLogConfiguration}"/>
         </MenuItem>
         
     </Menu>

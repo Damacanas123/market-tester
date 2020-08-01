@@ -323,6 +323,11 @@
                     Content="{DynamicResource StringClear}" 
                     Command="{Binding CommandClearTagValuePairs}"
                     ToolTip="{DynamicResource StringToolTipButtonClearTagValuePairs}"/>
+            <CheckBox Grid.Column="5"
+                      Grid.Row="9"
+                      IsChecked="{Binding ExtraTagValuesOnSingleMessage}"
+                      Content="{DynamicResource StringAddExtraTagValuesToSingleMessage}"
+                      ToolTip="{DynamicResource StringTooltipAddExtraTagValuesToSingleMessage}"/>
             <DataGrid x:Name="DataGridTagValues" ItemsSource="{Binding TagValuePairs}" BorderBrush="{DynamicResource BackgroundTernary}" 
                   Grid.Column="3" Grid.Row="8"
                   Grid.ColumnSpan="2" Grid.RowSpan="3"

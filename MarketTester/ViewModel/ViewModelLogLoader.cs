@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using BackOfficeEngine.Helper;
 using BackOfficeEngine.Model;
 using FixHelper;
@@ -12,6 +13,7 @@ using FixLogAnalyzer;
 using MarketTester.Base;
 using MarketTester.Helper;
 using MarketTester.Model.LogLoader;
+using MarketTester.Model.OrderHistoryFix;
 using MarketTester.UI.Popup;
 using Microsoft.Office.Interop.Excel;
 using QuickFix;
@@ -24,8 +26,63 @@ namespace MarketTester.ViewModel
         public ViewModelLogLoader()
         {
             CommandLoadFile = new BaseCommand(CommandLoadFileExecute, CommandLoadFileCanExecute);
+            CommandCopyToClipboardCommand = new BaseCommand(CommandCopyToClipboardCommandExecute, CommandCopyToClipboardCommandCanExecute);
+            CommandSelectMessage = new BaseCommand(CommandSelectMessageExecute, CommandSelectMessageCanExecute);
 
         }
+
+        public ObservableCollection<TagValueDescription> TagValues { get; } = new ObservableCollection<TagValueDescription>();
+
+        private string selectedMessage;
+
+        public string SelectedMessage
+        {
+            get { return selectedMessage; }
+            set
+            {
+                if (value == null)
+                {
+                    return;
+                }
+                int msgStartIndex = value.IndexOf("8=FIX");
+                if(msgStartIndex == -1)
+                {
+                    return;
+                }
+                selectedMessage = value;
+                selectedMessage = selectedMessage.Substring(msgStartIndex, selectedMessage.Length - msgStartIndex);
+                NotifyPropertyChanged(nameof(SelectedMessage));
+                
+                Dictionary<int, string> tagValuePairs = MarketTesterUtil.GetTagValuePairs(selectedMessage);
+                TagValues.Clear();
+                foreach (KeyValuePair<int, string> pair in tagValuePairs)
+                {
+                    int tag = pair.Key;
+                    string Value = pair.Value;
+                    if (tag != 9 && tag != 10)
+                    {
+                        string tagDescription = "";
+                        if (AllFixTags.GetInstance().allTagToObjectMap.TryGetValue(tag, out AllFixTags.Tag tagStruct))
+                        {
+                            tagDescription = tagStruct.Name + " - (" + tagStruct.Type + ")";
+                        }
+                        string valueDescription = "";
+                        Dictionary<string, string> valueMap = new Dictionary<string, string>();
+                        if (AllFixTags.GetInstance().msgValueMap.TryGetValue(tag, out valueMap))
+                        {
+
+                            if (valueMap.TryGetValue(Value, out valueDescription))
+                            {
+
+                            }
+                        }
+                        TagValues.Add(new TagValueDescription(tag.ToString(), Value, tagDescription, valueDescription));
+                    }
+                }
+            }
+        }
+
+
         private int tabControlSelectedIndex;
 
         public int TabControlSelectedIndex
@@ -347,6 +404,36 @@ namespace MarketTester.ViewModel
 
         
         public bool CommandLoadFileCanExecute()
+        {
+            return true;
+        }
+        #endregion
+
+        #region CommandCopyToClipboardCommand
+        public BaseCommand CommandCopyToClipboardCommand { get; set; }
+        public void CommandCopyToClipboardCommandExecute(object param)
+        {
+            string msg = param.ToString();
+            int fixMsgStartIndex = msg.IndexOf("8=FIX");
+            if(fixMsgStartIndex != -1)
+            {
+                msg = msg.Substring(fixMsgStartIndex, msg.Length - fixMsgStartIndex);
+            }
+            Clipboard.SetText(msg);
+        }
+        public bool CommandCopyToClipboardCommandCanExecute()
+        {
+            return true;
+        }
+        #endregion
+
+        #region CommandSelectMessage
+        public BaseCommand CommandSelectMessage { get; set; }
+        public void CommandSelectMessageExecute(object param)
+        {
+            SelectedMessage = param.ToString();
+        }
+        public bool CommandSelectMessageCanExecute()
         {
             return true;
         }

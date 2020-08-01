@@ -25,7 +25,7 @@ namespace BackOfficeEngine.MessageEnums
     }
     public enum MsgType
     {
-        UNKNOWN, New, Replace, Cancel, AckNew,AckReplace,AckCancel, Reject, Trade,PendingNew,PendingReplace,PendingCancel,PartialFill,Fill
+        UNKNOWN, New, Replace, Cancel, AckNew,AckReplace,AckCancel, Reject, Trade,PendingNew,PendingReplace,PendingCancel,PartialFill,Fill,ExecutionReport
     }
     public enum OrdStatus
     {
@@ -162,6 +162,10 @@ namespace BackOfficeEngine.MessageEnums
                 case QuickFix.Fields.MsgType.ORDERCANCELREQUEST:
                     return MsgType.Cancel;
                 case QuickFix.Fields.MsgType.EXECUTIONREPORT:
+                    if(execType == null)
+                    {
+                        return MsgType.ExecutionReport;
+                    }
                     switch (execType[0])
                     {
                         case ExecType.NEW:

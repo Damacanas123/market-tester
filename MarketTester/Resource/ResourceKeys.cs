@@ -8,6 +8,10 @@ namespace MarketTester
 {
     public class ResourceKeys
     {
+        public const string StringSkipHeartbeats = "StringSkipHeartbeats";
+        public const string StringTooltipAddExtraTagValuesToSingleMessage = "StringTooltipAddExtraTagValuesToSingleMessage";
+        public const string StringAddExtraTagValuesToSingleMessage = "StringAddExtraTagValuesToSingleMessage";
+        public const string StringCopyMessage = "StringCopyMessage";
         public const string StringEnableDisableToolTips = "StringEnableDisableToolTips";
         public const string StringToolTipSchedulerMainOrderPanel = "StringToolTipSchedulerMainOrderPanel";
         public const string StringToolTipMainGridOrderList = "StringToolTipMainGridOrderList";
@@ -276,7 +280,7 @@ namespace MarketTester
         public const string StringMessageTypes = "StringMessageTypes";
         public const string StringTagValuePairs = "StringTagValuePairs";
         public const string StringStartedReadingFixLog = "StringStartedReadingFixLog";
-        public const string StringLogConfiguration = "StringLogConfiguration";
+        public const string StringLogVisualizer = "StringLogVisualizer";
         public const string StringPutQInTheBeginning = "StringPutQInTheBeginning";
         public const string StringLoadFixLog = "StringLoadFixLog";
         public const string StringMessageLines = "StringMessageLines";

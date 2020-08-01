@@ -2,6 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
+    <system:String x:Key="StringSkipHeartbeats">Hearbeatleri gösterme</system:String>
+    <system:String x:Key="StringAddExtraTagValuesToSingleMessage">Bir mesaja ekle</system:String>
+    <system:String x:Key="StringTooltipAddExtraTagValuesToSingleMessage">Bir mesaha ekstra etiket-değer ikilisi koymak için işaretleyin. Eğer işaretlemezseniz etiket-değer ikilileri bütün mesajlara eklenecektir.</system:String>
+    <system:String x:Key="StringCopyMessage">Mesajı kopyala</system:String>
     <system:String x:Key="StringEnableDisableToolTips">İpuçlarını aktive/deaktive et</system:String>
     <system:String x:Key="StringToolTipSchedulerMainOrderPanel">Planlayıcıdaki ilk emrin aktif durumunu buradan izleyin.</system:String>
     <system:String x:Key="StringToolTipMainGridOrderList">Emir girişten veya serbest format olmayan planlayıcıdan gönderilen emirleri burada görebilirsiniz. Bir emrri dğeiştirmek için çift tıklayın, iptal etmek için çarpı işaretine çift tıklayın, emirle ilgili detayları görmek için kağıda çift tıklayın.</system:String>
@@ -307,7 +311,7 @@
     <system:String x:Key="StringMessageTypes">Mesaj Tipleri</system:String>
     <system:String x:Key="StringTagValuePairs">Etiket-Değer ikilileri</system:String>
     <system:String x:Key="StringStartedReadingFixLog">Fix logu okunmaya başlandı.</system:String>
-    <system:String x:Key="StringLogConfiguration">Log Konfigürasyon Görselleştirme</system:String>
+    <system:String x:Key="StringLogVisualizer">Log Görselleştirme</system:String>
     <system:String x:Key="StringPutQInTheBeginning">ClOrdIDlerin başına Q- koy</system:String>
     <system:String x:Key="StringLoadFixLog">Fix logu yükle</system:String>
     <system:String x:Key="StringMessageLines">Mesaj Satırları</system:String>
