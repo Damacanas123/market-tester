@@ -55,7 +55,9 @@ namespace BackOfficeEngine.Bootstrap
                 if (!File.Exists(path))
                 {
                     FileStream f = File.Create(path);
-                    f.Write(new byte[] { (byte)'1' }, 0, 1);
+                    string content = Util.GetTodayString() + Environment.NewLine + "1" + Environment.NewLine;
+                    byte[] bytes = Util.UTF8.GetBytes(content);
+                    f.Write(bytes, 0, bytes.Length);
                     f.Dispose();
                 }
             }

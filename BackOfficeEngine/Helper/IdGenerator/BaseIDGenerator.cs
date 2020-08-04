@@ -5,14 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Globalization;
-
+using System.Threading;
 
 namespace BackOfficeEngine.Helper.IdGenerator
 {
-    internal abstract class BaseIDGenerator<T> where T : BaseIDGenerator<T>,new ()
+    internal abstract class BaseIDGenerator<T> where T : BaseIDGenerator<T>, new()
     {
         protected abstract object fileLock { get; set; }
         protected abstract string filePath { get; set; }
+        private int LastDumpedSeqNum {get;set;}
+        private int CurrentSeqNum { get; set; }
+        private bool IsInitialized { get; set; } = false;
+        private static UTF8Encoding encoder = Util.UTF8;
+        private string CurrentWorkingDay = Util.GetTodayString();
 
         private static readonly T _instance = new T();
         public static T Instance
@@ -22,30 +27,73 @@ namespace BackOfficeEngine.Helper.IdGenerator
                 return _instance;
             }
         }
+
         public string GetNextId()
         {
-            string clOrdID;
             lock (fileLock)
             {
-                int seqnum = -1;
-                using (FileStream fs = File.OpenRead(filePath))
+                if (!IsInitialized)
                 {
-                    byte[] byteArray = new byte[20];
+                    Initialize();
+                }
+            }            
+            string clOrdID = Util.GetRandomString(2) + Util.GetTodayString() + CurrentSeqNum++;
+            return clOrdID;
+        }
 
-                    UTF8Encoding fileContent = new UTF8Encoding(true);
-                    while (fs.Read(byteArray, 0, byteArray.Length) > 0)
+        private void Initialize()
+        {
+            string date = Util.GetTodayString();
+            string seqNum = "1";
+            using (FileStream fs = File.OpenRead(filePath))
+            {
+                byte[] byteArray = new byte[50];                
+                if (fs.Read(byteArray, 0, byteArray.Length) > 0)
+                {
+                    string content = encoder.GetString(byteArray);
+                    content = content.Replace("\0", "");
+                    if (content.Contains(Environment.NewLine))
                     {
-                        seqnum = Int32.Parse(fileContent.GetString(byteArray), CultureInfo.CurrentCulture);
+                        string[] arr = content.Split(new string[] { Environment.NewLine },StringSplitOptions.RemoveEmptyEntries);
+                        if(arr.Length == 2)
+                        {
+                            if (string.Compare(arr[0], Util.GetTodayString(), StringComparison.OrdinalIgnoreCase) >= 0)
+                            {
+                                date = arr[0];
+                                seqNum = arr[1];
+                            }
+                        }
+                        
+                    }
+                }                
+            }
+            using (StreamWriter sw = new StreamWriter(filePath))
+            {
+                sw.WriteLine(date);
+                sw.WriteLine(seqNum);
+            }
+            LastDumpedSeqNum = Int32.Parse(seqNum, CultureInfo.InvariantCulture);
+            CurrentSeqNum = LastDumpedSeqNum;
+            Util.ThreadStart(() =>
+            {
+                while (true)
+                {
+                    if(LastDumpedSeqNum < CurrentSeqNum)
+                    {
+                        using (StreamWriter sw = new StreamWriter(filePath))
+                        {   
+                            sw.WriteLine(CurrentWorkingDay);
+                            sw.WriteLine(CurrentSeqNum.ToString(CultureInfo.InvariantCulture));
+                        }
+                        LastDumpedSeqNum = CurrentSeqNum;
+                    }
+                    else
+                    {
+                        Thread.Sleep(2000);
                     }
                 }
-                clOrdID = Util.GetRandomString(2) + Util.GetTodayString() + seqnum;
-                seqnum++;
-                using (StreamWriter sw = new StreamWriter(filePath))
-                {
-                    sw.WriteLine(seqnum.ToString());
-                }
-            }
-            return clOrdID;
+            });
+            IsInitialized = true;
         }
     }
 }

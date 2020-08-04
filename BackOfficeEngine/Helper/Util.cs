@@ -41,6 +41,8 @@ namespace BackOfficeEngine.Helper
         public static string DEBUG_FILE_PATH = APPLICATION_COMMON_DIR + "debug.log";
         public static string APPLICATIONLOG_FILE_PATH = APPLICATION_COMMON_DIR + "application.log";
         public static string DateFormatMicrosecondPrecision = "yyyyMMdd-HH:mm:ss.ffffff";
+        public static string DateFormatYearMonthDay = "yyyyMMdd";
+        public static UTF8Encoding UTF8 = new UTF8Encoding(true);
 
         public static void LogError(Exception ex)
         {
@@ -187,23 +189,7 @@ namespace BackOfficeEngine.Helper
 
         public static string GetTodayString()
         {
-            DateTime today = DateTime.Today;
-            string year = today.Year.ToString(CultureInfo.CurrentCulture);
-            string month = today.Month.ToString(CultureInfo.CurrentCulture);
-            string day = today.Day.ToString(CultureInfo.CurrentCulture);
-            for (int i = 0; i < 4 - year.Length; i++)
-            {
-                year = "0" + year;
-            }
-            for (int i = 0; i < 2 - month.Length; i++)
-            {
-                month = "0" + month;
-            }
-            for (int i = 0; i < 2 - day.Length; i++)
-            {
-                day = "0" + day;
-            }
-            return year + month + day;
+            return DateTime.Now.ToString(DateFormatYearMonthDay, CultureInfo.InvariantCulture);
         }
 
 

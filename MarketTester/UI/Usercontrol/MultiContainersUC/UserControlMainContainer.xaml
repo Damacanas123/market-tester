@@ -59,11 +59,11 @@
                                                   Grid.Column="0"
                                                   Grid.ColumnSpan="4"
                                                   />
-        <CheckBox IsChecked="{Binding UseQAtTheBeginning}"
+        <!--<CheckBox IsChecked="{Binding UseQAtTheBeginning}"
                   Content="{DynamicResource StringPutQInTheBeginning}"
                   Grid.Column="4"
                   Grid.Row="3"
-                  Grid.ColumnSpan="2"/>
+                  Grid.ColumnSpan="2"/>-->
 
     </Grid>
 </UserControl>

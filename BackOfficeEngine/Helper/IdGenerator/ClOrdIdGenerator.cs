@@ -27,6 +27,8 @@ namespace BackOfficeEngine.Helper.IdGenerator
 
         public new string GetNextId()
         {
+
+            //an old requirement for mtxr. In future it may start to be used again. Checkbox on main page is commented out.
             if (PutQInTheBeginning)
                 return "Q-" + base.GetNextId();
             else
