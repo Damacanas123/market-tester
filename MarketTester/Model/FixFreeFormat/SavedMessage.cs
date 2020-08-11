@@ -77,5 +77,10 @@ namespace MarketTester.Model.FixFreeFormat
         {
             return TagValuePairs;
         }
+
+        public void ClearTagValuePairs()
+        {
+            TagValuePairs.Clear();
+        }
     }
 }

@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace BackOfficeEngine.Helper.IdGenerator
 {
-    internal abstract class BaseIDGenerator<T> where T : BaseIDGenerator<T>, new()
+    public abstract class BaseIDGenerator<T> where T : BaseIDGenerator<T>, new()
     {
         protected abstract object fileLock { get; set; }
         protected abstract string filePath { get; set; }

@@ -282,7 +282,6 @@
         <ListView Grid.Row="3"
                                   Grid.Column="0"
                                   Grid.ColumnSpan="7"
-                                  Grid.RowSpan="10"
                                   ItemsSource="{Binding LogMessages}"
                                   x:Name="ListViewLog"
                                   >

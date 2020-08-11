@@ -61,6 +61,7 @@ namespace FixHelper
         public Dictionary<int, Tag> headerTagToObjectMap;
         public Dictionary<int, Tag> allTagToObjectMap = new Dictionary<int, Tag>();
         public Dictionary<int,Dictionary<string,string>> msgValueMap;
+        public HashSet<int> AllHeaderTags = new HashSet<int>();
 
         public static AllFixTags GetInstance()
         {
@@ -1752,6 +1753,7 @@ namespace FixHelper
             headerTagToObjectMap[1156] = new Tag(1156,"ApplExtID","int");
             foreach(KeyValuePair<int,Tag> pair in headerTagToObjectMap)
             {
+                AllHeaderTags.Add(pair.Key);
                 allTagToObjectMap[pair.Value.TagNum] = pair.Value;
             }
             msgValueMap = new Dictionary<int, Dictionary<string, string>>();

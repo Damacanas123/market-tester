@@ -15,6 +15,9 @@ namespace BackOfficeEngine.Helper.IdGenerator
         protected override object fileLock { get; set; }
         protected override string filePath { get; set; }
 
+        /// <summary>
+        /// do not call this constructor directly. Use GetInstanceMethod to get the instance of generator
+        /// </summary>
         public NonProtocolIDGenerator()
         {
             fileLock = new object();

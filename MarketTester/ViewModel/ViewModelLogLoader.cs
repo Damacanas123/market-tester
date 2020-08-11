@@ -323,7 +323,7 @@ namespace MarketTester.ViewModel
         public BaseCommand CommandLoadFile { get; set; }
         public void CommandLoadFileExecute(object param)
         {
-            string filePath = UIUtil.OpenFileDialog(new string[] { }, Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+            string filePath = UIUtil.OpenFileDialog(new string[] { });
             if (!string.IsNullOrWhiteSpace(filePath))
             {
                 if (!File.Exists(filePath))
@@ -361,6 +361,7 @@ namespace MarketTester.ViewModel
                                 string clOrdID = logMessage.GetField(QuickFix.Fields.Tags.ClOrdID);
                                 if (!string.IsNullOrWhiteSpace(clOrdID))
                                 {
+                                    
                                     if (!ClOrdIDMap.TryGetValue(clOrdID, out RequestResponses rr))
                                     {
                                         rr = new RequestResponses();

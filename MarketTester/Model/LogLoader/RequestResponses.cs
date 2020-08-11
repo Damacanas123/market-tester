@@ -53,6 +53,10 @@ namespace MarketTester.Model.LogLoader
                         {
                             inList.OccurrenceNum++;
                             inList.OccurenceLines.Add((Request.LineNum, msg.LineNum));
+                            if (msg.GetField(Tags.ClOrdID) == "4m9VGASFfJ1")
+                            {
+
+                            }
                         }
                             
                     }

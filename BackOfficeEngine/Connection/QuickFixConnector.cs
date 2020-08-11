@@ -30,6 +30,9 @@ namespace BackOfficeEngine.Connection
         private const string SessionQualifierDC2 = "DC2";
         private ConcurrentQueue<(string,SessionID,DateTime)> m_messageQueue = new ConcurrentQueue<(string, SessionID, DateTime)>();
         private BISTCredentialParams CredentialParams { get; set; }
+        private SessionSettings SessionSettings { get; set; }
+        private const string USERNAME = "Username";
+        private const string PASSWORD = "Password";
 
         public List<IConnectorSubscriber> subscribers { get; }
         public string Name { get; set; }
@@ -109,6 +112,7 @@ namespace BackOfficeEngine.Connection
         void IConnector.ConfigureConnection(string configFilePath)
         {
             QuickFix.SessionSettings settings = new QuickFix.SessionSettings(configFilePath);
+            SessionSettings = settings;
             QuickFix.FileStoreFactory storeFactory = new QuickFix.FileStoreFactory(settings);
             QuickFix.FileLogFactory logFactory = new QuickFix.FileLogFactory(settings);
             m_initiator = new QuickFix.Transport.SocketInitiator(this, storeFactory, settings, logFactory);
@@ -211,10 +215,22 @@ namespace BackOfficeEngine.Connection
         void IApplication.ToAdmin(Message message, SessionID sessionID)
         {
             
-            if(message.Header.GetField(Tags.MsgType) == MsgType.LOGON && CredentialParams != null)
+            if(message.Header.GetField(Tags.MsgType) == MsgType.LOGON)
             {
-                message.SetField(new Username(CredentialParams.Username));
-                message.SetField(new Password(CredentialParams.Password));
+                Dictionary sessionDic = SessionSettings.Get(sessionID);
+                try
+                {
+                    string username = sessionDic.GetString(USERNAME);
+                    string password = sessionDic.GetString(PASSWORD);
+                    message.SetField(new Username(username));
+                    message.SetField(new Password(password));
+                }
+                catch
+                {
+                    //sessionDic.GetString throws an exception if it can't find the key 
+                    //in this case do nothing
+                }
+                
             }
             if (message.Header.GetField(Tags.MsgType) == MsgType.REJECT)
             {
@@ -325,6 +341,7 @@ namespace BackOfficeEngine.Connection
 
         public void SendMsgOrderEntry(string msg,bool overrideSessionTags)
         {
+            Message quickFixMsg = new Message(msg);
             if (m_symbolMap.TryGetValue(Fix.GetTag(msg, "55"), out Session session))
             {
 
@@ -335,15 +352,22 @@ namespace BackOfficeEngine.Connection
             }
             if (overrideSessionTags)
             {
-                Message quickFixMsg = new Message(msg);
                 quickFixMsg.SetField(new TransactTime(DateTime.Now));
                 session?.Send(quickFixMsg);
             }
             else
             {
-                session?.Send(msg);
-                //if you are sending string directly they do not fall into ToApp callback.That's why you need to enqueue manually
-                m_messageQueue.Enqueue((msg, session.SessionID,DateTime.Now));
+                
+                List<int> tags = Util.GetAllTagsOfAMessage(msg);
+                Dictionary<int, string> overrideTags = new Dictionary<int, string>();
+                foreach (int tag in tags)
+                {
+                    if (FixHelper.AllFixTags.GetInstance().AllHeaderTags.Contains(tag))
+                    {
+                        overrideTags[tag] = quickFixMsg.Header.GetField(tag);
+                    }
+                }
+                session?.SendWithOverridenHeader(quickFixMsg,overrideTags);
             }
         }
 

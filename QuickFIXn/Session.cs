@@ -370,6 +370,8 @@ namespace QuickFix
             return SendRaw(message, 0);
         }
 
+        
+
         /// <summary>
         /// Sends a message
         /// </summary>
@@ -1716,6 +1718,60 @@ namespace QuickFix
                 return Send(messageString);
             }
         }
+        #region barkýn's edit
+        public virtual bool SendWithOverridenHeader(Message message, Dictionary<int, string> overridingHeaderTags)
+        {
+            message.Header.RemoveField(Fields.Tags.PossDupFlag);
+            message.Header.RemoveField(Fields.Tags.OrigSendingTime);
+            return SendWithOverridenHeaderPrivate(message, 0, overridingHeaderTags);
+        }
+        private bool SendWithOverridenHeaderPrivate(Message message,int seqNum,Dictionary<int,string> overridingHeaderTags)
+        {
+            lock (sync_)
+            {
+                string msgType = message.Header.GetString(Fields.Tags.MsgType);
+
+                InitializeHeader(message, seqNum);
+                foreach(KeyValuePair<int,string> pair in overridingHeaderTags)
+                {
+                    message.Header.SetField(new StringField(pair.Key, pair.Value));
+                }
+                if (Message.IsAdminMsgType(msgType))
+                {
+                    this.Application.ToAdmin(message, this.SessionID);
+
+                    if (MsgType.LOGON.Equals(msgType) && !state_.ReceivedReset)
+                    {
+                        Fields.ResetSeqNumFlag resetSeqNumFlag = new QuickFix.Fields.ResetSeqNumFlag(false);
+                        if (message.IsSetField(resetSeqNumFlag))
+                            message.GetField(resetSeqNumFlag);
+                        if (resetSeqNumFlag.getValue())
+                        {
+                            state_.Reset("ResetSeqNumFlag");
+                            message.Header.SetField(new Fields.MsgSeqNum(state_.GetNextSenderMsgSeqNum()));
+                        }
+                        state_.SentReset = resetSeqNumFlag.Obj;
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        this.Application.ToApp(message, this.SessionID);
+                    }
+                    catch (DoNotSend)
+                    {
+                        return false;
+                    }
+                }
+
+                string messageString = message.ToString();
+                if (0 == seqNum)
+                    Persist(message, messageString);
+                return Send(messageString);
+            }
+        }
+        #endregion
 
         public void Dispose()
         {

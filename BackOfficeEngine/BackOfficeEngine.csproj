@@ -58,9 +58,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FixHelper">
-      <HintPath>..\..\..\..\..\..\MATRIKS_OMS\.NET dependencies\FixHelper.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SQLite, Version=1.0.112.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
@@ -175,6 +172,10 @@
     <ProjectReference Include="..\FIX50\QuickFix.FIX50.csproj">
       <Project>{4c23eba5-04da-4293-b696-21230f4b83cf}</Project>
       <Name>QuickFix.FIX50</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FixHelper\FixHelper.csproj">
+      <Project>{8e3bd2eb-f21a-425b-b8f9-467f1f609f3f}</Project>
+      <Name>FixHelper</Name>
     </ProjectReference>
     <ProjectReference Include="..\QuickFIXn\QuickFix.csproj">
       <Project>{77fda7bf-22af-4a74-acd0-dfe1b96cb363}</Project>

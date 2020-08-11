@@ -24,6 +24,7 @@ using System.Windows;
 using MarketTester.Connection;
 using BackOfficeEngine.Events;
 using BackOfficeEngine.Model;
+using BackOfficeEngine.Helper.IdGenerator;
 
 namespace MarketTester.ViewModel
 {
@@ -283,7 +284,9 @@ namespace MarketTester.ViewModel
                     {
                         TagValuePairs.Add(new TagValuePair(pair));
                     }
-                }                
+                    SavedMessageName = selectedSavedMessage.Name;
+                }
+                
                 NotifyPropertyChanged(nameof(SelectedSavedMessage));
             }
         }
@@ -357,7 +360,22 @@ namespace MarketTester.ViewModel
                 NotifyPropertyChanged(nameof(TextDelay));
             }
         }
+        private string lastUsedClOrdID;
 
+        public string LastUsedClOrdID
+        {
+            get { return lastUsedClOrdID; }
+            set
+            {
+                lastUsedClOrdID = value;
+                NotifyPropertyChanged(nameof(LastUsedClOrdID));
+            }
+        }
+
+        private static string ClOrdIDTag { get; set; } = "11";
+        private static string OrigClOrdIDTag { get; set; } = "41";
+        private static string ClOrdIDAutoIncrementCard { get; set; } = "$ClOrdID";
+        private static string OrigClOrdIDAutoIncrementCard { get; set; } = "$OrigClOrdID";
         public int SelectedTagValuePairIndex { get; set; }
         public string Message
         {
@@ -369,7 +387,21 @@ namespace MarketTester.ViewModel
                 {
                     if (pair.IsSelected)
                     {
-                        tagValuesArr.Add((pair.Tag, pair.Value));
+                        if(pair.Tag == ClOrdIDTag && pair.Value == ClOrdIDAutoIncrementCard)
+                        {
+                            string clOrdID = ClOrdIdGenerator.Instance.GetNextId();
+                            LastUsedClOrdID = clOrdID;
+                            tagValuesArr.Add((pair.Tag,clOrdID));
+                        }
+                        else if (pair.Tag == OrigClOrdIDTag && pair.Value == OrigClOrdIDAutoIncrementCard)
+                        {
+                            tagValuesArr.Add((pair.Tag, LastUsedClOrdID));
+                        }
+                        else
+                        {
+                            tagValuesArr.Add((pair.Tag, pair.Value));
+                        }
+                        
                     }                    
                 }
                 return Fix.GetFixString(ProtocolType,tagValuesArr);
@@ -816,13 +848,26 @@ namespace MarketTester.ViewModel
                 InfoTextResourceKey = ResourceKeys.StringNoTagValuePairSet;
                 return;
             }
-            SavedMessage m = new SavedMessage();
-            m.Name = SavedMessageName;
-            foreach(TagValuePair pair in TagValuePairs)
+            SavedMessage alreadySaved = SavedMessage.SavedMessages.FirstOrDefault((o) => o.Name == SavedMessageName);
+            if(alreadySaved != null)
             {
-                m.AddTagValuePair(new TagValuePair(pair));
+                alreadySaved.ClearTagValuePairs();
+                foreach (TagValuePair pair in TagValuePairs)
+                {
+                    alreadySaved.AddTagValuePair(new TagValuePair(pair));
+                }
             }
-            SavedMessage.SavedMessages.Add(m);
+            else
+            {
+                SavedMessage m = new SavedMessage();
+                m.Name = SavedMessageName;
+                foreach (TagValuePair pair in TagValuePairs)
+                {
+                    m.AddTagValuePair(new TagValuePair(pair));
+                }
+                SavedMessage.SavedMessages.Add(m);
+            }
+            
             SavedMessage.Save();
         }
         public bool CommandAddMessageSavedMessagesCanExecute()

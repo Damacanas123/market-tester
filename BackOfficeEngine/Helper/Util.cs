@@ -40,6 +40,8 @@ namespace BackOfficeEngine.Helper
         public static string DEBUG_EXCEPTIONLOG_FILE_PATH = APPLICATION_COMMON_DIR + "debug_exception.log";
         public static string DEBUG_FILE_PATH = APPLICATION_COMMON_DIR + "debug.log";
         public static string APPLICATIONLOG_FILE_PATH = APPLICATION_COMMON_DIR + "application.log";
+        public static string SPECIAL_DIR = APPLICATION_COMMON_DIR + "intsys" + FILE_PATH_DELIMITER;
+        public static string DYNAMIC_SETTINGS_FILE_PATH = SPECIAL_DIR + "dyn_sets.cfg";
         public static string DateFormatMicrosecondPrecision = "yyyyMMdd-HH:mm:ss.ffffff";
         public static string DateFormatYearMonthDay = "yyyyMMdd";
         public static UTF8Encoding UTF8 = new UTF8Encoding(true);
@@ -282,14 +284,18 @@ namespace BackOfficeEngine.Helper
         }
 
 
-
+        static string pattern = @"(?<=\x01).*?(?==)";
+        static Regex tagPatternRgx = new Regex(pattern);
         public static List<int> GetAllTagsOfAMessage(Message m)
         {
-            string pattern = @"(?<=\x01).*?(?==)";
-            Regex rgx = new Regex(pattern);
+
+            return GetAllTagsOfAMessage(m.ToString());
+        }
+
+        public static List<int> GetAllTagsOfAMessage(string msg)
+        {
             List<int> tags = new List<int>();
-            string msgS = m.ToString();
-            foreach (Match match in rgx.Matches(m.ToString()))
+            foreach (Match match in tagPatternRgx.Matches(msg.ToString()))
             {
                 try
                 {
@@ -297,7 +303,7 @@ namespace BackOfficeEngine.Helper
                 }
                 catch
                 {
-                    Util.Debug($"Couldn't parse tag {match.Value} in {Environment.NewLine}{msgS}");
+                    Util.Debug($"Couldn't parse tag {match.Value} in {Environment.NewLine}{msg}");
                 }
             }
             return tags;
@@ -583,6 +589,21 @@ namespace BackOfficeEngine.Helper
             }
             return temp;
         }
+
+        //public static void ReadBasicConfigFile(string filePath,out Dictionary<string,string> keyValueMap)
+        //{
+        //    if (File.Exists(filePath))
+        //    {
+        //        foreach(string line in File.ReadLines(filePath))
+        //        {
+        //            if (line.Contains("="))
+        //            {
+        //                string[] keyValue = line.Split('=');
+
+        //            }
+        //        }
+        //    }
+        //}
 
     }
 }

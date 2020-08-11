@@ -59,5 +59,16 @@ namespace MarketTester.Helper
             dialog.ShowDialog();
             return dialog.FileName;
         }
+
+        public static string OpenFileDialog(string[] filters)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            foreach (string filter in filters)
+            {
+                dialog.Filter += filter + " file|*." + filter;
+            }
+            dialog.ShowDialog();
+            return dialog.FileName;
+        }
     }
 }
