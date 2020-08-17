@@ -7,7 +7,7 @@ using BackOfficeEngine.MessageEnums;
 
 namespace BackOfficeEngine.ParamPacker
 {
-    internal class TradeParameters
+    internal struct TradeParameters
     {
         internal Side side;
         internal decimal lastShares;

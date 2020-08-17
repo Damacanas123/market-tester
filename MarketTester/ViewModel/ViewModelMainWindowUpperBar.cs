@@ -194,7 +194,7 @@ namespace MarketTester.ViewModel
         public void CommandLogConfigurationExecute(object param)
         {
             UserControlLogLoader userControlFixSniffer = new UserControlLogLoader();
-            MainWindowStarter.AddTab(userControlFixSniffer, ResourceKeys.StringLogVisualizer, true);
+            MainWindowStarter.AddTab(userControlFixSniffer, ResourceKeys.StringLogVisualizer, false);
         }
         public bool CommandLogConfigurationCanExecute()
         {

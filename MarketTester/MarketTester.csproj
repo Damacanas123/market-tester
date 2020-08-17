@@ -28,7 +28,7 @@
     <InstallUrl>\\192.168.108.42\c%24\MATRIKS_OMS\MarketTesterSetup\</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>74</ApplicationRevision>
+    <ApplicationRevision>75</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -97,9 +97,6 @@
   <ItemGroup>
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net462\ControlzEx.dll</HintPath>
-    </Reference>
-    <Reference Include="FixLogAnalyzer">
-      <HintPath>..\..\..\..\..\..\MATRIKS_OMS\.NET dependencies\FixLogAnalyzer.dll</HintPath>
     </Reference>
     <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net47\MahApps.Metro.dll</HintPath>
@@ -481,6 +478,10 @@
     <ProjectReference Include="..\FixHelper\FixHelper.csproj">
       <Project>{8e3bd2eb-f21a-425b-b8f9-467f1f609f3f}</Project>
       <Name>FixHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FixLogAnalyzer\FixLogAnalyzer.csproj">
+      <Project>{2e910105-a887-42bb-ba2c-161ff4401e9b}</Project>
+      <Name>FixLogAnalyzer</Name>
     </ProjectReference>
     <ProjectReference Include="..\QuickFIXn\QuickFix.csproj">
       <Project>{77fda7bf-22af-4a74-acd0-dfe1b96cb363}</Project>

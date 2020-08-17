@@ -148,7 +148,7 @@ namespace MarketTester.Model.Scheduler
         /// </summary>
         private void Scheduler_OnMessageEvent(object sender, BackOfficeEngine.Events.OnMessageEventArgs args)
         {
-            string clOrdID = Fix.GetTag(args.msg, Tags.ClOrdID);
+            string clOrdID = Fix.GetTag(args.msg, QuickFix.Fields.Tags.ClOrdID);
             if (CurrentScheduleClOrdIDs.Contains(clOrdID))
             {
                 if(!ScheduleGroupedMapMessages.TryGetValue(MainNonProtocolOrderId,out List<IMessage> msgs))

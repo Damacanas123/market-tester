@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using FixHelper;
 using FixLogAnalyzer;
 using MarketTester.Base;
+using QuickFix.Fields;
 
 namespace MarketTester.Model.LogLoader
 {

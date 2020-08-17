@@ -386,8 +386,6 @@ namespace BackOfficeEngine.Model
                     CumulativeQty = decimal.Parse(msg.GetGenericField(QuickFix.Fields.Tags.CumQty), CultureInfo.InvariantCulture);
                 if (msg.IsSetAvgPx())
                     AvgPx = msg.GetAvgPx();
-                if (msg.IsSetOrdStatus())
-                    OrdStatus = msg.GetOrdStatus();
                 if (msg.IsSetGenericField(QuickFix.Fields.Tags.LeavesQty))
                     LeavesQty = decimal.Parse(msg.GetGenericField(QuickFix.Fields.Tags.LeavesQty), CultureInfo.InvariantCulture);
                 if (msg.IsSetPrice())

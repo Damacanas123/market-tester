@@ -17,6 +17,7 @@ using MarketTester.Model.OrderHistoryFix;
 using MarketTester.UI.Popup;
 using Microsoft.Office.Interop.Excel;
 using QuickFix;
+using QuickFix.Fields;
 
 namespace MarketTester.ViewModel
 {
