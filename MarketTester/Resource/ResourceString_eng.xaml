@@ -3,6 +3,9 @@
                     xmlns:local="clr-namespace:MarketTester.Resource"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
+    <!-- Dont forget to add the keys to all language plus ResourceKeys.cs -->
+    <system:String x:Key="StringSettingsSymbolISINExplanation">Choose ISIN code option.</system:String>
+    
     <system:String x:Key="StringSkipHeartbeats">Skip heartbeats</system:String>
     <system:String x:Key="StringAddExtraTagValuesToSingleMessage">Add to single message</system:String>
     <system:String x:Key="StringTooltipAddExtraTagValuesToSingleMessage">Check this to add extra tag value pairs to single item. Uncheck this to enable extra tag values global overriding.</system:String>

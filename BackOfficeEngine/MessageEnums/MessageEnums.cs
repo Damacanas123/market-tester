@@ -21,7 +21,7 @@ namespace BackOfficeEngine.MessageEnums
     }
     public enum Side
     {
-        UNKNOWN, Buy,Sell
+        UNKNOWN, Buy,Sell,SellShort
     }
     public enum MsgType
     {
@@ -131,6 +131,8 @@ namespace BackOfficeEngine.MessageEnums
                     return Side.Buy;
                 case QuickFix.Fields.Side.SELL:
                     return Side.Sell;
+                case QuickFix.Fields.Side.SELL_SHORT:
+                    return Side.SellShort;
                 default:
                     return Side.UNKNOWN;
             }
@@ -143,6 +145,8 @@ namespace BackOfficeEngine.MessageEnums
                     return QuickFix.Fields.Side.BUY;
                 case Side.Sell:
                     return QuickFix.Fields.Side.SELL;
+                case Side.SellShort:
+                    return QuickFix.Fields.Side.SELL_SHORT;
                 default:
                     return 'U'; // U for Side.UNKNOWN
             }

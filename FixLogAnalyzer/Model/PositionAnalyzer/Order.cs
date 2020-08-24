@@ -6,29 +6,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using QuickFix.Fields;
+using FixHelper;
 
-namespace FixLogAnalyzer.Model.PositionAnalyzer
+namespace FixLogAnalyzer.Model
 {
     internal class Order
     {
+        internal static string INITIAL_PENDING = "Initial Pending";
         private List<FixMessage> Messages { get; set; } = new List<FixMessage>();
         /// <summary>
         /// Collection of faulty messages along with explanations
         /// </summary>
-        private List<(FixMessage,string)> FaultyMessages { get; set; } = new List<(FixMessage, string)>();
+        
 
         /// <summary>
         /// This collection stores non responded NewOrder,Replace and Cancel requests. Key is ClOrdID
         /// </summary>
-        private Dictionary<string, FixMessage> UnhandledRequests { get; set; } = new Dictionary<string, FixMessage>();
+        
 
-        internal Order(FixMessage msg)
-        {
-            if(msg.GetField(Tags.MsgType) != "D")
-            {
-                throw new OrderBadInitialization("The message is not a NewOrderSingle");
-            }
-
+        internal Order()
+        {            
+            OrdStatus = INITIAL_PENDING;
         }
 
         private string lastPx;
@@ -113,26 +111,15 @@ namespace FixLogAnalyzer.Model.PositionAnalyzer
 
         internal void AddMessage(FixMessage msg)
         {
+            Messages.Add(msg);
             bool isIncomingOrNew = true;
             string msgType = msg.GetField(Tags.MsgType);
-            if (msgType == null)
-            {
-                FaultyMessages.Add((msg, "Message type not set"));
-                return;
-            }
+            
             if(msgType == MsgType.ORDERCANCELREPLACEREQUEST || msgType == MsgType.ORDERCANCELREQUEST)
             {
                 isIncomingOrNew = false;
             }
-            string clOrdID = msg.GetField(Tags.ClOrdID);
-            if(msgType == MsgType.NEWORDERSINGLE || msgType == MsgType.ORDERCANCELREQUEST || msgType == MsgType.ORDERCANCELREPLACEREQUEST)
-            {
-                if(clOrdID == null)
-                {
-                    FaultyMessages.Add((msg, "ClOrdID not set"));
-                }
-                UnhandledRequests[clOrdID] = msg;
-            }
+            
             
             if (isIncomingOrNew)
             {
@@ -156,17 +143,26 @@ namespace FixLogAnalyzer.Model.PositionAnalyzer
                 {
                     CumulativeQty = value;
                 }
-
-                //if (msg.IsSetGenericField(QuickFix.Fields.Tags.CumQty))
-                //    CumulativeQty = decimal.Parse(msg.GetGenericField(QuickFix.Fields.Tags.CumQty), CultureInfo.InvariantCulture);
-                //if (msg.IsSetAvgPx())
-                //    AvgPx = msg.GetAvgPx();
-                //if (msg.IsSetGenericField(QuickFix.Fields.Tags.LeavesQty))
-                //    LeavesQty = decimal.Parse(msg.GetGenericField(QuickFix.Fields.Tags.LeavesQty), CultureInfo.InvariantCulture);
-                //if (msg.IsSetPrice())
-                //    Price = msg.GetPrice();
-                //if (msg.IsSetOrderQty())
-                //    OrderQty = msg.GetOrderQty();
+                value = msg.GetField(Tags.AvgPx);
+                if (value != null)
+                {
+                    AvgPx = value;
+                }
+                value = msg.GetField(Tags.LeavesQty);
+                if (value != null)
+                {
+                    LeavesQty = value;
+                }
+                value = msg.GetField(Tags.Price);
+                if (value != null)
+                {
+                    Price = value;
+                }
+                value = msg.GetField(Tags.OrderQty);
+                if (value != null)
+                {
+                    OrderQty = value;
+                }
             }
         }
 

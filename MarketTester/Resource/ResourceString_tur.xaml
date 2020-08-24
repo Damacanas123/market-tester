@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
+    <system:String x:Key="StringSettingsSymbolISINExplanation">Choose ISIN code option.</system:String>
     <system:String x:Key="StringSkipHeartbeats">Hearbeatleri gösterme</system:String>
     <system:String x:Key="StringAddExtraTagValuesToSingleMessage">Bir mesaja ekle</system:String>
     <system:String x:Key="StringTooltipAddExtraTagValuesToSingleMessage">Bir mesaha ekstra etiket-değer ikilisi koymak için işaretleyin. Eğer işaretlemezseniz etiket-değer ikilileri bütün mesajlara eklenecektir.</system:String>

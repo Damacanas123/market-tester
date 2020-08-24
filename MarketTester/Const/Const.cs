@@ -12,6 +12,7 @@ namespace MarketTester
     {
         public const string ResourceColorBuy = "ColorBuy";
         public const string ResourceColorSell = "ColorSell";
+        public const string ResourceColorSellShort = "ColorSellShort";
 
         public const string ResourceNameRadioButtonLimit = "NameRadioButtonLimit";
         public const string ResourceNameRadioButtonMarket = "NameRadioButtonMarket";

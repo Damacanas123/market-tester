@@ -53,6 +53,7 @@
     <Compile Include="Analyzers\TimeDiffAnalyzer.cs" />
     <Compile Include="Interface\IFixLineParser.cs" />
     <Compile Include="Model\PositionAnalyzer\Account.cs" />
+    <Compile Include="Model\PositionAnalyzer\InfoMessages.cs" />
     <Compile Include="Model\PositionAnalyzer\Position.cs" />
     <Compile Include="Model\PositionAnalyzer\Order.cs" />
     <Compile Include="Model\PositionAnalyzer\Symbol.cs" />
@@ -60,6 +61,10 @@
     <Compile Include="Helper\Util.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FixHelper\FixHelper.csproj">
+      <Project>{8E3BD2EB-F21A-425B-B8F9-467F1F609F3F}</Project>
+      <Name>FixHelper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\QuickFIXn\QuickFix.csproj">
       <Project>{77fda7bf-22af-4a74-acd0-dfe1b96cb363}</Project>
       <Name>QuickFix</Name>

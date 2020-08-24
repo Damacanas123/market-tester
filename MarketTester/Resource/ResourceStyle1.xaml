@@ -11,6 +11,7 @@
 
     <SolidColorBrush x:Key="ColorBuy">#35af71</SolidColorBrush>
     <SolidColorBrush x:Key="ColorSell">#bd0303</SolidColorBrush>
+    <SolidColorBrush x:Key="ColorSellShort">#1e90ff</SolidColorBrush>
     <sys:Double x:Key="OrderEntryMargin">10</sys:Double>
     <sys:Double x:Key="OrderEntryWidth">220</sys:Double>
     <sys:Double x:Key="OrderEntryHeight">90</sys:Double>

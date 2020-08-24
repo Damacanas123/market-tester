@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Globalization;
 using System;
 using System.Windows.Controls;
@@ -48,6 +49,8 @@ namespace MarketTester.ViewModel
         private Brush sideColor;
         public Brush SideColor { get => sideColor; set { sideColor = value; NotifyPropertyChanged(nameof(SideColor)); } }
 
+        private List<Side> AvailableSides = new List<Side>();
+
         private Side side;
         public Side Side { 
             get => side; 
@@ -62,6 +65,9 @@ namespace MarketTester.ViewModel
                         break;
                     case Side.Sell:
                         SideColor = (SolidColorBrush)Application.Current.Resources[Const.ResourceColorSell];
+                        break;
+                    case Side.SellShort:
+                        SideColor = (SolidColorBrush)Application.Current.Resources[Const.ResourceColorSellShort];
                         break;
                 }                    
             } 
@@ -147,14 +153,15 @@ namespace MarketTester.ViewModel
         public ICommand CommandSwitchSide { get; set; }
         private void CommandSwitchSideExecute(object param)
         {
-            if(Side == Side.Buy)
+            int currentSideIndex = AvailableSides.IndexOf(Side);
+            if(currentSideIndex == -1)
             {
-                Side = Side.Sell;
+                Side = AvailableSides[0];
             }
             else
             {
-                Side = Side.Buy;
-            }  
+                Side = AvailableSides[(currentSideIndex + 1) % AvailableSides.Count];
+            }
         }
         private bool CommandSwitchSideCanExecute()
         {
@@ -210,6 +217,13 @@ namespace MarketTester.ViewModel
             Connection.Connector.ActiveChannels.CollectionChanged += OnActiveChannelsCollectionChanged;
             SetDefault();
             Settings.GetInstance().LanguageChangedEventHandler += OnLanguageChanged;
+            foreach(Side side in Enum.GetValues(Side.GetType()))
+            {
+                if(side != Side.UNKNOWN)
+                {
+                    AvailableSides.Add(side);
+                }                
+            }
         }
 
         private void SetDefault()
