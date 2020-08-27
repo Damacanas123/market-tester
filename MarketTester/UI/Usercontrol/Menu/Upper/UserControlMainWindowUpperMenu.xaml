@@ -22,13 +22,15 @@
             <Separator></Separator>
             <MenuItem Header="{DynamicResource StringCancelAllOrders}" Command="{Binding CommandCancelAllOrders}"/>
         </MenuItem>
-        <MenuItem Header="{DynamicResource StringSettings}">
+        <MenuItem Header="{DynamicResource StringOptions}">
             <MenuItem Header="{DynamicResource StringLanguage}">
                 <MenuItem Header="{DynamicResource StringEnglish}" Command="{Binding CommandChangeLanguage}" CommandParameter="{x:Static enum:ELanguage.English}"/>
                 <MenuItem Header="{DynamicResource StringTurkish}" Command="{Binding CommandChangeLanguage}" CommandParameter="{x:Static enum:ELanguage.Turkish}"/>
             </MenuItem>
             <MenuItem Header="{DynamicResource StringEnableDisableToolTips}"
                       Command="{Binding CommandEnableDisableToolTip}"/>
+            <MenuItem Header="{DynamicResource StringSettings}"
+                      Command="{Binding CommandSettings}"/>
         </MenuItem>
         <MenuItem Header="{DynamicResource StringTools}">
             <MenuItem Header="{DynamicResource StringLogAnalyzers}" Command="{Binding CommandLogAnalyzers}"/>

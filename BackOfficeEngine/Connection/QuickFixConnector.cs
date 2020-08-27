@@ -11,6 +11,7 @@ using QuickFix;
 using QuickFix.Fields;
 using System.Threading;
 
+
 namespace BackOfficeEngine.Connection
 {
     internal class QuickFixConnector : IApplication, IConnector
@@ -262,12 +263,26 @@ namespace BackOfficeEngine.Connection
             message.TimeStamp = DateTime.Now;
             m_messageQueue.Enqueue((message.ToString(), sessionId,message.TimeStamp));
         }
-#if ITXR
+
         private void SetISINCode(IMessage msg)
         {
-            if (Fix.ISINCodeMap.TryGetValue(msg.GetSymbol(),out string isinCode))
+            if (msg.IsSetSymbol() && Fix.ISINCodeMap.TryGetValue(msg.GetSymbol(),out string isinCode))
             {
+                string symbol = msg.GetSymbol();
                 msg.SetGenericField(Tags.SecurityID, isinCode);
+                int eIndex = symbol.IndexOf(".E");
+                if(eIndex != -1)
+                {
+                    symbol = symbol.Substring(0, eIndex) + ".IS";
+                    msg.SetSymbol(symbol);
+                }
+                msg.SetGenericField(100, "XIST");
+                msg.SetGenericField(47, "A");
+                msg.SetGenericField(21, "1");
+                msg.SetGenericField(22, "4");
+                msg.SetGenericField(15, "TRY");
+                msg.SetGenericField(120, "TRY");
+                msg.SetGenericField(109, "FIDESSA");
             }
         }
 
@@ -278,28 +293,35 @@ namespace BackOfficeEngine.Connection
                 msg.SetField(new SecurityID(isinCode));
             }
         }
-#endif
+
         public void SendMsgOrderEntry(IMessage msg)
         {
-#if ITXR
-            SetISINCode(msg);
-#endif
-            Message quickFixMsg = new Message(msg.ToString());
-            if (m_symbolMap.TryGetValue(msg.GetSymbol(),out Session session))
-            { 
-                session?.Send(quickFixMsg);
-            }
-            else
+            if(SettingsBackOfficeEngine.Instance.SymbolISINSetting == SymbolISIN.ISIN)
             {
-                primarySession?.Send(quickFixMsg);
+                SetISINCode(msg);
             }
-            
+
+            Session session = primarySession;
+            Message quickFixMsg = new Message(msg.ToString());
+            if (msg.IsSetSymbol())
+            {
+                if(!m_symbolMap.TryGetValue(msg.GetSymbol(), out session))
+                {
+                    session = primarySession;
+                }
+            }
+            session?.Send(quickFixMsg);
+
+
         }
         public void SendMsgOrderEntry(Message msg)
         {
-#if ITXR
-            SetISINCode(msg);
-#endif
+            if(SettingsBackOfficeEngine.Instance.SymbolISINSetting == SymbolISIN.ISIN)
+            {
+                SetISINCode(msg);
+            }
+            
+
             if (msg.IsSetField(Tags.Symbol) && m_symbolMap.TryGetValue(msg.GetString(Tags.Symbol), out Session session))
             {
 
@@ -314,17 +336,19 @@ namespace BackOfficeEngine.Connection
 
         public void SendMsgOrderEntry(IMessage msg,bool overrideSessionTags)
         {
-#if ITXR
-            SetISINCode(msg);
-#endif
-            if (m_symbolMap.TryGetValue(msg.GetSymbol(), out Session session))
+            if (SettingsBackOfficeEngine.Instance.SymbolISINSetting == SymbolISIN.ISIN)
             {
-
+                SetISINCode(msg);
             }
-            else
+            Session session = primarySession;
+            if (msg.IsSetSymbol())
             {
-                session = primarySession;
+                if(!m_symbolMap.TryGetValue(msg.GetSymbol(), out session))
+                {
+                    session = primarySession;
+                }
             }
+            
             if (overrideSessionTags)
             {
                 Message quickFixMsg = new Message(msg.ToString());

@@ -28,7 +28,7 @@ namespace MarketTester.Worksheet
                 }
                 csv = csv.Substring(0, csv.Length - 1) + Environment.NewLine;
             }
-            MarketTesterUtil.OverwriteToFile(filePath, csv);
+            BackOfficeEngine.Helper.Util.OverwriteToFile(filePath, csv);
         }
         public static void AppendCsvFromHistoryItems(string filePath, List<HistoryItem> historyItems)
         {

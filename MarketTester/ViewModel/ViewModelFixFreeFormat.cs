@@ -97,7 +97,7 @@ namespace MarketTester.ViewModel
                         App.Invoke(() =>
                         {
                             LogMessages.SupressNotification = false;
-                            if(IsAutoScroll)
+                            if(IsAutoScroll && LogMessages.Count > 0)
                                 View.ListViewLog.ScrollIntoView(LogMessages.Last());
                         });
                     }
@@ -668,7 +668,7 @@ namespace MarketTester.ViewModel
                     {
                         try
                         {
-                            string content = MarketTesterUtil.ReadFile(filePath);
+                            string content = BackOfficeEngine.Helper.Util.ReadFile(filePath);
                             string[] splits = content.Split(new string[] { SaveDelimiter }, StringSplitOptions.RemoveEmptyEntries);
                             foreach (string saveString in splits)
                             {

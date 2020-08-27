@@ -773,7 +773,7 @@ namespace MarketTester.ViewModel
                 Schedules.Clear();
                 new Thread(() =>
                 {
-                    string content = MarketTesterUtil.ReadFile(filePath);
+                    string content = BackOfficeEngine.Helper.Util.ReadFile(filePath);
                     string[] scheduleStrings = content.Split(new string[] { ScheduleSaveFileDelimeter },StringSplitOptions.RemoveEmptyEntries);
                     foreach(string scheduleString in scheduleStrings)
                     {

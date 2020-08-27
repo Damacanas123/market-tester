@@ -44,7 +44,7 @@ namespace MarketTester.Helper
         public static string APPLICATION_STATIC_DIR = APPLICATION_COMMON_DIR + STATIC_DIR_PATH;
         public static string APPLICATION_EXPORT_DIR = APPLICATION_COMMON_DIR + "exports" + FILE_PATH_DELIMITER;
         public static string APPLICATION_RESULTS_DIR = APPLICATION_COMMON_DIR + "results" + FILE_PATH_DELIMITER;
-        public static string APPLICATION_SAVE_DIR = APPLICATION_COMMON_DIR + "save" + FILE_PATH_DELIMITER;
+        public static string APPLICATION_SAVE_DIR = BackOfficeEngine.Helper.Util.APPLICATION_SAVE_DIR;
         public static string APPLICATION_SCHEDULESAVE_DIR = APPLICATION_SAVE_DIR + "schedule" + FILE_PATH_DELIMITER;
         public static string APPLICATION_FREEFORMATSCHEDULE_DIR = APPLICATION_SCHEDULESAVE_DIR + "freeformat" + FILE_PATH_DELIMITER;
         public static string APPLICATION_NONFREEFORMATSCHEDULE_DIR = APPLICATION_SCHEDULESAVE_DIR + "nonfreeformat" + FILE_PATH_DELIMITER;
@@ -234,75 +234,6 @@ namespace MarketTester.Helper
             }
             return temp;
         }
-
-
-        
-
-        public static string GetTodayString()
-        {
-            DateTime today = DateTime.Today;
-            string year = today.Year.ToString(CultureInfo.CurrentCulture);
-            string month = today.Month.ToString(CultureInfo.CurrentCulture);
-            string day = today.Day.ToString(CultureInfo.CurrentCulture);
-            for (int i = 0; i < 4 - year.Length; i++)
-            {
-                year = "0" + year;
-            }
-            for (int i = 0; i < 2 - month.Length; i++)
-            {
-                month = "0" + month;
-            }
-            for (int i = 0; i < 2 - day.Length; i++)
-            {
-                day = "0" + day;
-            }
-            return year + month + day;
-        }
-
-        public static string ReadFile(string filePath)
-        {
-            lock (GetReferenceToLock(filePath))
-            {
-                if (File.Exists(filePath))
-                {
-                    string content = File.ReadAllText(filePath);
-                    return content;
-                }
-                else
-                {
-                    string directories = filePath.Substring(0,filePath.LastIndexOf(FILE_PATH_DELIMITER));
-                    Directory.CreateDirectory(directories);
-                    File.Create(filePath);
-                    return "";
-                }
-            }
-        }
-
-        public static string[] ReadLines(string filePath)
-        {
-            string content = ReadFile(filePath);
-            if (!string.IsNullOrEmpty(content))
-            {
-                return content.Split(new string[] { Environment.NewLine },StringSplitOptions.RemoveEmptyEntries);
-            }
-            else
-            {
-                return new string[] { };
-            }
-        }
-
-        public static void OverwriteToFile(string filePath,string s)
-        {
-            lock (GetReferenceToLock(filePath))
-            {
-                using (StreamWriter sw = new StreamWriter(filePath))
-                {
-                    sw.Write(s);
-                }
-            }
-        }
-
-        
 
         private static Dictionary<string, object> locks = new Dictionary<string, object>();
         private static object GetReferenceToLock(string filePath)

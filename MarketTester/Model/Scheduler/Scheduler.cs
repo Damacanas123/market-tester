@@ -45,7 +45,7 @@ namespace MarketTester.Model.Scheduler
                 {
                     return;
                 }
-                string json = MarketTesterUtil.ReadFile(ScheduleGroupsSavePath);
+                string json = BackOfficeEngine.Helper.Util.ReadFile(ScheduleGroupsSavePath);
                 JObject topLevelObject = (JObject)JsonConvert.DeserializeObject(json);
                 JObject mapMessages = (JObject)topLevelObject[MapMessages];
                 foreach (var item in mapMessages)
@@ -105,7 +105,7 @@ namespace MarketTester.Model.Scheduler
                 }
                 dic[MapMessages] = protocolIDCopy;
                 string serialized = JsonConvert.SerializeObject(dic);
-                MarketTesterUtil.OverwriteToFile(ScheduleGroupsSavePath, serialized);
+                BackOfficeEngine.Helper.Util.OverwriteToFile(ScheduleGroupsSavePath, serialized);
             }            
         }
         public static Dictionary<string, List<IMessage>> ScheduleGroupedMapMessages { get; set; } = new Dictionary<string, List<IMessage>>();
@@ -315,12 +315,13 @@ namespace MarketTester.Model.Scheduler
             
             
             string firstNewMessageNonProtocolId = null;
-            Channel channel = defaultChannel;
+            
             Matcher matcher = new Matcher();
             Engine engine = Engine.GetInstance();
             CurrentScheduleClOrdIDs.Clear();
             foreach (SchedulerRawItem item in scheduleRaw)
             {
+                Channel channel = defaultChannel;
                 if (!item.IsSelected)
                 {
                     continue;

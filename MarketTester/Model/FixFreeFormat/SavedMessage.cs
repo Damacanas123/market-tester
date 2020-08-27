@@ -44,12 +44,12 @@ namespace MarketTester.Model.FixFreeFormat
                 }
                 content += Environment.NewLine;
             }
-            MarketTesterUtil.OverwriteToFile(SaveFilePath, content);
+            BackOfficeEngine.Helper.Util.OverwriteToFile(SaveFilePath, content);
         }
 
         public static void Load()
         {
-            string[] lines = MarketTesterUtil.ReadLines(SaveFilePath);
+            string[] lines = BackOfficeEngine.Helper.Util.ReadLines(SaveFilePath);
             foreach(string line in lines)
             {
                 if (string.IsNullOrWhiteSpace(line))

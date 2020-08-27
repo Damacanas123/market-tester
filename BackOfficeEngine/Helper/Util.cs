@@ -44,6 +44,7 @@ namespace BackOfficeEngine.Helper
         public static string DYNAMIC_SETTINGS_FILE_PATH = SPECIAL_DIR + "dyn_sets.cfg";
         public static string DateFormatMicrosecondPrecision = "yyyyMMdd-HH:mm:ss.ffffff";
         public static string DateFormatYearMonthDay = "yyyyMMdd";
+        public static string APPLICATION_SAVE_DIR = APPLICATION_COMMON_DIR + "save" + FILE_PATH_DELIMITER;
         public static UTF8Encoding UTF8 = new UTF8Encoding(true);
 
         public static void LogError(Exception ex)
@@ -135,9 +136,18 @@ namespace BackOfficeEngine.Helper
         }
 
 
+        public static void OverwriteToFile(string filePath, string s)
+        {
+            lock (GetReferenceToLock(filePath))
+            {
+                using (StreamWriter sw = new StreamWriter(filePath))
+                {
+                    sw.Write(s);
+                }
+            }
+        }
 
 
-        
 
 
         public static string RemoveNonNumeric(string s)
@@ -488,6 +498,38 @@ namespace BackOfficeEngine.Helper
                 s += (char)('A' + random.Next(0, 25));
             }
             return s;
+        }
+
+        public static string ReadFile(string filePath)
+        {
+            lock (GetReferenceToLock(filePath))
+            {
+                if (File.Exists(filePath))
+                {
+                    string content = File.ReadAllText(filePath);
+                    return content;
+                }
+                else
+                {
+                    string directories = filePath.Substring(0, filePath.LastIndexOf(FILE_PATH_DELIMITER));
+                    Directory.CreateDirectory(directories);
+                    File.Create(filePath);
+                    return "";
+                }
+            }
+        }
+
+        public static string[] ReadLines(string filePath)
+        {
+            string content = BackOfficeEngine.Helper.Util.ReadFile(filePath);
+            if (!string.IsNullOrEmpty(content))
+            {
+                return content.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            }
+            else
+            {
+                return new string[] { };
+            }
         }
 
         public delegate void ThreadParameterlessFunction();

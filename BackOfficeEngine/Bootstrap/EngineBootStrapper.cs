@@ -15,9 +15,9 @@ namespace BackOfficeEngine.Bootstrap
     {
         internal static List<Order> Bootstrap()
         {
-#if ITXR
-            Fix.ITXRBootStrap();
-#endif
+
+            Fix.ISINBootStrap();
+
             Util.StartFileWriteThread();
             SQLiteHandler.StartTransactionThread();
             CreateDirectories();

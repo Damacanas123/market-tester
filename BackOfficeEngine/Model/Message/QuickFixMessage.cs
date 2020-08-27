@@ -129,6 +129,7 @@ namespace BackOfficeEngine.Model
             {
                 throw new UnSupportedMessageType("Unsupported message type");
             }
+            //following code block may be needed if we ever connect to itxr
 #if ITXR
             SetField(msg, 100, "XIST");
             SetField(msg, 47, "A");
@@ -515,6 +516,15 @@ namespace BackOfficeEngine.Model
         public bool IsSetOrdStatus()
         {
             return IsSetField(Tags.OrdStatus);
+        }
+
+        public void RemoveGenericField(int field)
+        {
+            if (IsSetField(field))
+            {
+                RemoveField(field);
+            }
+            
         }
     }
 }

@@ -31,7 +31,7 @@ namespace MarketTester.Model
         public static ObservableCollection<LineFormat> Formats { get; set; } = new ObservableCollection<LineFormat>();
         public static void LoadLineFormats()
         {
-            string[] formats = MarketTesterUtil.ReadLines(SaveFilePath);
+            string[] formats = BackOfficeEngine.Helper.Util.ReadLines(SaveFilePath);
             Formats.Clear();
             for(int i = 0; i < formats.Length; i++)
             {
@@ -51,7 +51,7 @@ namespace MarketTester.Model
             {
                 content += format.ToString() + Environment.NewLine;
             }
-            MarketTesterUtil.OverwriteToFile(SaveFilePath,content);
+            BackOfficeEngine.Helper.Util.OverwriteToFile(SaveFilePath,content);
         }
 
         public override string ToString()

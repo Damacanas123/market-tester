@@ -28,7 +28,7 @@
     <InstallUrl>\\192.168.108.42\c%24\MATRIKS_OMS\MarketTesterSetup\</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>75</ApplicationRevision>
+    <ApplicationRevision>79</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -160,6 +160,7 @@
     <Compile Include="Converters\MessageTypeColorConverter.cs" />
     <Compile Include="Converters\RadioButtonOrdTypeConverter.cs" />
     <Compile Include="Converters\SideConverter.cs" />
+    <Compile Include="Converters\EnumRadioGroupConverter.cs" />
     <Compile Include="Enumeration\EInfo.cs" />
     <Compile Include="Enumeration\ELanguage.cs" />
     <Compile Include="Events\LanguageChangedEvent.cs" />
@@ -249,6 +250,9 @@
     <Compile Include="UI\Usercontrol\UserControlScheduler.xaml.cs">
       <DependentUpon>UserControlScheduler.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Usercontrol\UserControlSettings.xaml.cs">
+      <DependentUpon>UserControlSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Usercontrol\UserControlUpperBar.xaml.cs">
       <DependentUpon>UserControlUpperBar.xaml</DependentUpon>
     </Compile>
@@ -270,6 +274,7 @@
     <Compile Include="ViewModel\ViewModelOrderHistoryFix.cs" />
     <Compile Include="ViewModel\ViewModelOrderList.cs" />
     <Compile Include="ViewModel\ViewModelScheduler.cs" />
+    <Compile Include="ViewModel\ViewModelSettings.cs" />
     <Compile Include="ViewModel\ViewModelToolTipEnabled.cs" />
     <Compile Include="Worksheet\Csv.cs" />
     <Compile Include="Worksheet\Excel.cs" />
@@ -355,6 +360,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Usercontrol\UserControlScheduler.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Usercontrol\UserControlSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

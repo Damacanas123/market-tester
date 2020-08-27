@@ -12,9 +12,11 @@ namespace BackOfficeEngine.Model
     //extended singleton
     public class Account : IComparable
     {
+        public delegate void AccountAddedEvent(Account account);
+        public static event AccountAddedEvent AccountAddedEventHandler;
         private static ConcurrentDictionary<string, Account> instances = new ConcurrentDictionary<string, Account>();
         
-        internal static Account GetInstance(string accountString)
+        public static Account GetInstance(string accountString)
         {
             if(accountString == null)
             {
@@ -29,6 +31,7 @@ namespace BackOfficeEngine.Model
                 account = new Account(accountString);
                 instances[accountString] = account;
                 Accounts.Add(account);
+                AccountAddedEventHandler?.Invoke(account);
             }
             return account;
         }
@@ -36,7 +39,7 @@ namespace BackOfficeEngine.Model
         
 
         
-        public static ObservableCollection<Account> Accounts { get; } = new ObservableCollection<Account>();
+        private static List<Account> Accounts { get; } = new List<Account>();
 
 
         public string name

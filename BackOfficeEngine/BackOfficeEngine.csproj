@@ -97,8 +97,10 @@
     <Compile Include="Helper\IdGenerator\ClOrdIdGenerator.cs" />
     <Compile Include="Helper\IdGenerator\BaseIDGenerator.cs" />
     <Compile Include="Helper\IdGenerator\NonProtocolIDGenerator.cs" />
+    <Compile Include="Helper\SettingsBackOfficeEngine.cs" />
     <Compile Include="Helper\Util.cs" />
     <Compile Include="Logger\ErrorLogger.cs" />
+    <Compile Include="MessageEnums\BussinessEnums.cs" />
     <Compile Include="MessageEnums\MessageEnums.cs" />
     <Compile Include="Model\Account\Account.cs" />
     <Compile Include="Model\Account\Position.cs" />

@@ -36,7 +36,7 @@ namespace MarketTester.ViewModel
             CommandFixSniffer = new BaseCommand(CommandFixSnifferExecute, CommandFixSnifferCanExecute);
             CommandLogConfiguration = new BaseCommand(CommandLogConfigurationExecute, CommandLogConfigurationCanExecute);
             CommandEnableDisableToolTip = new BaseCommand(CommandEnableDisableToolTipExecute, CommandEnableDisableToolTipCanExecute);
-
+            CommandSettings = new BaseCommand(CommandSettingsExecute, CommandSettingsCanExecute);
 
         }
         #region commands
@@ -193,8 +193,8 @@ namespace MarketTester.ViewModel
         public BaseCommand CommandLogConfiguration { get; set; }
         public void CommandLogConfigurationExecute(object param)
         {
-            UserControlLogLoader userControlFixSniffer = new UserControlLogLoader();
-            MainWindowStarter.AddTab(userControlFixSniffer, ResourceKeys.StringLogVisualizer, false);
+            UserControlLogLoader userControlLogLoader = new UserControlLogLoader();
+            MainWindowStarter.AddTab(userControlLogLoader, ResourceKeys.StringLogVisualizer, false);
         }
         public bool CommandLogConfigurationCanExecute()
         {
@@ -212,6 +212,20 @@ namespace MarketTester.ViewModel
             settings.ToolTipEnabled ^= true;
         }
         public bool CommandEnableDisableToolTipCanExecute()
+        {
+            return true;
+        }
+        #endregion
+
+
+        #region CommandSettings
+        public BaseCommand CommandSettings { get; set; }
+        public void CommandSettingsExecute(object param)
+        {
+            UserControlSettings userControlSettings = new UserControlSettings();
+            MainWindowStarter.AddTab(userControlSettings, ResourceKeys.StringOptions, true);
+        }
+        public bool CommandSettingsCanExecute()
         {
             return true;
         }

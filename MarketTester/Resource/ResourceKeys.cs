@@ -8,6 +8,9 @@ namespace MarketTester
 {
     public class ResourceKeys
     {
+        public const string StringOptions = "StringOptions";
+        public const string StringSettingsSymbolISINOption1 = "StringSettingsSymbolISINOption1";
+        public const string StringSettingsSymbolISINOption2 = "StringSettingsSymbolISINOption2";
         public const string StringSettingsSymbolISINExplanation = "StringSettingsSymbolISINExplanation";
         public const string StringSkipHeartbeats = "StringSkipHeartbeats";
         public const string StringTooltipAddExtraTagValuesToSingleMessage = "StringTooltipAddExtraTagValuesToSingleMessage";

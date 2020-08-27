@@ -13,9 +13,12 @@ namespace BackOfficeEngine.Helper
 {
     public class Fix
     {
-#if ITXR
+
         public static Dictionary<string, string> ISINCodeMap { get; set; } = new Dictionary<string, string>();
-        public static void ITXRBootStrap()
+        /// <summary>
+        /// tries to load ISIN codes from ISINSymbolMap.csv file under static directory
+        /// </summary>
+        public static void ISINBootStrap()
         {
             string isin_path = Util.APPLICATION_STATIC_DIR + "ISINSymbolMap.csv";
             if (!File.Exists(isin_path))
@@ -36,7 +39,7 @@ namespace BackOfficeEngine.Helper
                 }
             }
         }
-#endif
+
         public static HashSet<string> FixProtocolStrings { get; } = new HashSet<string>()
         {
             "FIXT.1.1","FIX.4.0","FIX.4.1","FIX.4.2","FIX.4.3","FIX.4.4"

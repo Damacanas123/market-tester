@@ -12,6 +12,8 @@ namespace BackOfficeEngine.Model
         DateTime TimeStamp { get; set; }
         ProtocolType protocolType { get; set; }
 
+        void RemoveGenericField(int field);
+
         #region getters
         MsgType GetMsgType();
         string GetClOrdID();
