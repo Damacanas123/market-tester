@@ -17,6 +17,7 @@ namespace BackOfficeEngine.Helper.IdGenerator
 
         protected override object fileLock { get; set ; }
         protected override string filePath { get; set; }
+        protected override object counterLock { get; set; }
 
         public bool PutQInTheBeginning { get; set; }
 
@@ -27,6 +28,7 @@ namespace BackOfficeEngine.Helper.IdGenerator
         {
             fileLock = new object();
             filePath = CommonFolders.ClOrdIdFilePath;
+            counterLock = new object();
         }
 
 

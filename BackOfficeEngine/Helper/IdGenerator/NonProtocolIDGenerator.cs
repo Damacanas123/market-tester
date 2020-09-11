@@ -14,6 +14,7 @@ namespace BackOfficeEngine.Helper.IdGenerator
 
         protected override object fileLock { get; set; }
         protected override string filePath { get; set; }
+        protected override object counterLock { get; set; }
 
         /// <summary>
         /// do not call this constructor directly. Use GetInstanceMethod to get the instance of generator
@@ -22,6 +23,7 @@ namespace BackOfficeEngine.Helper.IdGenerator
         {
             fileLock = new object();
             filePath = CommonFolders.NonProtocolOrderIDPath;
+            counterLock = new object();
         }
     }
 }

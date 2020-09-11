@@ -13,6 +13,7 @@ namespace BackOfficeEngine.Helper.IdGenerator
     {
         protected abstract object fileLock { get; set; }
         protected abstract string filePath { get; set; }
+        protected abstract object counterLock { get; set; }
         private int LastDumpedSeqNum {get;set;}
         private int CurrentSeqNum { get; set; }
         private bool IsInitialized { get; set; } = false;
@@ -36,14 +37,18 @@ namespace BackOfficeEngine.Helper.IdGenerator
                 {
                     Initialize();
                 }
+            }
+            string clOrdID;
+            lock (counterLock)
+            {
+                clOrdID = Util.GetRandomString(2) + Util.GetTodayString() + CurrentSeqNum++;
             }            
-            string clOrdID = Util.GetRandomString(2) + Util.GetTodayString() + CurrentSeqNum++;
             return clOrdID;
         }
 
         private void Initialize()
         {
-            string date = Util.GetTodayString();
+            string date = CurrentWorkingDay;
             string seqNum = "1";
             using (FileStream fs = File.OpenRead(filePath))
             {
@@ -57,7 +62,7 @@ namespace BackOfficeEngine.Helper.IdGenerator
                         string[] arr = content.Split(new string[] { Environment.NewLine },StringSplitOptions.RemoveEmptyEntries);
                         if(arr.Length == 2)
                         {
-                            if (string.Compare(arr[0], Util.GetTodayString(), StringComparison.OrdinalIgnoreCase) >= 0)
+                            if (string.Compare(arr[0],CurrentWorkingDay, StringComparison.OrdinalIgnoreCase) >= 0)
                             {
                                 date = arr[0];
                                 seqNum = arr[1];
@@ -86,6 +91,13 @@ namespace BackOfficeEngine.Helper.IdGenerator
                             sw.WriteLine(CurrentSeqNum.ToString(CultureInfo.InvariantCulture));
                         }
                         LastDumpedSeqNum = CurrentSeqNum;
+                        string todayAgain = Util.GetTodayString();
+                        if (string.Compare(todayAgain, CurrentWorkingDay, StringComparison.OrdinalIgnoreCase) > 0)
+                        {
+                            CurrentWorkingDay = todayAgain;
+                            CurrentSeqNum = 1;
+                            LastDumpedSeqNum = 1;
+                        }
                     }
                     else
                     {
