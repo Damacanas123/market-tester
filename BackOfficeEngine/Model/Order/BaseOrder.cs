@@ -89,6 +89,7 @@ namespace BackOfficeEngine.Model
             newOrderMessage.SetTimeInForce(prms.timeInForce);
             newOrderMessage.SetSide(prms.side);
             newOrderMessage.SetTransactTime(DateTime.Now);
+            newOrderMessage.SetGenericField(QuickFix.Fields.Tags.OrderCapacity, "A");
                     
             switch (prms.price)
             {
