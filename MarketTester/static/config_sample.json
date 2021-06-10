@@ -1,0 +1,12 @@
+﻿{
+  "ConfigFiles": [
+    {
+      "FilePath": "C:\\MATRIKS_OMS\\MarketTester\\static\\sample_fix.cfg",
+      "ProtocolType": "Fix50sp2"
+    },
+    {
+      "FilePath": "C:\\MATRIKS_OMS\\MarketTester\\static\\sample_fix2.cfg",
+      "ProtocolType": "Fix44"
+    }
+  ]
+}

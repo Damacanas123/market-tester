@@ -208,13 +208,22 @@ namespace MarketTester.Model.OrderHistoryFix
 
         private static string GetExecutionTypeString(IMessage m)
         {
-            string execTypeString = "";
-            if (m.IsSetGenericField(Tags.ExecType))
+            try
             {
-                char execType = m.GetGenericField(Tags.ExecType)[0];
-                execTypeString = FixValues.ExecType[execType.ToString()];
+                string execTypeString = "";
+                if (m.IsSetGenericField(Tags.ExecType))
+                {
+                    char execType = m.GetGenericField(Tags.ExecType)[0];
+                    execTypeString = FixValues.ExecType[execType.ToString()];
+                }
+                return execTypeString;
             }
-            return execTypeString;
+            catch (Exception ex)
+            {
+                return "";
+            }
+            
+            
         }
 
         private static string GetOrdStatusString(IMessage m)

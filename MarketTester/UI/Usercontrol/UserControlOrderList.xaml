@@ -64,7 +64,12 @@
                     <DataGridTextColumn.Header>
                         <TextBlock Text="{DynamicResource StringID}"/>
                     </DataGridTextColumn.Header>
-                </DataGridTextColumn>                
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Account.name}">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource StringAccount}"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Symbol}">
                     <DataGridTextColumn.Header>
                         <TextBlock Text="{DynamicResource StringSymbol}"/>
