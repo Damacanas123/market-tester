@@ -163,6 +163,7 @@ namespace BackOfficeEngine.Model
             replaceRequest.SetTransactTime(DateTime.Now);
             replaceRequest.SetAccount(account.name);
             replaceRequest.SetSymbol(Symbol);
+            replaceRequest.SetGenericField(QuickFix.Fields.Tags.HandlInst, "1");
             return replaceRequest;
         }
 
