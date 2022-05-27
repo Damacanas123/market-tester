@@ -1,15 +1,15 @@
 ﻿{
   "ConfigFiles": [
 	{
-      "FilePath": "C:\\MATRIKS_OMS\\MarketTester\\static\\ICMTEST1.cfg",
+      "FilePath": "C:\\MarketTester\\static\\ICMTEST1.cfg",
       "ProtocolType": "Fix42"
     },
 	{
-      "FilePath": "C:\\MATRIKS_OMS\\MarketTester\\static\\ICMTEST2.cfg",
+      "FilePath": "C:\\MarketTester\\static\\ICMTEST2.cfg",
       "ProtocolType": "Fix42"
     },
 	{
-      "FilePath": "C:\\MATRIKS_OMS\\MarketTester\\static\\ICMTEST3.cfg",
+      "FilePath": "C:\\MarketTester\\static\\ICMTEST3.cfg",
       "ProtocolType": "Fix42"
     }
 	
