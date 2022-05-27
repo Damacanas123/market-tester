@@ -32,7 +32,7 @@ namespace BackOfficeEngine.Helper
         public const string RD_STRING = "RD";
 
         public const string FILE_PATH_DELIMITER = "\\";
-        public static string APPLICATION_COMMON_DIR = "C:\\MATRIKS_OMS" + FILE_PATH_DELIMITER + "MarketTester" + FILE_PATH_DELIMITER;
+        public static string APPLICATION_COMMON_DIR = "C:\\MarketTester" + FILE_PATH_DELIMITER;
         public static string APPLICATION_SEQ_NUM_DIR = APPLICATION_COMMON_DIR + "sequence_nums\\";
         public static string STATIC_DIR_PATH = "static" + FILE_PATH_DELIMITER;
         public static string APPLICATION_STATIC_DIR = APPLICATION_COMMON_DIR + STATIC_DIR_PATH;
